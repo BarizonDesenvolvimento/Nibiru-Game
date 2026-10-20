@@ -12,8 +12,9 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - Os **14 sistemas essenciais** da fatia (Grupo 1 de `Docs/Regiao-1-Sitio-de-Ur.md`) estão prontos e testados.
 - O **blockout** do mapa do Sítio de Ur está construído.
 - Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
+- O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 
-O próximo passo combinado é **povoar o Acampamento** (área 1) com o conteúdo da missão principal; foi pedido e ainda não foi começado.
+O próximo passo é **povoar as Trincheiras** (área 2): passo 5 da missão (primeira furtividade, pistola no chefe de segurança), Dra. Weiss, 2º rolo de filme e o helicóptero passando.
 
 ## Documentos
 
@@ -30,9 +31,26 @@ O próximo passo combinado é **povoar o Acampamento** (área 1) com o conteúdo
 | Cena | Para que serve |
 | --- | --- |
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir de cápsula, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
-| `Scenes/Regiao1_SitioDeUr` | A região de verdade. Por enquanto, só o blockout e a Elena no acampamento |
+| `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento |
 
-O blockout é gerado pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cena aberta** (`Scripts/Editor/Blockout/SitioDeUrBlockout.cs`). Para mudar o mapa, mude o script e rode o menu de novo. Os discos dourados `Marca_...` marcam onde entra cada conteúdo.
+O blockout é gerado pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cena aberta** (`Scripts/Editor/Blockout/SitioDeUrBlockout.cs`). Para mudar o mapa, mude o script e rode o menu de novo; o menu também refaz a malha de navegação. Os discos dourados `Marca_...` marcam onde entra cada conteúdo.
+
+## Conteúdo das áreas
+
+Cada área tem um script de editor que monta o conteúdo num grupo próprio da cena (`Conteudo_...`), apagando e reconstruindo a cada execução, como o blockout. Os arquivos de dados (missões, diálogos, eventos, itens) só são criados se ainda não existirem: textos mudados no Inspector não se perdem.
+
+| Área | Menu | Script |
+| --- | --- | --- |
+| 1. Acampamento | **Nibiru > Conteúdo > Povoar Acampamento na cena aberta** | `Scripts/Editor/Content/CampContent.cs` |
+
+**Acampamento, como funciona:**
+- A Elena acorda dentro da barraca (tenda oca no blockout) com a Tabuleta do Junco; a voz sussurra "Tila" ("viva"; a palavra pode mudar em `Data/Dialogues/Acampamento_Sussurro`).
+- Faca de campo numa caixa da barraca: a faca só ataca depois de pegar (campo "Item necessário" do `PlayerMeleeAttack`, ligado só nesta cena; no laboratório continua sempre disponível).
+- Objetivos: pegar a faca → sair da barraca → examinar os corpos → bolsa do Tom (começa "O que o Tom viu"; 1º rolo atrás do caminhão) → atender o rádio (Kast, com escolha confiar/desconfiar) → esperar o resgate → fugir para as trincheiras.
+- O helicóptero chega 15 s depois do rádio e pousa no heliponto. A execução do trabalhador (Hassan) dispara quando a Elena chega ao mirante (canto nordeste da elevação) ou, se ela não for, uns 26 s depois do pouso, só ouvida. Até lá, paredes invisíveis na beira da elevação seguram a Elena.
+- Depois da execução: limites abertos, dois soldados sobem a rampa patrulhando o acampamento e o líder fica no heliponto.
+- Pontos de retorno na porta da barraca e no mirante. Ao voltar depois da execução, a cena se refaz no estado final.
+- Sons provisórios sintetizados (helicóptero, tiro, chiado de rádio) em `Art/Audio/Provisorio`, gerados pelo menu **Nibiru > Áudio > Gerar sons provisórios**. Para trocar, substitua o arquivo com o mesmo nome.
 
 ## Sistemas prontos
 
@@ -57,6 +75,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Tabuletas, transformação, Eco do Abzu | `Tablets/`, `Powers/` | `Data/Tablets`, `Data/Powers` |
 | Lullu e o chefe Primeiro Servo | `AI/LulluAI` | `Data/AI/Lullu`, `PrimeiroServo` |
 | HUD, telas e pausa | `UI/` | opções do jogador em `GameOptions` (salvas no computador) |
+| Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`) e `UI/NotificationPoster` | configurados no Inspector |
 
 Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/AI/Soldado`, `Prefabs/AI/Lullu`.
 
@@ -86,18 +105,19 @@ Pendências desses modelos antes de entrarem no jogo:
 - A ponte é o `unity-editor-mcp` (porta 7800). Se cair, a Unity provavelmente está reabrindo o projeto; espere ela terminar.
 - Para testar comandos, crie um controle virtual (`InputSystem.AddDevice<Gamepad>`) e aplique o estado a cada quadro em `InputSystem.onBeforeUpdate`. O script `Scripts/Editor/BackgroundInputInEditor.cs` (menu **Nibiru > Testes**) faz o jogo aceitar comandos com a Unity em segundo plano, só no editor.
 - Nunca recompile com o Play ligado: isso recarrega os scripts no meio da partida e quebra estados. Saia do Play antes.
-- O dono do projeto às vezes joga ao mesmo tempo que os testes: posição, vida e munição podem mudar entre um comando e outro.
+- O dono do projeto às vezes joga ao mesmo tempo que os testes (inclusive com um controle de verdade): posição, vida e munição podem mudar entre um comando e outro.
+- No prefab Elena, a raiz ("Elena") é só o grupo; o personagem é o filho "Jogador", com a etiqueta Player. Para reconhecer a Elena numa área, procure o `PlayerMotor` no objeto que entrou, não a etiqueta da raiz.
+- Diálogos pausam o tempo do jogo (as sequências também param). Para avançar pela ponte, chame `DialogueRunner.Continue()` ou `Choose(i)`, um comando por vez.
 
 ## Perguntas ainda abertas
 
 - O Kast aparece em pessoa ou só pelo rádio na região 1?
-- A execução no passo 4 aparece de longe ou só pelo som?
 - Qual o peso da consequência na Aldeia ao devolver a tabuleta ao Poço?
 - Nome definitivo do jogo, dublagem da Elena e idiomas de lançamento (do GDD).
 
 ## Próximos passos
 
-1. Povoar o Acampamento: tenda da Elena, corpos, rádio com o Kast, chegada do helicóptero e passos 1 a 4 da missão principal.
-2. Seguir área por área: Trincheiras, Aldeia, Zigurate, Poço e Wadi.
+1. Povoar as Trincheiras: passo 5 da missão (furtividade, pistola e pouca munição no chefe de segurança, ordem "a doutora, viva" pelo rádio dos soldados), Dra. Weiss escondida, 2º rolo de filme, rádio de campanha e o helicóptero passando baixo. O gatilho `ChegouAsTrincheiras` e o passo "Fuja para as trincheiras" já existem; o passo seguinte entra na missão `Data/Quests/Sobrevivente`.
+2. Seguir área por área: Aldeia, Zigurate, Poço e Wadi.
 3. Preparar os personagens 3D: reduzir polígonos, montar o esqueleto, criar o material URP e trocar a cápsula pela Elena.
 4. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).

@@ -316,10 +316,10 @@ A cena `Regiao1_SitioDeUr` tem o mapa em formas simples, com as seis áreas na o
 
 - **Data:** abril de 2003, semanas depois da invasão.
 - **Ligação com a região 2:** a região termina com a fuga para Tell Amar. A descida sob o zigurate fica para o fim do Ato 1, no Templo de Enki. O resumo do Ato 1 no GDD foi corrigido para isso.
+- **A execução no passo 4:** aparece de longe. Dispara quando a Elena chega ao mirante da elevação; se ela não for, acontece depois de um tempo e é só ouvida (helicóptero e tiro). O jogador não consegue impedir: a Elena não sai do acampamento antes da cena.
 - **Nomes:** ficam os propostos (Yusuf, Umm Karim, Dra. Hannah Weiss, Lullu, Primeiro Servo, Tabuleta do Junco, Eco do Abzu).
 
 ## Perguntas ainda abertas
 
 - **O Kast em pessoa ou só pelo rádio?** Nesta proposta ele só fala pelo rádio, para guardar o encontro cara a cara para mais tarde.
-- **A execução no passo 4.** É a cena mais pesada da fatia. Mostrar de longe, como está aqui, ou só pelo som?
 - **Peso da consequência na Aldeia.** Na opção "Devolver ao Poço", a Aldeia é esvaziada. Mais leve, mais pesado, ou do jeito que está?
