@@ -34,6 +34,16 @@ namespace Nibiru.Player
         public bool IsRunning { get; private set; }
         public bool IsDodging { get; private set; }
         public bool IsInvulnerable => IsDodging && dodgeElapsed < settings.dodgeInvulnerableTime;
+        public bool IsGrounded => controller.isGrounded;
+
+        /// <summary>Direção do direcional neste quadro, já relativa à câmera (tamanho de 0 a 1).</summary>
+        public Vector3 DesiredMoveDirection { get; private set; }
+
+        /// <summary>Enquanto true, a Elena não anda nem gira (por exemplo, durante um golpe).</summary>
+        public bool MovementLocked { get; set; }
+
+        /// <summary>Enquanto true, a esquiva não começa (por exemplo, no início de um golpe).</summary>
+        public bool DodgeBlocked { get; set; }
 
         void Awake()
         {
@@ -46,6 +56,7 @@ namespace Nibiru.Player
         {
             float dt = Time.deltaTime;
             Vector3 moveDirection = CameraRelative(input.Move);
+            DesiredMoveDirection = moveDirection;
 
             dodgeCooldownLeft -= dt;
             if (input.DodgePressed && CanDodge())
@@ -54,7 +65,7 @@ namespace Nibiru.Player
             if (IsDodging)
                 UpdateDodge(dt);
             else
-                UpdateWalkAndRun(moveDirection, dt);
+                UpdateWalkAndRun(MovementLocked ? Vector3.zero : moveDirection, dt);
 
             if (controller.isGrounded && verticalVelocity < 0f)
                 verticalVelocity = GroundedVerticalSpeed;
@@ -82,7 +93,7 @@ namespace Nibiru.Player
             }
         }
 
-        bool CanDodge() => !IsDodging && dodgeCooldownLeft <= 0f && controller.isGrounded;
+        bool CanDodge() => !IsDodging && !DodgeBlocked && dodgeCooldownLeft <= 0f && controller.isGrounded;
 
         // Com direcional, esquiva para aquele lado e vira o corpo para lá.
         // Sem direcional, dá um passo para trás mantendo a frente.

@@ -20,6 +20,7 @@ namespace Nibiru.Player
         InputAction run;
         InputAction dodge;
         InputAction interact;
+        InputAction attack;
         InputAction toggleInventory;
         InputAction navigate;
         InputAction confirm;
@@ -50,6 +51,7 @@ namespace Nibiru.Player
         public bool RunActive => run.IsPressed() || runLatched;
         public bool DodgePressed => dodge.WasPressedThisFrame();
         public bool InteractPressed => interact.WasPressedThisFrame();
+        public bool AttackPressed => attack.WasPressedThisFrame();
         public bool InventoryTogglePressed => toggleInventory.WasPressedThisFrame();
         public bool ConfirmPressed => confirm.WasPressedThisFrame();
         public bool BackPressed => back.WasPressedThisFrame();
@@ -93,6 +95,7 @@ namespace Nibiru.Player
             run = map.FindAction("Correr", throwIfNotFound: true);
             dodge = map.FindAction("Esquivar", throwIfNotFound: true);
             interact = map.FindAction("Interagir", throwIfNotFound: true);
+            attack = map.FindAction("Atacar", throwIfNotFound: true);
 
             uiMap = actions.FindActionMap("Interface", throwIfNotFound: true);
             toggleInventory = uiMap.FindAction("Inventario", throwIfNotFound: true);
