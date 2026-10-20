@@ -299,7 +299,18 @@ Em 20 de outubro de 2026, os 14 sistemas do Grupo 1 estão prontos e testados na
 | Inventário | Tab ou I | Select |
 | Pausa | Esc | Start |
 
-**Próximo passo sugerido:** o blockout do mapa do Sítio de Ur (as seis áreas em formas simples), para começar a montar a fatia com estes sistemas. Depois, as versões simples do Grupo 2.
+### Blockout
+
+A cena `Regiao1_SitioDeUr` tem o mapa em formas simples, com as seis áreas na ordem da missão: Acampamento (sul, numa elevação) → Trincheiras → Aldeia (oeste) → Zigurate e base → Boca do Poço (desce 14 m ao subsolo) → Passagem dos Guardiões → Wadi (norte). A malha de navegação liga o caminho inteiro.
+
+![Vista aérea do blockout](Imagens/Blockout_SitioDeUr_Aereo.png)
+
+- O mapa é construído pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cena aberta** (`Scripts/Editor/Blockout/SitioDeUrBlockout.cs`). Para mudar o mapa, ajuste o script e rode o menu de novo: ele apaga e reconstrói tudo dentro de `Blockout_SitioDeUr`.
+- Discos dourados no chão (`Marca_...`) marcam onde entra o conteúdo: pistola, Dra. Weiss, altar, Lullu, chefe, fita de Irena, escolha de facção.
+- Os rótulos flutuantes das áreas ficam no grupo `Rotulos`; desligue o grupo para jogar sem eles.
+- A Elena entra pelo prefab `Prefabs/Player/Elena`, que já traz câmera, HUD e diálogos.
+
+**Próximo passo sugerido:** povoar o blockout com o conteúdo da missão principal (itens, soldados, gatilhos e diálogos nos pontos marcados), área por área. Depois, as versões simples do Grupo 2.
 
 ## Decisões tomadas
 

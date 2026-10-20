@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Nibiru/Scenes/Teste_Personagem.unity
     guid: ef78e73a61a614f49a2c2ae759f040b4
+  - enabled: 1
+    path: Assets/_Nibiru/Scenes/Regiao1_SitioDeUr.unity
+    guid: 28b1ee0925992b74e9d64e077f2a1cc8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
