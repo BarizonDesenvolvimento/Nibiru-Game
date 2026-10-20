@@ -37,7 +37,8 @@ namespace Nibiru.Interaction
 
         void Update()
         {
-            bool busy = motor != null && motor.IsDodging;
+            // Esquivando ou com um menu aberto, não há objeto em foco (e o aviso some).
+            bool busy = !input.GameplayEnabled || (motor != null && motor.IsDodging);
             Current = busy ? null : FindBest();
 
             if (Current != null && input.InteractPressed)
