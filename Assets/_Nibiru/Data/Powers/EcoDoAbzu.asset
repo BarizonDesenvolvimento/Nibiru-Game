@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3890230773982144a5ddfa2f3178a46, type: 3}
+  m_Name: EcoDoAbzu
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.EchoPowerDefinition
+  displayName: Eco do Abzu
+  description: "Um pulso silencioso que mostra inimigos atrav\xE9s das paredes e
+    acende marcas escondidas por alguns segundos."
+  cooldown: 12
+  radius: 18
+  revealDuration: 6
+  expandTime: 0.6
+  revealMaterial: {fileID: 2100000, guid: 8561f81fec2d53345a8e830e17221538, type: 2}
+  ringMaterial: {fileID: 2100000, guid: 1d803fa0efd147a43b403e1349d4a87f, type: 2}

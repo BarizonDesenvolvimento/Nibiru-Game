@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 4233694856259589168}
   - component: {fileID: 5686046696890747741}
   - component: {fileID: 8817925002706168509}
+  - component: {fileID: 3595506109931618500}
   m_Layer: 0
   m_Name: Soldado
   m_TagString: Untagged
@@ -546,6 +547,18 @@ MonoBehaviour:
   isLeader: 0
   muzzle: {fileID: 4402511675497835500}
   tracer: {fileID: 2464224779256629655}
+--- !u!114 &3595506109931618500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3566172519426223726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d7ff1346939df479ddf6d5e4c7a386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.EchoRevealable
 --- !u!1 &4309579057502434951
 GameObject:
   m_ObjectHideFlags: 0

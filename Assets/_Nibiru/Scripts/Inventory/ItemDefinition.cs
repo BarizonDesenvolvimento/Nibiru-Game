@@ -39,6 +39,9 @@ namespace Nibiru.Inventory
         [Tooltip("Só para itens da categoria Arma: os dados da arma de fogo. Usar o item equipa a arma.")]
         public Combat.FirearmDefinition firearm;
 
+        [Tooltip("Só para tabuletas: os dados da tabuleta. Usar o item decifra (ou relê) a tabuleta.")]
+        public Tablets.TabletDefinition tablet;
+
         public bool IsKeyItem => category == ItemCategory.Chave;
     }
 }

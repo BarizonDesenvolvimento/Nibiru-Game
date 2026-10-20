@@ -18,9 +18,11 @@ namespace Nibiru.Save
             internal readonly HashSet<string> storyEvents;
             internal readonly Dictionary<string, int> questSteps;
             internal readonly Dictionary<string, int> reputation;
+            internal readonly int transformation;
 
             internal Snapshot()
             {
+                transformation = WorldState.Transformation;
                 pickupsRemaining = new Dictionary<string, int>(WorldState.pickupsRemaining);
                 activatedCheckpoints = new HashSet<string>(WorldState.activatedCheckpoints);
                 storyEvents = new HashSet<string>(WorldState.storyEvents);
@@ -35,6 +37,9 @@ namespace Nibiru.Save
         static readonly Dictionary<string, int> questSteps = new Dictionary<string, int>();
         static readonly Dictionary<string, int> reputation = new Dictionary<string, int>();
 
+        /// <summary>Transformação da Elena, de 0 (humana) a 100 (divina).</summary>
+        public static int Transformation { get; set; }
+
         // Começa limpo a cada Play, mesmo com o recarregamento de domínio desligado no editor.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         public static void Clear()
@@ -44,6 +49,7 @@ namespace Nibiru.Save
             storyEvents.Clear();
             questSteps.Clear();
             reputation.Clear();
+            Transformation = 0;
         }
 
         /// <summary>Quantos ainda restam num item do chão que já foi mexido. False se nunca foi pego.</summary>
@@ -80,6 +86,7 @@ namespace Nibiru.Save
             storyEvents.UnionWith(snapshot.storyEvents);
             foreach (KeyValuePair<string, int> pair in snapshot.questSteps) questSteps[pair.Key] = pair.Value;
             foreach (KeyValuePair<string, int> pair in snapshot.reputation) reputation[pair.Key] = pair.Value;
+            Transformation = snapshot.transformation;
         }
     }
 }

@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Poder",
+                    "type": "Button",
+                    "id": "902611e9-5a2a-47c7-b262-1b9947b765e9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -424,6 +433,28 @@
                     "processors": "",
                     "groups": "Controle",
                     "action": "Agachar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74636d0e-f39b-4186-8a61-3fb28f9e5774",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Poder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5022b0d8-57ba-4352-97df-951f40dd6b69",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Poder",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

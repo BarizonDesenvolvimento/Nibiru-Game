@@ -12,12 +12,14 @@ namespace Nibiru.Inventory
         [SerializeField] PlayerInventory inventory;
         [SerializeField] Health health;
         [SerializeField] PlayerWeapons weapons;
+        [SerializeField] Tablets.TabletReader tabletReader;
 
         void Awake()
         {
             if (inventory == null) inventory = GetComponent<PlayerInventory>();
             if (health == null) health = GetComponent<Health>();
             if (weapons == null) weapons = GetComponent<PlayerWeapons>();
+            if (tabletReader == null) tabletReader = GetComponent<Tablets.TabletReader>();
         }
 
         /// <summary>Tenta usar uma unidade do item. A mensagem explica o resultado para o jogador.</summary>
@@ -44,6 +46,14 @@ namespace Nibiru.Inventory
                 health.Heal(item.healAmount);
                 inventory.Remove(item, 1);
                 message = $"{item.displayName} usado";
+                return true;
+            }
+
+            if (item.tablet != null && tabletReader != null)
+            {
+                // A tela de leitura já mostra o resultado.
+                message = null;
+                tabletReader.Read(item.tablet);
                 return true;
             }
 

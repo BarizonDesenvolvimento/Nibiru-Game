@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930bdc59037c4714b90a970896ec3f46, type: 3}
+  m_Name: TabuletaDoJunco
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Tablets.TabletDefinition
+  displayName: Tabuleta do Junco
+  item: {fileID: 11400000, guid: a0092fd2173c29c4193b492747b4b5c5, type: 2}
+  text: "Quando o conselho dos deuses decidiu afogar a terra,\neu, Enki, senhor das
+    \xE1guas profundas, jurei calar.\nMas a palavra n\xE3o precisa de boca.\n\nFalei
+    \xE0 parede de junco, e a parede falou a Ziusudra:\n\"Derruba tua casa e constr\xF3i
+    um barco.\nAbandona os bens e salva a vida.\nLeva contigo a semente de todo ser
+    que respira.\"\n\nZiusudra ouviu. As \xE1guas vieram por sete dias e sete noites,\ne
+    quando baixaram, a humanidade ainda respirava.\n\nLembrai quem vos salvou.\nO
+    barco leva a semente, e a semente um dia me levar\xE1."
+  grantsPower: {fileID: 11400000, guid: 50d290a206b590140be9d96fdb04733b, type: 2}
+  transformationGain: 5
+  raiseOnDecipher: {fileID: 11400000, guid: a1971d996ad655b41aa0784487f015b4, type: 2}

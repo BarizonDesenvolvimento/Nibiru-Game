@@ -25,6 +25,7 @@ namespace Nibiru.Player
         InputAction fire;
         InputAction reload;
         InputAction crouch;
+        InputAction power;
         InputAction toggleInventory;
         InputAction navigate;
         InputAction confirm;
@@ -60,6 +61,7 @@ namespace Nibiru.Player
         public bool FirePressed => fire.WasPressedThisFrame();
         public bool ReloadPressed => reload.WasPressedThisFrame();
         public bool CrouchPressed => crouch.WasPressedThisFrame();
+        public bool PowerPressed => power.WasPressedThisFrame();
         public bool InventoryTogglePressed => toggleInventory.WasPressedThisFrame();
         public bool ConfirmPressed => confirm.WasPressedThisFrame();
         public bool BackPressed => back.WasPressedThisFrame();
@@ -90,6 +92,7 @@ namespace Nibiru.Player
         /// <summary>Nome do botão do inventário no aparelho em uso, por exemplo "Tab | I" ou "Select".</summary>
         public string InventoryButtonLabel => ButtonLabel(toggleInventory);
         public string ConfirmButtonLabel => ButtonLabel(confirm);
+        public string PowerButtonLabel => ButtonLabel(power);
         public string BackButtonLabel => ButtonLabel(back);
 
         string ButtonLabel(InputAction action) =>
@@ -111,6 +114,7 @@ namespace Nibiru.Player
             fire = map.FindAction("Atirar", throwIfNotFound: true);
             reload = map.FindAction("Recarregar", throwIfNotFound: true);
             crouch = map.FindAction("Agachar", throwIfNotFound: true);
+            power = map.FindAction("Poder", throwIfNotFound: true);
 
             uiMap = actions.FindActionMap("Interface", throwIfNotFound: true);
             toggleInventory = uiMap.FindAction("Inventario", throwIfNotFound: true);
