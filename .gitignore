@@ -70,3 +70,7 @@ Desktop.ini
 
 # Configurações locais do Claude Code (permissões desta máquina)
 .claude/settings.local.json
+
+# Cópias de segurança automáticas do Blender
+*.blend1
+*.blend2
