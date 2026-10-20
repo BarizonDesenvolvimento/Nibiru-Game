@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Nibiru.Combat;
 using Nibiru.Inventory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ namespace Nibiru.Save
             public float health;
             public List<ItemStack> slots;
             public List<ItemStack> keyItems;
+            public PlayerWeapons.Snapshot weapons;
             public WorldState.Snapshot world;
         }
 

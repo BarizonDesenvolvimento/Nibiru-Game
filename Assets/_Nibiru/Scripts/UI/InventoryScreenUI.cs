@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Nibiru.Combat;
 using Nibiru.Inventory;
 using Nibiru.Player;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Nibiru.UI
     {
         [SerializeField] PlayerInventory inventory;
         [SerializeField] PlayerItemUser itemUser;
+        [SerializeField] PlayerWeapons weapons;
         [SerializeField] PlayerInputReader input;
 
         [Tooltip("Painel que aparece e some com a tela de inventário.")]
@@ -70,7 +72,7 @@ namespace Nibiru.UI
             if (input.ConfirmPressed && selected < entries.Count)
             {
                 itemUser.TryUse(entries[selected].item, out string message);
-                Notifications.Post(message);
+                if (!string.IsNullOrEmpty(message)) Notifications.Post(message);
                 Refresh();
             }
         }
@@ -136,6 +138,8 @@ namespace Nibiru.UI
             builder.Append(isSelected ? "<color=" + Gold + ">  > " : "    ");
             builder.Append(stack.item.displayName);
             if (stack.count > 1) builder.Append("  x").Append(stack.count);
+            if (weapons != null && stack.item.firearm != null && stack.item.firearm == weapons.Equipped)
+                builder.Append("  (equipada, ").Append(weapons.LoadedRounds).Append('/').Append(stack.item.firearm.magazineSize).Append(')');
             if (isSelected) builder.Append("</color>");
             builder.AppendLine();
         }

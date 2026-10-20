@@ -56,7 +56,8 @@ namespace Nibiru.Combat
                 StartAttack();
         }
 
-        bool CanStart() => !motor.IsDodging && motor.IsGrounded && (ownHealth == null || !ownHealth.IsDead);
+        // Mirando, o clique é tiro, não faca.
+        bool CanStart() => !motor.IsDodging && !motor.Aiming && motor.IsGrounded && (ownHealth == null || !ownHealth.IsDead);
 
         void StartAttack()
         {

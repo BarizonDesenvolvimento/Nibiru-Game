@@ -20,6 +20,11 @@ MonoBehaviour:
   shoulderOffset: 0.6
   distance: 2.5
   thirdPersonPitchLimits: {x: -35, y: 60}
+  aimDistance: 1.6
+  aimShoulderOffset: 0.9
+  aimFieldOfView: 48
+  aimBlendSpeed: 6
+  aimSensitivityMultiplier: 0.6
   collisionRadius: 0.2
   collisionMask:
     serializedVersion: 2

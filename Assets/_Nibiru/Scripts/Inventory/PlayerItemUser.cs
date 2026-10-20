@@ -4,18 +4,20 @@ using UnityEngine;
 namespace Nibiru.Inventory
 {
     /// <summary>
-    /// Usa itens do inventário. Por enquanto só os de cura; armas e itens-chave
-    /// ganham uso quando os sistemas deles existirem.
+    /// Usa itens do inventário: cura com itens de cura e equipa armas.
+    /// Itens-chave ganham uso quando os sistemas deles existirem.
     /// </summary>
     public class PlayerItemUser : MonoBehaviour
     {
         [SerializeField] PlayerInventory inventory;
         [SerializeField] Health health;
+        [SerializeField] PlayerWeapons weapons;
 
         void Awake()
         {
             if (inventory == null) inventory = GetComponent<PlayerInventory>();
             if (health == null) health = GetComponent<Health>();
+            if (weapons == null) weapons = GetComponent<PlayerWeapons>();
         }
 
         /// <summary>Tenta usar uma unidade do item. A mensagem explica o resultado para o jogador.</summary>
@@ -43,6 +45,18 @@ namespace Nibiru.Inventory
                 inventory.Remove(item, 1);
                 message = $"{item.displayName} usado";
                 return true;
+            }
+
+            if (item.firearm != null && weapons != null)
+            {
+                if (weapons.Equipped == item.firearm)
+                {
+                    message = $"{item.displayName} já está equipada";
+                    return false;
+                }
+                // Equip já mostra o aviso "equipada".
+                message = null;
+                return weapons.Equip(item.firearm);
             }
 
             message = "Não dá para usar isso agora";

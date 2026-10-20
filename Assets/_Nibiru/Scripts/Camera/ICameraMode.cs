@@ -16,6 +16,9 @@ namespace Nibiru.Cameras
         /// <summary>Chamado quando o modo passa a ser o ativo.</summary>
         void Enter();
 
+        /// <summary>Liga ou desliga a mira (cada modo decide como aproxima a visão).</summary>
+        void SetAiming(bool aiming);
+
         /// <summary>Posiciona e gira a câmera. yaw e pitch em graus.</summary>
         void UpdateCamera(Transform camera, float yaw, float pitch, float deltaTime);
     }

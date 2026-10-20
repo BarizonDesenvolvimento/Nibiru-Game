@@ -35,6 +35,22 @@ namespace Nibiru.Cameras
         [Tooltip("Limite de olhar para cima (negativo) e para baixo (positivo), em graus.")]
         public Vector2 thirdPersonPitchLimits = new Vector2(-35f, 60f);
 
+        [Header("Mira")]
+        [Tooltip("Distância atrás do ombro enquanto mira, em metros.")]
+        [Min(0f)] public float aimDistance = 1.2f;
+
+        [Tooltip("Deslocamento para o lado do ombro enquanto mira, em metros.")]
+        public float aimShoulderOffset = 0.75f;
+
+        [Tooltip("Campo de visão enquanto mira, em graus. Menor = mais zoom.")]
+        [Range(20f, 90f)] public float aimFieldOfView = 48f;
+
+        [Tooltip("Rapidez da transição para a mira e de volta (1 = um segundo, 6 = um sexto de segundo).")]
+        [Min(0.1f)] public float aimBlendSpeed = 6f;
+
+        [Tooltip("Sensibilidade enquanto mira, como fração da normal. Menor = mira mais fina.")]
+        [Range(0.1f, 1f)] public float aimSensitivityMultiplier = 0.6f;
+
         [Header("Colisão")]
         [Tooltip("Raio da esfera usada para a câmera não atravessar paredes, em metros.")]
         [Min(0.01f)] public float collisionRadius = 0.2f;

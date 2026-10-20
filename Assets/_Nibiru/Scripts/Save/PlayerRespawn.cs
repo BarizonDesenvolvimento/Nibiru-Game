@@ -12,6 +12,7 @@ namespace Nibiru.Save
     {
         [SerializeField] Health health;
         [SerializeField] PlayerInventory inventory;
+        [SerializeField] PlayerWeapons weapons;
 
         [Tooltip("Vida mínima ao voltar de um checkpoint, como fração da vida máxima. Evita voltar quase morta.")]
         [SerializeField, Range(0f, 1f)] float minHealthOnRespawn = 0.5f;
@@ -23,6 +24,7 @@ namespace Nibiru.Save
         {
             if (health == null) health = GetComponent<Health>();
             if (inventory == null) inventory = GetComponent<PlayerInventory>();
+            if (weapons == null) weapons = GetComponent<PlayerWeapons>();
 
             if (!Checkpoints.TryGetFor(gameObject.scene.name, out pending)) return;
 
@@ -39,6 +41,8 @@ namespace Nibiru.Save
             if (pending == null) return;
             health.Restore(Mathf.Max(pending.health, health.Max * minHealthOnRespawn));
             inventory.RestoreContents(pending.slots, pending.keyItems);
+            // Depois do inventário, porque a arma equipada precisa estar nele.
+            if (weapons != null && pending.weapons != null) weapons.Restore(pending.weapons);
             pending = null;
         }
 
@@ -54,6 +58,7 @@ namespace Nibiru.Save
                 health = health.Current,
                 slots = slots,
                 keyItems = keyItems,
+                weapons = weapons != null ? weapons.Capture() : null,
                 world = WorldState.Capture(),
             });
         }

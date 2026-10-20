@@ -17,3 +17,5 @@ MonoBehaviour:
   icon: {fileID: 0}
   category: 0
   maxStack: 1
+  healAmount: 0
+  firearm: {fileID: 11400000, guid: fb333045abf35d54a90cce85ce5a4d9d, type: 2}

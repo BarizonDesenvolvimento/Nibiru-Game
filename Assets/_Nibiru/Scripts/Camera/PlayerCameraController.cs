@@ -25,6 +25,9 @@ namespace Nibiru.Cameras
         ICameraMode mode;
         float yaw;
         float pitch;
+        bool aiming;
+
+        public bool IsAiming => aiming;
 
         void Start()
         {
@@ -43,7 +46,18 @@ namespace Nibiru.Cameras
                 return;
             }
             mode.Enter();
+            mode.SetAiming(aiming);
         }
+
+        /// <summary>Liga ou desliga a mira: aproxima a câmera e deixa a sensibilidade mais fina.</summary>
+        public void SetAiming(bool value)
+        {
+            aiming = value;
+            mode?.SetAiming(value);
+        }
+
+        /// <summary>Coice da arma: sobe a mira alguns graus.</summary>
+        public void AddRecoil(float degrees) => pitch -= degrees;
 
         void Update()
         {
@@ -83,6 +97,7 @@ namespace Nibiru.Cameras
             }
 
             if (settings.invertY) degrees.y = -degrees.y;
+            if (aiming) degrees *= settings.aimSensitivityMultiplier;
             return degrees;
         }
 

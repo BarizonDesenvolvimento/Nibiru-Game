@@ -45,6 +45,9 @@ namespace Nibiru.Player
         /// <summary>Enquanto true, a esquiva não começa (por exemplo, no início de um golpe).</summary>
         public bool DodgeBlocked { get; set; }
 
+        /// <summary>Enquanto true, a Elena anda devagar, sem correr, sempre virada para onde a câmera olha.</summary>
+        public bool Aiming { get; set; }
+
         void Awake()
         {
             controller = GetComponent<CharacterController>();
@@ -78,6 +81,17 @@ namespace Nibiru.Player
         void UpdateWalkAndRun(Vector3 moveDirection, float dt)
         {
             bool hasInput = moveDirection.sqrMagnitude > InputDeadZoneSqr;
+
+            if (Aiming)
+            {
+                // Mirando: anda devagar para qualquer lado, sempre de frente para a mira.
+                IsRunning = false;
+                horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, moveDirection * settings.aimWalkSpeed, settings.acceleration * dt);
+                Vector3 aimForward = CameraRelative(Vector2.up);
+                if (aimForward.sqrMagnitude > InputDeadZoneSqr)
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(aimForward), settings.turnSpeed * 2f * dt);
+                return;
+            }
 
             // Correndo, vai sempre na velocidade máxima; andando, o analógico controla a velocidade.
             IsRunning = input.RunActive && hasInput;

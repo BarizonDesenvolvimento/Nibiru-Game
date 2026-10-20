@@ -36,6 +36,9 @@ namespace Nibiru.Inventory
         [Tooltip("Só para itens de Cura: quanta vida devolve ao usar.")]
         [Min(0f)] public float healAmount;
 
+        [Tooltip("Só para itens da categoria Arma: os dados da arma de fogo. Usar o item equipa a arma.")]
+        public Combat.FirearmDefinition firearm;
+
         public bool IsKeyItem => category == ItemCategory.Chave;
     }
 }
