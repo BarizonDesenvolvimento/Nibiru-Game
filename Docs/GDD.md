@@ -154,7 +154,7 @@ Com a espinha aprovada, o próximo passo é detalhar e construir a fatia vertica
 - [ ] Escolher 10 a 20 imagens de referência visual (superfície e mundo Anunnaki)
 - [ ] Detalhar a região 1: mapa, missões, diálogos, inimigos, itens
 - [x] Criar o projeto Unity 6 (3D URP) e conectar o Claude Code
-- [ ] Protótipo do personagem: andar, correr, esquivar, câmera em terceira pessoa
+- [x] Protótipo do personagem: andar, correr, esquivar, câmera em terceira pessoa
 
 **Perguntas em aberto**
 
