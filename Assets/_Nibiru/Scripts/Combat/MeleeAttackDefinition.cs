@@ -36,6 +36,10 @@ namespace Nibiru.Combat
         [Tooltip("Altura em relação ao centro do personagem.")]
         public float height = 0.3f;
 
+        [Header("Som")]
+        [Tooltip("Até onde o golpe é ouvido, em metros.")]
+        [Min(0f)] public float noiseRadius = 2f;
+
         public float TotalTime => windup + activeTime + recovery;
     }
 }

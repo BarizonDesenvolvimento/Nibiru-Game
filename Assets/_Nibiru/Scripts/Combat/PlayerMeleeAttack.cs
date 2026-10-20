@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Nibiru.Player;
+using Nibiru.Stealth;
 using UnityEngine;
 
 namespace Nibiru.Combat
@@ -71,6 +72,7 @@ namespace Nibiru.Combat
             motor.DodgeBlocked = true;
             if (swingVisual != null) swingVisual.gameObject.SetActive(true);
             UpdateVisual();
+            Noise.Emit(transform.position, attack.noiseRadius, gameObject);
         }
 
         void Tick(float dt)

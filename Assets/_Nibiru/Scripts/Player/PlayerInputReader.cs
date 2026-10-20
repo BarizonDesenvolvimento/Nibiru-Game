@@ -24,6 +24,7 @@ namespace Nibiru.Player
         InputAction aim;
         InputAction fire;
         InputAction reload;
+        InputAction crouch;
         InputAction toggleInventory;
         InputAction navigate;
         InputAction confirm;
@@ -58,6 +59,7 @@ namespace Nibiru.Player
         public bool AimHeld => aim.IsPressed();
         public bool FirePressed => fire.WasPressedThisFrame();
         public bool ReloadPressed => reload.WasPressedThisFrame();
+        public bool CrouchPressed => crouch.WasPressedThisFrame();
         public bool InventoryTogglePressed => toggleInventory.WasPressedThisFrame();
         public bool ConfirmPressed => confirm.WasPressedThisFrame();
         public bool BackPressed => back.WasPressedThisFrame();
@@ -105,6 +107,7 @@ namespace Nibiru.Player
             aim = map.FindAction("Mirar", throwIfNotFound: true);
             fire = map.FindAction("Atirar", throwIfNotFound: true);
             reload = map.FindAction("Recarregar", throwIfNotFound: true);
+            crouch = map.FindAction("Agachar", throwIfNotFound: true);
 
             uiMap = actions.FindActionMap("Interface", throwIfNotFound: true);
             toggleInventory = uiMap.FindAction("Inventario", throwIfNotFound: true);

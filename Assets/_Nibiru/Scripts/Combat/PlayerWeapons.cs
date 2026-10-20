@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Nibiru.Cameras;
 using Nibiru.Inventory;
 using Nibiru.Player;
+using Nibiru.Stealth;
 using Nibiru.UI;
 using UnityEngine;
 
@@ -171,6 +172,7 @@ namespace Nibiru.Combat
 
             ShowTracer(firstPoint);
             if (cameraController != null) cameraController.AddRecoil(Equipped.recoil);
+            Noise.Emit(transform.position, Equipped.noiseRadius, gameObject);
         }
 
         // Dispara um projétil e devolve onde ele parou.

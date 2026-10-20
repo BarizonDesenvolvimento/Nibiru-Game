@@ -30,8 +30,16 @@ namespace Nibiru.Player
         float dodgeElapsed;
         float dodgeCooldownLeft;
 
+        float standHeight;
+        float standCenterY;
+        readonly Collider[] standOverlaps = new Collider[8];
+
         public Vector3 Velocity => horizontalVelocity + Vector3.up * verticalVelocity;
         public bool IsRunning { get; private set; }
+        public bool IsCrouching { get; private set; }
+
+        /// <summary>De 0 (em pé) a 1 (agachada), suave na transição. O visual e a câmera usam isto.</summary>
+        public float CrouchBlend { get; private set; }
         public bool IsDodging { get; private set; }
         public bool IsInvulnerable => IsDodging && dodgeElapsed < settings.dodgeInvulnerableTime;
         public bool IsGrounded => controller.isGrounded;
@@ -53,6 +61,8 @@ namespace Nibiru.Player
             controller = GetComponent<CharacterController>();
             if (input == null) input = GetComponent<PlayerInputReader>();
             if (cameraTransform == null && Camera.main != null) cameraTransform = Camera.main.transform;
+            standHeight = controller.height;
+            standCenterY = controller.center.y;
         }
 
         void Update()
@@ -60,6 +70,13 @@ namespace Nibiru.Player
             float dt = Time.deltaTime;
             Vector3 moveDirection = CameraRelative(input.Move);
             DesiredMoveDirection = moveDirection;
+
+            if (input.CrouchPressed && !IsDodging && controller.isGrounded)
+            {
+                if (!IsCrouching) IsCrouching = true;
+                else TryStand();
+            }
+            UpdateCrouchShape(dt);
 
             dodgeCooldownLeft -= dt;
             if (input.DodgePressed && CanDodge())
@@ -82,11 +99,15 @@ namespace Nibiru.Player
         {
             bool hasInput = moveDirection.sqrMagnitude > InputDeadZoneSqr;
 
+            // Querer correr agachada faz a Elena levantar (se houver espaço).
+            if (IsCrouching && hasInput && input.RunActive && !Aiming) TryStand();
+
             if (Aiming)
             {
                 // Mirando: anda devagar para qualquer lado, sempre de frente para a mira.
                 IsRunning = false;
-                horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, moveDirection * settings.aimWalkSpeed, settings.acceleration * dt);
+                float aimSpeed = IsCrouching ? Mathf.Min(settings.aimWalkSpeed, settings.crouchSpeed) : settings.aimWalkSpeed;
+                horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, moveDirection * aimSpeed, settings.acceleration * dt);
                 Vector3 aimForward = CameraRelative(Vector2.up);
                 if (aimForward.sqrMagnitude > InputDeadZoneSqr)
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(aimForward), settings.turnSpeed * 2f * dt);
@@ -94,10 +115,10 @@ namespace Nibiru.Player
             }
 
             // Correndo, vai sempre na velocidade máxima; andando, o analógico controla a velocidade.
-            IsRunning = input.RunActive && hasInput;
+            IsRunning = input.RunActive && hasInput && !IsCrouching;
             Vector3 targetVelocity = IsRunning
                 ? moveDirection.normalized * settings.runSpeed
-                : moveDirection * settings.walkSpeed;
+                : moveDirection * (IsCrouching ? settings.crouchSpeed : settings.walkSpeed);
             horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, settings.acceleration * dt);
 
             if (hasInput)
@@ -113,6 +134,9 @@ namespace Nibiru.Player
         // Sem direcional, dá um passo para trás mantendo a frente.
         void StartDodge(Vector3 moveDirection)
         {
+            // A esquiva levanta a Elena, se houver espaço.
+            if (IsCrouching) TryStand();
+
             if (moveDirection.sqrMagnitude > InputDeadZoneSqr)
             {
                 dodgeDirection = moveDirection.normalized;
@@ -151,6 +175,34 @@ namespace Nibiru.Player
         {
             float t = Mathf.Clamp01(elapsed / settings.dodgeDuration);
             return 1f - (1f - t) * (1f - t);
+        }
+
+        // Diminui ou aumenta a colisão mantendo os pés no mesmo lugar.
+        void UpdateCrouchShape(float dt)
+        {
+            CrouchBlend = Mathf.MoveTowards(CrouchBlend, IsCrouching ? 1f : 0f, settings.crouchTransitionSpeed * dt);
+            float height = Mathf.Lerp(standHeight, settings.crouchHeight, CrouchBlend);
+            controller.height = height;
+            controller.center = new Vector3(controller.center.x, standCenterY - (standHeight - height) * 0.5f, controller.center.z);
+        }
+
+        // Só levanta se não houver nada em cima (um teto baixo, por exemplo).
+        void TryStand()
+        {
+            if (CanStand()) IsCrouching = false;
+        }
+
+        bool CanStand()
+        {
+            float radius = controller.radius * 0.95f;
+            // A esfera de baixo sobe um pouco para não encostar no chão ou numa rampa.
+            Vector3 bottom = transform.position + Vector3.up * (standCenterY - standHeight * 0.5f + controller.radius + 0.1f);
+            Vector3 top = transform.position + Vector3.up * (standCenterY + standHeight * 0.5f - controller.radius);
+            int count = Physics.OverlapCapsuleNonAlloc(bottom, top, radius, standOverlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            for (int i = 0; i < count; i++)
+                if (standOverlaps[i] != controller && !standOverlaps[i].transform.IsChildOf(transform))
+                    return false;
+            return true;
         }
 
         // Converte o direcional (x = lados, y = frente) em direção no mundo, relativa à câmera.

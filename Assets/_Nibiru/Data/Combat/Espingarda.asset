@@ -22,3 +22,4 @@ MonoBehaviour:
   fireInterval: 0.4
   reloadTime: 2.2
   recoil: 5
+  noiseRadius: 35

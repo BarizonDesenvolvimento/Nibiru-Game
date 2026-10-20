@@ -40,5 +40,8 @@ namespace Nibiru.Combat
 
         [Tooltip("Coice: quantos graus a mira sobe a cada tiro.")]
         [Min(0f)] public float recoil = 1.5f;
+
+        [Tooltip("Até onde o tiro é ouvido, em metros.")]
+        [Min(0f)] public float noiseRadius = 25f;
     }
 }

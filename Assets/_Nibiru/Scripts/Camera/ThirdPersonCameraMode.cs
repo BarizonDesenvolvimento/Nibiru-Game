@@ -12,8 +12,11 @@ namespace Nibiru.Cameras
     {
         [SerializeField] CameraSettings settings;
 
-        [Tooltip("Personagem que a câmera segue.")]
+        [Tooltip("Ponto que a câmera segue (o personagem ou um filho dele).")]
         [SerializeField] Transform target;
+
+        [Tooltip("A colisão da câmera ignora este objeto e seus filhos (o personagem). Vazio = o topo da hierarquia do alvo.")]
+        [SerializeField] Transform ignoreCollisionsOf;
 
         readonly RaycastHit[] hits = new RaycastHit[16];
         float currentDistance;
@@ -73,7 +76,8 @@ namespace Nibiru.Cameras
             float closest = maxDistance;
             for (int i = 0; i < count; i++)
             {
-                if (hits[i].collider.transform.IsChildOf(target)) continue;
+                Transform ignored = ignoreCollisionsOf != null ? ignoreCollisionsOf : target.root;
+                if (hits[i].collider.transform.IsChildOf(ignored)) continue;
                 closest = Mathf.Min(closest, hits[i].distance);
             }
             return closest;

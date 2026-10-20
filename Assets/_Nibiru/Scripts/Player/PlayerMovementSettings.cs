@@ -39,6 +39,29 @@ namespace Nibiru.Player
         [Tooltip("Quanto tempo, a partir do início da esquiva, o jogador não leva dano, em segundos.")]
         [Min(0f)] public float dodgeInvulnerableTime = 0.3f;
 
+        [Header("Agachar")]
+        [Tooltip("Velocidade andando agachada, em metros por segundo.")]
+        [Min(0f)] public float crouchSpeed = 1.5f;
+
+        [Tooltip("Altura da colisão agachada, em metros (em pé é 2).")]
+        [Min(0.5f)] public float crouchHeight = 1.2f;
+
+        [Tooltip("Rapidez para agachar e levantar (1 = um segundo, 6 = um sexto de segundo).")]
+        [Min(0.1f)] public float crouchTransitionSpeed = 6f;
+
+        [Header("Ruído dos passos")]
+        [Tooltip("Até onde um passo andando é ouvido, em metros.")]
+        [Min(0f)] public float walkNoiseRadius = 5f;
+
+        [Tooltip("Até onde um passo correndo é ouvido, em metros.")]
+        [Min(0f)] public float runNoiseRadius = 12f;
+
+        [Tooltip("Até onde um passo agachada é ouvido, em metros.")]
+        [Min(0f)] public float crouchNoiseRadius = 1.5f;
+
+        [Tooltip("Tempo entre passos andando, correndo e agachada, em segundos.")]
+        public Vector3 stepIntervals = new Vector3(0.5f, 0.32f, 0.75f);
+
         [Header("Gravidade")]
         [Tooltip("Aceleração da gravidade (m/s²). Negativo puxa para baixo.")]
         public float gravity = -20f;
