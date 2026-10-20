@@ -264,6 +264,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Navegar",
+                    "type": "Value",
+                    "id": "89f0d2b3-7d38-48c0-8016-244871b95a4e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Confirmar",
+                    "type": "Button",
+                    "id": "eadc95f9-fca6-4fcd-90d9-7bb254e2e21b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Voltar",
+                    "type": "Button",
+                    "id": "aa2f8461-fb23-4bd1-a0e4-07a9e92e5356",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -297,6 +324,193 @@
                     "processors": "",
                     "groups": "Controle",
                     "action": "Inventario",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
+                    "id": "38d27e43-fc40-45c4-97df-a9f26ed17fad",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navegar",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "063bbe20-e4ee-4d00-a670-539c2b024e62",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "up",
+                    "id": "e1557d39-7c8f-40cf-bc27-ba8aada51e53",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "f4c259c7-afae-45cf-947c-e2485abff4bc",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "dcfb89e9-f53e-457d-86e3-e32c09cde2cf",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "0bc31919-b8f8-4fc7-ad12-90f49d6d029a",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "f9dce320-ce34-4f6f-9d42-51b75ce6f872",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "aaf67d97-eb7e-4fa1-b27d-1bc3a2e3bc75",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "ba5e1d65-d2ed-4b2d-b431-6111eb2a529f",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b5737122-40a2-40a3-b5bb-1f2a5374a88e",
+                    "path": "<Gamepad>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca90bf36-ca44-40a7-bfb4-0759f02e0026",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Navegar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1407550c-0dfd-479e-931a-2b675163352d",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Confirmar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0d29dd7-9a89-4baa-976d-f299f8e17392",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Confirmar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f27c63a-d721-4898-960f-d1db76a6a3c2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Confirmar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ccd5180e-5054-400f-8ccb-9987def2030e",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Voltar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7a83c18-7139-4345-8d43-bbd90339d859",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Voltar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b233746f-afd6-47e2-94af-e7f73610e42b",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Voltar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

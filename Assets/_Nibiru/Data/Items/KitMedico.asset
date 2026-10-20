@@ -17,3 +17,4 @@ MonoBehaviour:
   icon: {fileID: 0}
   category: 2
   maxStack: 1
+  healAmount: 100

@@ -21,7 +21,19 @@ namespace Nibiru.Player
         InputAction dodge;
         InputAction interact;
         InputAction toggleInventory;
+        InputAction navigate;
+        InputAction confirm;
+        InputAction back;
         bool gameplayEnabled = true;
+
+        // Navegação de menu: um passo ao inclinar, e repete se continuar segurando.
+        const float NavThreshold = 0.5f;
+        const float NavFirstRepeatDelay = 0.35f;
+        const float NavRepeatInterval = 0.12f;
+        int navHeldDirection;
+        float navNextRepeatTime;
+        int navStepFrame = -1;
+        int navStep;
 
         const string KeyboardMouseGroup = "TecladoMouse";
         const string GamepadGroup = "Controle";
@@ -39,6 +51,25 @@ namespace Nibiru.Player
         public bool DodgePressed => dodge.WasPressedThisFrame();
         public bool InteractPressed => interact.WasPressedThisFrame();
         public bool InventoryTogglePressed => toggleInventory.WasPressedThisFrame();
+        public bool ConfirmPressed => confirm.WasPressedThisFrame();
+        public bool BackPressed => back.WasPressedThisFrame();
+
+        /// <summary>
+        /// Passo vertical do menu neste quadro: +1 desce, -1 sobe, 0 parado.
+        /// Pode ser lido várias vezes no mesmo quadro sem andar duas vezes.
+        /// </summary>
+        public int VerticalNavStep
+        {
+            get
+            {
+                if (navStepFrame != Time.frameCount)
+                {
+                    navStepFrame = Time.frameCount;
+                    navStep = ComputeVerticalNavStep();
+                }
+                return navStep;
+            }
+        }
 
         /// <summary>True se o último comando veio do controle; false se veio do teclado ou mouse.</summary>
         public bool UsingGamepad { get; private set; }
@@ -48,6 +79,8 @@ namespace Nibiru.Player
 
         /// <summary>Nome do botão do inventário no aparelho em uso, por exemplo "Tab | I" ou "Select".</summary>
         public string InventoryButtonLabel => ButtonLabel(toggleInventory);
+        public string ConfirmButtonLabel => ButtonLabel(confirm);
+        public string BackButtonLabel => ButtonLabel(back);
 
         string ButtonLabel(InputAction action) =>
             action.GetBindingDisplayString(InputBinding.MaskByGroup(UsingGamepad ? GamepadGroup : KeyboardMouseGroup));
@@ -63,6 +96,30 @@ namespace Nibiru.Player
 
             uiMap = actions.FindActionMap("Interface", throwIfNotFound: true);
             toggleInventory = uiMap.FindAction("Inventario", throwIfNotFound: true);
+            navigate = uiMap.FindAction("Navegar", throwIfNotFound: true);
+            confirm = uiMap.FindAction("Confirmar", throwIfNotFound: true);
+            back = uiMap.FindAction("Voltar", throwIfNotFound: true);
+        }
+
+        // Usa tempo sem escala porque os menus funcionam com o jogo pausado.
+        int ComputeVerticalNavStep()
+        {
+            float y = navigate.ReadValue<Vector2>().y;
+            int direction = y > NavThreshold ? -1 : y < -NavThreshold ? 1 : 0;
+            float now = Time.unscaledTime;
+
+            if (direction != navHeldDirection)
+            {
+                navHeldDirection = direction;
+                navNextRepeatTime = now + NavFirstRepeatDelay;
+                return direction;
+            }
+            if (direction != 0 && now >= navNextRepeatTime)
+            {
+                navNextRepeatTime = now + NavRepeatInterval;
+                return direction;
+            }
+            return 0;
         }
 
         void OnEnable()

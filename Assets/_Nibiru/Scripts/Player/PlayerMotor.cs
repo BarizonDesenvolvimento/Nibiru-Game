@@ -1,3 +1,4 @@
+using Nibiru.Combat;
 using UnityEngine;
 
 namespace Nibiru.Player
@@ -7,7 +8,7 @@ namespace Nibiru.Player
     /// "frente" é para onde a câmera olha, projetado no chão.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMotor : MonoBehaviour
+    public class PlayerMotor : MonoBehaviour, IInvulnerability
     {
         [SerializeField] PlayerMovementSettings settings;
         [SerializeField] PlayerInputReader input;

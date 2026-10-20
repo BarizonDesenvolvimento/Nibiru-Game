@@ -33,6 +33,9 @@ namespace Nibiru.Inventory
         [Tooltip("Quantos cabem num mesmo espaço do inventário.")]
         [Min(1)] public int maxStack = 1;
 
+        [Tooltip("Só para itens de Cura: quanta vida devolve ao usar.")]
+        [Min(0f)] public float healAmount;
+
         public bool IsKeyItem => category == ItemCategory.Chave;
     }
 }
