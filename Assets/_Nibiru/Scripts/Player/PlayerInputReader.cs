@@ -17,6 +17,10 @@ namespace Nibiru.Player
         InputAction look;
         InputAction run;
         InputAction dodge;
+        InputAction interact;
+
+        const string KeyboardMouseGroup = "TecladoMouse";
+        const string GamepadGroup = "Controle";
 
         // No controle, segurar o analógico apertado cansa: um clique liga a corrida
         // e ela continua até o direcional voltar ao centro.
@@ -29,6 +33,14 @@ namespace Nibiru.Player
         public bool LookFromMouse => look.activeControl?.device is Pointer;
         public bool RunActive => run.IsPressed() || runLatched;
         public bool DodgePressed => dodge.WasPressedThisFrame();
+        public bool InteractPressed => interact.WasPressedThisFrame();
+
+        /// <summary>True se o último comando veio do controle; false se veio do teclado ou mouse.</summary>
+        public bool UsingGamepad { get; private set; }
+
+        /// <summary>Nome do botão de interagir no aparelho em uso, por exemplo "E" ou "A".</summary>
+        public string InteractButtonLabel =>
+            interact.GetBindingDisplayString(InputBinding.MaskByGroup(UsingGamepad ? GamepadGroup : KeyboardMouseGroup));
 
         void Awake()
         {
@@ -37,14 +49,26 @@ namespace Nibiru.Player
             look = map.FindAction("Olhar", throwIfNotFound: true);
             run = map.FindAction("Correr", throwIfNotFound: true);
             dodge = map.FindAction("Esquivar", throwIfNotFound: true);
+            interact = map.FindAction("Interagir", throwIfNotFound: true);
         }
 
-        void OnEnable() => map.Enable();
+        void OnEnable()
+        {
+            map.actionTriggered += OnActionTriggered;
+            map.Enable();
+        }
 
         void OnDisable()
         {
+            map.actionTriggered -= OnActionTriggered;
             map.Disable();
             runLatched = false;
+        }
+
+        void OnActionTriggered(InputAction.CallbackContext context)
+        {
+            if (context.control != null)
+                UsingGamepad = context.control.device is Gamepad;
         }
 
         void Update()
