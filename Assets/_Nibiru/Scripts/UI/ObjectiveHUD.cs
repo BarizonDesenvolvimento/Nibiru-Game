@@ -12,6 +12,7 @@ namespace Nibiru.UI
     /// </summary>
     public class ObjectiveHUD : MonoBehaviour
     {
+        [Tooltip("Missões da cena. Vazio = procura sozinho (cada cena de região tem o seu).")]
         [SerializeField] QuestManager quests;
         [SerializeField] PlayerInventory inventory;
         [SerializeField] Text label;
@@ -21,15 +22,20 @@ namespace Nibiru.UI
 
         readonly StringBuilder builder = new StringBuilder();
 
+        void Awake()
+        {
+            if (quests == null) quests = FindFirstObjectByType<QuestManager>();
+        }
+
         void OnEnable()
         {
-            quests.Changed += Refresh;
+            if (quests != null) quests.Changed += Refresh;
             if (inventory != null) inventory.Changed += Refresh;
         }
 
         void OnDisable()
         {
-            quests.Changed -= Refresh;
+            if (quests != null) quests.Changed -= Refresh;
             if (inventory != null) inventory.Changed -= Refresh;
         }
 
@@ -38,6 +44,11 @@ namespace Nibiru.UI
         void Refresh()
         {
             builder.Clear();
+            if (quests == null)
+            {
+                label.text = string.Empty;
+                return;
+            }
             foreach ((QuestDefinition quest, QuestStep step) in quests.ActiveObjectives())
             {
                 if (quest.kind == QuestKind.Principal)
