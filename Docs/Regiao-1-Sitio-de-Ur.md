@@ -279,6 +279,28 @@ A pergunta para cada sistema: sem ele, a hora de jogo do Sítio de Ur ainda func
 | Menu de opções | Só sensibilidade da câmera e inverter eixo | Gráficos, áudio, controles e acessibilidade |
 | Níveis e árvore de habilidades | Ficam de fora da fatia | O RPG completo do GDD |
 
+## Andamento
+
+Em 20 de outubro de 2026, os 14 sistemas do Grupo 1 estão prontos e testados na cena `Teste_Personagem`. Todo o conteúdo de teste dela (missão Treinamento, Samir, soldados, Lullu, chefe) usa arquivos com prefixo `Teste_` ou fica só nessa cena, para não se misturar com o conteúdo real.
+
+**Controles**
+
+| Ação | Teclado e mouse | Controle |
+| --- | --- | --- |
+| Andar / olhar | WASD / mouse | Analógico esquerdo / direito |
+| Correr | Shift (segurar) | Clique no analógico esquerdo |
+| Esquivar | Espaço | B / Círculo |
+| Agachar | C ou Ctrl | Clique no analógico direito |
+| Interagir | E | A / X |
+| Faca | Clique esquerdo ou F | RB / R1 |
+| Mirar / atirar | Botão direito / clique esquerdo | LT / RT |
+| Recarregar | R | X / Quadrado |
+| Eco do Abzu | Q | LB / L1 |
+| Inventário | Tab ou I | Select |
+| Pausa | Esc | Start |
+
+**Próximo passo sugerido:** o blockout do mapa do Sítio de Ur (as seis áreas em formas simples), para começar a montar a fatia com estes sistemas. Depois, as versões simples do Grupo 2.
+
 ## Decisões tomadas
 
 - **Data:** abril de 2003, semanas depois da invasão.
