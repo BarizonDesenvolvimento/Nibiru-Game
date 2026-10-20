@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244459d7824bdd946bb31acd435b7a38, type: 3}
+  m_Name: Sobrevivente
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestDefinition
+  displayName: Sobrevivente
+  kind: 0
+  startOn: {fileID: 0}
+  steps:
+  - objective: Pegue a faca de campo (E ou A para interagir)
+    completeOn: {fileID: 0}
+    requiredItem: {fileID: 11400000, guid: ec5eb5afb6a94e24e87ddb8a73a25000, type: 2}
+    requiredCount: 1
+  - objective: "Saia da barraca (WASD ou anal\xF3gico para andar; Shift para correr)"
+    completeOn: {fileID: 11400000, guid: 90f379cb480d4f644a50c6911dac9565, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Procure a equipe
+    completeOn: {fileID: 11400000, guid: ea3f1832083b7aa479340be3daf4c9ff, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Procure o Tom
+    completeOn: {fileID: 11400000, guid: 8d81992ee0b78d7478cd47105896346d, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Atenda o r\xE1dio do acampamento"
+    completeOn: {fileID: 11400000, guid: a927ba5fc1fa8944eb2c49ca36fe12aa, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Espere o resgate
+    completeOn: {fileID: 11400000, guid: 4ae86659d8a3dac47ac05d32007cac92, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Fuja para as trincheiras, ao norte
+    completeOn: {fileID: 11400000, guid: 6f656e6762fa9084ca47863e90f9e4f7, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  raiseOnComplete: {fileID: 0}
+  reputationOnComplete: []

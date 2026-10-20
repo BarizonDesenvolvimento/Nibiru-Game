@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Acampamento_Corpos
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: "N\xE3o... N\xE3o, n\xE3o. Todos eles."
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "Nenhum tiro. Nenhum sangue. S\xF3 essas queimaduras..."
+    next: e3
+    raise: {fileID: 0}
+    choices: []
+  - id: e3
+    speaker: Elena
+    text: "N\xE3o s\xE3o queimaduras comuns. S\xE3o linhas e \xE2ngulos, como cunhas.
+      Parece escrita."
+    next: e4
+    raise: {fileID: 0}
+    choices: []
+  - id: e4
+    speaker: Elena
+    text: "E est\xE3o todos virados para a minha barraca."
+    next: e5
+    raise: {fileID: 0}
+    choices: []
+  - id: e5
+    speaker: Elena
+    text: "Sete. Falta um. Cad\xEA o Tom?"
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: ea3f1832083b7aa479340be3daf4c9ff, type: 2}

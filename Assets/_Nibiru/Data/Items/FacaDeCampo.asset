@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
+  m_Name: FacaDeCampo
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
+  displayName: Faca de campo
+  description: "Faca de campo da expedi\xE7\xE3o. Silenciosa."
+  pickupHint: 'Ataque com a faca: clique esquerdo ou F (RB no controle)'
+  icon: {fileID: 0}
+  category: 4
+  maxStack: 1
+  healAmount: 0
+  firearm: {fileID: 0}
+  tablet: {fileID: 0}
