@@ -1,24 +1,19 @@
-using System;
-using System.Reflection;
-using Nibiru.AI;
 using Nibiru.Dialogue;
 using Nibiru.EditorTools.Audio;
-using Nibiru.Interaction;
 using Nibiru.Inventory;
 using Nibiru.Quests;
-using Nibiru.Save;
 using Nibiru.Sequences;
 using Nibiru.UI;
 using UnityEditor;
-using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
-using Object = UnityEngine.Object;
 
 namespace Nibiru.EditorTools.Content
 {
+    // Dentro do namespace, para as ferramentas do kit valerem antes de nomes como Nibiru.Dialogue.
+    using static ContentKit;
+
     /// <summary>
     /// Povoa o Acampamento (área 1 do Sítio de Ur) com os passos 1 a 4 da missão "Sobrevivente":
     /// a Elena acorda na barraca, pega a faca, encontra os corpos e a bolsa do Tom, atende o Kast
@@ -33,9 +28,6 @@ namespace Nibiru.EditorTools.Content
     static class CampContent
     {
         const string RootName = "Conteudo_Acampamento";
-        const string DataFolder = "Assets/_Nibiru/Data";
-        const string MaterialFolder = "Assets/_Nibiru/Art/Materials/Blockout";
-        const string SoldierPrefab = "Assets/_Nibiru/Prefabs/AI/Soldado.prefab";
 
         // Altura do topo da elevação do acampamento (igual ao blockout).
         const float Top = 3f;
@@ -69,14 +61,11 @@ namespace Nibiru.EditorTools.Content
                 return;
             }
 
+            IdPrefix = "acampamento";
             ProvisionalSounds.Generate(overwrite: false);
             CreateData();
 
-            GameObject old = GameObject.Find(RootName);
-            if (old != null) Undo.DestroyObjectImmediate(old);
-
-            var root = new GameObject(RootName).transform;
-            Undo.RegisterCreatedObjectUndo(root.gameObject, "Povoar Acampamento");
+            Transform root = NewRoot(RootName, "Povoar Acampamento");
 
             GameObject elena = SetupElena();
             BuildSystems(root, elena);
@@ -115,8 +104,8 @@ namespace Nibiru.EditorTools.Content
                 item.category = ItemCategory.Chave;
                 item.pickupHint = "Ataque com a faca: clique esquerdo ou F (RB no controle)";
             });
-            filmRoll = AssetDatabase.LoadAssetAtPath<ItemDefinition>($"{DataFolder}/Items/RoloDeFilmeDoTom.asset");
-            tablet = AssetDatabase.LoadAssetAtPath<ItemDefinition>($"{DataFolder}/Items/TabuletaDoJunco.asset");
+            filmRoll = Load<ItemDefinition>("Items/RoloDeFilmeDoTom");
+            tablet = Load<ItemDefinition>("Items/TabuletaDoJunco");
 
             dlg = new Dialogues
             {
@@ -368,7 +357,7 @@ namespace Nibiru.EditorTools.Content
                 Point(path, "P4_Pouso", HelipadPoint),
             };
 
-            GameObject heli = BuildHelicopter(g);
+            GameObject heli = Helicopter(g, "Helicoptero", HelipadPoint, -45f);
             var heliMove = heli.AddComponent<MoveAlongPath>();
             SetField(heliMove, "points", heliPoints);
             SetField(heliMove, "speed", 22f);
@@ -391,8 +380,7 @@ namespace Nibiru.EditorTools.Content
             SetField(workerMove, "slowDownDistance", 0f);
             worker.SetActive(false);
 
-            GameObject workerBody = Prim(PrimitiveType.Capsule, g, "Corpo_Trabalhador", new Vector3(34f, 0.25f, -86.5f), new Vector3(0.5f, 0.9f, 0.5f), "BO_TijoloBarro", collider: ColliderMode.None);
-            workerBody.transform.rotation = Quaternion.Euler(90f, 40f, 0f);
+            GameObject workerBody = Body(g, "Corpo_Trabalhador", new Vector3(34f, 0f, -86.5f), 40f, "BO_TijoloBarro");
             workerBody.SetActive(false);
 
             // Soldados: descem do helicóptero só como figurantes (sem IA) e começam a procurar
@@ -498,12 +486,7 @@ namespace Nibiru.EditorTools.Content
                 SetActive(e, worker, false);
                 SetActive(e, workerBody, true);
                 SetActive(e, soldiers.gameObject, true);
-                foreach (Transform soldier in soldiers)
-                {
-                    SetEnabled(e, soldier.GetComponent<NavMeshAgent>(), true);
-                    SetEnabled(e, soldier.GetComponent<SoldierPerception>(), true);
-                    SetEnabled(e, soldier.GetComponent<SoldierAI>(), true);
-                }
+                WakeSoldiers(e, soldiers);
                 SetActive(e, limits, false);
             });
 
@@ -516,296 +499,12 @@ namespace Nibiru.EditorTools.Content
             Checkpoint(g, "Checkpoint_Mirante", new Vector3(19f, Top + 1f, -96.5f), new Vector3(11f, 2f, 8f), new Vector3(19f, Top, -97f), 45f);
         }
 
-        static GameObject BuildHelicopter(Transform g)
-        {
-            // Formas simples nas cores da Fundação: branco com faixa turquesa.
-            var heli = new GameObject("Helicoptero");
-            heli.transform.SetParent(g, false);
-            heli.transform.SetPositionAndRotation(HelipadPoint, Quaternion.Euler(0f, -45f, 0f));
-            Transform h = heli.transform;
-
-            Local(PrimitiveType.Cube, h, "Cabine", new Vector3(0f, 1.6f, 0.4f), new Vector3(2.4f, 2.2f, 5f), "BO_BrancoFundacao", ColliderMode.Solid);
-            Local(PrimitiveType.Cube, h, "Faixa", new Vector3(0f, 1.3f, 0.4f), new Vector3(2.45f, 0.35f, 5.05f), "BO_TurquesaFundacao");
-            Local(PrimitiveType.Cube, h, "Cauda", new Vector3(0f, 2.1f, -4.3f), new Vector3(0.5f, 0.6f, 5f), "BO_BrancoFundacao");
-            Local(PrimitiveType.Cube, h, "Leme", new Vector3(0f, 2.8f, -6.6f), new Vector3(0.15f, 1.4f, 0.8f), "BO_TurquesaFundacao");
-            Local(PrimitiveType.Cube, h, "Esqui_E", new Vector3(-1.1f, 0.08f, 0.4f), new Vector3(0.15f, 0.15f, 4.6f), "BO_Metal");
-            Local(PrimitiveType.Cube, h, "Esqui_D", new Vector3(1.1f, 0.08f, 0.4f), new Vector3(0.15f, 0.15f, 4.6f), "BO_Metal");
-
-            var rotor = new GameObject("Rotor");
-            rotor.transform.SetParent(h, false);
-            rotor.transform.localPosition = new Vector3(0f, 2.85f, 0.4f);
-            Local(PrimitiveType.Cube, rotor.transform, "Pa_1", Vector3.zero, new Vector3(11f, 0.05f, 0.35f), "BO_Metal");
-            Local(PrimitiveType.Cube, rotor.transform, "Pa_2", Vector3.zero, new Vector3(0.35f, 0.05f, 11f), "BO_Metal");
-            SetField(rotor.AddComponent<Spinner>(), "speed", 900f);
-
-            var tailRotor = new GameObject("Rotor_Cauda");
-            tailRotor.transform.SetParent(h, false);
-            tailRotor.transform.localPosition = new Vector3(0.3f, 2.4f, -6.6f);
-            Local(PrimitiveType.Cube, tailRotor.transform, "Pa", Vector3.zero, new Vector3(0.05f, 1.6f, 0.2f), "BO_Metal");
-            var tailSpin = tailRotor.AddComponent<Spinner>();
-            SetField(tailSpin, "axis", Vector3.right);
-            SetField(tailSpin, "speed", 1400f);
-
-            Audio(heli, ProvisionalSounds.Helicopter, loop: true, playOnAwake: true, volume: 1f, minDistance: 20f, maxDistance: 500f);
-            return heli;
-        }
-
-        static GameObject Soldier(Transform parent, string name, Vector3 position, Vector3 lookAt, Transform[] patrol, bool leader)
-        {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(SoldierPrefab);
-            var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
-            go.name = name;
-            Vector3 flat = Vector3.ProjectOnPlane(lookAt - position, Vector3.up);
-            go.transform.SetPositionAndRotation(position, Quaternion.LookRotation(flat));
-
-            var settings = AssetDatabase.LoadAssetAtPath<SoldierSettings>($"{DataFolder}/AI/{(leader ? "LiderEsquadrao" : "SoldadoContencao")}.asset");
-            var ai = go.GetComponent<SoldierAI>();
-            var aiSo = new SerializedObject(ai);
-            aiSo.FindProperty("settings").objectReferenceValue = settings;
-            aiSo.FindProperty("isLeader").boolValue = leader;
-            SerializedProperty waypoints = aiSo.FindProperty("waypoints");
-            waypoints.arraySize = patrol?.Length ?? 0;
-            for (int i = 0; i < waypoints.arraySize; i++) waypoints.GetArrayElementAtIndex(i).objectReferenceValue = patrol[i];
-            aiSo.ApplyModifiedProperties();
-
-            var perception = go.GetComponent<SoldierPerception>();
-            var perceptionSo = new SerializedObject(perception);
-            perceptionSo.FindProperty("settings").objectReferenceValue = settings;
-            perceptionSo.ApplyModifiedProperties();
-
-            // Figurante até a execução: sem IA, sem percepção e sem malha de navegação.
-            ai.enabled = false;
-            perception.enabled = false;
-            // Sem o agente ligado, ninguém levanta o soldado até a altura certa: põe à mão.
-            var agent = go.GetComponent<NavMeshAgent>();
-            go.transform.position = position + Vector3.up * agent.baseOffset;
-            agent.enabled = false;
-            PrefabUtility.RecordPrefabInstancePropertyModifications(ai);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(perception);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(agent);
-            return go;
-        }
-
-        static Transform MuzzleOf(GameObject soldier)
-        {
-            var so = new SerializedObject(soldier.GetComponent<SoldierAI>());
-            var muzzle = so.FindProperty("muzzle").objectReferenceValue as Transform;
-            return muzzle != null ? muzzle : soldier.transform;
-        }
-
         // ---------- Saídas ----------
 
         static void BuildExits(Transform g)
         {
             // Entrada das trincheiras, ao norte do pé da rampa: fim da parte do Acampamento.
-            GameObject trenches = Zone(g, "Gatilho_Trincheiras", new Vector3(0f, 1.5f, -77.5f), new Vector3(50f, 3f, 2f));
-            SetField(trenches.AddComponent<StoryEventTrigger>(), "storyEvent", ev.chegouAsTrincheiras);
+            EventZone(g, "Gatilho_Trincheiras", new Vector3(0f, 1.5f, -77.5f), new Vector3(50f, 3f, 2f), ev.chegouAsTrincheiras);
         }
-
-        // ---------- Peças da cena ----------
-
-        enum ColliderMode { Solid, Trigger, None }
-
-        static Transform Group(Transform parent, string name)
-        {
-            var t = new GameObject(name).transform;
-            t.SetParent(parent, false);
-            return t;
-        }
-
-        static Transform Point(Transform parent, string name, Vector3 position)
-        {
-            var t = new GameObject(name).transform;
-            t.SetParent(parent, false);
-            t.position = position;
-            return t;
-        }
-
-        static GameObject Prim(PrimitiveType type, Transform parent, string name, Vector3 position, Vector3 scale, string material, float yaw = 0f, ColliderMode collider = ColliderMode.Solid)
-        {
-            GameObject go = GameObject.CreatePrimitive(type);
-            go.name = name;
-            go.transform.SetParent(parent, false);
-            go.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
-            go.transform.localScale = scale;
-            go.GetComponent<Renderer>().sharedMaterial = Mat(material);
-            ApplyCollider(go, collider);
-            return go;
-        }
-
-        static GameObject Local(PrimitiveType type, Transform parent, string name, Vector3 localPosition, Vector3 scale, string material, ColliderMode collider = ColliderMode.None)
-        {
-            GameObject go = GameObject.CreatePrimitive(type);
-            go.name = name;
-            go.transform.SetParent(parent, false);
-            go.transform.localPosition = localPosition;
-            go.transform.localScale = scale;
-            go.GetComponent<Renderer>().sharedMaterial = Mat(material);
-            ApplyCollider(go, collider);
-            return go;
-        }
-
-        static void ApplyCollider(GameObject go, ColliderMode mode)
-        {
-            var collider = go.GetComponent<Collider>();
-            if (mode == ColliderMode.None) Object.DestroyImmediate(collider);
-            else collider.isTrigger = mode == ColliderMode.Trigger;
-        }
-
-        // Caixa invisível marcada como gatilho.
-        static GameObject Zone(Transform parent, string name, Vector3 center, Vector3 size, float yaw = 0f)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            go.transform.SetPositionAndRotation(center, Quaternion.Euler(0f, yaw, 0f));
-            var box = go.AddComponent<BoxCollider>();
-            box.isTrigger = true;
-            box.size = size;
-            return go;
-        }
-
-        static void Pickup(GameObject go, ItemDefinition item, int amount, StoryEvent raise)
-        {
-            var pickup = go.AddComponent<ItemPickup>();
-            SetField(pickup, "item", item);
-            SetField(pickup, "amount", amount);
-            SetField(pickup, "raiseOnPickup", raise);
-            StableId(go);
-        }
-
-        static void Checkpoint(Transform parent, string name, Vector3 center, Vector3 size, Vector3 spawn, float spawnYaw)
-        {
-            GameObject zone = Zone(parent, name, center, size);
-            Transform spawnPoint = Point(zone.transform, "Retorno", spawn);
-            spawnPoint.rotation = Quaternion.Euler(0f, spawnYaw, 0f);
-            var checkpoint = zone.AddComponent<Save.Checkpoint>();
-            SetField(checkpoint, "spawnPoint", spawnPoint);
-            StableId(zone);
-        }
-
-        // Código fixo a partir do nome, para continuar o mesmo quando o menu reconstrói a cena.
-        static void StableId(GameObject go)
-        {
-            var id = go.GetComponent<PersistentId>();
-            if (id == null) id = go.AddComponent<PersistentId>();
-            SetField(id, "id", "acampamento." + go.name.ToLowerInvariant());
-        }
-
-        static DialogueStarter DialogueStarterOn(GameObject go, DialogueDefinition dialogue, string prompt, bool interactable)
-        {
-            var starter = go.AddComponent<DialogueStarter>();
-            SetField(starter, "dialogue", dialogue);
-            SetField(starter, "prompt", prompt);
-            SetField(starter, "interactable", interactable);
-            SetField(starter, "onlyOnce", true);
-            return starter;
-        }
-
-        // Conversa sem objeto para interagir, começada por uma sequência ou um evento.
-        static DialogueStarter DialogueTrigger(Transform parent, string name, DialogueDefinition dialogue)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            return DialogueStarterOn(go, dialogue, "", interactable: false);
-        }
-
-        static void Audio(GameObject go, string clipPath, bool loop, bool playOnAwake, float volume, float minDistance, float maxDistance)
-        {
-            var source = go.AddComponent<AudioSource>();
-            source.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(clipPath);
-            source.loop = loop;
-            source.playOnAwake = playOnAwake;
-            source.volume = volume;
-            source.spatialBlend = 1f;
-            source.rolloffMode = AudioRolloffMode.Logarithmic;
-            source.minDistance = minDistance;
-            source.maxDistance = maxDistance;
-            source.dopplerLevel = 0.3f;
-        }
-
-        static Material Mat(string name) => AssetDatabase.LoadAssetAtPath<Material>($"{MaterialFolder}/{name}.mat");
-
-        // ---------- Eventos do Inspector ----------
-
-        static void Listener(GameObject go, StoryEvent storyEvent, Action<UnityEvent> fill)
-        {
-            var listener = go.AddComponent<StoryEventListener>();
-            SetField(listener, "storyEvent", storyEvent);
-            fill(GetField<UnityEvent>(listener, "response"));
-        }
-
-        static TimedSequence.Step S(string note, float wait, Action<UnityEvent> fill, StoryEvent orUntil = null)
-        {
-            var step = new TimedSequence.Step { note = note, wait = wait, orUntil = orUntil };
-            fill?.Invoke(step.action);
-            return step;
-        }
-
-        static void SetSteps(TimedSequence sequence, params TimedSequence.Step[] steps) => SetField(sequence, "steps", steps);
-
-        static void Call(UnityEvent e, UnityAction action) => UnityEventTools.AddPersistentListener(e, action);
-
-        static void SetActive(UnityEvent e, GameObject go, bool active) =>
-            UnityEventTools.AddBoolPersistentListener(e, go.SetActive, active);
-
-        static void SetEnabled(UnityEvent e, Behaviour behaviour, bool enabled)
-        {
-            var setter = (UnityAction<bool>)Delegate.CreateDelegate(typeof(UnityAction<bool>), behaviour, "set_enabled");
-            UnityEventTools.AddBoolPersistentListener(e, setter, enabled);
-        }
-
-        static void Notify(UnityEvent e, NotificationPoster poster, string message) =>
-            UnityEventTools.AddStringPersistentListener(e, poster.Post, message);
-
-        // ---------- Campos privados ----------
-
-        const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-
-        static void SetField(Object target, string field, object value)
-        {
-            FieldInfo info = target.GetType().GetField(field, Flags) ?? throw new MissingFieldException(target.GetType().Name, field);
-            info.SetValue(target, value);
-            EditorUtility.SetDirty(target);
-        }
-
-        static T GetField<T>(Object target, string field) where T : class
-        {
-            FieldInfo info = target.GetType().GetField(field, Flags) ?? throw new MissingFieldException(target.GetType().Name, field);
-            return (T)info.GetValue(target);
-        }
-
-        // ---------- Arquivos de dados ----------
-
-        // Carrega o arquivo se existir; se não, cria e preenche. Nunca sobrescreve um que já existe.
-        static T Asset<T>(string relativePath, Action<T> fill) where T : ScriptableObject
-        {
-            string path = $"{DataFolder}/{relativePath}.asset";
-            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
-            if (asset != null) return asset;
-
-            asset = ScriptableObject.CreateInstance<T>();
-            fill(asset);
-            AssetDatabase.CreateAsset(asset, path);
-            return asset;
-        }
-
-        static StoryEvent Event(string name, string note) =>
-            Asset<StoryEvent>("Events/" + name, e => e.note = note);
-
-        static DialogueDefinition Dialogue(string name, StoryEvent raiseOnEnd, params DialogueNode[] nodes) =>
-            Asset<DialogueDefinition>("Dialogues/" + name, d =>
-            {
-                d.nodes = nodes;
-                d.raiseOnEnd = raiseOnEnd;
-            });
-
-        static DialogueNode N(string id, string speaker, string text, string next = null, params DialogueChoice[] choices) =>
-            new DialogueNode { id = id, speaker = speaker, text = text, next = next ?? "", choices = choices };
-
-        static DialogueChoice C(string text, string next, StoryEvent raise) =>
-            new DialogueChoice { text = text, next = next, raise = raise };
-
-        static QuestStep Step(string objective, StoryEvent completeOn = null, ItemDefinition item = null, int count = 1) =>
-            new QuestStep { objective = objective, completeOn = completeOn, requiredItem = item, requiredCount = count };
     }
 }
