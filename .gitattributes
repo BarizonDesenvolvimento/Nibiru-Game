@@ -1,0 +1,33 @@
+# Texto: sempre LF, igual ao que a Unity grava (evita diffs falsos no Windows)
+* text=auto eol=lf
+
+# Arquivos YAML da Unity: merge inteligente via UnityYAMLMerge (opcional)
+*.unity    merge=unityyamlmerge
+*.prefab   merge=unityyamlmerge
+*.asset    merge=unityyamlmerge
+*.meta     merge=unityyamlmerge
+*.mat      merge=unityyamlmerge
+*.anim     merge=unityyamlmerge
+*.controller merge=unityyamlmerge
+
+# Binários
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.psd   binary
+*.tga   binary
+*.tif   binary
+*.exr   binary
+*.hdr   binary
+*.fbx   binary
+*.obj   binary
+*.blend binary
+*.wav   binary
+*.mp3   binary
+*.ogg   binary
+*.mp4   binary
+*.ttf   binary
+*.otf   binary
+*.dll   binary
+*.so    binary
+*.a     binary

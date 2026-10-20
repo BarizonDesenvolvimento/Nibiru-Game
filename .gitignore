@@ -1,0 +1,72 @@
+# .gitignore para projetos Unity (baseado no template oficial do GitHub)
+
+# Pastas geradas pela Unity (recriadas automaticamente ao abrir o projeto)
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Pasta de assets gerados pelo plugin do Asset Store Tools
+/[Aa]ssets/AssetStoreTools*
+
+# Cache do Burst
+/[Aa]ssets/[Bb]urst[Dd]ebug[Ii]nformation[Dd]o[Nn]ot[Ss]hip/
+
+# Gradle / Android (caso algum dia exporte)
+.gradle/
+
+# Arquivos gerados por IDEs (Visual Studio, Rider, VS Code)
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Metas de arquivos que não são versionados
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.exe
+!/[Aa]ssets/**/*.exe
+
+# Crashlytics
+crashlytics-build.properties
+
+# Addressables / StreamingAssets gerados
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Configurações locais do Claude Code (permissões desta máquina)
+.claude/settings.local.json
