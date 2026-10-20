@@ -12,7 +12,8 @@ namespace Nibiru.Quests
 
         void OnTriggerEnter(Collider other)
         {
-            if (StoryEvents.HasBeenRaised(storyEvent) || !other.transform.root.CompareTag("Player")) return;
+            // Procura o personagem (e não a etiqueta da raiz): no prefab Elena, a raiz é só o grupo.
+            if (StoryEvents.HasBeenRaised(storyEvent) || other.GetComponentInParent<Player.PlayerMotor>() == null) return;
             StoryEvents.Raise(storyEvent);
         }
 

@@ -1,6 +1,8 @@
+using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Nibiru.EditorTools.Blockout
 {
@@ -40,6 +42,7 @@ namespace Nibiru.EditorTools.Blockout
             BuildWell(Group(root, "5_Boca_do_Poco"));
             BuildPassageAndWadi(Group(root, "6_Passagem_e_Wadi"));
             BuildLabels(Group(root, "Rotulos"));
+            BakeNavMesh(root);
 
             EditorSceneManager.MarkSceneDirty(root.gameObject.scene);
             Selection.activeGameObject = root.gameObject;
@@ -69,7 +72,8 @@ namespace Nibiru.EditorTools.Blockout
             Ramp(g, "Rampa_Descida", new Vector3(0, 3, -92), new Vector3(0, 0, -79), 8, sand);
 
             const float top = 3f;
-            BoxC(g, "Tenda_Elena", new Vector3(-12, top + 1.25f, -119), new Vector3(5, 2.5f, 4), orangeTarp);
+            // A da Elena é oca, com porta para o norte: ela acorda lá dentro (passo 1 da missão).
+            HollowTent(g, "Tenda_Elena", new Vector3(-12, top, -119), new Vector3(6, 2.5f, 5), 1.6f, orangeTarp);
             BoxC(g, "Tenda_Equipe_1", new Vector3(-4, top + 1.25f, -120), new Vector3(5, 2.5f, 4), greenTarp);
             BoxC(g, "Tenda_Equipe_2", new Vector3(4, top + 1.25f, -120), new Vector3(5, 2.5f, 4), orangeTarp);
             BoxC(g, "Tenda_Equipe_3", new Vector3(12, top + 1.25f, -118), new Vector3(5, 2.5f, 4), greenTarp);
@@ -92,7 +96,7 @@ namespace Nibiru.EditorTools.Blockout
 
             // Heliponto improvisado embaixo da elevação: de cima, a Elena vê o "resgate" (passo 4).
             Cyl(g, "Heliponto", new Vector3(30, 0.05f, -82), 6, 0.1f, white);
-            Marker(g, "Ponto_Inicio_Elena", new Vector3(-12, top + 1, -115), 0);
+            Marker(g, "Ponto_Inicio_Elena", new Vector3(-12, top + 0.03f, -120), 0);
         }
 
         // ---------- 2. Trincheiras ----------
@@ -301,6 +305,27 @@ namespace Nibiru.EditorTools.Blockout
             Marker(g, "Escolha_de_Faccao", new Vector3(33, 0.5f, 142), 0);
         }
 
+        // ---------- Malha de navegação ----------
+
+        // A malha por onde a IA anda é feita a partir das colisões do blockout e guardada ao lado
+        // da cena, para continuar valendo depois de reconstruir o mapa.
+        static void BakeNavMesh(Transform root)
+        {
+            var surface = root.gameObject.AddComponent<NavMeshSurface>();
+            surface.collectObjects = CollectObjects.Children;
+            surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+            surface.BuildNavMesh();
+
+            string scenePath = root.gameObject.scene.path;
+            if (string.IsNullOrEmpty(scenePath)) return;
+            string folder = scenePath.Substring(0, scenePath.Length - ".unity".Length);
+            if (!AssetDatabase.IsValidFolder(folder))
+                AssetDatabase.CreateFolder(System.IO.Path.GetDirectoryName(folder).Replace('\\', '/'), System.IO.Path.GetFileName(folder));
+            string dataPath = folder + "/NavMesh-Blockout.asset";
+            AssetDatabase.DeleteAsset(dataPath);
+            AssetDatabase.CreateAsset(surface.navMeshData, dataPath);
+        }
+
         // ---------- Rótulos das áreas ----------
 
         static void BuildLabels(Transform g)
@@ -352,12 +377,37 @@ namespace Nibiru.EditorTools.Blockout
             go.transform.localScale = new Vector3(width, thickness, direction.magnitude);
         }
 
+        // Barraca por dentro: três paredes, frente com vão de porta virado para o norte e teto.
+        // "floorCenter" é o centro do chão; "size" é largura, altura e fundo.
+        static void HollowTent(Transform parent, string name, Vector3 floorCenter, Vector3 size, float doorWidth, Material m)
+        {
+            const float wall = 0.12f;
+            Transform tent = new GameObject(name).transform;
+            tent.SetParent(parent, false);
+            float halfW = size.x / 2, halfD = size.z / 2, y = floorCenter.y + size.y / 2;
+            float sideWidth = (size.x - doorWidth) / 2;
+
+            BoxC(tent, "Fundo", new Vector3(floorCenter.x, y, floorCenter.z - halfD + wall / 2), new Vector3(size.x, size.y, wall), m);
+            BoxC(tent, "Lado_Oeste", new Vector3(floorCenter.x - halfW + wall / 2, y, floorCenter.z), new Vector3(wall, size.y, size.z), m);
+            BoxC(tent, "Lado_Leste", new Vector3(floorCenter.x + halfW - wall / 2, y, floorCenter.z), new Vector3(wall, size.y, size.z), m);
+            BoxC(tent, "Frente_Oeste", new Vector3(floorCenter.x - halfW + sideWidth / 2, y, floorCenter.z + halfD - wall / 2), new Vector3(sideWidth, size.y, wall), m);
+            BoxC(tent, "Frente_Leste", new Vector3(floorCenter.x + halfW - sideWidth / 2, y, floorCenter.z + halfD - wall / 2), new Vector3(sideWidth, size.y, wall), m);
+            BoxC(tent, "Teto", new Vector3(floorCenter.x, floorCenter.y + size.y + wall / 2, floorCenter.z), new Vector3(size.x + 0.3f, wall, size.z + 0.3f), m);
+        }
+
         static void Cyl(Transform parent, string name, Vector3 center, float radius, float height, Material m)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             Setup(go, parent, name, m);
             go.transform.position = center;
             go.transform.localScale = new Vector3(radius * 2, height / 2, radius * 2);
+
+            // A colisão padrão do cilindro é uma cápsula, que num disco largo e baixo vira uma
+            // bola enorme (e um obstáculo invisível). A malha do próprio cilindro é exata.
+            Object.DestroyImmediate(go.GetComponent<Collider>());
+            var mesh = go.AddComponent<MeshCollider>();
+            mesh.sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
+            mesh.convex = true;
         }
 
         static void Sphere(Transform parent, string name, Vector3 center, float diameter, Material m)
