@@ -18,9 +18,14 @@ namespace Nibiru.Player
         InputAction run;
         InputAction dodge;
 
+        // No controle, segurar o analógico apertado cansa: um clique liga a corrida
+        // e ela continua até o direcional voltar ao centro.
+        const float RunReleaseThreshold = 0.1f;
+        bool runLatched;
+
         public Vector2 Move => move.ReadValue<Vector2>();
         public Vector2 Look => look.ReadValue<Vector2>();
-        public bool RunHeld => run.IsPressed();
+        public bool RunActive => run.IsPressed() || runLatched;
         public bool DodgePressed => dodge.WasPressedThisFrame();
 
         void Awake()
@@ -34,6 +39,18 @@ namespace Nibiru.Player
 
         void OnEnable() => map.Enable();
 
-        void OnDisable() => map.Disable();
+        void OnDisable()
+        {
+            map.Disable();
+            runLatched = false;
+        }
+
+        void Update()
+        {
+            if (run.WasPressedThisFrame() && run.activeControl?.device is Gamepad)
+                runLatched = true;
+            if (Move.magnitude < RunReleaseThreshold)
+                runLatched = false;
+        }
     }
 }

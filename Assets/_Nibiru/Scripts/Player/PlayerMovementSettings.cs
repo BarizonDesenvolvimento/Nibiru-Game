@@ -19,6 +19,10 @@ namespace Nibiru.Player
         [Tooltip("Velocidade com que o corpo vira para a direção do movimento, em graus por segundo.")]
         [Min(0f)] public float turnSpeed = 720f;
 
+        [Header("Correr")]
+        [Tooltip("Velocidade ao correr, em metros por segundo.")]
+        [Min(0f)] public float runSpeed = 6f;
+
         [Header("Gravidade")]
         [Tooltip("Aceleração da gravidade (m/s²). Negativo puxa para baixo.")]
         public float gravity = -20f;

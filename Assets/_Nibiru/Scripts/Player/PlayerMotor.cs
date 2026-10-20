@@ -23,6 +23,7 @@ namespace Nibiru.Player
         float verticalVelocity;
 
         public Vector3 Velocity => horizontalVelocity + Vector3.up * verticalVelocity;
+        public bool IsRunning { get; private set; }
 
         void Awake()
         {
@@ -36,7 +37,11 @@ namespace Nibiru.Player
             float dt = Time.deltaTime;
             Vector3 moveDirection = CameraRelative(input.Move);
 
-            Vector3 targetVelocity = moveDirection * settings.walkSpeed;
+            // Correndo, vai sempre na velocidade máxima; andando, o analógico controla a velocidade.
+            IsRunning = input.RunActive && moveDirection.sqrMagnitude > 0.0001f;
+            Vector3 targetVelocity = IsRunning
+                ? moveDirection.normalized * settings.runSpeed
+                : moveDirection * settings.walkSpeed;
             horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, settings.acceleration * dt);
 
             if (moveDirection.sqrMagnitude > 0.0001f)
