@@ -4120,7 +4120,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 980, y: 720}
+  m_SizeDelta: {x: 980, y: 920}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022701688
 MonoBehaviour:
@@ -7878,6 +7878,10 @@ MonoBehaviour:
   input: {fileID: 1473628166}
   panel: {fileID: 1022701686}
   content: {fileID: 1651651753}
+  factions:
+  - {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
+  - {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
+  - {fileID: 11400000, guid: ce3a827a58c1b3b46ba5d8db91415bb7, type: 2}
 --- !u!114 &1808203638
 MonoBehaviour:
   m_ObjectHideFlags: 0

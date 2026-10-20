@@ -117,6 +117,7 @@ namespace Nibiru.Quests
             {
                 Notifications.Post($"Missão concluída: {quest.displayName}");
                 StoryEvents.Raise(quest.raiseOnComplete);
+                Factions.Reputation.Apply(quest.reputationOnComplete);
             }
             else
             {

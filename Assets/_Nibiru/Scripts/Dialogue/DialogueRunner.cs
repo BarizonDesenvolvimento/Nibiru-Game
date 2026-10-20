@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Nibiru.Factions;
 using Nibiru.Player;
 using Nibiru.Quests;
 using Nibiru.Save;
@@ -58,6 +59,7 @@ namespace Nibiru.Dialogue
             if (!IsRunning || index < 0 || index >= visibleChoices.Count) return;
             DialogueChoice choice = visibleChoices[index];
             StoryEvents.Raise(choice.raise);
+            Reputation.Apply(choice.reputation);
             GoTo(choice.next);
         }
 

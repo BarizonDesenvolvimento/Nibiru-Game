@@ -52,6 +52,9 @@ namespace Nibiru.Quests
         [Tooltip("Evento disparado quando a missão termina (opcional). Serve para ligar a próxima coisa.")]
         public StoryEvent raiseOnComplete;
 
+        [Tooltip("Mudanças de reputação quando a missão termina (opcional).")]
+        public Factions.ReputationChange[] reputationOnComplete = new Factions.ReputationChange[0];
+
         public string Id => name;
     }
 }

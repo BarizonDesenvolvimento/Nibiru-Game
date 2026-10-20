@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Nibiru.Combat;
+using Nibiru.Factions;
 using Nibiru.Inventory;
 using Nibiru.Player;
 using UnityEngine;
@@ -23,6 +24,9 @@ namespace Nibiru.UI
         [Tooltip("Painel que aparece e some com a tela de inventário.")]
         [SerializeField] GameObject panel;
         [SerializeField] Text content;
+
+        [Tooltip("Facções mostradas na tela, em ordem.")]
+        [SerializeField] FactionDefinition[] factions = new FactionDefinition[0];
 
         const string Gold = "#E8C46A";
         const string Muted = "#9AA0AA";
@@ -122,6 +126,8 @@ namespace Nibiru.UI
             for (int i = 0; i < inventory.KeyItems.Count; i++)
                 AppendEntry(inventory.KeyItems[i], inventory.Slots.Count + i);
 
+            AppendFactions();
+
             builder.AppendLine();
             if (selected < entries.Count && !string.IsNullOrEmpty(entries[selected].item.description))
                 builder.Append("<color=").Append(Muted).Append('>').Append(entries[selected].item.description).AppendLine("</color>");
@@ -130,6 +136,24 @@ namespace Nibiru.UI
                 .Append(input.BackButtonLabel).Append("] Fechar</color></size>");
 
             content.text = builder.ToString();
+        }
+
+        // Facções que a Elena ainda não conhece só aparecem depois da primeira mudança.
+        void AppendFactions()
+        {
+            bool header = false;
+            foreach (FactionDefinition faction in factions)
+            {
+                if (faction == null || (faction.hiddenUntilChanged && !Reputation.IsKnown(faction))) continue;
+                if (!header)
+                {
+                    builder.AppendLine().AppendLine("<b>FACÇÕES</b>");
+                    header = true;
+                }
+                int value = Reputation.Get(faction);
+                builder.Append("    <color=#").Append(ColorUtility.ToHtmlStringRGB(faction.color)).Append('>').Append(faction.displayName).Append("</color>   ")
+                    .Append(Reputation.LevelName(value)).Append(" <color=").Append(Muted).Append(">(").Append(value).AppendLine(")</color>");
+            }
         }
 
         void AppendEntry(ItemStack stack, int index)

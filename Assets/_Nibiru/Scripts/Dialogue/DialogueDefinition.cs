@@ -1,4 +1,5 @@
 using System;
+using Nibiru.Factions;
 using Nibiru.Quests;
 using UnityEngine;
 
@@ -19,6 +20,9 @@ namespace Nibiru.Dialogue
 
         [Tooltip("Evento disparado ao escolher esta resposta (opcional).")]
         public StoryEvent raise;
+
+        [Tooltip("Mudanças de reputação ao escolher esta resposta (opcional).")]
+        public ReputationChange[] reputation = new ReputationChange[0];
     }
 
     /// <summary>Uma fala da conversa.</summary>

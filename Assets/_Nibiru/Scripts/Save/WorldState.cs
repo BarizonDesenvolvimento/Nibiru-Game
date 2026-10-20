@@ -17,6 +17,7 @@ namespace Nibiru.Save
             internal readonly HashSet<string> activatedCheckpoints;
             internal readonly HashSet<string> storyEvents;
             internal readonly Dictionary<string, int> questSteps;
+            internal readonly Dictionary<string, int> reputation;
 
             internal Snapshot()
             {
@@ -24,6 +25,7 @@ namespace Nibiru.Save
                 activatedCheckpoints = new HashSet<string>(WorldState.activatedCheckpoints);
                 storyEvents = new HashSet<string>(WorldState.storyEvents);
                 questSteps = new Dictionary<string, int>(WorldState.questSteps);
+                reputation = new Dictionary<string, int>(WorldState.reputation);
             }
         }
 
@@ -31,6 +33,7 @@ namespace Nibiru.Save
         static readonly HashSet<string> activatedCheckpoints = new HashSet<string>();
         static readonly HashSet<string> storyEvents = new HashSet<string>();
         static readonly Dictionary<string, int> questSteps = new Dictionary<string, int>();
+        static readonly Dictionary<string, int> reputation = new Dictionary<string, int>();
 
         // Começa limpo a cada Play, mesmo com o recarregamento de domínio desligado no editor.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -40,6 +43,7 @@ namespace Nibiru.Save
             activatedCheckpoints.Clear();
             storyEvents.Clear();
             questSteps.Clear();
+            reputation.Clear();
         }
 
         /// <summary>Quantos ainda restam num item do chão que já foi mexido. False se nunca foi pego.</summary>
@@ -61,6 +65,11 @@ namespace Nibiru.Save
 
         public static void SetQuestStep(string questId, int step) => questSteps[questId] = step;
 
+        /// <summary>Reputação com uma facção. False se ela nunca mudou.</summary>
+        public static bool TryGetReputation(string factionId, out int value) => reputation.TryGetValue(factionId, out value);
+
+        public static void SetReputation(string factionId, int value) => reputation[factionId] = value;
+
         public static Snapshot Capture() => new Snapshot();
 
         public static void Restore(Snapshot snapshot)
@@ -70,6 +79,7 @@ namespace Nibiru.Save
             activatedCheckpoints.UnionWith(snapshot.activatedCheckpoints);
             storyEvents.UnionWith(snapshot.storyEvents);
             foreach (KeyValuePair<string, int> pair in snapshot.questSteps) questSteps[pair.Key] = pair.Value;
+            foreach (KeyValuePair<string, int> pair in snapshot.reputation) reputation[pair.Key] = pair.Value;
         }
     }
 }

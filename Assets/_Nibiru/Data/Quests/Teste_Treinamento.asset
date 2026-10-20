@@ -33,3 +33,6 @@ MonoBehaviour:
     requiredItem: {fileID: 0}
     requiredCount: 1
   raiseOnComplete: {fileID: 11400000, guid: 96122aba8ef62d941b009560a635dfc8, type: 2}
+  reputationOnComplete:
+  - faction: {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
+    amount: -10
