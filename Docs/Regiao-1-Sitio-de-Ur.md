@@ -1,6 +1,6 @@
-# Região 1 — Sítio de Ur (proposta)
+# Região 1 — Sítio de Ur
 
-Proposta de detalhamento da fatia vertical, para revisão. Nada aqui é canônico até ser aprovado; quando aprovado, o GDD e a Bíblia continuam valendo acima deste documento.
+Detalhamento da fatia vertical, aprovado em 19 de outubro de 2026. O GDD e a Bíblia continuam valendo acima deste documento. As perguntas que ainda estão abertas estão no fim.
 
 | Item | Proposta |
 | --- | --- |
@@ -241,11 +241,52 @@ Já prontos: movimento (andar, correr, esquivar) e câmera em terceira pessoa. A
 
 Em paralelo aos sistemas, sem ordem fixa, entra a **produção de conteúdo**: blockout do mapa em formas simples, depois arte, modelo e animações da Elena no lugar da cápsula, sons de ambiente e música.
 
-## Perguntas para você decidir
+### Divisão para a fatia vertical
 
-- **Ligação com a região 2.** Esta proposta termina com a fuga para Tell Amar, e a descida sob o zigurate fica para o fim do Ato 1 (região 3), como na tabela de regiões. Mas o texto do Ato 1 no GDD fala da descida como a fuga. Qual das duas leituras vale?
+A pergunta para cada sistema: sem ele, a hora de jogo do Sítio de Ur ainda funciona e ainda é divertida? Se não, ele é essencial. Se funciona com uma versão mais simples, ele vai para o segundo grupo.
+
+**Grupo 1: essencial para a fatia ser jogável e divertida (nesta ordem)**
+
+| # | Sistema | Versão para a fatia | Por que é essencial |
+| --- | --- | --- | --- |
+| 1 | Interação | Completa | Pegar itens, abrir portas e ler tabuletas. Quase todo o resto depende dela |
+| 2 | Itens e inventário | Lista simples com espaço limitado, sem tela elaborada | Munição escassa, curativos e itens-chave só têm sentido com inventário |
+| 3 | Vida, dano e morte | Completa, com volta ao último checkpoint | Sem risco não há tensão |
+| 4 | Checkpoints | Ponto de retorno ao morrer, ativado ao passar por um gatilho ou altar | Uma hora de jogo sem checkpoint é frustrante |
+| 5 | Combate corpo a corpo | Faca com um ataque e a janela de invulnerabilidade da esquiva | Opção silenciosa e para quando a munição acaba |
+| 6 | Mira e armas de fogo | Pistola e espingarda, mira sobre o ombro, recarga | O combate do GDD é tiro com munição escassa |
+| 7 | Furtividade básica | Agachar e barulho de passos | As Trincheiras e a base são feitas para furtividade, e o Lullu caça pelo som |
+| 8 | IA dos soldados | Patrulha, visão e audição, alerta, perseguição, ataque, reforços | São os inimigos de quase toda a região |
+| 9 | Objetivos e eventos | Objetivo atual na tela e gatilhos que avançam a missão principal | Conduz o jogador pelos 15 passos e liga as cenas |
+| 10 | Diálogos | Falas com escolhas, numa caixa de texto simples | A escolha do wadi e as conversas com o Samir |
+| 11 | Facções e reputação | Só os valores e um aviso na tela ("Guardiões +15") | A primeira escolha de facção precisa ficar registrada |
+| 12 | Tabuleta, transformação e Eco do Abzu | Ler a tabuleta, barra de transformação e o poder | É o centro do jogo: o poder custa a humanidade |
+| 13 | IA do Lullu e o chefe | Caça pelo som, dois encontros e o chefe | O momento de terror da fatia |
+| 14 | HUD mínimo e pausa | Vida, munição, objetivo e pausa | O jogador precisa ver o básico e conseguir pausar |
+
+**Grupo 2: pode ser simplificado ou ficar para depois**
+
+| Sistema | O que fazer na fatia | Depois |
+| --- | --- | --- |
+| Save em disco | Não precisa: a fatia se joga de uma vez, só com checkpoints | Salvar e carregar no altar e salvamento automático entre áreas |
+| Documentos e fitas | Usar a mesma tela de leitura da tabuleta. A fita de Irena vira áudio com legenda, sem player próprio | Tela própria de arquivos e de fitas |
+| Diário da Elena | Fica de fora. As falas dela comentam o que ela encontra | Diário com o tom mudando conforme a transformação |
+| Diário de missões | Só o objetivo atual na tela | Lista de missões, histórico e consequências |
+| Memória jogável | Versão curta: um minuto andando num cenário pequeno de Shuruppak até a cabana de junco | Memórias longas, com mais cenários |
+| Cenas com Timeline | Câmera e falas simples, sem animação elaborada | Cenas completas com personagens animados |
+| Esconderijos | Ficam de fora; agachar atrás de caixas já basta | Armários, mato alto e afins |
+| Crafting | Fica de fora. A munição e os curativos aparecem prontos no cenário | Combinar recursos em munição, cura e itens rituais |
+| Menu de opções | Só sensibilidade da câmera e inverter eixo | Gráficos, áudio, controles e acessibilidade |
+| Níveis e árvore de habilidades | Ficam de fora da fatia | O RPG completo do GDD |
+
+## Decisões tomadas
+
+- **Data:** abril de 2003, semanas depois da invasão.
+- **Ligação com a região 2:** a região termina com a fuga para Tell Amar. A descida sob o zigurate fica para o fim do Ato 1, no Templo de Enki. O resumo do Ato 1 no GDD foi corrigido para isso.
+- **Nomes:** ficam os propostos (Yusuf, Umm Karim, Dra. Hannah Weiss, Lullu, Primeiro Servo, Tabuleta do Junco, Eco do Abzu).
+
+## Perguntas ainda abertas
+
 - **O Kast em pessoa ou só pelo rádio?** Nesta proposta ele só fala pelo rádio, para guardar o encontro cara a cara para mais tarde.
 - **A execução no passo 4.** É a cena mais pesada da fatia. Mostrar de longe, como está aqui, ou só pelo som?
 - **Peso da consequência na Aldeia.** Na opção "Devolver ao Poço", a Aldeia é esvaziada. Mais leve, mais pesado, ou do jeito que está?
-- **Crafting na fatia.** Entra já ou fica para depois da fatia?
-- **Nomes novos.** Yusuf, Umm Karim, Dra. Hannah Weiss, Lullu, Primeiro Servo, Tabuleta do Junco e Eco do Abzu são propostas. Pode trocar qualquer um.

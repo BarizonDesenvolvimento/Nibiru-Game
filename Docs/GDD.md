@@ -29,7 +29,7 @@ O terror vem do clima, do som e dos inimigos, não de deixar a tela escura. Quan
 
 ## História
 
-Em 2003, no sul do Iraque, a arqueóloga Elena Varga desce num sítio recém-aberto perto de Ur. Só ela volta à superfície, sem lembrar como, e capaz de ler uma língua mais antiga que a Suméria.
+Em abril de 2003, no sul do Iraque, a arqueóloga Elena Varga desce num sítio recém-aberto perto de Ur. Só ela volta à superfície, sem lembrar como, e capaz de ler uma língua mais antiga que a Suméria.
 
 **Premissa.** No caos da guerra, a Fundação Enlil, uma organização privada de "preservação cultural", contrata Elena para resgatar artefatos de um sítio que não aparece em nenhum mapa. A equipe desce. Três dias depois, Elena acorda sozinha no acampamento, cercada de corpos, segurando uma tabuleta que ela não lembra de ter pego.
 
@@ -38,7 +38,8 @@ Em 2003, no sul do Iraque, a arqueóloga Elena Varga desce num sítio recém-abe
 - Elena descobre que consegue ler as tabuletas, e que cada uma desperta algo nela: uma memória que não é dela e um poder.
 - A Fundação manda uma equipe de "resgate" que, na verdade, veio apagar todas as testemunhas.
 - Ela conhece os primeiros sobreviventes e ouve falar dos Guardiões, uma ordem antiga que vigia o lugar.
-- Para fugir, desce para o único lugar onde os soldados não entram: as ruínas sob o zigurate.
+- Com o guia Samir, ela foge do Sítio de Ur para Tell Amar, cidade ocupada pela Fundação, onde os Guardiões se escondem.
+- Com o cerco se fechando, no fim do ato ela desce para o único lugar onde os soldados não entram: as ruínas sob o zigurate, o Templo de Enki.
 
 ### Ato 2: A Cidade Abaixo
 
@@ -152,7 +153,7 @@ Com a espinha aprovada, o próximo passo é detalhar e construir a fatia vertica
 
 - [ ] Revisar este documento e marcar o que muda
 - [ ] Escolher 10 a 20 imagens de referência visual (superfície e mundo Anunnaki)
-- [ ] Detalhar a região 1: mapa, missões, diálogos, inimigos, itens
+- [x] Detalhar a região 1: mapa, missões, diálogos, inimigos, itens (em `Regiao-1-Sitio-de-Ur.md`)
 - [x] Criar o projeto Unity 6 (3D URP) e conectar o Claude Code
 - [x] Protótipo do personagem: andar, correr, esquivar, câmera em terceira pessoa
 
