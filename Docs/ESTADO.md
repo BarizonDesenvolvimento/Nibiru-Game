@@ -97,8 +97,8 @@ Pendências desses modelos antes de entrarem no jogo:
 ## Git
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
-- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia (veja `.gitattributes`). O LFS guarda cerca de 450 MB (os dois .blend somam 265 MB e os dois FBX, 130 MB). Fora do LFS, nenhum arquivo passa de 1 MB. Antes do primeiro push, confira a cota de LFS da conta no GitHub.
-- Há commits locais ainda não enviados ao GitHub (sem push). Commits em português, pequenos e frequentes.
+- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia (veja `.gitattributes`). O LFS guarda cerca de 450 MB (os dois .blend somam 265 MB e os dois FBX, 130 MB). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
+- Tudo enviado ao GitHub até o Acampamento (primeiro push em 20 de outubro de 2026). Commits em português, pequenos e frequentes.
 
 ## Como testar sozinho pela ponte MCP
 
