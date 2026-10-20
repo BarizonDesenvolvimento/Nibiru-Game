@@ -24,6 +24,9 @@ namespace Nibiru.Inventory
         [Tooltip("Texto curto mostrado no inventário.")]
         [TextArea(2, 4)] public string description;
 
+        [Tooltip("Aviso extra mostrado na tela quando o item é pego (opcional), por exemplo como usá-lo.")]
+        [TextArea(1, 2)] public string pickupHint;
+
         [Tooltip("Ícone para o inventário (opcional por enquanto).")]
         public Sprite icon;
 

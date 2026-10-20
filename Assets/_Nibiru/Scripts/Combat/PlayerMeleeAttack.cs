@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Nibiru.Inventory;
 using Nibiru.Player;
 using Nibiru.Stealth;
 using UnityEngine;
@@ -16,6 +17,12 @@ namespace Nibiru.Combat
         [SerializeField] PlayerInputReader input;
         [SerializeField] PlayerMotor motor;
         [SerializeField] Health ownHealth;
+
+        [Tooltip("Item que a Elena precisa ter para usar a faca (opcional). Vazio = a faca está sempre disponível.")]
+        [SerializeField] ItemDefinition requiredItem;
+
+        [Tooltip("Inventário onde procurar o item acima. Vazio = procura no próprio objeto.")]
+        [SerializeField] PlayerInventory inventory;
 
         [Tooltip("Opcional: objeto girado durante o golpe para mostrar a faca. Fica escondido fora do ataque.")]
         [SerializeField] Transform swingVisual;
@@ -37,6 +44,7 @@ namespace Nibiru.Combat
             if (input == null) input = GetComponent<PlayerInputReader>();
             if (motor == null) motor = GetComponent<PlayerMotor>();
             if (ownHealth == null) ownHealth = GetComponent<Health>();
+            if (inventory == null) inventory = GetComponent<PlayerInventory>();
             if (swingVisual != null) swingVisual.gameObject.SetActive(false);
         }
 
@@ -58,7 +66,10 @@ namespace Nibiru.Combat
         }
 
         // Mirando, o clique é tiro, não faca.
-        bool CanStart() => !motor.IsDodging && !motor.Aiming && motor.IsGrounded && (ownHealth == null || !ownHealth.IsDead);
+        bool CanStart() => HasKnife && !motor.IsDodging && !motor.Aiming && motor.IsGrounded && (ownHealth == null || !ownHealth.IsDead);
+
+        // Sem item pedido, a faca vale sempre (como no laboratório de testes).
+        bool HasKnife => requiredItem == null || (inventory != null && inventory.Has(requiredItem));
 
         void StartAttack()
         {

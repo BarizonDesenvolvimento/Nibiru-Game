@@ -56,6 +56,7 @@ namespace Nibiru.Inventory
             amount -= added;
             WorldState.SetPickupRemaining(persistentId.Id, amount);
             Notifications.Post(added > 1 ? $"{item.displayName} x{added}" : item.displayName);
+            if (!string.IsNullOrEmpty(item.pickupHint)) Notifications.Post(item.pickupHint);
 
             if (amount == 0)
             {
