@@ -23,6 +23,19 @@ namespace Nibiru.Player
         [Tooltip("Velocidade ao correr, em metros por segundo.")]
         [Min(0f)] public float runSpeed = 6f;
 
+        [Header("Esquivar")]
+        [Tooltip("Distância percorrida na esquiva, em metros.")]
+        [Min(0f)] public float dodgeDistance = 3.5f;
+
+        [Tooltip("Duração da esquiva, em segundos. Começa rápida e desacelera até parar.")]
+        [Min(0.05f)] public float dodgeDuration = 0.4f;
+
+        [Tooltip("Tempo de espera depois de uma esquiva antes de poder esquivar de novo, em segundos.")]
+        [Min(0f)] public float dodgeCooldown = 0.3f;
+
+        [Tooltip("Quanto tempo, a partir do início da esquiva, o jogador não leva dano, em segundos.")]
+        [Min(0f)] public float dodgeInvulnerableTime = 0.3f;
+
         [Header("Gravidade")]
         [Tooltip("Aceleração da gravidade (m/s²). Negativo puxa para baixo.")]
         public float gravity = -20f;

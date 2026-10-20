@@ -18,12 +18,21 @@ namespace Nibiru.Player
         // Valor negativo pequeno para manter o CharacterController grudado no chão.
         const float GroundedVerticalSpeed = -2f;
 
+        // Abaixo disso o direcional conta como solto.
+        const float InputDeadZoneSqr = 0.0001f;
+
         CharacterController controller;
         Vector3 horizontalVelocity;
         float verticalVelocity;
 
+        Vector3 dodgeDirection;
+        float dodgeElapsed;
+        float dodgeCooldownLeft;
+
         public Vector3 Velocity => horizontalVelocity + Vector3.up * verticalVelocity;
         public bool IsRunning { get; private set; }
+        public bool IsDodging { get; private set; }
+        public bool IsInvulnerable => IsDodging && dodgeElapsed < settings.dodgeInvulnerableTime;
 
         void Awake()
         {
@@ -37,18 +46,14 @@ namespace Nibiru.Player
             float dt = Time.deltaTime;
             Vector3 moveDirection = CameraRelative(input.Move);
 
-            // Correndo, vai sempre na velocidade máxima; andando, o analógico controla a velocidade.
-            IsRunning = input.RunActive && moveDirection.sqrMagnitude > 0.0001f;
-            Vector3 targetVelocity = IsRunning
-                ? moveDirection.normalized * settings.runSpeed
-                : moveDirection * settings.walkSpeed;
-            horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, settings.acceleration * dt);
+            dodgeCooldownLeft -= dt;
+            if (input.DodgePressed && CanDodge())
+                StartDodge(moveDirection);
 
-            if (moveDirection.sqrMagnitude > 0.0001f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, settings.turnSpeed * dt);
-            }
+            if (IsDodging)
+                UpdateDodge(dt);
+            else
+                UpdateWalkAndRun(moveDirection, dt);
 
             if (controller.isGrounded && verticalVelocity < 0f)
                 verticalVelocity = GroundedVerticalSpeed;
@@ -56,6 +61,70 @@ namespace Nibiru.Player
                 verticalVelocity += settings.gravity * dt;
 
             controller.Move(Velocity * dt);
+        }
+
+        void UpdateWalkAndRun(Vector3 moveDirection, float dt)
+        {
+            bool hasInput = moveDirection.sqrMagnitude > InputDeadZoneSqr;
+
+            // Correndo, vai sempre na velocidade máxima; andando, o analógico controla a velocidade.
+            IsRunning = input.RunActive && hasInput;
+            Vector3 targetVelocity = IsRunning
+                ? moveDirection.normalized * settings.runSpeed
+                : moveDirection * settings.walkSpeed;
+            horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, settings.acceleration * dt);
+
+            if (hasInput)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, settings.turnSpeed * dt);
+            }
+        }
+
+        bool CanDodge() => !IsDodging && dodgeCooldownLeft <= 0f && controller.isGrounded;
+
+        // Com direcional, esquiva para aquele lado e vira o corpo para lá.
+        // Sem direcional, dá um passo para trás mantendo a frente.
+        void StartDodge(Vector3 moveDirection)
+        {
+            if (moveDirection.sqrMagnitude > InputDeadZoneSqr)
+            {
+                dodgeDirection = moveDirection.normalized;
+                transform.rotation = Quaternion.LookRotation(dodgeDirection);
+            }
+            else
+            {
+                dodgeDirection = -transform.forward;
+            }
+
+            dodgeElapsed = 0f;
+            IsDodging = true;
+            IsRunning = false;
+        }
+
+        void UpdateDodge(float dt)
+        {
+            float previous = DodgeProgress(dodgeElapsed);
+            dodgeElapsed += dt;
+            float current = DodgeProgress(dodgeElapsed);
+
+            // Anda exatamente a fatia da distância que corresponde a este quadro,
+            // então a distância total não depende do FPS.
+            float step = (current - previous) * settings.dodgeDistance;
+            horizontalVelocity = dt > 0f ? dodgeDirection * (step / dt) : Vector3.zero;
+
+            if (dodgeElapsed >= settings.dodgeDuration)
+            {
+                IsDodging = false;
+                dodgeCooldownLeft = settings.dodgeCooldown;
+            }
+        }
+
+        // Fração da distância já percorrida (0 a 1). Começa rápida e desacelera até parar.
+        float DodgeProgress(float elapsed)
+        {
+            float t = Mathf.Clamp01(elapsed / settings.dodgeDuration);
+            return 1f - (1f - t) * (1f - t);
         }
 
         // Converte o direcional (x = lados, y = frente) em direção no mundo, relativa à câmera.
