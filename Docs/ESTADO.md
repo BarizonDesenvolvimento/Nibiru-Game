@@ -110,10 +110,13 @@ Feitos no Meshy, exportados do Blender para FBX:
 
 | Personagem | FBX | Fonte original |
 | --- | --- | --- |
-| Elena Varga | `Art/Personagens/Elena/Elena_Varga.fbx` + texturas | `Fontes/Personagens/Elena_Varga.blend` |
+| Elena Varga (nova, para usar) | `Art/Personagens/Elena/Elena_Personagem.fbx` (15 mil triângulos, esqueleto), `Elena_Animacoes.fbx` (16 animações), `Elena_Andando.fbx` e texturas `Elena_BaseColor/Metallic/Normal/Roughness.png` | Meshy (sem .blend) |
+| Elena Varga (antiga, pesada) | `Art/Personagens/Elena/Elena_Varga.fbx` + texturas | `Fontes/Personagens/Elena_Varga.blend` |
 | Samir Haddad | `Art/Personagens/Samir/Samir_Haddad.fbx` + texturas | `Fontes/Personagens/Samir_Haddad.blend` |
 
-Pendências desses modelos antes de entrarem no jogo:
+**Elena nova:** os três FBX estão como Humanoid, cada um com o próprio avatar, porque os ossos têm nomes diferentes (`smartrig` no personagem, `mixamorig` nas animações); a Unity traduz as animações de um para o outro. Não use "Copy From Other Avatar" entre eles: dá erro de ossos não encontrados. A cápsula continua no jogo até a troca. Falta criar o material URP com as texturas e o Animator.
+
+Pendências dos modelos antigos (Elena_Varga e Samir) antes de entrarem no jogo:
 - São pesados demais para jogo: Elena tem 1,8 milhão de triângulos e Samir 1,5 milhão. O alvo é perto de 50 mil. O objeto `Elena_TESTE_LOW` do .blend tem o mesmo tamanho do original, ou seja, ainda não foi reduzido.
 - Não têm esqueleto nem animações. O Samir está em pose A, boa para o Mixamo; a Elena está em pose natural, o que dificulta o rig automático.
 - A textura `_ORM` junta oclusão, rugosidade e metal num arquivo só e precisa ser convertida para o formato do material Lit do URP.
@@ -146,5 +149,5 @@ Pendências desses modelos antes de entrarem no jogo:
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Preparar os personagens 3D: reduzir polígonos, montar o esqueleto, criar o material URP e trocar a cápsula pela Elena.
+5. Preparar os personagens 3D: a Elena nova (Meshy) já tem esqueleto e animações; falta o material URP, o Animator e trocar a cápsula por ela. O Samir ainda precisa reduzir polígonos e ganhar esqueleto.
 6. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
