@@ -4,6 +4,8 @@ Jogo 3D indie para PC (Steam), sobre a conspiração dos Anunnaki. Uma arqueólo
 
 O design completo (história, personagens, facções, regiões, sistemas, finais) está em `Docs/GDD.md`. Leia antes de criar qualquer sistema ou conteúdo. Se algo no código contradizer o GDD, pergunte antes de mudar.
 
+**No começo de cada conversa, leia `Docs/ESTADO.md`**: ele diz o que já está pronto, onde fica cada coisa, o que está pendente e qual é o próximo passo. Ao terminar uma etapa grande, atualize esse arquivo.
+
 ## Decisões técnicas
 
 - Engine: Unity 6 LTS, pipeline URP (não usar HDRP nem Built-in).
@@ -21,22 +23,28 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 - Prefira scripts de editor e a ponte MCP para montar cenas e prefabs, em vez de pedir trabalho manual repetitivo.
 - Não edite arquivos .unity, .prefab ou .meta à mão.
 - Faça commits pequenos e frequentes, com mensagens em português.
+- Arquivos pesados (modelos, imagens, áudio, vídeo) vão pelo Git LFS, já configurado em `.gitattributes`. Nenhum arquivo fora do LFS pode passar de 100 MB (limite do GitHub).
+- Modelos 3D entram na Unity como FBX em `Assets/_Nibiru/Art/Personagens`; os .blend originais ficam em `Fontes/`, fora de `Assets`.
+- Teste cada sistema no Play pela ponte MCP antes de pedir o teste do dono (o jeito está em `Docs/ESTADO.md`). Nunca recompile scripts com o Play ligado.
+- Um passo por vez: ao terminar um sistema, mostre o resultado e espere o dono testar no Play antes de seguir.
 
 ## Estrutura de pastas
 
 ```
 Assets/
   _Nibiru/
-    Scripts/        (por sistema: Player, Camera, Combat, AI, Quests, Dialogue, Factions, Inventory, Save, UI)
-    Data/           (ScriptableObjects: missões, itens, diálogos, tabuletas)
-    Prefabs/
-    Scenes/
-    Art/            (assets próprios)
+    Scripts/        (por sistema: Player, Camera, Combat, AI, Stealth, Interaction, Quests, Dialogue,
+                     Factions, Inventory, Tablets, Powers, Save, UI; Editor/ para ferramentas do editor)
+    Data/           (ScriptableObjects: missões, eventos, itens, diálogos, tabuletas, poderes, facções, IA)
+    Prefabs/        (Player/Elena é a Elena com câmera e HUD; use em toda cena)
+    Scenes/         (Teste_Personagem = laboratório; Regiao1_SitioDeUr = região 1)
+    Art/            (assets próprios; Personagens/ com os modelos 3D em FBX)
   ThirdParty/       (assets comprados ou baixados, sem modificar)
+Fontes/             (arquivos-fonte de arte, como .blend; fora da Unity)
 Docs/
-  GDD.md
+  GDD.md, Biblia.md, Regiao-1-Sitio-de-Ur.md, ESTADO.md
 ```
 
 ## Fase atual
 
-Fase 3 do plano: construir a base. Primeira meta é o protótipo do personagem (andar, correr, esquivar, câmera em terceira pessoa) numa cena de teste. Depois disso, a fatia vertical: a região 1, Sítio de Ur.
+Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais e o blockout do mapa estão prontos. O próximo passo é povoar o mapa área por área, começando pelo Acampamento. Detalhes em `Docs/ESTADO.md`.
