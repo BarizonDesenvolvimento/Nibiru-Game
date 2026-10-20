@@ -53,5 +53,9 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: 1cea8154e1108f146b13f46dd65da8cc, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Siga o Samir at\xE9 a Aldeia"
+    completeOn: {fileID: 11400000, guid: 75aa26c605120e34cb455322e2312d75, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

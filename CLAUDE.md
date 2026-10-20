@@ -47,4 +47,4 @@ Docs/
 
 ## Fase atual
 
-Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1) e as Trincheiras (área 2) estão prontos. O próximo passo é povoar a Aldeia (área 3) e seguir área por área. Detalhes em `Docs/ESTADO.md`.
+Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2) e o encontro com o Samir na Aldeia (área 3, passo 6) estão prontos. O próximo passo é continuar a Aldeia (passos 7 a 9) e seguir área por área. Detalhes em `Docs/ESTADO.md`.

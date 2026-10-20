@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c4f21d4a70604985760fe321c34ed, type: 3}
   m_Name: ChegouAAldeia
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEvent
-  note: "A Elena chegou \xE0 Aldeia dos escavadores (o gatilho entra com o conte\xFAdo
-    da Aldeia)."
+  note: Na entrada da Aldeia, o Samir derrubou o soldado e terminou a conversa com
+    a Elena ("O guia"). Fecha o objetivo das Trincheiras.

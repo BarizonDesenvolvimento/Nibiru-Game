@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Aldeia_OGuia
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: "Samir?! Voc\xEA est\xE1 vivo..."
+    next: s1
+    raise: {fileID: 0}
+    choices: []
+  - id: s1
+    speaker: Samir
+    text: "Fale baixo. Daqui a pouco o r\xE1dio dele chama e ningu\xE9m responde."
+    next: s2
+    raise: {fileID: 0}
+    choices: []
+  - id: s2
+    speaker: Samir
+    text: "(Ele olha a luz azul que escapa da bolsa dela. Uma pausa.) Esconda isso.
+      E n\xE3o mostre a ningu\xE9m."
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "Voc\xEA sabe o que \xE9 isso?"
+    next: s3
+    raise: {fileID: 0}
+    choices: []
+  - id: s3
+    speaker: Samir
+    text: Sei que gente morre por menos.
+    next: e3
+    raise: {fileID: 0}
+    choices: []
+  - id: e3
+    speaker: Elena
+    text: O Kast disse que era um resgate...
+    next: s4
+    raise: {fileID: 0}
+    choices: []
+  - id: s4
+    speaker: Samir
+    text: "Ningu\xE9m veio resgatar ningu\xE9m. Vieram apagar quem viu."
+    next: 
+    raise: {fileID: 0}
+    choices:
+    - text: "Quem \xE9 voc\xEA, Samir? Guia nenhum mata assim."
+      next: s5
+      requires: {fileID: 0}
+      raise: {fileID: 0}
+      reputation: []
+    - text: Para onde vamos?
+      next: s6
+      requires: {fileID: 0}
+      raise: {fileID: 0}
+      reputation: []
+  - id: s5
+    speaker: Samir
+    text: Sou quem conhece o caminho. Por hoje, basta.
+    next: s6
+    raise: {fileID: 0}
+    choices: []
+  - id: s6
+    speaker: Samir
+    text: "Ainda tem gente escondida na aldeia. Venha atr\xE1s de mim, e longe da
+      estrada."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: 1cea8154e1108f146b13f46dd65da8cc, type: 2}
