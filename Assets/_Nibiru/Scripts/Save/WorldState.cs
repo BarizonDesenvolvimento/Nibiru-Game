@@ -4,8 +4,9 @@ using UnityEngine;
 namespace Nibiru.Save
 {
     /// <summary>
-    /// O que já mudou no mundo nesta partida: itens pegos (ou pegos em parte) e checkpoints
-    /// ativados. Sobrevive ao recarregar a cena; os objetos consultam isto ao nascer.
+    /// O que já mudou no mundo nesta partida: itens pegos (ou pegos em parte), checkpoints
+    /// ativados, eventos da história e o passo de cada missão. Sobrevive ao recarregar a cena;
+    /// os objetos consultam isto ao nascer.
     /// </summary>
     public static class WorldState
     {
@@ -14,16 +15,22 @@ namespace Nibiru.Save
         {
             internal readonly Dictionary<string, int> pickupsRemaining;
             internal readonly HashSet<string> activatedCheckpoints;
+            internal readonly HashSet<string> storyEvents;
+            internal readonly Dictionary<string, int> questSteps;
 
-            internal Snapshot(Dictionary<string, int> pickups, HashSet<string> checkpoints)
+            internal Snapshot()
             {
-                pickupsRemaining = new Dictionary<string, int>(pickups);
-                activatedCheckpoints = new HashSet<string>(checkpoints);
+                pickupsRemaining = new Dictionary<string, int>(WorldState.pickupsRemaining);
+                activatedCheckpoints = new HashSet<string>(WorldState.activatedCheckpoints);
+                storyEvents = new HashSet<string>(WorldState.storyEvents);
+                questSteps = new Dictionary<string, int>(WorldState.questSteps);
             }
         }
 
         static readonly Dictionary<string, int> pickupsRemaining = new Dictionary<string, int>();
         static readonly HashSet<string> activatedCheckpoints = new HashSet<string>();
+        static readonly HashSet<string> storyEvents = new HashSet<string>();
+        static readonly Dictionary<string, int> questSteps = new Dictionary<string, int>();
 
         // Começa limpo a cada Play, mesmo com o recarregamento de domínio desligado no editor.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -31,6 +38,8 @@ namespace Nibiru.Save
         {
             pickupsRemaining.Clear();
             activatedCheckpoints.Clear();
+            storyEvents.Clear();
+            questSteps.Clear();
         }
 
         /// <summary>Quantos ainda restam num item do chão que já foi mexido. False se nunca foi pego.</summary>
@@ -43,13 +52,24 @@ namespace Nibiru.Save
 
         public static void MarkCheckpointActivated(string id) => activatedCheckpoints.Add(id);
 
-        public static Snapshot Capture() => new Snapshot(pickupsRemaining, activatedCheckpoints);
+        public static bool HasStoryEvent(string id) => storyEvents.Contains(id);
+
+        public static void MarkStoryEvent(string id) => storyEvents.Add(id);
+
+        /// <summary>Passo atual de uma missão. False se ela ainda não começou.</summary>
+        public static bool TryGetQuestStep(string questId, out int step) => questSteps.TryGetValue(questId, out step);
+
+        public static void SetQuestStep(string questId, int step) => questSteps[questId] = step;
+
+        public static Snapshot Capture() => new Snapshot();
 
         public static void Restore(Snapshot snapshot)
         {
             Clear();
             foreach (KeyValuePair<string, int> pair in snapshot.pickupsRemaining) pickupsRemaining[pair.Key] = pair.Value;
             activatedCheckpoints.UnionWith(snapshot.activatedCheckpoints);
+            storyEvents.UnionWith(snapshot.storyEvents);
+            foreach (KeyValuePair<string, int> pair in snapshot.questSteps) questSteps[pair.Key] = pair.Value;
         }
     }
 }

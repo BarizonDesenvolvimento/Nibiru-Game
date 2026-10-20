@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: 9475fb7564f1f254ebf818ea15ebb417, type: 2}
   amount: 1
+  raiseOnPickup: {fileID: 0}
 --- !u!23 &16057220
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -940,6 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: b2c4d2c0d295b0940a9ec403b7b0ab60, type: 2}
   amount: 1
+  raiseOnPickup: {fileID: 11400000, guid: a74b034f2c867b74592ae7b274a91675, type: 2}
 --- !u!23 &211168793
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1804,6 +1806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: d911b10c3532eb247b0f7bd7a2e0d74c, type: 2}
   amount: 10
+  raiseOnPickup: {fileID: 0}
 --- !u!23 &441217301
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2849,6 +2852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: 0a4e6cc9e9410304dae740f90b1ab8cf, type: 2}
   amount: 1
+  raiseOnPickup: {fileID: 0}
 --- !u!114 &692828598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4365,7 +4369,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3566172519426223726, guid: 25e179e8288bfaf4db43363088fb66d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1523566862}
   m_SourcePrefab: {fileID: 100100000, guid: 25e179e8288bfaf4db43363088fb66d7, type: 3}
 --- !u!4 &1133130173 stripped
 Transform:
@@ -4496,6 +4503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: 5a0c6a3cbf9149f47a7d9ce53875292d, type: 2}
   amount: 1
+  raiseOnPickup: {fileID: 0}
 --- !u!23 &1150503252
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4637,6 +4645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: 14380211a56f24745a323057d322542e, type: 2}
   amount: 6
+  raiseOnPickup: {fileID: 0}
 --- !u!114 &1179557592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5902,6 +5911,25 @@ MonoBehaviour:
   - {fileID: 1373689231}
   crouchedScale: 0.6
   cameraDrop: 0.6
+--- !u!1 &1523566854 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3566172519426223726, guid: 25e179e8288bfaf4db43363088fb66d7, type: 3}
+  m_PrefabInstance: {fileID: 1133130172}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1523566862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523566854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3975b9f97d313154299100c412effa8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventRaiser
+  storyEvent: {fileID: 11400000, guid: 8eb5053188510ad4b8fef6ae1168926c, type: 2}
+  raiseOnDeath: 1
 --- !u!1 &1549853282
 GameObject:
   m_ObjectHideFlags: 0
@@ -6451,6 +6479,86 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1691832012}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1705158299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1705158302}
+  - component: {fileID: 1705158301}
+  - component: {fileID: 1705158300}
+  m_Layer: 0
+  m_Name: Missoes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1705158300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705158299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ca235efe0955e47bd6f80d96bbcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventListener
+  storyEvent: {fileID: 11400000, guid: 96122aba8ef62d941b009560a635dfc8, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1790813039}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  replayOnLoad: 1
+--- !u!114 &1705158301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705158299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb37efb933118bd448524c5427cacf75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestManager
+  quests:
+  - {fileID: 11400000, guid: 00a54cb6b545cfb4d8abbce6c8b782aa, type: 2}
+  - {fileID: 11400000, guid: f130ebd9111697f45b818223eb2062af, type: 2}
+  inventory: {fileID: 1473628169}
+--- !u!4 &1705158302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705158299}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1918968816}
+  - {fileID: 1790813043}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721308155
 GameObject:
   m_ObjectHideFlags: 0
@@ -6728,6 +6836,215 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3459332342765040442, guid: 25e179e8288bfaf4db43363088fb66d7, type: 3}
   m_PrefabInstance: {fileID: 1751264517}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1752698970
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1752698974}
+  - component: {fileID: 1752698973}
+  - component: {fileID: 1752698971}
+  - component: {fileID: 1752698972}
+  m_Layer: 5
+  m_Name: Objetivos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1752698971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752698970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 28
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!114 &1752698972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752698970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.6}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
+--- !u!222 &1752698973
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752698970}
+  m_CullTransparentMesh: 1
+--- !u!224 &1752698974
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752698970}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1808203636}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 60, y: -50}
+  m_SizeDelta: {x: 760, y: 320}
+  m_Pivot: {x: 0, y: 1}
+--- !u!1 &1790813039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1790813043}
+  - component: {fileID: 1790813042}
+  - component: {fileID: 1790813041}
+  - component: {fileID: 1790813040}
+  m_Layer: 0
+  m_Name: Marco_Final
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!23 &1790813040
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790813039}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 3a644992a102b2641bffbda12b785b37, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1790813041
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790813039}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1790813042
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790813039}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1790813043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790813039}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3, y: 1.5, z: 7}
+  m_LocalScale: {x: 0.6, y: 1.5, z: 0.6}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1705158302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1808203632
 GameObject:
   m_ObjectHideFlags: 0
@@ -6746,6 +7063,7 @@ GameObject:
   - component: {fileID: 1808203641}
   - component: {fileID: 1808203640}
   - component: {fileID: 1808203642}
+  - component: {fileID: 1808203643}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -6837,6 +7155,7 @@ RectTransform:
   - {fileID: 1027924114}
   - {fileID: 917614110}
   - {fileID: 572100944}
+  - {fileID: 1752698974}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6943,6 +7262,21 @@ MonoBehaviour:
   noiseFill: {fileID: 1835960190}
   fullNoiseRadius: 15
   decayPerSecond: 1.2
+--- !u!114 &1808203643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808203632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fd517fb7253bf4f9f0765c5678a8a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.UI.ObjectiveHUD
+  quests: {fileID: 1705158301}
+  inventory: {fileID: 1473628169}
+  label: {fileID: 1752698971}
 --- !u!1 &1829576349
 GameObject:
   m_ObjectHideFlags: 0
@@ -7194,6 +7528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: d911b10c3532eb247b0f7bd7a2e0d74c, type: 2}
   amount: 12
+  raiseOnPickup: {fileID: 0}
 --- !u!23 &1907518200
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7316,6 +7651,73 @@ Transform:
   m_Children: []
   m_Father: {fileID: 187541341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1918968815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1918968816}
+  - component: {fileID: 1918968818}
+  - component: {fileID: 1918968817}
+  m_Layer: 0
+  m_Name: Gatilho_Passagem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1918968816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918968815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2, y: 0.6, z: -7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1705158302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1918968817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918968815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c96c58f5afb86428345418dd54cc09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventTrigger
+  storyEvent: {fileID: 11400000, guid: 835c9fea51a276140894f578ec8f7817, type: 2}
+--- !u!65 &1918968818
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918968815}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 1.2, z: 2.4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1965248456
 GameObject:
   m_ObjectHideFlags: 0
@@ -7835,6 +8237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: 9475fb7564f1f254ebf818ea15ebb417, type: 2}
   amount: 1
+  raiseOnPickup: {fileID: 0}
 --- !u!23 &2043160910
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8088,6 +8491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: ce205903d0fa66e4b97fcebc1a94d39a, type: 2}
   amount: 1
+  raiseOnPickup: {fileID: 0}
 --- !u!23 &2056909246
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8342,3 +8746,4 @@ SceneRoots:
   - {fileID: 1101120304}
   - {fileID: 1444368769}
   - {fileID: 946767614}
+  - {fileID: 1705158302}

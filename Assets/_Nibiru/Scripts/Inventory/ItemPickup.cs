@@ -15,6 +15,9 @@ namespace Nibiru.Inventory
         [SerializeField] ItemDefinition item;
         [SerializeField, Min(1)] int amount = 1;
 
+        [Tooltip("Evento da história disparado quando o item é pego por inteiro (opcional).")]
+        [SerializeField] Quests.StoryEvent raiseOnPickup;
+
         PersistentId persistentId;
 
         void Awake()
@@ -54,7 +57,11 @@ namespace Nibiru.Inventory
             WorldState.SetPickupRemaining(persistentId.Id, amount);
             Notifications.Post(added > 1 ? $"{item.displayName} x{added}" : item.displayName);
 
-            if (amount == 0) gameObject.SetActive(false);
+            if (amount == 0)
+            {
+                gameObject.SetActive(false);
+                Quests.StoryEvents.Raise(raiseOnPickup);
+            }
             else Notifications.Post($"Sem espaço para mais {amount}");
         }
     }
