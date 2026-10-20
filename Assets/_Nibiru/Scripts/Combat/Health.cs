@@ -31,6 +31,8 @@ namespace Nibiru.Combat
         [SerializeField] MonoBehaviour invulnerabilitySource;
 
         IInvulnerability invulnerability;
+        // Componente deste objeto que muda o dano recebido (opcional), achado sozinho.
+        IDamageModifier damageModifier;
 
         public float Current { get; private set; }
         public float Max => maxHealth;
@@ -47,6 +49,7 @@ namespace Nibiru.Combat
             invulnerability = invulnerabilitySource as IInvulnerability;
             if (invulnerabilitySource != null && invulnerability == null)
                 Debug.LogError("Health: a fonte de invulnerabilidade não implementa IInvulnerability.", this);
+            damageModifier = GetComponent<IDamageModifier>();
         }
 
         /// <summary>Aplica dano. Devolve false se o golpe foi ignorado (morto ou invulnerável).</summary>
@@ -54,6 +57,8 @@ namespace Nibiru.Combat
         {
             if (IsDead || info.amount <= 0f) return false;
             if (invulnerability != null && invulnerability.IsInvulnerable) return false;
+            if (damageModifier != null) info.amount *= damageModifier.DamageMultiplier(info);
+            if (info.amount <= 0f) return false;
 
             Current = Mathf.Max(0f, Current - info.amount);
             Damaged?.Invoke(info);
