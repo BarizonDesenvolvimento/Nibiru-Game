@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Teste_Samir
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: inicio
+    speaker: Samir
+    text: "Eles n\xE3o vieram resgatar ningu\xE9m, doutora. Vieram apagar."
+    next: elena1
+    raise: {fileID: 0}
+    choices: []
+  - id: elena1
+    speaker: Elena
+    text: "Como voc\xEA sabe disso?"
+    next: samir2
+    raise: {fileID: 0}
+    choices: []
+  - id: samir2
+    speaker: Samir
+    text: "Porque eu sei o que dorme l\xE1 embaixo."
+    next: 
+    raise: {fileID: 0}
+    choices:
+    - text: "Voc\xEA \xE9 um deles?"
+      next: guardiao
+      requires: {fileID: 0}
+      raise: {fileID: 11400000, guid: 87d27231e47a4fa48b8a020e36e73701, type: 2}
+    - text: Me tire daqui.
+      next: fuga
+      requires: {fileID: 0}
+      raise: {fileID: 0}
+    - text: "J\xE1 cuidei do l\xEDder deles."
+      next: lider
+      requires: {fileID: 11400000, guid: 8eb5053188510ad4b8fef6ae1168926c, type: 2}
+      raise: {fileID: 0}
+  - id: guardiao
+    speaker: Samir
+    text: "Sou o \xFAltimo dos Guardi\xF5es desta terra. Por agora, \xE9 tudo que
+      voc\xEA precisa saber."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  - id: fuga
+    speaker: Samir
+    text: "Ent\xE3o me siga. E n\xE3o corra."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  - id: lider
+    speaker: Samir
+    text: "Ent\xE3o eles v\xE3o mandar mais. R\xE1pido."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: b08b66d0bc92f994b97fea3a43e25282, type: 2}
