@@ -1,4 +1,5 @@
 using Nibiru.Player;
+using Nibiru.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -89,14 +90,15 @@ namespace Nibiru.Cameras
             {
                 // Com o cursor solto (depois do Esc), mexer o mouse não gira a câmera.
                 if (lockCursor && Cursor.lockState != CursorLockMode.Locked) return Vector2.zero;
-                degrees = look * settings.mouseSensitivity;
+                degrees = look * settings.mouseSensitivity * GameOptions.MouseSensitivity;
             }
             else
             {
-                degrees = Vector2.Scale(look, settings.gamepadSpeed) * Time.deltaTime;
+                degrees = Vector2.Scale(look, settings.gamepadSpeed) * Time.deltaTime * GameOptions.GamepadSensitivity;
             }
 
-            if (settings.invertY) degrees.y = -degrees.y;
+            // A opção do jogador inverte em cima do que o projeto definiu.
+            if (settings.invertY != GameOptions.InvertY) degrees.y = -degrees.y;
             if (aiming) degrees *= settings.aimSensitivityMultiplier;
             return degrees;
         }

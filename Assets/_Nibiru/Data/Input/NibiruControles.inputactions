@@ -499,6 +499,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pausar",
+                    "type": "Button",
+                    "id": "c9742033-40c7-4d74-87e4-96fc7563e2ad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -719,6 +728,28 @@
                     "processors": "",
                     "groups": "Controle",
                     "action": "Voltar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f1c3119e-f90a-492e-951c-4f50d9fea2ac",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Pausar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49593c1c-4e0b-4955-90e8-3a742155bf7c",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Pausar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -30,16 +30,54 @@ namespace Nibiru.Player
         InputAction navigate;
         InputAction confirm;
         InputAction back;
+        InputAction pause;
         bool gameplayEnabled = true;
 
-        // Navegação de menu: um passo ao inclinar, e repete se continuar segurando.
-        const float NavThreshold = 0.5f;
-        const float NavFirstRepeatDelay = 0.35f;
-        const float NavRepeatInterval = 0.12f;
-        int navHeldDirection;
-        float navNextRepeatTime;
-        int navStepFrame = -1;
-        int navStep;
+        /// <summary>
+        /// Navegação de menu num eixo: um passo ao inclinar, e repete se continuar segurando.
+        /// Pode ser lido várias vezes no mesmo quadro sem andar duas vezes.
+        /// Usa tempo sem escala porque os menus funcionam com o jogo pausado.
+        /// </summary>
+        class NavRepeater
+        {
+            const float Threshold = 0.5f;
+            const float FirstRepeatDelay = 0.35f;
+            const float RepeatInterval = 0.12f;
+
+            int heldDirection;
+            float nextRepeatTime;
+            int frame = -1;
+            int step;
+
+            public int Step(float axis)
+            {
+                if (frame == Time.frameCount) return step;
+                frame = Time.frameCount;
+                step = Compute(axis);
+                return step;
+            }
+
+            int Compute(float axis)
+            {
+                int direction = axis > Threshold ? 1 : axis < -Threshold ? -1 : 0;
+                float now = Time.unscaledTime;
+                if (direction != heldDirection)
+                {
+                    heldDirection = direction;
+                    nextRepeatTime = now + FirstRepeatDelay;
+                    return direction;
+                }
+                if (direction != 0 && now >= nextRepeatTime)
+                {
+                    nextRepeatTime = now + RepeatInterval;
+                    return direction;
+                }
+                return 0;
+            }
+        }
+
+        readonly NavRepeater verticalNav = new NavRepeater();
+        readonly NavRepeater horizontalNav = new NavRepeater();
 
         const string KeyboardMouseGroup = "TecladoMouse";
         const string GamepadGroup = "Controle";
@@ -65,23 +103,19 @@ namespace Nibiru.Player
         public bool InventoryTogglePressed => toggleInventory.WasPressedThisFrame();
         public bool ConfirmPressed => confirm.WasPressedThisFrame();
         public bool BackPressed => back.WasPressedThisFrame();
+        public bool PausePressed => pause.WasPressedThisFrame();
+
+        /// <summary>Passo vertical do menu neste quadro: +1 desce, -1 sobe, 0 parado.</summary>
+        public int VerticalNavStep => -verticalNav.Step(navigate.ReadValue<Vector2>().y);
+
+        /// <summary>Passo horizontal do menu neste quadro: +1 direita, -1 esquerda, 0 parado.</summary>
+        public int HorizontalNavStep => horizontalNav.Step(navigate.ReadValue<Vector2>().x);
 
         /// <summary>
-        /// Passo vertical do menu neste quadro: +1 desce, -1 sobe, 0 parado.
-        /// Pode ser lido várias vezes no mesmo quadro sem andar duas vezes.
+        /// Quadro em que os controles da Elena foram ligados ou desligados pela última vez.
+        /// Menus usam isto para o mesmo botão não fechar um menu e abrir outro de uma vez.
         /// </summary>
-        public int VerticalNavStep
-        {
-            get
-            {
-                if (navStepFrame != Time.frameCount)
-                {
-                    navStepFrame = Time.frameCount;
-                    navStep = ComputeVerticalNavStep();
-                }
-                return navStep;
-            }
-        }
+        public int GameplayToggledFrame { get; private set; } = -10;
 
         /// <summary>True se o último comando veio do controle; false se veio do teclado ou mouse.</summary>
         public bool UsingGamepad { get; private set; }
@@ -121,27 +155,7 @@ namespace Nibiru.Player
             navigate = uiMap.FindAction("Navegar", throwIfNotFound: true);
             confirm = uiMap.FindAction("Confirmar", throwIfNotFound: true);
             back = uiMap.FindAction("Voltar", throwIfNotFound: true);
-        }
-
-        // Usa tempo sem escala porque os menus funcionam com o jogo pausado.
-        int ComputeVerticalNavStep()
-        {
-            float y = navigate.ReadValue<Vector2>().y;
-            int direction = y > NavThreshold ? -1 : y < -NavThreshold ? 1 : 0;
-            float now = Time.unscaledTime;
-
-            if (direction != navHeldDirection)
-            {
-                navHeldDirection = direction;
-                navNextRepeatTime = now + NavFirstRepeatDelay;
-                return direction;
-            }
-            if (direction != 0 && now >= navNextRepeatTime)
-            {
-                navNextRepeatTime = now + NavRepeatInterval;
-                return direction;
-            }
-            return 0;
+            pause = uiMap.FindAction("Pausar", throwIfNotFound: true);
         }
 
         void OnEnable()
@@ -172,6 +186,7 @@ namespace Nibiru.Player
         /// <summary>Liga ou desliga os controles da Elena (andar, olhar, interagir...). Menus usam isso.</summary>
         public void SetGameplayEnabled(bool enabled)
         {
+            if (enabled != gameplayEnabled) GameplayToggledFrame = Time.frameCount;
             gameplayEnabled = enabled;
             runLatched = false;
             if (!isActiveAndEnabled) return;
