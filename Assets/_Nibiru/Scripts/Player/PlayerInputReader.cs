@@ -25,6 +25,8 @@ namespace Nibiru.Player
 
         public Vector2 Move => move.ReadValue<Vector2>();
         public Vector2 Look => look.ReadValue<Vector2>();
+        // Mouse dá deslocamento em pixels por quadro; analógico dá inclinação de -1 a 1.
+        public bool LookFromMouse => look.activeControl?.device is Pointer;
         public bool RunActive => run.IsPressed() || runLatched;
         public bool DodgePressed => dodge.WasPressedThisFrame();
 

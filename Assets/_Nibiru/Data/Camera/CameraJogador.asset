@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a707d8fc4271aff4ab506bacf50b604c, type: 3}
+  m_Name: CameraJogador
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Cameras.CameraSettings
+  mouseSensitivity: 0.1
+  gamepadSpeed: {x: 180, y: 120}
+  invertY: 0
+  startPitch: 10
+  pivotHeight: 0.6
+  shoulderOffset: 0.6
+  distance: 2.5
+  thirdPersonPitchLimits: {x: -35, y: 60}
+  collisionRadius: 0.2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  returnSpeed: 4
