@@ -1,4 +1,5 @@
 using Nibiru.Interaction;
+using Nibiru.Save;
 using Nibiru.UI;
 using UnityEngine;
 
@@ -6,12 +7,25 @@ namespace Nibiru.Inventory
 {
     /// <summary>
     /// Item no cenário que a Elena pode pegar. Se não couber tudo, pega o que der
-    /// e o resto fica no chão, esperando espaço.
+    /// e o resto fica no chão, esperando espaço. Lembra o que já foi pego ao voltar de um checkpoint.
     /// </summary>
+    [RequireComponent(typeof(PersistentId))]
     public class ItemPickup : MonoBehaviour, IInteractable
     {
         [SerializeField] ItemDefinition item;
         [SerializeField, Min(1)] int amount = 1;
+
+        PersistentId persistentId;
+
+        void Awake()
+        {
+            persistentId = GetComponent<PersistentId>();
+            if (WorldState.TryGetPickupRemaining(persistentId.Id, out int remaining))
+            {
+                amount = remaining;
+                if (amount == 0) gameObject.SetActive(false);
+            }
+        }
 
         public string Prompt
         {
@@ -37,6 +51,7 @@ namespace Nibiru.Inventory
             }
 
             amount -= added;
+            WorldState.SetPickupRemaining(persistentId.Id, amount);
             Notifications.Post(added > 1 ? $"{item.displayName} x{added}" : item.displayName);
 
             if (amount == 0) gameObject.SetActive(false);

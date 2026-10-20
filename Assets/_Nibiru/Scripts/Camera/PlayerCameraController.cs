@@ -16,6 +16,9 @@ namespace Nibiru.Cameras
         [Tooltip("Modo usado ao começar. Precisa ser um componente que implementa ICameraMode, como o ThirdPersonCameraMode.")]
         [SerializeField] MonoBehaviour startingMode;
 
+        [Tooltip("Ao começar, a câmera olha para onde este objeto olha (normalmente o Jogador). Vazio = mantém a rotação da câmera na cena.")]
+        [SerializeField] Transform alignOnStart;
+
         [Tooltip("Prende e esconde o cursor do mouse durante o jogo. Clique na tela do jogo para prender de novo depois de apertar Esc.")]
         [SerializeField] bool lockCursor = true;
 
@@ -25,7 +28,7 @@ namespace Nibiru.Cameras
 
         void Start()
         {
-            yaw = transform.eulerAngles.y;
+            yaw = (alignOnStart != null ? alignOnStart : transform).eulerAngles.y;
             pitch = settings.startPitch;
             SetMode(startingMode as ICameraMode);
             if (lockCursor) LockCursor();

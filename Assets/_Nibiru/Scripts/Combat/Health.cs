@@ -61,6 +61,9 @@ namespace Nibiru.Combat
             return true;
         }
 
+        /// <summary>Define a vida direto, sem eventos de dano ou cura. Usado ao voltar de um checkpoint.</summary>
+        public void Restore(float value) => Current = Mathf.Clamp(value, 1f, maxHealth);
+
         /// <summary>Cura até o máximo. Devolve quanto curou de fato.</summary>
         public float Heal(float amount)
         {

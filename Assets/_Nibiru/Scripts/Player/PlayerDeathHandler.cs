@@ -1,6 +1,6 @@
 using Nibiru.Combat;
+using Nibiru.Save;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Nibiru.Player
 {
@@ -37,11 +37,7 @@ namespace Nibiru.Player
                 Quaternion.Euler(90f, transform.eulerAngles.y, 0f));
         }
 
-        /// <summary>Tenta de novo. Até existirem checkpoints, recomeça a cena do início.</summary>
-        public void Restart()
-        {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(gameObject.scene.name);
-        }
+        /// <summary>Tenta de novo a partir do último checkpoint (ou do começo da cena, se não houver).</summary>
+        public void Restart() => Checkpoints.Restart(gameObject.scene.name);
     }
 }

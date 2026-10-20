@@ -115,5 +115,19 @@ namespace Nibiru.Inventory
         }
 
         public bool Has(ItemDefinition item, int amount = 1) => CountOf(item) >= amount;
+
+        /// <summary>Cópia independente do conteúdo, para o checkpoint guardar.</summary>
+        public (List<ItemStack> slots, List<ItemStack> keyItems) CopyContents() =>
+            (slots.ConvertAll(s => new ItemStack(s.item, s.count)), keyItems.ConvertAll(s => new ItemStack(s.item, s.count)));
+
+        /// <summary>Troca todo o conteúdo pelo que foi guardado.</summary>
+        public void RestoreContents(List<ItemStack> savedSlots, List<ItemStack> savedKeyItems)
+        {
+            slots.Clear();
+            keyItems.Clear();
+            foreach (ItemStack s in savedSlots) slots.Add(new ItemStack(s.item, s.count));
+            foreach (ItemStack s in savedKeyItems) keyItems.Add(new ItemStack(s.item, s.count));
+            Changed?.Invoke();
+        }
     }
 }
