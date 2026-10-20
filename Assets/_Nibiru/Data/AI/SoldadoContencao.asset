@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2459cb1f1ae5ba34c83bbcd4b08bc78f, type: 3}
+  m_Name: SoldadoContencao
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.AI.SoldierSettings
+  patrolSpeed: 1.6
+  chaseSpeed: 4.2
+  waitAtWaypoint: 1.5
+  turnSpeed: 360
+  viewDistance: 18
+  viewAngle: 110
+  eyeHeight: 0.7
+  timeToSpot: 1.2
+  closeRange: 4
+  crouchedVisibility: 0.45
+  awarenessDecay: 0.2
+  hearingMultiplier: 1
+  attackRange: 14
+  preferredDistance: 8
+  fireInterval: 1.3
+  damage: 12
+  accuracy: 0.55
+  shotNoiseRadius: 25
+  loseSightTime: 3
+  searchTime: 8
+  reinforcementDelay: 3
+  reinforcementRadius: 30
