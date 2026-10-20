@@ -97,6 +97,9 @@ namespace Nibiru.Player
 
         void Awake()
         {
+            // Usa uma cópia própria do arquivo de controles. Assim a cena antiga e a nova
+            // (ao recomeçar de um checkpoint) não disputam o mesmo estado interno.
+            actions = Instantiate(actions);
             map = actions.FindActionMap("Jogador", throwIfNotFound: true);
             move = map.FindAction("Mover", throwIfNotFound: true);
             look = map.FindAction("Olhar", throwIfNotFound: true);
@@ -152,6 +155,11 @@ namespace Nibiru.Player
             map.Disable();
             uiMap.Disable();
             runLatched = false;
+        }
+
+        void OnDestroy()
+        {
+            if (actions != null) Destroy(actions);
         }
 
         /// <summary>False enquanto um menu está aberto e os controles da Elena estão desligados.</summary>
