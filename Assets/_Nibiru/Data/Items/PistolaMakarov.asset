@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
   displayName: Pistola Makarov
   description: "Pistola do chefe de seguran\xE7a da expedi\xE7\xE3o."
+  pickupHint: "Mirar: bot\xE3o direito (LT). Atirar: bot\xE3o esquerdo (RT). Recarregar:
+    R (X). Tiro faz muito barulho"
   icon: {fileID: 0}
   category: 0
   maxStack: 1
   healAmount: 0
   firearm: {fileID: 11400000, guid: fb333045abf35d54a90cce85ce5a4d9d, type: 2}
+  tablet: {fileID: 0}

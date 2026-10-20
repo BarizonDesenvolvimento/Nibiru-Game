@@ -44,5 +44,14 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: 6f656e6762fa9084ca47863e90f9e4f7, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Pegue a pistola do chefe de seguran\xE7a, no meio das trincheiras
+      (C ou Ctrl para agachar)"
+    completeOn: {fileID: 0}
+    requiredItem: {fileID: 11400000, guid: b2c4d2c0d295b0940a9ec403b7b0ab60, type: 2}
+    requiredCount: 1
+  - objective: Atravesse as trincheiras e siga para a Aldeia, a oeste
+    completeOn: {fileID: 11400000, guid: 1cea8154e1108f146b13f46dd65da8cc, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

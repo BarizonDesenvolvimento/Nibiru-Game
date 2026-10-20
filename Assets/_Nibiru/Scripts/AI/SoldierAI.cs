@@ -62,6 +62,9 @@ namespace Nibiru.AI
         bool reinforcementsCalled;
         float tracerHideTime;
 
+        /// <summary>Soldados com a IA ligada agora (para avisos de fora, como o helicóptero).</summary>
+        public static IReadOnlyList<SoldierAI> All => all;
+
         public State CurrentState { get; private set; }
         public bool IsLeader => isLeader;
         public float Awareness => perception.Awareness;

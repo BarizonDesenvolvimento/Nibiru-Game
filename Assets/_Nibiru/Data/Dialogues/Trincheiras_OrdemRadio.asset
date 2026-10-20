@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Trincheiras_OrdemRadio
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: r1
+    speaker: "R\xE1dio dos soldados"
+    text: "Equipe Dois, aqui \xE9 o Comando. Repetindo a ordem do Dr. Kast para todas
+      as equipes."
+    next: r2
+    raise: {fileID: 0}
+    choices: []
+  - id: r2
+    speaker: "R\xE1dio dos soldados"
+    text: "A doutora, viva. O resto, n\xE3o."
+    next: r3
+    raise: {fileID: 0}
+    choices: []
+  - id: r3
+    speaker: "Soldado (r\xE1dio)"
+    text: "Entendido, Comando. Varrendo as trincheiras. C\xE2mbio."
+    next: e1
+    raise: {fileID: 0}
+    choices: []
+  - id: e1
+    speaker: Elena
+    text: "\"O resto, n\xE3o.\" O Hassan. A minha equipe. Para eles, todo mundo aqui
+      \xE9 \"o resto\"."
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "Me querem viva. Isso n\xE3o me consola nada."
+    next: e3
+    raise: {fileID: 0}
+    choices: []
+  - id: e3
+    speaker: Elena
+    text: "O chefe de seguran\xE7a dormia nas trincheiras, de guarda. Ele tinha uma
+      pistola."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: 0a77d09949eac6d4aa73ca5a83184edc, type: 2}
