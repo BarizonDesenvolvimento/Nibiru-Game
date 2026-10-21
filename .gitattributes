@@ -53,3 +53,12 @@
 *.dll   binary
 *.so    binary
 *.a     binary
+
+# Arte-fonte dos personagens (fora da Unity): todo binário vai pelo LFS, seja qual for a extensão.
+# Os arquivos de texto pequenos do AccuRig e de anotações continuam no Git normal.
+ArteFonte/**        filter=lfs diff=lfs merge=lfs -text
+ArteFonte/**/*.json -filter -diff -merge text
+ArteFonte/**/*.ini  -filter -diff -merge text
+ArteFonte/**/*.md   -filter -diff -merge text
+ArteFonte/**/*.txt  -filter -diff -merge text
+ArteFonte/**/*.py   -filter -diff -merge text

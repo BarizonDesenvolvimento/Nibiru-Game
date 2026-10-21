@@ -74,3 +74,12 @@ Desktop.ini
 # Cópias de segurança automáticas do Blender
 *.blend1
 *.blend2
+
+# Arte-fonte: arquivos brutos baixados do Meshy ficam fora do Git (dá para baixar de novo).
+# Exceções: os .blend de 154 mil do manto e da saia e as texturas PBR do corpo.
+ArteFonte/*/1_Meshy/**/*.*
+!ArteFonte/*/1_Meshy/Manto/*.blend
+!ArteFonte/*/1_Meshy/Saia/*.blend
+!ArteFonte/*/1_Meshy/Corpo/*Corpo/*.png
+# Renders de conferência (refeitos pelos scripts a qualquer momento)
+ArteFonte/*/3_Blender/Renders/

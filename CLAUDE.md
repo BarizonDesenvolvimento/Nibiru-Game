@@ -17,6 +17,7 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 
 ## Como trabalhar neste projeto
 
+- Escreva sempre em português, inclusive as mensagens de progresso durante o trabalho.
 - O dono do projeto não é programador profissional. Explique em português simples o que foi feito e o que ele precisa fazer no editor da Unity.
 - Sistemas genéricos e orientados a dados: missões, diálogos, itens, facções e tabuletas são definidos em ScriptableObjects, para que adicionar conteúdo não exija mudar código.
 - Um sistema por vez, testável sozinho, antes de passar para o próximo.
@@ -24,7 +25,7 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 - Não edite arquivos .unity, .prefab ou .meta à mão.
 - Faça commits pequenos e frequentes, com mensagens em português.
 - Arquivos pesados (modelos, imagens, áudio, vídeo) vão pelo Git LFS, já configurado em `.gitattributes`. Nenhum arquivo fora do LFS pode passar de 100 MB (limite do GitHub).
-- Modelos 3D entram na Unity como FBX em `Assets/_Nibiru/Art/Personagens`; os .blend originais ficam em `Fontes/`, fora de `Assets`.
+- Modelos 3D entram na Unity como FBX em `Assets/_Nibiru/Art/Personagens`; a arte-fonte de todos os personagens (.blend, rigs, referências) fica em `ArteFonte/<Personagem>/`, fora de `Assets`. Os arquivos brutos baixados do Meshy (`ArteFonte/*/1_Meshy`) ficam fora do Git, menos os que estão nas exceções do `.gitignore`.
 - Teste cada sistema no Play pela ponte MCP antes de pedir o teste do dono (o jeito está em `Docs/ESTADO.md`). Nunca recompile scripts com o Play ligado.
 - Um passo por vez: ao terminar um sistema, mostre o resultado e espere o dono testar no Play antes de seguir.
 
@@ -40,7 +41,8 @@ Assets/
     Scenes/         (Teste_Personagem = laboratório; Regiao1_SitioDeUr = região 1)
     Art/            (assets próprios; Personagens/ com os modelos 3D em FBX)
   ThirdParty/       (assets comprados ou baixados, sem modificar)
-Fontes/             (arquivos-fonte de arte, como .blend; fora da Unity)
+ArteFonte/          (arte-fonte por personagem, fora da Unity: Elena/, Samir/, Ninsar/
+                     com 1_Meshy, 2_Rig, 3_Blender e Imagens De Referencia)
 Docs/
   GDD.md, Biblia.md, Regiao-1-Sitio-de-Ur.md, ESTADO.md
 ```
