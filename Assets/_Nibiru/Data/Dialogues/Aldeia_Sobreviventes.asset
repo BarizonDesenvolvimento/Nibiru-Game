@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Aldeia_Sobreviventes
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: u1
+    speaker: Mulher
+    text: "Quem est\xE1 a\xED? Fora! N\xE3o temos mais nada!"
+    next: s1
+    raise: {fileID: 0}
+    choices: []
+  - id: s1
+    speaker: Samir
+    text: "Calma, Umm Karim. Sou eu. Ela \xE9 da equipe dos estrangeiros. Est\xE1
+      sozinha."
+    next: u2
+    raise: {fileID: 0}
+    choices: []
+  - id: u2
+    speaker: Umm Karim
+    text: "Da equipe... Ent\xE3o foi a sua gente que abriu aquele buraco no ch\xE3o."
+    next: e1
+    raise: {fileID: 0}
+    choices: []
+  - id: e1
+    speaker: Elena
+    text: "N\xF3s escavamos onde a Funda\xE7\xE3o mandou. Quem \xE9 ele?"
+    next: u3
+    raise: {fileID: 0}
+    choices: []
+  - id: u3
+    speaker: Umm Karim
+    text: "Yusuf. Cavava com voc\xEAs. Voltou do po\xE7o com o bra\xE7o aberto, e
+      agora a ferida cheira mal. A febre n\xE3o baixa."
+    next: y1
+    raise: {fileID: 0}
+    choices: []
+  - id: y1
+    speaker: Yusuf
+    text: "(Ele fala de olhos fechados.) Doutora... l\xE1 embaixo... eu ouvi algu\xE9m
+      respirando. Debaixo das pedras."
+    next: u4
+    raise: {fileID: 0}
+    choices: []
+  - id: u4
+    speaker: Umm Karim
+    text: "Esta aldeia tinha medo daquele lugar muito antes da Funda\xE7\xE3o chegar.
+      Meu av\xF4 dizia que l\xE1 embaixo algu\xE9m dorme. E que n\xE3o se acorda
+      quem dorme ali."
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "A ferida infeccionou. Ele precisa de antibi\xF3ticos, sen\xE3o a infec\xE7\xE3o
+      se espalha."
+    next: u5
+    raise: {fileID: 0}
+    choices: []
+  - id: u5
+    speaker: Umm Karim
+    text: "Os soldados levaram tudo. Se quer ajudar, ache o rem\xE9dio. L\xE1 fora,
+      onde n\xF3s n\xE3o podemos ir."
+    next: s2
+    raise: {fileID: 0}
+    choices: []
+  - id: s2
+    speaker: Samir
+    text: "A Funda\xE7\xE3o tem uma tenda m\xE9dica no p\xE9 do zigurate. Tem rem\xE9dio
+      l\xE1. E tem guardas."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: 3562051f0257e2e468315130bc3fe77b, type: 2}

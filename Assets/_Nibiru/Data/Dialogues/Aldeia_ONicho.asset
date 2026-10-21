@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Aldeia_ONicho
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: s1
+    speaker: Samir
+    text: 'Venha ver uma coisa. (Ele se ajoelha diante de um nicho na parede do fundo:
+      tijolo cozido, muito mais antigo que a casa. Na pedra, um barco de junco sobre
+      ondas.)'
+    next: e1
+    raise: {fileID: 0}
+    choices: []
+  - id: e1
+    speaker: Elena
+    text: "Isso \xE9 muito mais velho que a casa. Constru\xEDram a casa em volta
+      dele?"
+    next: s2
+    raise: {fileID: 0}
+    choices: []
+  - id: s2
+    speaker: Samir
+    text: "Gente que sabia guardar segredo. A Funda\xE7\xE3o revirou a aldeia inteira
+      e passou por aqui sem ver."
+    next: s3
+    raise: {fileID: 0}
+    choices: []
+  - id: s3
+    speaker: Samir
+    text: "(Ele acende uma lamparina de barro e a deixa sobre o nicho.) Aqui voc\xEA
+      pode descansar. Se der errado l\xE1 fora, \xE9 para c\xE1 que voc\xEA volta."
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: (A tabuleta fica morna dentro da bolsa, como no acampamento.)
+    next: s4
+    raise: {fileID: 0}
+    choices: []
+  - id: s4
+    speaker: Samir
+    text: "Descanse. Depois a gente fala sobre o que voc\xEA carrega nessa bolsa."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: 54338b2e4e6bbfe449f821c999712ad7, type: 2}

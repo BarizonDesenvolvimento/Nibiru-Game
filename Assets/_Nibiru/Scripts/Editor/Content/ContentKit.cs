@@ -295,6 +295,10 @@ namespace Nibiru.EditorTools.Content
 
         public static void Call(UnityEvent e, UnityAction action) => UnityEventTools.AddPersistentListener(e, action);
 
+        // Chamada com um objeto como argumento (por exemplo, WalkTo de um ponto).
+        public static void Call<T>(UnityEvent e, UnityAction<T> action, T argument) where T : Object =>
+            UnityEventTools.AddObjectPersistentListener(e, action, argument);
+
         public static void SetActive(UnityEvent e, GameObject go, bool active) =>
             UnityEventTools.AddBoolPersistentListener(e, go.SetActive, active);
 

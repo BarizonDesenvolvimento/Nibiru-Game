@@ -26,6 +26,9 @@ namespace Nibiru.Save
         [Tooltip("Texto do aviso no modo Altar.")]
         [SerializeField] string altarPrompt = "Tocar o altar";
 
+        [Tooltip("Evento disparado ao ativar (opcional), por exemplo para completar um objetivo.")]
+        [SerializeField] Quests.StoryEvent raiseOnActivate;
+
         PersistentId persistentId;
 
         public string Prompt => altarPrompt;
@@ -54,6 +57,7 @@ namespace Nibiru.Save
             WorldState.MarkCheckpointActivated(persistentId.Id);
             player.SaveCheckpoint(spawnPoint != null ? spawnPoint : transform);
             Notifications.Post("Ponto de retorno marcado");
+            Quests.StoryEvents.Raise(raiseOnActivate);
         }
 
         void OnDrawGizmos()

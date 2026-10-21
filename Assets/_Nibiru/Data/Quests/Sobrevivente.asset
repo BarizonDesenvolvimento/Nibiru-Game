@@ -57,5 +57,13 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: 75aa26c605120e34cb455322e2312d75, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Siga o Samir at\xE9 a casa"
+    completeOn: {fileID: 11400000, guid: 3562051f0257e2e468315130bc3fe77b, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Descanse junto ao nicho antigo (E ou A)
+    completeOn: {fileID: 11400000, guid: 60021e366a330ff48b717ed02e410eaa, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

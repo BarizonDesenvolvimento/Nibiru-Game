@@ -1,5 +1,6 @@
 using System.Linq;
 using Nibiru.Dialogue;
+using Nibiru.Inventory;
 using Nibiru.Quests;
 using Nibiru.Sequences;
 using UnityEditor;
@@ -14,9 +15,11 @@ namespace Nibiru.EditorTools.Content
     using static ContentKit;
 
     /// <summary>
-    /// Povoa a Aldeia (área 3 do Sítio de Ur). Por enquanto, o passo 6 da missão "Sobrevivente":
-    /// na entrada da Aldeia, um soldado encurrala a Elena, o Samir o derruba com a faca, conversa
-    /// com ela ("O guia") e a leva até o pátio, diante da casa do altar.
+    /// Povoa a Aldeia (área 3 do Sítio de Ur). Passo 6 da missão "Sobrevivente": na entrada da
+    /// Aldeia, um soldado encurrala a Elena, o Samir o derruba com a faca, conversa com ela
+    /// ("O guia") e a leva até o pátio, diante da casa do altar. Passo 7: na casa do altar estão
+    /// os sobreviventes (Yusuf e Umm Karim; começa "Remédio para Yusuf") e o Samir mostra o nicho
+    /// dos Guardiões, que vira altar de salvamento.
     ///
     /// O encontro acontece numa das entradas da Aldeia: a que estiver à frente da Elena e mais
     /// perto dela quando ela entra na área. Os pontos são conferidos na malha de navegação e
@@ -50,20 +53,41 @@ namespace Nibiru.EditorTools.Content
 
         static readonly Vector3 PatioCenter = new Vector3(-47f, 1f, -21f);
 
+        // Casa do altar do blockout: aberta para o pátio (norte, z = -26), paredes por dentro de
+        // x = -49,5 a -44,5 e até z = -31,5 no fundo, onde fica o nicho (frente em z = -30,7).
+        static readonly Vector3 NicheFront = new Vector3(-47f, 0f, -30.7f);
+        const float NicheTop = 1f;
+
+        // Dentro da casa: o Samir encostado na parede leste, olhando para o oeste (para os sobreviventes).
+        static readonly Vector3 SamirInHouse = new Vector3(-45.4f, 0f, -28.6f);
+        const float SamirInHouseYaw = 270f;
+
+        // Yusuf deitado na esteira, junto à parede oeste; Umm Karim em pé, perto da cabeça dele.
+        static readonly Vector3 YusufSpot = new Vector3(-48.7f, 0f, -29.3f);
+        static readonly Vector3 UmmKarimSpot = new Vector3(-47.9f, 0f, -30.7f);
+
+        // Lamparina: luz quente, amarela e alaranjada. É a marca dos altares dos Guardiões (o azul é de Kur e dos deuses).
+        static readonly Color LampLight = new Color(1f, 0.62f, 0.28f);
+        static readonly Color FlameColor = new Color(1f, 0.55f, 0.15f);
+        const string FlameMaterialPath = "Assets/_Nibiru/Art/Materials/Blockout/BO_Chama.mat";
+
         // ---------- Dados ----------
 
         class Events
         {
-            public StoryEvent aproximouSeDaAldeia, chegouAAldeia, chegouAoPatioComSamir;
+            public StoryEvent aproximouSeDaAldeia, chegouAAldeia, chegouAoPatioComSamir,
+                entrouNaCasaDoAltar, conheceuSobreviventes, samirMostrouONicho, descansouNoNicho, entregouAntibioticos;
         }
 
         class Dialogues
         {
-            public DialogueDefinition encurralada, oGuia, chegadaPatio;
+            public DialogueDefinition encurralada, oGuia, chegadaPatio,
+                sobreviventes, oNicho, ummKarimEspera, yusufEspera;
         }
 
         static Events ev;
         static Dialogues dlg;
+        static QuestDefinition yusufQuest;
 
         [MenuItem("Nibiru/Conteúdo/Povoar Aldeia na cena aberta")]
         static void Build()
@@ -78,7 +102,9 @@ namespace Nibiru.EditorTools.Content
             CreateData();
 
             Transform root = NewRoot(RootName, "Povoar Aldeia");
-            BuildSamirEncounter(Group(root, "Encontro_Samir"));
+            GameObject samir = BuildSamirEncounter(Group(root, "Encontro_Samir"));
+            BuildSurvivorsAndAltar(Group(root, "Casa_Altar"), samir);
+            RegisterQuest(yusufQuest);
 
             EditorSceneManager.MarkSceneDirty(root.gameObject.scene);
             Selection.activeGameObject = root.gameObject;
@@ -92,6 +118,11 @@ namespace Nibiru.EditorTools.Content
                 aproximouSeDaAldeia = Event("AproximouSeDaAldeia", "A Elena entrou na área da Aldeia (por qualquer lado). Começa o encontro com o Samir numa das entradas."),
                 chegouAAldeia = Event("ChegouAAldeia", ""),
                 chegouAoPatioComSamir = Event("ChegouAoPatioComSamir", "Seguindo o Samir, a Elena chegou ao pátio da Aldeia, na frente da casa do altar."),
+                entrouNaCasaDoAltar = Event("EntrouNaCasaDoAltar", "A Elena entrou na casa do altar, onde os sobreviventes estão escondidos. Começa a conversa \"Os sobreviventes\"."),
+                conheceuSobreviventes = Event("ConheceuSobreviventes", "A Elena conheceu Yusuf e Umm Karim na casa do altar. Começa \"Remédio para Yusuf\"."),
+                samirMostrouONicho = Event("SamirMostrouONicho", "O Samir mostrou o nicho dos Guardiões e acendeu a lamparina. O nicho passa a ser altar de salvamento."),
+                descansouNoNicho = Event("DescansouNoNicho", "A Elena descansou no nicho dos Guardiões (altar de salvamento da Aldeia)."),
+                entregouAntibioticos = Event("EntregouAntibioticos", "A Elena entregou os antibióticos ao Yusuf (a entrega entra num passo seguinte)."),
             };
 
             // O evento já existia, criado pelas Trincheiras: a nota antiga dizia que o gatilho viria depois.
@@ -125,21 +156,68 @@ namespace Nibiru.EditorTools.Content
 
                 chegadaPatio = Dialogue("Aldeia_ChegadaPatio", null,
                     N("s1", "Samir", "Aqui. Os soldados ainda não entraram nas casas. Ainda.")),
+
+                sobreviventes = Dialogue("Aldeia_Sobreviventes", ev.conheceuSobreviventes,
+                    N("u1", "Mulher", "Quem está aí? Fora! Não temos mais nada!", "s1"),
+                    N("s1", "Samir", "Calma, Umm Karim. Sou eu. Ela é da equipe dos estrangeiros. Está sozinha.", "u2"),
+                    N("u2", "Umm Karim", "Da equipe... Então foi a sua gente que abriu aquele buraco no chão.", "e1"),
+                    N("e1", "Elena", "Nós escavamos onde a Fundação mandou. Quem é ele?", "u3"),
+                    N("u3", "Umm Karim", "Yusuf. Cavava com vocês. Voltou do poço com o braço aberto, e agora a ferida cheira mal. A febre não baixa.", "y1"),
+                    N("y1", "Yusuf", "(Ele fala de olhos fechados.) Doutora... lá embaixo... eu ouvi alguém respirando. Debaixo das pedras.", "u4"),
+                    N("u4", "Umm Karim", "Esta aldeia tinha medo daquele lugar muito antes da Fundação chegar. Meu avô dizia que lá embaixo alguém dorme. E que não se acorda quem dorme ali.", "e2"),
+                    N("e2", "Elena", "A ferida infeccionou. Ele precisa de antibióticos, senão a infecção se espalha.", "u5"),
+                    N("u5", "Umm Karim", "Os soldados levaram tudo. Se quer ajudar, ache o remédio. Lá fora, onde nós não podemos ir.", "s2"),
+                    N("s2", "Samir", "A Fundação tem uma tenda médica no pé do zigurate. Tem remédio lá. E tem guardas.")),
+
+                oNicho = Dialogue("Aldeia_ONicho", ev.samirMostrouONicho,
+                    N("s1", "Samir", "Venha ver uma coisa. (Ele se ajoelha diante de um nicho na parede do fundo: tijolo cozido, muito mais antigo que a casa. Na pedra, um barco de junco sobre ondas.)", "e1"),
+                    N("e1", "Elena", "Isso é muito mais velho que a casa. Construíram a casa em volta dele?", "s2"),
+                    N("s2", "Samir", "Gente que sabia guardar segredo. A Fundação revirou a aldeia inteira e passou por aqui sem ver.", "s3"),
+                    N("s3", "Samir", "(Ele acende uma lamparina de barro e a deixa sobre o nicho.) Aqui você pode descansar. Se der errado lá fora, é para cá que você volta.", "e2"),
+                    N("e2", "Elena", "(A tabuleta fica morna dentro da bolsa, como no acampamento.)", "s4"),
+                    N("s4", "Samir", "Descanse. Depois a gente fala sobre o que você carrega nessa bolsa.")),
+
+                ummKarimEspera = Dialogue("Aldeia_UmmKarimEspera", null,
+                    N("u1", "Umm Karim", "Ache o remédio, doutora. O menino não tem muitos dias.")),
+
+                yusufEspera = Dialogue("Aldeia_YusufEspera", null,
+                    N("y1", "Yusuf", "(Ele treme de febre.) Está tão quente... ou tão frio. Não sei mais.")),
             };
+
+            var antibiotics = Asset<ItemDefinition>("Items/Antibioticos", item =>
+            {
+                item.displayName = "Antibióticos";
+                item.description = "Uma caixa de amoxicilina com o selo da Fundação. Para a infecção do Yusuf.";
+                item.category = ItemCategory.Chave;
+            });
+
+            yusufQuest = Asset<QuestDefinition>("Quests/RemedioParaYusuf", quest =>
+            {
+                quest.displayName = "Remédio para Yusuf";
+                quest.kind = QuestKind.Secundaria;
+                quest.startOn = ev.conheceuSobreviventes;
+                quest.steps = new[]
+                {
+                    Step("Consiga antibióticos para o Yusuf", item: antibiotics),
+                    Step("Leve os antibióticos ao Yusuf", ev.entregouAntibioticos),
+                };
+            });
 
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
             if (mainQuest == null)
                 Debug.LogWarning("Missão Sobrevivente não encontrada: rode antes o menu do Acampamento.");
             else
                 AppendSteps(mainQuest,
-                    Step("Siga o Samir até a Aldeia", ev.chegouAoPatioComSamir));
+                    Step("Siga o Samir até a Aldeia", ev.chegouAoPatioComSamir),
+                    Step("Siga o Samir até a casa", ev.conheceuSobreviventes),
+                    Step("Descanse junto ao nicho antigo (E ou A)", ev.descansouNoNicho));
 
             AssetDatabase.SaveAssets();
         }
 
         // ---------- Encontro com o Samir (passo 6) ----------
 
-        static void BuildSamirEncounter(Transform g)
+        static GameObject BuildSamirEncounter(Transform g)
         {
             // Confere os pontos antes de criar qualquer peça nova, para elas não contarem como obstáculo.
             Vector3[] spots = EncounterSpots.Select(s => OnNavMesh(s.position, s.name, EncounterClearance)).ToArray();
@@ -218,6 +296,158 @@ namespace Nibiru.EditorTools.Content
                 SetActive(e, patio, true);
                 Call(e, walkOrSnap.Run);
             });
+            return samir;
+        }
+
+        // ---------- Sobreviventes e o nicho dos Guardiões (passo 7) ----------
+
+        static void BuildSurvivorsAndAltar(Transform g, GameObject samir)
+        {
+            Transform samirPoint = Point(g, "Samir_NaCasa", OnNavMesh(SamirInHouse, "Samir_NaCasa", 0.4f));
+            samirPoint.rotation = Quaternion.Euler(0f, SamirInHouseYaw, 0f);
+
+            // Yusuf deitado numa esteira, Umm Karim em pé ao lado (cápsulas, por enquanto).
+            Prim(PrimitiveType.Cube, g, "Esteira_Yusuf", YusufSpot + Vector3.up * 0.02f, new Vector3(1f, 0.04f, 2.1f), "BO_LonaLaranja", collider: ColliderMode.None);
+            GameObject yusuf = Body(g, "Yusuf", YusufSpot + Vector3.up * 0.04f, 0f, "BO_Areia");
+            GameObject ummKarim = Prim(PrimitiveType.Capsule, g, "Umm_Karim", UmmKarimSpot + Vector3.up * 0.8f, new Vector3(0.55f, 0.8f, 0.55f), "BO_Madeira", 40f);
+
+            // Conversas curtas depois do encontro, quantas vezes a Elena quiser.
+            GameObject talkUmm = Zone(g, "Falar_UmmKarim", UmmKarimSpot + Vector3.up * 0.8f, new Vector3(1.2f, 1.6f, 1.2f));
+            SetField(DialogueStarterOn(talkUmm, dlg.ummKarimEspera, "Falar com Umm Karim", interactable: true), "onlyOnce", false);
+            talkUmm.SetActive(false);
+            GameObject talkYusuf = Zone(g, "Falar_Yusuf", YusufSpot + Vector3.up * 0.4f, new Vector3(0.9f, 0.8f, 1.8f));
+            SetField(DialogueStarterOn(talkYusuf, dlg.yusufEspera, "Falar com Yusuf", interactable: true), "onlyOnce", false);
+            talkYusuf.SetActive(false);
+
+            GameObject lampLight = NicheMark(g);
+
+            // O altar: interagir com o nicho marca o ponto de retorno, de frente para ele.
+            GameObject altar = Zone(g, "Altar_Nicho", NicheFront + new Vector3(0f, 0.6f, 0.15f), new Vector3(1.2f, 1.2f, 0.6f));
+            Transform spawn = Point(altar.transform, "Retorno", NicheFront + new Vector3(0f, 0f, 1.4f));
+            spawn.rotation = Quaternion.Euler(0f, 180f, 0f);
+            var checkpoint = altar.AddComponent<Save.Checkpoint>();
+            SetField(checkpoint, "activation", Save.Checkpoint.Activation.Altar);
+            SetField(checkpoint, "spawnPoint", spawn);
+            SetField(checkpoint, "altarPrompt", "Descansar no nicho");
+            SetField(checkpoint, "raiseOnActivate", ev.descansouNoNicho);
+            StableId(altar);
+            altar.SetActive(false);
+
+            // Do pátio, o Samir entra na casa (meio segundo depois do evento, para correr depois da
+            // fala do pátio e depois do Samir ser posto no pátio ao voltar de um checkpoint).
+            var walker = samir.GetComponent<WalkToPoint>();
+            var walkOrSnap = g.gameObject.AddComponent<StoryEventBranch>();
+            SetField(walkOrSnap, "storyEvent", ev.conheceuSobreviventes);
+            Call(GetField<UnityEvent>(walkOrSnap, "ifRaised"), walker.SnapTo, samirPoint);
+            Call(GetField<UnityEvent>(walkOrSnap, "ifNotRaised"), walker.WalkTo, samirPoint);
+            var intoHouse = g.gameObject.AddComponent<TimedSequence>();
+            SetSteps(intoHouse, S("Samir entra na casa do altar", 0.5f, e => Call(e, walkOrSnap.Run)));
+
+            // No fundo da casa, os sobreviventes se assustam com a Elena (só depois do pátio).
+            GameObject house = EventZone(g, "Gatilho_CasaAltar", new Vector3(-47f, 1f, -29.3f), new Vector3(4.6f, 2f, 3.4f), ev.entrouNaCasaDoAltar);
+            house.SetActive(false);
+            Listener(g.gameObject, ev.chegouAoPatioComSamir, e =>
+            {
+                Call(e, intoHouse.Play);
+                SetActive(e, house, true);
+            });
+            var survivors = DialogueTrigger(g, "Dialogo_Sobreviventes", dlg.sobreviventes);
+            Listener(survivors.gameObject, ev.entrouNaCasaDoAltar, e => Call(e, survivors.StartDialogue));
+            SetField(survivors.GetComponent<StoryEventListener>(), "replayOnLoad", false);
+
+            // Logo depois, o Samir mostra o nicho e acende a lamparina.
+            var niche = DialogueTrigger(g, "Dialogo_ONicho", dlg.oNicho);
+            var showNiche = niche.gameObject.AddComponent<TimedSequence>();
+            SetField(showNiche, "skipIfRaised", ev.samirMostrouONicho);
+            SetSteps(showNiche, S("Samir mostra o nicho", 0.6f, e => Call(e, niche.StartDialogue)));
+            Listener(niche.gameObject, ev.conheceuSobreviventes, e =>
+            {
+                Call(e, showNiche.Play);
+                SetActive(e, talkUmm, true);
+                SetActive(e, talkYusuf, true);
+            });
+
+            // Lamparina acesa = altar pronto (ao vivo e ao voltar de um checkpoint).
+            Listener(g.gameObject, ev.samirMostrouONicho, e =>
+            {
+                SetActive(e, lampLight, true);
+                SetActive(e, altar, true);
+            });
+        }
+
+        // Marca dos altares dos Guardiões: o barco de junco sobre ondas entalhado na frente do nicho
+        // e uma lamparina de barro em cima, de luz quente. Devolve a chama com a luz (apagada até o Samir acender).
+        static GameObject NicheMark(Transform parent)
+        {
+            Transform mark = Group(parent, "Marca_Guardioes");
+            mark.position = NicheFront;
+
+            // Entalhe: peças finas e escuras quase encostadas na face do nicho (que fica para o norte, +z).
+            Transform carving = Group(mark, "Entalhe_BarcoDeJunco");
+            carving.localPosition = new Vector3(0f, 0f, 0.012f);
+            const string groove = "BO_TijoloBarroEscuro";
+            Local(PrimitiveType.Cube, carving, "Casco", new Vector3(0f, 0.6f, 0f), new Vector3(0.42f, 0.05f, 0.02f), groove);
+            Local(PrimitiveType.Cube, carving, "Proa", new Vector3(0.24f, 0.67f, 0f), new Vector3(0.05f, 0.17f, 0.02f), groove).transform.localRotation = Quaternion.Euler(0f, 0f, -25f);
+            Local(PrimitiveType.Cube, carving, "Popa", new Vector3(-0.24f, 0.67f, 0f), new Vector3(0.05f, 0.17f, 0.02f), groove).transform.localRotation = Quaternion.Euler(0f, 0f, 25f);
+            Local(PrimitiveType.Cube, carving, "Feixe_Junco", new Vector3(0f, 0.64f, 0f), new Vector3(0.3f, 0.02f, 0.02f), groove);
+            for (int row = 0; row < 2; row++)
+                for (int i = 0; i < 4; i++)
+                {
+                    float x = -0.24f + i * 0.16f;
+                    float y = 0.48f - row * 0.1f;
+                    Local(PrimitiveType.Cube, carving, $"Onda_{row + 1}_{i + 1}a", new Vector3(x, y, 0f), new Vector3(0.1f, 0.022f, 0.02f), groove).transform.localRotation = Quaternion.Euler(0f, 0f, 30f);
+                    Local(PrimitiveType.Cube, carving, $"Onda_{row + 1}_{i + 1}b", new Vector3(x + 0.08f, y, 0f), new Vector3(0.1f, 0.022f, 0.02f), groove).transform.localRotation = Quaternion.Euler(0f, 0f, -30f);
+                }
+
+            // Lamparina de barro (pires com bico) em cima do nicho.
+            Transform lamp = Group(mark, "Lamparina");
+            lamp.localPosition = new Vector3(0f, NicheTop, -0.25f);
+            Local(PrimitiveType.Sphere, lamp, "Pires", new Vector3(0f, 0.03f, 0f), new Vector3(0.16f, 0.06f, 0.12f), "BO_TijoloBarro");
+            Local(PrimitiveType.Cylinder, lamp, "Bico", new Vector3(0f, 0.045f, 0.08f), new Vector3(0.035f, 0.035f, 0.035f), "BO_TijoloBarro").transform.localRotation = Quaternion.Euler(70f, 0f, 0f);
+
+            var flame = new GameObject("Chama");
+            flame.transform.SetParent(lamp, false);
+            flame.transform.localPosition = new Vector3(0f, 0.09f, 0.1f);
+            GameObject tip = Local(PrimitiveType.Sphere, flame.transform, "Fogo", Vector3.zero, new Vector3(0.025f, 0.05f, 0.025f), "BO_Areia");
+            tip.GetComponent<Renderer>().sharedMaterial = FlameMaterial();
+            var light = new GameObject("Luz_Quente").AddComponent<Light>();
+            light.transform.SetParent(flame.transform, false);
+            light.transform.localPosition = new Vector3(0f, 0.3f, 0.25f);
+            light.type = LightType.Point;
+            light.color = LampLight;
+            light.range = 5f;
+            light.intensity = 1.2f;
+            light.shadows = LightShadows.Soft;
+            flame.SetActive(false);
+            return flame;
+        }
+
+        // Material da chama: sem sombra nem luz, laranja-amarelado. Criado só se ainda não existir.
+        static Material FlameMaterial()
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(FlameMaterialPath);
+            if (material != null) return material;
+
+            material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            material.SetColor("_BaseColor", FlameColor);
+            AssetDatabase.CreateAsset(material, FlameMaterialPath);
+            return material;
+        }
+
+        // Põe a missão na lista do QuestManager da cena (criado pelo Acampamento), se ainda não estiver.
+        static void RegisterQuest(QuestDefinition quest)
+        {
+            var manager = Object.FindFirstObjectByType<QuestManager>();
+            if (manager == null)
+            {
+                Debug.LogWarning("Aldeia: QuestManager não encontrado na cena. Rode antes o menu do Acampamento.");
+                return;
+            }
+
+            var quests = GetField<QuestDefinition[]>(manager, "quests");
+            if (quests.Contains(quest)) return;
+            Undo.RecordObject(manager, "Registrar missão");
+            SetField(manager, "quests", quests.Append(quest).ToArray());
         }
 
         // Samir em formas simples: cápsula cinza com a faca na mão, andando pela malha de navegação.

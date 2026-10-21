@@ -43,6 +43,20 @@ namespace Nibiru.Sequences
             arrived = false;
         }
 
+        /// <summary>Troca o destino e anda até ele (por exemplo, do pátio para dentro de uma casa).</summary>
+        public void WalkTo(Transform newDestination)
+        {
+            destination = newDestination;
+            Walk();
+        }
+
+        /// <summary>Troca o destino e põe o personagem direto nele, sem disparar a chegada.</summary>
+        public void SnapTo(Transform newDestination)
+        {
+            destination = newDestination;
+            SnapToDestination();
+        }
+
         /// <summary>Põe o personagem direto no destino, sem disparar a chegada (para voltar de um checkpoint).</summary>
         public void SnapToDestination()
         {
