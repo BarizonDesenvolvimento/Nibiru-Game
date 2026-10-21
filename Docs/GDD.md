@@ -132,6 +132,29 @@ O jogador explora uma região, enfrenta o que mora nela, encontra tabuletas e vo
 | Câmera | Terceira pessoa no lançamento. Primeira pessoa como opção numa atualização |
 | Save | Pontos de salvamento no refúgio e em altares; salvamento automático entre áreas |
 
+## Exploração e segredos
+
+A missão principal é sempre possível sem as secundárias e sem os segredos, só um pouco mais difícil. Secundárias e segredos dão vantagem, nunca são obrigatórios.
+
+Toda região tem quatro tipos de segredo:
+
+| Tipo | O que é | Exemplos |
+| --- | --- | --- |
+| **Poder** | Coisas que deixam a Elena mais forte | Itens raros, tabuletas ME opcionais, relíquias |
+| **História** | Pedaços do passado e do presente que ninguém conta de graça | Memórias, cartas, fitas e missões curtas |
+| **Imersão** | Coisas para olhar e guardar | Itens visuais, roupas, objetos expostos no Refúgio |
+| **Desafio** | Mistérios para resolver | Puzzles, tumbas com mecanismos, cifras em cuneiforme |
+
+**Inspiração:** o Cemitério Real de Ur, escavado entre 1926 e 1932, com tumbas reais cheias de ouro, lápis-lazúli e instrumentos, e servos enterrados junto aos seus senhores. Cada região deve ter algo dessa sensação: um lugar escondido, antigo e cheio de coisas, que recompensa quem procura.
+
+**Ferramentas já previstas para encontrar segredos:**
+- **Eco do Abzu:** acende marcas cuneiformes escondidas e mostra o que está atrás das paredes.
+- **Poderes novos:** abrem caminhos antigos que antes estavam fechados (voltar a regiões anteriores pelo Refúgio vale a pena).
+- **Altares dos Guardiões:** pontos seguros que também guardam pistas e inscrições.
+- **Diário da Elena:** registra o que ela encontra e dá pistas do que ainda falta.
+
+Os segredos de cada região são planejados junto com ela. Os da região 1 ainda serão definidos.
+
 ## Finais
 
 O jogo tem cinco finais e um secreto, definidos pela facção aliada, pelo nível de transformação e pelos segredos descobertos.

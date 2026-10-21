@@ -86,6 +86,7 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 - **O segredo:** o filho dele está preso nos Laboratórios Enlil, sendo transformado em híbrido.
 - **O conflito:** o juramento dos Guardiões manda matar qualquer pessoa com o sangue dos deuses que comece a despertar. Isso inclui a Elena, e agora o próprio filho.
 - **Para onde pode ir:** cumprir o juramento e trair a Elena, ou quebrá-lo e salvar o filho.
+- **Na fuga do Sítio de Ur:** quando a Fundação fecha as estradas, o Samir se separa da Elena. Sozinho, ele passa pelos canais secos do sul até o wadi, onde deixou a caminhonete; com ela e a tabuleta acendendo a cada passo, não passaria. Por isso ele a espera no wadi e ela atravessa sozinha a base da Fundação e o Poço.
 
 ### Ninsar
 
@@ -105,6 +106,11 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 
 - **Viva, em Kur, há 24 anos.** Ereshkigal a mantém presa porque ela é a única que sabe como lacrar o Ekur para sempre.
 - Aparece no Ato 2 como voz em gravações e no Ato 3 em pessoa. O reencontro é o coração emocional do jogo.
+
+## Os Guardiões e os seus caminhos
+
+- **A marca:** o barco de junco sobre ondas, o barco de Ziusudra. Aparece entalhada nos altares dos Guardiões (nichos com uma lamparina de barro de luz quente) e nas passagens que eles cavaram.
+- **As passagens:** os Guardiões cavaram caminhos antigos sob os sítios que vigiam, para sair lá de baixo ou para levar alguma coisa de volta. No Sítio de Ur, a passagem começa na antecâmara do Poço, atrás de uma parede com o barco de junco entalhado, e sai no leito seco do wadi, fora do cerco da Fundação. Irena passou por ela em 1979.
 
 ## Mistérios em camadas
 

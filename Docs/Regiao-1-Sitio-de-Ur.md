@@ -100,10 +100,14 @@ A sequência do começo ao fim. Cada passo vira um objetivo na tela.
 7. **Chegar à Aldeia.** Sobreviventes escondidos: Yusuf, um jovem escavador ferido, e Umm Karim, a mulher mais velha da aldeia. O Samir mostra o nicho dos Guardiões, que serve de altar de salvamento. *(Começa a secundária "Remédio para Yusuf".)*
 8. **Decifrar a primeira tabuleta.** No altar, a Elena lê a tabuleta e vive uma memória jogável curta (veja "A primeira tabuleta"). Ela ganha o primeiro poder e uma marca azul na pele do pulso. O Samir viu tudo e está com a mão na faca. *(Diálogo com escolha, veja abaixo.)*
 9. **Plano de fuga.** A Fundação fecha as estradas. O Samir conhece uma passagem antiga dos Guardiões que sai do Poço para o wadi, fora do cerco. Para chegar ao Poço, é preciso passar pela base avançada no zigurate.
+   - Da beira norte da Aldeia, os dois veem o cerco: um caminhão da Fundação fecha a estrada do norte com uma barreira e um guarda, um helicóptero pousa na base e uma patrulha passa a vigiar a faixa entre a Aldeia e o muro da base. O caminho norte para o Poço fica fechado.
+   - O Samir conta da passagem: ela fica na antecâmara do Poço, atrás de uma parede com o barco de junco entalhado (a marca dos Guardiões), e sai no wadi, onde está a caminhonete dele.
+   - Ele se separa da Elena: sozinho, passa pelos canais secos do sul até o wadi; com ela e a tabuleta acendendo, não passaria. Ele a espera na caminhonete. Lembra que o remédio do Yusuf está na tenda médica da base.
+   - A Elena atravessa a estrada passando pela patrulha (furtividade) e contorna a ponta sul do muro para entrar na base.
 10. **Atravessar a base do zigurate.** Área aberta com várias rotas. Na tenda de comando: documentos da Fundação, entre eles um e-mail do Kast sobre "a filha de Irena", e uma foto de 1979 com a mãe da Elena ao lado de um homem jovem (o Kast, mas a Elena não reconhece). Ao sair, ela abre o portão que liga a base à Aldeia.
 11. **Descer o Poço.** Antecâmara, Selo de Kur rachado, brilho azul. A tabuleta pulsa e a Elena tem um flash da noite que esqueceu: só luz e mãos. Algo saiu pelas rachaduras naquela noite.
 12. **Sobreviver ao Primeiro Servo.** Chefe da região: um Lullu antigo, com máscara de ouro e olhos de lápis-lazúli, que caça pelo som. *(Usa esquiva e o primeiro poder.)*
-13. **A passagem dos Guardiões.** Túnel estreito com marcas dos Guardiões. Aqui está a primeira fita de Irena, gravada em 1979: ela passou por esta mesma passagem.
+13. **A passagem dos Guardiões.** A entrada fica atrás da parede com o barco de junco, na antecâmara. Túnel estreito com marcas dos Guardiões. Aqui está a primeira fita de Irena, gravada em 1979: ela passou por esta mesma passagem.
 14. **O wadi.** Na saída, a tempestade de areia chega. O Kast fala pelo rádio de um soldado: os moradores da Aldeia estão cercados. **Primeira escolha de facção** (veja abaixo).
 15. **Fuga.** A Elena e o Samir partem na caminhonete, dentro da tempestade laranja, rumo a Tell Amar. Entrada no diário, e fim da fatia.
 
@@ -194,6 +198,7 @@ A arena do chefe fica num andaime em vários níveis, iluminado por holofotes qu
 | 3 | O guia | Samir | Seco e direto: os soldados vieram apagar testemunhas. Não explica como sabe | Perguntar quem ele é: ele desconversa |
 | 4 | Os sobreviventes | Umm Karim, Yusuf | A aldeia tinha medo do Poço antes da Fundação chegar. "Meu avô dizia que lá embaixo alguém dorme" | — |
 | 5 | Depois da tabuleta | Samir | Ele viu a Elena ler a tabuleta. Pergunta o que ela ouviu. A mão dele fica na faca | Contar a verdade (Guardiões +5), mentir (sem mudança, mas ele percebe e lembra depois) ou devolver a pergunta ("Por que você está com a mão na faca?"; ele revela que é Guardião) |
+| 5b | O cerco | Samir | Da beira da Aldeia, ele mostra as estradas fechadas, conta da passagem atrás da parede com o barco de junco e explica por que vai sozinho pelos canais secos do sul | "Você não vem comigo?" ou, se ele revelou que é Guardião, "Os Guardiões sempre souberam desse caminho?" |
 | 6 | O e-mail | (documento) | O Kast escreve sobre "a filha de Irena" e diz que "a herança precisa estar presente" | — |
 | 7 | O flash | Voz (Enki) | No Poço, a voz diz "você já esteve aqui" e o flash mostra só luz e mãos | — |
 | 8 | A fita | Irena (gravação) | 1979: Irena descreve a passagem, fala de "Guardiões que não confiam em ninguém" e termina com o nome da filha | — |
