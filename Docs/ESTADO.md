@@ -14,11 +14,11 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
-- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pela ponte, **esperando o teste do dono no Play**.
+- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é o dono testar o passo 8 no Play e, depois, o plano de fuga (passo 9). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é o plano de fuga (passo 9). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -101,7 +101,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Uma escrita cuneiforme escondida na parede do fundo da casa só aparece com o Eco (`Inscricao_Escondida`, `EchoHiddenMark`).
 - Ao voltar de um checkpoint depois da leitura: o poder, a marca e as escolhas continuam valendo, e nada se repete.
 - Enquanto o passo 9 não existe, a missão "Sobrevivente" aparece como concluída depois da conversa com o Samir.
-- Teste feito pela ponte: leitura, memória (andando com controle virtual), as conversas, a volta, as escolhas da verdade e da faca, a escrita revelada pelo Eco e a volta de um checkpoint. Falta o teste do dono no Play.
+- Teste feito pela ponte: leitura, memória (andando com controle virtual), as conversas, a volta, as escolhas da verdade e da faca, a escrita revelada pelo Eco e a volta de um checkpoint. Testado e aprovado pelo dono no Play.
 
 **Memória jogável, como funciona (vale para as próximas):** um arquivo `MemoryDefinition` (cena, quem a Elena é, lugar, evento de entrada, evento de fim, cor da passagem) e um `PlayableMemory` na cena da região, chamado por um evento. Na cena da memória: um `MemorySpawn` (onde começa) e um `MemoryAvatar` (a aparência, com a origem nos pés e sem colisão). A cena da memória precisa estar na lista do Build e ficar longe da região, porque o sol da região é apagado durante a memória, mas o resto continua lá, parado.
 
@@ -216,8 +216,8 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até o passo 8 da Aldeia (21 de outubro de 2026), ainda sem o teste do dono. Commits em português, pequenos e frequentes.
-- O `ProjectSettings/ProjectSettings.asset` tem uma mudança que não veio do passo 8 (nome da empresa "Barizon Desenvolvimento"); ficou fora dos commits, para o dono decidir.
+- Tudo enviado ao GitHub até o passo 8 da Aldeia, testado pelo dono (21 de outubro de 2026). Commits em português, pequenos e frequentes.
+- Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
 ## Como testar sozinho pela ponte MCP
 
@@ -236,7 +236,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. O dono testar o passo 8 no Play (veja "Como o dono testa o passo 8" abaixo). Depois, continuar a Aldeia: o plano de fuga (passo 9), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir), patrulhas na estrada e a revelação dos filmes do Tom.
+1. Continuar a Aldeia: o plano de fuga (passo 9), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir), patrulhas na estrada e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
@@ -244,7 +244,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
-### Como o dono testa o passo 8
+### Como testar o passo 8
 
 Atalhos no menu **Nibiru > Testes > Passo 8** (`Scripts/Editor/Step8Shortcuts.cs`): cada um abre a região, liga o Play e põe a Elena no momento certo, com o mundo como se ela tivesse jogado até ali (e um checkpoint de frente para o nicho). Funcionam com o Play desligado ou ligado.
 
