@@ -2,7 +2,7 @@
 
 Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem precisar reler o histórico. Atualize este arquivo ao fim de cada etapa grande.
 
-Última atualização: 20 de outubro de 2026.
+Última atualização: 21 de outubro de 2026.
 
 ## Onde estamos
 
@@ -15,6 +15,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) está pronto e testado pelo dono.
+- A **Ninsar** está sendo montada como personagem modular (corpo, manto, saia e lança), em 6 etapas: as etapas 0 e 1 (Git e encaixe das peças) estão prontas e aprovadas pelo dono. Veja "Ninsar" em Personagens 3D.
 
 O próximo passo é continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9).
 
@@ -111,8 +112,8 @@ Feitos no Meshy, exportados do Blender para FBX:
 | Personagem | FBX | Fonte original |
 | --- | --- | --- |
 | Elena Varga (nova, para usar) | `Art/Personagens/Elena/Elena_Personagem.fbx` (15 mil triângulos, esqueleto), `Elena_Animacoes.fbx` (16 animações), `Elena_Andando.fbx` e texturas `Elena_BaseColor/Metallic/Normal/Roughness.png` | Meshy (sem .blend) |
-| Elena Varga (antiga, pesada) | `Art/Personagens/Elena/Elena_Varga.fbx` + texturas | `Fontes/Personagens/Elena_Varga.blend` |
-| Samir Haddad | `Art/Personagens/Samir/Samir_Haddad.fbx` + texturas | `Fontes/Personagens/Samir_Haddad.blend` |
+| Elena Varga (antiga, pesada) | `Art/Personagens/Elena/Elena_Varga.fbx` + texturas | `ArteFonte/Elena/Elena_Varga.blend` |
+| Samir Haddad | `Art/Personagens/Samir/Samir_Haddad.fbx` + texturas | `ArteFonte/Samir/Samir_Haddad.blend` |
 
 **Elena nova:** os três FBX estão como Humanoid, cada um com o próprio avatar, porque os ossos têm nomes diferentes (`smartrig` no personagem, `mixamorig` nas animações); a Unity traduz as animações de um para o outro. Não use "Copy From Other Avatar" entre eles: dá erro de ossos não encontrados. A cápsula continua no jogo até a troca. Falta criar o material URP com as texturas e o Animator.
 
@@ -120,12 +121,30 @@ Pendências dos modelos antigos (Elena_Varga e Samir) antes de entrarem no jogo:
 - São pesados demais para jogo: Elena tem 1,8 milhão de triângulos e Samir 1,5 milhão. O alvo é perto de 50 mil. O objeto `Elena_TESTE_LOW` do .blend tem o mesmo tamanho do original, ou seja, ainda não foi reduzido.
 - Não têm esqueleto nem animações. O Samir está em pose A, boa para o Mixamo; a Elena está em pose natural, o que dificulta o rig automático.
 - A textura `_ORM` junta oclusão, rugosidade e metal num arquivo só e precisa ser convertida para o formato do material Lit do URP.
-- A pasta `Fontes/` fica fora de `Assets`, para a Unity não depender do Blender instalado. Cópias de segurança do Blender (`.blend1`) não vão para o Git.
+- A arte-fonte de todos os personagens fica em `ArteFonte/<Personagem>/`, fora de `Assets`, para a Unity não depender do Blender instalado. Cópias de segurança do Blender (`.blend1`) não vão para o Git.
+
+### Ninsar (em andamento)
+
+Arte-fonte em `ArteFonte/Ninsar/`:
+
+| Pasta | O que tem | No Git? |
+| --- | --- | --- |
+| `1_Meshy/` | Arquivos brutos baixados do Meshy | Não, exceto os .blend de 154 mil triângulos do manto e da saia e as texturas PBR do corpo (`Corpo/Ninsar Corpo/*.png`). O resto se baixa de novo no Meshy |
+| `2_Rig/` | Corpo com esqueleto do AccuRig (`Ninsar_Corpo_Rig.fbx`, 101 ossos, com dedos) e as 19 animações do Meshy (`Ninsar_Animacoes/Ninsar_Animacoes.fbx`, esqueleto Mixamo de 28 ossos, **sem dedos**) | Sim |
+| `3_Blender/` | `Ninsar_Montagem.blend` (montagem original do dono, não mexer), `Ninsar_Final.blend` (cópia de trabalho), `Texturas/` (texturas das peças tiradas de dentro do .blend), `Scripts/` (Python do Blender) e `Renders/` (conferência, fora do Git) | Sim, menos `Renders/` |
+| `Imagens De Referencia/` | Folhas de referência do corpo, manto, saia e lança | Sim |
+
+Os scripts refazem tudo do zero, nesta ordem (no terminal, de dentro de `3_Blender`, com o `blender.exe` do Blender 5.2):
+1. `blender -b Ninsar_Montagem.blend -P Scripts/etapa1_escala.py`: cria o `Ninsar_Final.blend`. A malha do corpo já media 1,90 m; só a Armature tinha escala 0,01. Tudo fica com escala 1. Tira a ação "0_T-Pose" do AccuRig do esqueleto (fica guardada): o encaixe, os pesos e o FBX usam a pose de repouso. Põe as texturas PBR do Meshy no corpo (mesmos UVs).
+2. `blender -b Ninsar_Final.blend -P Scripts/etapa1_encaixe.py`: veste as peças. Os ajustes ficam no topo do script. O manto recua 9,5 cm, inclina 1° e cresce 3%; a saia vai da cintura (1,17 m) até 2 cm do chão, 8% mais larga. Onde o corpo ainda atravessa o pano, um empurrão suave leva o pano para fora (folga de 1,2 cm no manto e 0,8 cm na saia), mexendo as duas faces do pano juntas para não deformar o relevo. A parte da saia na altura do cinto de couro (que é do corpo) entra 4 mm sob a pele, para o cinto e o medalhão aparecerem por cima. A lança vai para a mão direita: o cabo passa por baixo da palma, deitado e com a ponta para a frente na pose de braços abertos (fica em pé com o braço baixado e o antebraço para a frente).
+3. Conferência: `Scripts/renderizar_vistas.py -- <prefixo> [objetos escondidos]` (frente, lado e costas) e `Scripts/renderizar_pose_lanca.py` (braço baixado segurando a lança). Ferramentas de medida: `medir.py`, `fatias.py`, `otimizar_encaixe.py`.
+
+Etapas que faltam: 2) versões leves (5 a 10 mil polígonos) do manto e da saia, com bake de normal e cor dos originais de 154 mil (usar a maior resolução razoável: alguns bordados já vêm borrados na textura do Meshy); 3) pesos, ossos extras no manto e na faixa da saia, lança presa na mão; 4) FBX na Unity como Humanoid, material URP e animações por retargeting; 5) física de tecido (conferir a faixa verde da saia que hoje dobra na coxa esquerda); 6) poses de mão para os dedos segurarem a lança. A fenda da saia que mostra a coxa é proposital.
 
 ## Git
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
-- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia (veja `.gitattributes`). O LFS guarda cerca de 450 MB (os dois .blend somam 265 MB e os dois FBX, 130 MB). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
+- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 690 MB (450 MB até a Aldeia e 240 MB da arte-fonte da Ninsar). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
 - Tudo enviado ao GitHub até o encontro com o Samir, na Aldeia (primeiro push em 20 de outubro de 2026). Commits em português, pequenos e frequentes.
 
 ## Como testar sozinho pela ponte MCP
@@ -149,5 +168,5 @@ Pendências dos modelos antigos (Elena_Varga e Samir) antes de entrarem no jogo:
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Preparar os personagens 3D: a Elena nova (Meshy) já tem esqueleto e animações; falta o material URP, o Animator e trocar a cápsula por ela. O Samir ainda precisa reduzir polígonos e ganhar esqueleto.
+5. Terminar a Ninsar (etapas 2 a 6, veja Personagens 3D). Preparar os outros personagens 3D: a Elena nova (Meshy) já tem esqueleto e animações; falta o material URP, o Animator e trocar a cápsula por ela. O Samir ainda precisa reduzir polígonos e ganhar esqueleto.
 6. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
