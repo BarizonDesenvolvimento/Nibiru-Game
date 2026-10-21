@@ -153,6 +153,10 @@ O `Ninsar_Final.blend` guarda essa versão vestida (o manto do Meshy encaixado f
 
 Etapas que ficaram para depois: versão leve da saia com bake em 4096; pesos e ossos extras na faixa da saia; física de tecido (conferir a faixa verde da saia na coxa esquerda); poses de mão para os dedos segurarem a lança. A fenda da saia que mostra a coxa é proposital.
 
+Pendências vistas na prévia (ainda não corrigidas):
+- A saia, com os pesos simples, rasga nas costas: as faixas verdes se partem em pedaços durante a animação. Precisa de pesos com transição suave entre quadril e pernas, mais física de tecido.
+- A lança fica deitada e com aparência esbranquiçada. A posição depende das poses de mão; a cor pede conferir o material dela (texturas e mapa de metal/lisura).
+
 ## Git
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
