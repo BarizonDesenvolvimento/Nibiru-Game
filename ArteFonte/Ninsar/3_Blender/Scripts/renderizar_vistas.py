@@ -1,4 +1,4 @@
-# Renderiza a Ninsar de frente, de lado (direito dela) e de costas, com câmera ortográfica.
+# Renderiza a Ninsar de frente, de lado (direito dela), de costas e de 3/4 (frente e lado direito), com câmera ortográfica.
 # Não salva o .blend. As imagens vão para Renders/<prefixo>_Frente.png etc.
 # Uso: blender -b Ninsar_Final.blend -P Scripts/renderizar_vistas.py -- <prefixo> [objetos escondidos...]
 import bpy, os, sys, math
@@ -53,7 +53,8 @@ cena.camera = cam
 # A Ninsar olha para -Y. Lado direito dela = -X.
 vistas = {"Frente": (Vector((0, -5, 1.0)), (90, 0, 0)),
           "Lado": (Vector((-5, 0, 1.0)), (90, 0, -90)),
-          "Costas": (Vector((0, 5, 1.0)), (90, 0, 180))}
+          "Costas": (Vector((0, 5, 1.0)), (90, 0, 180)),
+          "TresQuartos": (Vector((-3.54, -3.54, 1.0)), (90, 0, -45))}
 for nome, (pos, rot) in vistas.items():
     cam.location = pos
     cam.rotation_euler = [math.radians(a) for a in rot]

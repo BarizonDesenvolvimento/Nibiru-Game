@@ -1,6 +1,6 @@
 # Etapa 1b: veste as peças na Ninsar (em Ninsar_Final.blend, que já passou pela etapa1_escala.py).
 # 1. Ajuste rígido de cada peça (valores achados com otimizar_encaixe.py e conferidos nos renders).
-# 2. "Empurrão" suave: onde o corpo (ou a face de fora da saia, no caso do manto) atravessa o pano, um campo de
+# 2. "Empurrão" suave, só do quadril para cima: onde o corpo (ou a face de fora da saia, no caso do manto) atravessa o pano, um campo de
 #    deslocamento suave empurra o pano para fora. As duas faces do pano andam juntas, então o relevo
 #    dos bordados não se deforma.
 # 3. Lança na mão direita: o cabo atravessa o punho (por baixo da palma), com a ponta para a frente.
@@ -17,9 +17,17 @@ CINTURA, BARRA = 1.17, 0.02        # altura da borda de cima e da barra da saia 
 CINTO_BAIXO = 1.135                # borda de baixo do cinto de couro (parte do corpo), nas laterais
 MEDALHAO = dict(meia_largura=0.05, baixo=1.08)   # o medalhão desce mais no meio da frente
 CINTO_TRANSICAO = 0.02             # faixa logo abaixo do cinto onde a saia volta aos poucos para fora
+# Capuz: aproxima do crânio, mirando esta folga; perto do rosto a folga cresce até CAPUZ_FOLGA_ROSTO, para a
+# abertura continuar emoldurando a face. Fecha só CAPUZ_FORCA do vão que existe hoje em cada ponto (1 = colado
+# na folga), para o capuz manter volume. Age do pescoço para cima, com transição de CAPUZ_INICIO a CAPUZ_INTEIRO.
+CAPUZ_FOLGA, CAPUZ_FOLGA_ROSTO, CAPUZ_FORCA = 0.012, 0.04, 0.85
+CAPUZ_INICIO, CAPUZ_INTEIRO = 1.56, 1.74
 MANTO = dict(pivo=(0.0, 0.05, 1.55), rx=1.0, dy=0.095, dz=0.03, s=1.03)
 SAIA = dict(rx=2.5, dy=0.03, s=1.08)
 FOLGA_MANTO, FOLGA_SAIA = 0.012, 0.008   # distância mínima entre pano e o que está por baixo (m)
+# Nas pernas o pano fica com a forma original do Meshy (só o ajuste rígido): a física de tecido
+# trata as colisões ali. Sem empurrão abaixo de SEM_EMPURRAO, empurrão inteiro acima de COM_EMPURRAO.
+SEM_EMPURRAO, COM_EMPURRAO = 0.95, 1.12
 LANCA_PEGADA = 0.50                # altura (no modelo da lança em pé) do ponto onde a mão segura
 # -----------------------------------------------------------------------
 
@@ -109,6 +117,8 @@ def faces_de_fora(o, eixo_y, minimo=0.2):
 
 def empurrar(o, folga, obstaculos, iteracoes=10, h=0.02, raio=5, ganho=1.5):
     pos = coords(o)
+    t = np.clip((pos[:, 2] - SEM_EMPURRAO) / (COM_EMPURRAO - SEM_EMPURRAO), 0.0, 1.0)
+    liberado = (t * t * (3 - 2 * t))[:, None]   # 0 nas pernas, 1 do quadril para cima
     total = np.zeros_like(pos)
     for it in range(iteracoes):
         atual = pos + total
@@ -123,12 +133,13 @@ def empurrar(o, folga, obstaculos, iteracoes=10, h=0.02, raio=5, ganho=1.5):
                     d = np.array(nor) * (folga - s)
                     if np.dot(d, d) > np.dot(desl[i], desl[i]):
                         desl[i] = d
+        desl *= liberado
         precisa = np.linalg.norm(desl, axis=1)
         print(f"  {o.name} iteração {it}: {int((precisa > 0.002).sum())} vértices furando, "
               f"máx {precisa.max() * 100:.1f} cm")
         if precisa.max() < 0.002:
             break
-        total += campo_suave(atual, desl, h, raio) * ganho
+        total += campo_suave(atual, desl, h, raio) * ganho * liberado
     gravar(o, pos + total)
 
 # Eixo do corpo (centro em Y do tronco por altura), para a saia "por baixo" do manto
@@ -162,6 +173,45 @@ def enfiar_sob_cinto(o, profundidade=0.004):
 empurrar(saia, FOLGA_SAIA, [bvh_mundo(corpo)])
 enfiar_sob_cinto(saia)
 empurrar(manto, FOLGA_MANTO, [bvh_mundo(corpo), faces_de_fora(saia, eixo_y)])
+
+def assentar_capuz(o, iteracoes=10, h=0.015, raio=6):
+    """Leva cada ponto do capuz para a folga desejada em volta da cabeça (raios saindo do centro da
+    cabeça). O deslocamento passa por um campo suave, então as duas faces do pano andam juntas."""
+    bvh_c = bvh_mundo(corpo)
+    cab = cv[(cv[:, 2] > 1.70) & (np.abs(cv[:, 0]) < 0.12)]
+    C = np.array([(cab[:, 0].min() + cab[:, 0].max()) / 2, (cab[:, 1].min() + cab[:, 1].max()) / 2, 1.78])
+    pos = coords(o)
+    t = np.clip((pos[:, 2] - CAPUZ_INICIO) / (CAPUZ_INTEIRO - CAPUZ_INICIO), 0.0, 1.0)
+    peso = (t * t * (3 - 2 * t)) * (np.linalg.norm(pos - C, axis=1) < 0.35)
+    idx = np.nonzero(peso > 0)[0]
+    total = np.zeros_like(pos)
+    alvo = {}
+    for it in range(iteracoes):
+        atual = pos + total
+        desl = np.zeros_like(pos)
+        erros = []
+        for i in idx:
+            v = atual[i] - C
+            r = np.linalg.norm(v)
+            d = Vector(v / r)
+            if d.z < -0.25:
+                continue                      # gola e lapelas (abaixo da cabeça) só acompanham os vizinhos
+            hit = bvh_c.ray_cast(Vector(C), d, r + 0.3)
+            if hit[0] is None:
+                continue                      # raio passa pela abertura do rosto sem tocar a cabeça
+            vao = r - hit[3]
+            if i not in alvo:
+                frente = np.clip((-d.y - 0.3) / 0.5, 0.0, 1.0)  # 0 atrás/lados, 1 de frente para o rosto
+                folga = CAPUZ_FOLGA + (CAPUZ_FOLGA_ROSTO - CAPUZ_FOLGA) * frente
+                alvo[i] = folga + (1 - CAPUZ_FORCA) * max(vao - folga, 0.0)
+            erro = alvo[i] - vao
+            desl[i] = np.array(d) * erro * peso[i]
+            erros.append(abs(erro))
+        print(f"  capuz iteração {it}: erro médio {np.mean(erros) * 100:.1f} cm, máx {np.max(erros) * 100:.1f} cm")
+        total += campo_suave(atual, desl, h, raio) * peso[:, None]
+    gravar(o, pos + total)
+
+assentar_capuz(manto)
 
 # ---------- 3. Lança na mão direita ----------
 ossos = arm.data.bones
