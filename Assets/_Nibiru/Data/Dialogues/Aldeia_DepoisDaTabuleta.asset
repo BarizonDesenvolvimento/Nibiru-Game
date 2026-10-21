@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Aldeia_DepoisDaTabuleta
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: s1
+    speaker: Samir
+    text: "(Ele est\xE1 de p\xE9 ao lado do nicho, perto demais, olhando para voc\xEA.
+      A m\xE3o direita est\xE1 no cabo da faca.)"
+    next: s2
+    raise: {fileID: 0}
+    choices: []
+  - id: s2
+    speaker: Samir
+    text: "Voc\xEA ficou um minuto inteiro de olhos abertos, falando uma l\xEDngua
+      que ningu\xE9m fala h\xE1 quatro mil anos. O que voc\xEA ouviu?"
+    next: 
+    raise: {fileID: 0}
+    choices:
+    - text: "Uma voz. Ela salvou um homem do dil\xFAvio... e falou comigo como se
+        me conhecesse."
+      next: verdade
+      requires: {fileID: 0}
+      raise: {fileID: 11400000, guid: 7552942bed2f7df4c9b20a9b43015a7b, type: 2}
+      reputation:
+      - faction: {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
+        amount: 5
+    - text: "Nada. S\xF3 li o texto. \xC9 um mito do dil\xFAvio."
+      next: mentira
+      requires: {fileID: 0}
+      raise: {fileID: 11400000, guid: 955fc217a6c2f7e419b3cdd12dafb9ed, type: 2}
+      reputation: []
+    - text: "Por que voc\xEA est\xE1 com a m\xE3o na faca?"
+      next: faca
+      requires: {fileID: 0}
+      raise: {fileID: 11400000, guid: 7d730eba18fe2714aa3b15c5b0b13f2a, type: 2}
+      reputation: []
+  - id: verdade
+    speaker: Samir
+    text: "(A m\xE3o dele afrouxa no cabo, mas n\xE3o sai dele.) Obrigado por n\xE3o
+      mentir. Pouca gente consegue, depois de ouvir essa voz."
+    next: fim
+    raise: {fileID: 0}
+    choices: []
+  - id: mentira
+    speaker: Samir
+    text: "(Ele olha a marca azul no seu pulso, depois os seus olhos. Demora a responder.)
+      Se voc\xEA diz."
+    next: fim
+    raise: {fileID: 0}
+    choices: []
+  - id: faca
+    speaker: Samir
+    text: "Porque eu sou um Guardi\xE3o. Minha fam\xEDlia vigia este lugar desde
+      antes de Ur ter nome. Juramos que nada do que dorme l\xE1 embaixo volta a andar
+      por aqui."
+    next: faca2
+    raise: {fileID: 0}
+    choices: []
+  - id: faca2
+    speaker: Samir
+    text: "Quem ouve essa voz muda, doutora. Devagar. Se um dia ela falar mais alto
+      que voc\xEA, eu vou perceber."
+    next: faca3
+    raise: {fileID: 0}
+    choices: []
+  - id: faca3
+    speaker: Samir
+    text: "(Ele tira a m\xE3o da faca.) Hoje voc\xEA ainda \xE9 voc\xEA."
+    next: fim
+    raise: {fileID: 0}
+    choices: []
+  - id: fim
+    speaker: Samir
+    text: "Guarde essa pedra onde ningu\xE9m veja. A Funda\xE7\xE3o est\xE1 fechando
+      as estradas, e n\xF3s dois precisamos sair desta aldeia."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: eb59999fd6b02974c804d24dc683c075, type: 2}

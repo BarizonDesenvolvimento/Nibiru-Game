@@ -65,5 +65,17 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: 60021e366a330ff48b717ed02e410eaa, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: Leia a tabuleta no nicho
+    completeOn: {fileID: 11400000, guid: 5c639ec6a0b423a4cb9203d37b0754c8, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "V\xE1 at\xE9 a cabana de junco, \xE0 beira do rio"
+    completeOn: {fileID: 11400000, guid: 48b8f684adfc6594b8db83f0b87b3493, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Responda ao Samir
+    completeOn: {fileID: 11400000, guid: eb59999fd6b02974c804d24dc683c075, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

@@ -1,9 +1,13 @@
 using System.Linq;
 using Nibiru.Dialogue;
+using Nibiru.Factions;
 using Nibiru.Inventory;
+using Nibiru.Memories;
 using Nibiru.Quests;
 using Nibiru.Sequences;
+using Nibiru.UI;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,7 +23,10 @@ namespace Nibiru.EditorTools.Content
     /// Aldeia, um soldado encurrala a Elena, o Samir o derruba com a faca, conversa com ela
     /// ("O guia") e a leva até o pátio, diante da casa do altar. Passo 7: na casa do altar estão
     /// os sobreviventes (Yusuf e Umm Karim; começa "Remédio para Yusuf") e o Samir mostra o nicho
-    /// dos Guardiões, que vira altar de salvamento.
+    /// dos Guardiões, que vira altar de salvamento. Passo 8: no nicho, a Elena lê a Tabuleta do
+    /// Junco (a tabuleta reage com o azul de Kur), vive a memória de Ziusudra (cena
+    /// Memoria_Shuruppak, montada pelo menu da memória), ganha o Eco do Abzu e a marca no pulso,
+    /// e responde ao Samir, que está com a mão na faca.
     ///
     /// O encontro acontece numa das entradas da Aldeia: a que estiver à frente da Elena e mais
     /// perto dela quando ela entra na área. Os pontos são conferidos na malha de navegação e
@@ -70,24 +77,38 @@ namespace Nibiru.EditorTools.Content
         static readonly Color LampLight = new Color(1f, 0.62f, 0.28f);
         static readonly Color FlameColor = new Color(1f, 0.55f, 0.15f);
         const string FlameMaterialPath = "Assets/_Nibiru/Art/Materials/Blockout/BO_Chama.mat";
+        const float LampIntensity = 1.2f;
+
+        // Passo 8: o azul de lápis-lazúli da tabuleta, a cor de Kur e dos deuses.
+        static readonly Color KurBlue = new Color(0.15f, 0.35f, 1f);
+        const float KurIntensity = 4.5f;
+
+        // Na conversa depois da tabuleta, o Samir fica ao lado do nicho, de frente para a Elena.
+        static readonly Vector3 SamirTalkSpot = new Vector3(-45.9f, 0f, -30.1f);
+
+        // Face de dentro da parede do fundo da casa do altar.
+        const float BackWallInside = -31.5f;
 
         // ---------- Dados ----------
 
         class Events
         {
             public StoryEvent aproximouSeDaAldeia, chegouAAldeia, chegouAoPatioComSamir,
-                entrouNaCasaDoAltar, conheceuSobreviventes, samirMostrouONicho, descansouNoNicho, entregouAntibioticos;
+                entrouNaCasaDoAltar, conheceuSobreviventes, samirMostrouONicho, descansouNoNicho, entregouAntibioticos,
+                tocouATabuleta, decifrouTabuleta, contouAVerdadeAoSamir, mentiuAoSamir, samirRevelouGuardiao, conversouSobreATabuleta;
         }
 
         class Dialogues
         {
             public DialogueDefinition encurralada, oGuia, chegadaPatio,
-                sobreviventes, oNicho, ummKarimEspera, yusufEspera;
+                sobreviventes, oNicho, ummKarimEspera, yusufEspera,
+                tabuletaDesperta, aMarca, depoisDaTabuleta;
         }
 
         static Events ev;
         static Dialogues dlg;
         static QuestDefinition yusufQuest;
+        static MemoryDefinition ziusudraMemory;
 
         [MenuItem("Nibiru/Conteúdo/Povoar Aldeia na cena aberta")]
         static void Build()
@@ -103,8 +124,10 @@ namespace Nibiru.EditorTools.Content
 
             Transform root = NewRoot(RootName, "Povoar Aldeia");
             GameObject samir = BuildSamirEncounter(Group(root, "Encontro_Samir"));
-            BuildSurvivorsAndAltar(Group(root, "Casa_Altar"), samir);
+            var (altar, lamp) = BuildSurvivorsAndAltar(Group(root, "Casa_Altar"), samir);
+            BuildFirstTablet(Group(root, "Primeira_Tabuleta"), samir, altar, lamp);
             RegisterQuest(yusufQuest);
+            LockTabletUntilAltar();
 
             EditorSceneManager.MarkSceneDirty(root.gameObject.scene);
             Selection.activeGameObject = root.gameObject;
@@ -123,7 +146,14 @@ namespace Nibiru.EditorTools.Content
                 samirMostrouONicho = Event("SamirMostrouONicho", "O Samir mostrou o nicho dos Guardiões e acendeu a lamparina. O nicho passa a ser altar de salvamento."),
                 descansouNoNicho = Event("DescansouNoNicho", "A Elena descansou no nicho dos Guardiões (altar de salvamento da Aldeia)."),
                 entregouAntibioticos = Event("EntregouAntibioticos", "A Elena entregou os antibióticos ao Yusuf (a entrega entra num passo seguinte)."),
+                tocouATabuleta = Event("TocouATabuleta", "A Elena pousou a Tabuleta do Junco no nicho e começou a ler. A tabuleta reage com o azul de Kur e a lamparina encolhe."),
+                decifrouTabuleta = Event("DecifrouTabuletaDoJunco", "A Elena decifrou a primeira tabuleta (passo 8 da missão principal)."),
+                contouAVerdadeAoSamir = Event("ContouAVerdadeAoSamir", "Depois da tabuleta, a Elena contou ao Samir que ouviu uma voz (Guardiões +5)."),
+                mentiuAoSamir = Event("MentiuAoSamir", "Depois da tabuleta, a Elena mentiu ao Samir (\"só li um mito\"). Ele percebeu e vai lembrar disso mais tarde."),
+                samirRevelouGuardiao = Event("SamirRevelouGuardiao", "A Elena perguntou por que ele estava com a mão na faca, e o Samir revelou que é Guardião."),
+                conversouSobreATabuleta = Event("ConversouSobreATabuleta", "A Elena respondeu ao Samir depois de ler a tabuleta. Fecha o passo 8."),
             };
+            ziusudraMemory = ShuruppakMemoryContent.MemoryData();
 
             // O evento já existia, criado pelas Trincheiras: a nota antiga dizia que o gatilho viria depois.
             const string oldNote = "A Elena chegou à Aldeia dos escavadores (o gatilho entra com o conteúdo da Aldeia).";
@@ -182,6 +212,35 @@ namespace Nibiru.EditorTools.Content
 
                 yusufEspera = Dialogue("Aldeia_YusufEspera", null,
                     N("y1", "Yusuf", "(Ele treme de febre.) Está tão quente... ou tão frio. Não sei mais.")),
+
+                tabuletaDesperta = Dialogue("Aldeia_ATabuletaDesperta", null,
+                    N("e1", "Elena", "(Ela pousa a tabuleta no nicho, ao lado da lamparina. Sob os dedos dela, as linhas de ouro acendem uma a uma, e a pedra se enche de uma luz azul que não é deste mundo.)", "s1"),
+                    N("s1", "Samir", "(Ele dá um passo para trás. A chama da lamparina encolhe.) Doutora... não.", "v1"),
+                    N("v1", "Voz", "Tila. Você está viva, e está segura. Não tenha medo.", "v2"),
+                    N("v2", "Voz", "Agora, olhe.")),
+
+                aMarca = Dialogue("Aldeia_AMarca", null,
+                    N("e1", "Elena", "(Ela pisca. A casa, a lamparina, o Samir. Passou só um minuto. No pulso esquerdo, uma marca azul, fina como tinta debaixo da pele. Não sai quando ela esfrega.)", "v1"),
+                    N("v1", "Voz", "Não tenha medo da marca. Ela só quer dizer que eu estou com você.")),
+
+                depoisDaTabuleta = Dialogue("Aldeia_DepoisDaTabuleta", ev.conversouSobreATabuleta,
+                    N("s1", "Samir", "(Ele está de pé ao lado do nicho, perto demais, olhando para você. A mão direita está no cabo da faca.)", "s2"),
+                    N("s2", "Samir", "Você ficou um minuto inteiro de olhos abertos, falando uma língua que ninguém fala há quatro mil anos. O que você ouviu?", null,
+                        new DialogueChoice
+                        {
+                            text = "Uma voz. Ela salvou um homem do dilúvio... e falou comigo como se me conhecesse.",
+                            next = "verdade",
+                            raise = ev.contouAVerdadeAoSamir,
+                            reputation = new[] { new ReputationChange { faction = Load<FactionDefinition>("Factions/Guardioes"), amount = 5 } },
+                        },
+                        C("Nada. Só li o texto. É um mito do dilúvio.", "mentira", ev.mentiuAoSamir),
+                        C("Por que você está com a mão na faca?", "faca", ev.samirRevelouGuardiao)),
+                    N("verdade", "Samir", "(A mão dele afrouxa no cabo, mas não sai dele.) Obrigado por não mentir. Pouca gente consegue, depois de ouvir essa voz.", "fim"),
+                    N("mentira", "Samir", "(Ele olha a marca azul no seu pulso, depois os seus olhos. Demora a responder.) Se você diz.", "fim"),
+                    N("faca", "Samir", "Porque eu sou um Guardião. Minha família vigia este lugar desde antes de Ur ter nome. Juramos que nada do que dorme lá embaixo volta a andar por aqui.", "faca2"),
+                    N("faca2", "Samir", "Quem ouve essa voz muda, doutora. Devagar. Se um dia ela falar mais alto que você, eu vou perceber.", "faca3"),
+                    N("faca3", "Samir", "(Ele tira a mão da faca.) Hoje você ainda é você.", "fim"),
+                    N("fim", "Samir", "Guarde essa pedra onde ninguém veja. A Fundação está fechando as estradas, e nós dois precisamos sair desta aldeia.")),
             };
 
             var antibiotics = Asset<ItemDefinition>("Items/Antibioticos", item =>
@@ -210,7 +269,10 @@ namespace Nibiru.EditorTools.Content
                 AppendSteps(mainQuest,
                     Step("Siga o Samir até a Aldeia", ev.chegouAoPatioComSamir),
                     Step("Siga o Samir até a casa", ev.conheceuSobreviventes),
-                    Step("Descanse junto ao nicho antigo (E ou A)", ev.descansouNoNicho));
+                    Step("Descanse junto ao nicho antigo (E ou A)", ev.descansouNoNicho),
+                    Step("Leia a tabuleta no nicho", ShuruppakMemoryContent.EnteredMemory()),
+                    Step("Vá até a cabana de junco, à beira do rio", ShuruppakMemoryContent.HeardTheReedWall()),
+                    Step("Responda ao Samir", ev.conversouSobreATabuleta));
 
             AssetDatabase.SaveAssets();
         }
@@ -301,7 +363,8 @@ namespace Nibiru.EditorTools.Content
 
         // ---------- Sobreviventes e o nicho dos Guardiões (passo 7) ----------
 
-        static void BuildSurvivorsAndAltar(Transform g, GameObject samir)
+        // Devolve o altar (o nicho com o Checkpoint) e a luz da lamparina, usados pelo passo 8.
+        static (GameObject altar, Light lamp) BuildSurvivorsAndAltar(Transform g, GameObject samir)
         {
             Transform samirPoint = Point(g, "Samir_NaCasa", OnNavMesh(SamirInHouse, "Samir_NaCasa", 0.4f));
             samirPoint.rotation = Quaternion.Euler(0f, SamirInHouseYaw, 0f);
@@ -373,6 +436,159 @@ namespace Nibiru.EditorTools.Content
                 SetActive(e, lampLight, true);
                 SetActive(e, altar, true);
             });
+            return (altar, lampLight.GetComponentInChildren<Light>(true));
+        }
+
+        // ---------- A primeira tabuleta (passo 8) ----------
+
+        static void BuildFirstTablet(Transform g, GameObject samir, GameObject altar, Light lamp)
+        {
+            var tablet = Load<Tablets.TabletDefinition>("Tablets/TabuletaDoJunco");
+            var reader = Object.FindFirstObjectByType<Tablets.TabletReader>();
+            if (reader == null) Debug.LogWarning("Aldeia: TabletReader não encontrado. A Elena está na cena?");
+
+            // A tabuleta pousada no nicho e a luz azul dela; a lamparina treme e encolhe quando o azul sobe.
+            GameObject stone = TabletOnNiche(g);
+            var kurFade = stone.GetComponentInChildren<LightFade>(true);
+            var lampFade = lamp.gameObject.AddComponent<LightFade>();
+            SetField(lampFade, "duration", 2f);
+            SetField(lampFade, "flicker", 0.2f);
+
+            // Ler a tabuleta no mesmo lugar do altar. Entre descansar e ler, o altar sai do ar (só
+            // o componente: quem liga o objeto é a lamparina acesa), para o aviso ser um só.
+            GameObject read = Zone(g, "Ler_Tabuleta", NicheFront + new Vector3(0f, 0.6f, 0.15f), new Vector3(1.2f, 1.2f, 0.6f));
+            read.SetActive(false);
+            var checkpoint = altar.GetComponent<Save.Checkpoint>();
+            var gate = g.gameObject.AddComponent<StoryEventBranch>();
+            SetField(gate, "storyEvent", ev.decifrouTabuleta);
+            UnityEvent ifRead = GetField<UnityEvent>(gate, "ifRaised");
+            SetActive(ifRead, read, false);
+            SetEnabled(ifRead, checkpoint, true);
+            UnityEvent ifNotRead = GetField<UnityEvent>(gate, "ifNotRaised");
+            SetActive(ifNotRead, read, true);
+            SetEnabled(ifNotRead, checkpoint, false);
+            Listener(g.gameObject, ev.descansouNoNicho, e => Call(e, gate.Run));
+            Listener(g.gameObject, ev.decifrouTabuleta, e => Call(e, gate.Run));
+
+            var memory = new GameObject("Memoria_Ziusudra").AddComponent<PlayableMemory>();
+            memory.transform.SetParent(g, false);
+            SetField(memory, "memory", ziusudraMemory);
+
+            Transform talkPoint = Point(g, "Samir_Conversa", OnNavMesh(SamirTalkSpot, "Samir_Conversa", 0.4f));
+            var walker = samir.GetComponent<WalkToPoint>();
+            var awakening = DialogueTrigger(g, "Dialogo_TabuletaDesperta", dlg.tabuletaDesperta);
+            var mark = DialogueTrigger(g, "Dialogo_AMarca", dlg.aMarca);
+            var answer = DialogueTrigger(g, "Dialogo_DepoisDaTabuleta", dlg.depoisDaTabuleta);
+
+            // Ao ler: a tabuleta acende em azul (a primeira vez que o azul de Kur aparece), a
+            // lamparina recua, a voz fala e a memória começa.
+            var readingGo = new GameObject("Sequencia_Leitura");
+            readingGo.transform.SetParent(g, false);
+            var touched = readingGo.AddComponent<StoryEventRaiser>();
+            SetField(touched, "storyEvent", ev.tocouATabuleta);
+            var reading = readingGo.AddComponent<TimedSequence>();
+            SetField(reading, "skipIfRaised", ev.decifrouTabuleta);
+            SetSteps(reading,
+                S("a Elena pousa a tabuleta no nicho", 0f, e =>
+                {
+                    SetActive(e, read, false);
+                    SetActive(e, stone, true);
+                    Call(e, touched.Raise);
+                }),
+                S("a tabuleta acende em azul e a lamparina encolhe", 0.3f, e =>
+                {
+                    UnityEventTools.AddFloatPersistentListener(e, kurFade.FadeTo, KurIntensity);
+                    UnityEventTools.AddFloatPersistentListener(e, lampFade.FadeTo, 0.25f);
+                }),
+                S("a voz fala", 1.4f, e => Call(e, awakening.StartDialogue)),
+                S("a memória de Ziusudra começa", 0.3f, e => Call(e, memory.Enter)));
+            var interact = read.AddComponent<Interaction.InteractableEvent>();
+            SetField(interact, "prompt", "Ler a tabuleta");
+            SetField(interact, "singleUse", true);
+            Call(GetField<UnityEvent>(interact, "onInteract"), reading.Play);
+
+            // Na volta: a leitura (poder, transformação e o texto), a marca no pulso e o Samir.
+            var returnGo = new GameObject("Sequencia_Volta");
+            returnGo.transform.SetParent(g, false);
+            var afterwards = returnGo.AddComponent<TimedSequence>();
+            SetField(afterwards, "skipIfRaised", ev.decifrouTabuleta);
+            SetSteps(afterwards,
+                S("a leitura: Eco do Abzu, transformação e o texto", 0.4f, e =>
+                {
+                    if (reader != null) Call(e, reader.Read, tablet);
+                    UnityEventTools.AddFloatPersistentListener(e, kurFade.FadeTo, 0f);
+                    UnityEventTools.AddFloatPersistentListener(e, lampFade.FadeTo, LampIntensity);
+                }),
+                S("a Elena guarda a tabuleta e vê a marca no pulso", 0.6f, e =>
+                {
+                    SetActive(e, stone, false);
+                    Call(e, walker.SnapTo, talkPoint);
+                    Call(e, mark.StartDialogue);
+                }),
+                S("o Samir, de mão na faca", 0.4f, e => Call(e, answer.StartDialogue)));
+            Call(GetField<UnityEvent>(memory, "onReturned"), afterwards.Play);
+
+            // Dica do poder, só ao vivo.
+            var poster = returnGo.AddComponent<NotificationPoster>();
+            Listener(returnGo, ev.conversouSobreATabuleta, e => Notify(e, poster, "Eco do Abzu: aperte Q (LB no controle) para ver através das paredes"));
+            SetField(returnGo.GetComponents<StoryEventListener>().Last(), "replayOnLoad", false);
+
+            HiddenInscription(g);
+        }
+
+        // Pedra de lápis-lazúli do tamanho de uma mão, encostada na parede em cima do nicho, ao lado
+        // da lamparina, com linhas de escrita em ouro. A luz azul dela começa apagada.
+        static GameObject TabletOnNiche(Transform g)
+        {
+            Transform stone = Group(g, "Tabuleta_NoNicho");
+            stone.SetPositionAndRotation(NicheFront + new Vector3(0.3f, NicheTop + 0.1f, -0.25f), Quaternion.Euler(-12f, 0f, 0f));
+            Local(PrimitiveType.Cube, stone, "Pedra", Vector3.zero, new Vector3(0.14f, 0.18f, 0.03f), "BO_LapisLazuli");
+            for (int i = 0; i < 5; i++)
+            {
+                float width = 0.1f - (i % 2) * 0.025f;
+                Local(PrimitiveType.Cube, stone, $"Linha_Ouro_{i + 1}", new Vector3(-0.005f * (i % 2), 0.064f - i * 0.032f, 0.016f), new Vector3(width, 0.008f, 0.004f), "BO_Ouro");
+            }
+
+            var kur = new GameObject("Luz_de_Kur").AddComponent<Light>();
+            kur.transform.SetParent(stone, false);
+            kur.transform.localPosition = new Vector3(0f, 0.08f, 0.3f);
+            kur.type = LightType.Point;
+            kur.color = KurBlue;
+            kur.range = 6f;
+            kur.intensity = 0f;
+            kur.shadows = LightShadows.Soft;
+            var fade = kur.gameObject.AddComponent<LightFade>();
+            SetField(fade, "duration", 2f);
+            SetField(fade, "flicker", 0.15f);
+
+            stone.gameObject.SetActive(false);
+            return stone.gameObject;
+        }
+
+        // Escrita cuneiforme escondida na parede do fundo, que só o Eco do Abzu acende: a recompensa
+        // de usar o poder logo ali, onde ele foi ganho.
+        static void HiddenInscription(Transform g)
+        {
+            Transform inscription = Group(g, "Inscricao_Escondida");
+            inscription.position = new Vector3(-45.6f, 1.4f, BackWallInside + 0.02f);
+            for (int row = 0; row < 3; row++)
+                for (int i = 0; i < 4; i++)
+                {
+                    var wedge = Local(PrimitiveType.Cube, inscription, $"Cunha_{row + 1}_{i + 1}", new Vector3(-0.3f + i * 0.2f, 0.2f - row * 0.2f, 0f), new Vector3(0.025f, 0.12f, 0.01f), "BO_Ouro");
+                    wedge.transform.localRotation = Quaternion.Euler(0f, 0f, ((row * 4 + i) * 47 % 3 - 1) * 35f);
+                }
+            inscription.gameObject.AddComponent<Powers.EchoHiddenMark>();
+        }
+
+        // Na região, a tabuleta só se decifra no nicho. Pelo inventário, só depois (para reler).
+        static void LockTabletUntilAltar()
+        {
+            var reader = Object.FindFirstObjectByType<Tablets.TabletReader>();
+            if (reader == null) return;
+            var serialized = new SerializedObject(reader);
+            serialized.FindProperty("decipherFromInventory").boolValue = false;
+            serialized.ApplyModifiedProperties();
+            PrefabUtility.RecordPrefabInstancePropertyModifications(reader);
         }
 
         // Marca dos altares dos Guardiões: o barco de junco sobre ondas entalhado na frente do nicho
@@ -416,7 +632,7 @@ namespace Nibiru.EditorTools.Content
             light.type = LightType.Point;
             light.color = LampLight;
             light.range = 5f;
-            light.intensity = 1.2f;
+            light.intensity = LampIntensity;
             light.shadows = LightShadows.Soft;
             flame.SetActive(false);
             return flame;
