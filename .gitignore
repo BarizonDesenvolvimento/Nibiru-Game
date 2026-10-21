@@ -83,3 +83,6 @@ ArteFonte/*/1_Meshy/**/*.*
 !ArteFonte/*/1_Meshy/Corpo/*Corpo/*.png
 # Renders de conferência (refeitos pelos scripts a qualquer momento)
 ArteFonte/*/3_Blender/Renders/
+
+# Cópia do CLAUDE.md criada pelo aplicativo Codex ao importar sessões do Claude Code
+/AGENTS.md
