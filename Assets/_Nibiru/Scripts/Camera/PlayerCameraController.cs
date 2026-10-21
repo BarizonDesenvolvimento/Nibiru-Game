@@ -57,6 +57,13 @@ namespace Nibiru.Cameras
             mode?.SetAiming(value);
         }
 
+        /// <summary>Vira a câmera para onde o objeto olha, na altura inicial (depois de um teletransporte).</summary>
+        public void AlignTo(Transform target)
+        {
+            yaw = target.eulerAngles.y;
+            pitch = settings.startPitch;
+        }
+
         /// <summary>Coice da arma: sobe a mira alguns graus.</summary>
         public void AddRecoil(float degrees) => pitch -= degrees;
 

@@ -14,11 +14,30 @@ namespace Nibiru.Tablets
         [Tooltip("Tela de leitura. Vazio = procura sozinho.")]
         [SerializeField] ReadingScreenUI readingScreen;
 
+        [Tooltip("Decifrar pela primeira vez usando o item no inventário. Desmarcado = só num lugar da história (como o nicho da Aldeia); depois de decifrada, a tabuleta pode ser relida pelo inventário.")]
+        [SerializeField] bool decipherFromInventory = true;
+
+        [Tooltip("O que aparece ao tentar ler pelo inventário antes da hora.")]
+        [SerializeField] string notYetMessage = "A escrita brilha, mas ainda não faz sentido. Não aqui.";
+
         const string Gold = "#E8C46A";
 
         void Awake()
         {
             if (readingScreen == null) readingScreen = FindFirstObjectByType<ReadingScreenUI>();
+        }
+
+        /// <summary>Leitura pelo inventário: pode ser recusada antes da hora (a mensagem explica).</summary>
+        public bool TryReadFromInventory(TabletDefinition tablet, out string message)
+        {
+            message = null;
+            if (!decipherFromInventory && !tablet.IsDeciphered)
+            {
+                message = notYetMessage;
+                return false;
+            }
+            Read(tablet);
+            return true;
         }
 
         public void Read(TabletDefinition tablet)

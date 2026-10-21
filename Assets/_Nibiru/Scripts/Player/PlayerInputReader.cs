@@ -32,6 +32,7 @@ namespace Nibiru.Player
         InputAction back;
         InputAction pause;
         bool gameplayEnabled = true;
+        bool combatEnabled = true;
 
         /// <summary>
         /// Navegação de menu num eixo: um passo ao inclinar, e repete se continuar segurando.
@@ -92,15 +93,15 @@ namespace Nibiru.Player
         // Mouse dá deslocamento em pixels por quadro; analógico dá inclinação de -1 a 1.
         public bool LookFromMouse => look.activeControl?.device is Pointer;
         public bool RunActive => run.IsPressed() || runLatched;
-        public bool DodgePressed => dodge.WasPressedThisFrame();
+        public bool DodgePressed => combatEnabled && dodge.WasPressedThisFrame();
         public bool InteractPressed => interact.WasPressedThisFrame();
-        public bool AttackPressed => attack.WasPressedThisFrame();
-        public bool AimHeld => aim.IsPressed();
-        public bool FirePressed => fire.WasPressedThisFrame();
-        public bool ReloadPressed => reload.WasPressedThisFrame();
+        public bool AttackPressed => combatEnabled && attack.WasPressedThisFrame();
+        public bool AimHeld => combatEnabled && aim.IsPressed();
+        public bool FirePressed => combatEnabled && fire.WasPressedThisFrame();
+        public bool ReloadPressed => combatEnabled && reload.WasPressedThisFrame();
         public bool CrouchPressed => crouch.WasPressedThisFrame();
-        public bool PowerPressed => power.WasPressedThisFrame();
-        public bool InventoryTogglePressed => toggleInventory.WasPressedThisFrame();
+        public bool PowerPressed => combatEnabled && power.WasPressedThisFrame();
+        public bool InventoryTogglePressed => combatEnabled && toggleInventory.WasPressedThisFrame();
         public bool ConfirmPressed => confirm.WasPressedThisFrame();
         public bool BackPressed => back.WasPressedThisFrame();
         public bool PausePressed => pause.WasPressedThisFrame();
@@ -193,6 +194,14 @@ namespace Nibiru.Player
             if (enabled) map.Enable();
             else map.Disable();
         }
+
+        /// <summary>
+        /// False nas memórias jogáveis: em outro corpo, a Elena não tem esquiva, faca, armas,
+        /// poderes nem inventário. Andar, correr, agachar e interagir continuam.
+        /// </summary>
+        public bool CombatEnabled => combatEnabled;
+
+        public void SetCombatEnabled(bool enabled) => combatEnabled = enabled;
 
         void OnActionTriggered(InputAction.CallbackContext context)
         {

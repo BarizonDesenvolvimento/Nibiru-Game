@@ -51,10 +51,8 @@ namespace Nibiru.Inventory
 
             if (item.tablet != null && tabletReader != null)
             {
-                // A tela de leitura já mostra o resultado.
-                message = null;
-                tabletReader.Read(item.tablet);
-                return true;
+                // A tela de leitura já mostra o resultado (ou a mensagem diz por que ainda não).
+                return tabletReader.TryReadFromInventory(item.tablet, out message);
             }
 
             if (item.firearm != null && weapons != null)
