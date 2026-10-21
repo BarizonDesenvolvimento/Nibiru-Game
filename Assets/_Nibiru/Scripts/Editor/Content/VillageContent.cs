@@ -455,8 +455,9 @@ namespace Nibiru.EditorTools.Content
             SetField(lampFade, "flicker", 0.2f);
 
             // Ler a tabuleta no mesmo lugar do altar. Entre descansar e ler, o altar sai do ar (só
-            // o componente: quem liga o objeto é a lamparina acesa), para o aviso ser um só.
-            GameObject read = Zone(g, "Ler_Tabuleta", NicheFront + new Vector3(0f, 0.6f, 0.15f), new Vector3(1.2f, 1.2f, 0.6f));
+            // o componente: quem liga o objeto é a lamparina acesa), para o aviso ser um só. A
+            // área avança na direção da Elena, para ganhar da conversa com a Umm Karim, ao lado.
+            GameObject read = Zone(g, "Ler_Tabuleta", NicheFront + new Vector3(0f, 0.6f, 0.5f), new Vector3(1.2f, 1.2f, 1.3f));
             read.SetActive(false);
             var checkpoint = altar.GetComponent<Save.Checkpoint>();
             var gate = g.gameObject.AddComponent<StoryEventBranch>();

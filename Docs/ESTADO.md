@@ -91,7 +91,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 
 **Aldeia, passo 8 (a primeira tabuleta):**
 - Na região, a tabuleta não se decifra mais pelo inventário antes da hora: aparece "A escrita brilha, mas ainda não faz sentido. Não aqui." (campo "Decipher From Inventory" do `TabletReader`, desligado só nesta cena pelo menu da Aldeia; no laboratório continua ligado). Depois de decifrada, ela pode ser relida pelo inventário.
-- Depois de descansar no nicho, o objetivo vira "Leia a tabuleta no nicho" e o aviso do nicho troca para "Ler a tabuleta" (o altar sai do ar até a leitura acabar e volta sozinho depois).
+- Depois de descansar no nicho, o objetivo vira "Leia a tabuleta no nicho" e o aviso do nicho troca para "Ler a tabuleta" (o altar sai do ar até a leitura acabar e volta sozinho depois). A área de leitura avança na direção da Elena, para ganhar do aviso "Falar com Umm Karim", que fica ao lado.
 - Ao ler (grupo `Primeira_Tabuleta`, `Sequencia_Leitura`): a tabuleta aparece em cima do nicho, a luz azul de Kur cresce nela (primeira vez que o azul aparece no jogo) e a chama da lamparina encolhe e treme (`Sequences/LightFade`). Conversa "A tabuleta desperta" (`Aldeia_ATabuletaDesperta`): o Samir diz "Doutora... não." e a Voz: "Tila. Você está viva, e está segura. [...] Agora, olhe."
 - A memória (`Memories/PlayableMemory`, dados em `Data/Memories/Memoria_Ziusudra`): a tela clareia em azul, a cena `Memoria_Shuruppak` é carregada por cima da região, a Elena vira o Ziusudra (cápsula de túnica clara, manto vermelho, barba e cajado), some o HUD de combate e ficam desligados esquiva, faca, armas, poder e inventário (`PlayerInputReader.SetCombatEnabled`). Abertura na tela: "Shuruppak, antes do Dilúvio / Você é Ziusudra". Objetivo: "Vá até a cabana de junco, à beira do rio".
 - Shuruppak: rua de casas de barro com toldos e panos coloridos, mercado, palmeiras, juncos, rio e o zigurate de topo dourado do outro lado. Conversas opcionais com a menina (o barulho que não deixa os deuses dormirem) e o pescador (o rio subindo). Paredes invisíveis atrás das casas e na beira do rio.
@@ -245,6 +245,18 @@ Pendências vistas na prévia (ainda não corrigidas):
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
 ### Como o dono testa o passo 8
+
+Atalhos no menu **Nibiru > Testes > Passo 8** (`Scripts/Editor/Step8Shortcuts.cs`): cada um abre a região, liga o Play e põe a Elena no momento certo, com o mundo como se ela tivesse jogado até ali (e um checkpoint de frente para o nicho). Funcionam com o Play desligado ou ligado.
+
+| Atalho | Onde começa |
+| --- | --- |
+| 1. No nicho, pronto para ler a tabuleta | De frente para o nicho, com "Ler a tabuleta" na tela |
+| 2. Começo da memória de Shuruppak | Entrando na memória, no começo da rua |
+| 3. Na porta da cabana de junco | Na memória, de frente para a porta da cabana |
+| 4. Volta da memória: tabuleta, marca e Samir | De volta à casa: tela da tabuleta, a marca e a conversa com o Samir |
+| 5. Jogo novo no Acampamento | Começo do jogo, para conferir que a tabuleta não se lê pelo inventário |
+
+Jogando do jeito normal:
 
 1. Abra `Regiao1_SitioDeUr` e jogue até descansar no nicho (ou volte do checkpoint do nicho).
 2. Aperte E (ou A) no nicho: "Ler a tabuleta". A pedra acende em azul e a lamparina encolhe.
