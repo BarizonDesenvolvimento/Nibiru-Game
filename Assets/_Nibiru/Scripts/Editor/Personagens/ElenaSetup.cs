@@ -25,6 +25,7 @@ namespace Nibiru.EditorTools
         const string MaterialPath = Root + "/Materiais/Elena.mat";
         const string ControllerPath = Root + "/Elena.controller";
         const string MaskPath = Root + "/Elena_Tronco.mask";
+        const string MarkMaterialPath = Root + "/Materiais/Elena_MarcaKur.mat";
         const string PrefabPath = "Assets/_Nibiru/Prefabs/Player/Elena.prefab";
         const string SettingsPath = "Assets/_Nibiru/Data/Player/MovimentoJogador.asset";
         const string ModelChild = "Modelo";
@@ -399,6 +400,43 @@ namespace Nibiru.EditorTools
                     crouch.ApplyModifiedPropertiesWithoutUndo();
                 }
 
+                AddTransformationMark(player, animator);
+
+                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+
+        // A marca azul no pulso, que aparece com a primeira tabuleta. O material é criado só se ainda não existir.
+        static void AddTransformationMark(Transform player, Animator animator)
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(MarkMaterialPath);
+            if (material == null)
+            {
+                material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+                material.SetColor("_BaseColor", new Color(0.3f, 0.55f, 1f));
+                AssetDatabase.CreateAsset(material, MarkMaterialPath);
+            }
+
+            var mark = player.GetComponent<Tablets.TransformationMark>();
+            if (mark == null) mark = player.gameObject.AddComponent<Tablets.TransformationMark>();
+            var serialized = new SerializedObject(mark);
+            serialized.FindProperty("animator").objectReferenceValue = animator;
+            serialized.FindProperty("material").objectReferenceValue = material;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // Para pôr só a marca no prefab, sem refazer a Elena inteira (usado uma vez pela ponte).
+        static void InstallTransformationMark()
+        {
+            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            try
+            {
+                var player = root.GetComponentInChildren<PlayerMotor>().transform;
+                AddTransformationMark(player, player.Find(ModelChild).GetComponent<Animator>());
                 PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
             }
             finally
