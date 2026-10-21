@@ -16,8 +16,9 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) está pronto e testado pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
+- A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pela ponte em `Teste_Personagem` e `Regiao1_SitioDeUr`. Falta o dono testar. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é a fatia vertical: trocar a cápsula pela Elena animada. Depois, continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9).
+A próxima prioridade é o dono testar a Elena animada e, se aprovada, continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -116,7 +117,29 @@ Feitos no Meshy, exportados do Blender para FBX:
 | Elena Varga (antiga, pesada) | `Art/Personagens/Elena/Elena_Varga.fbx` + texturas | `ArteFonte/Elena/Elena_Varga.blend` |
 | Samir Haddad | `Art/Personagens/Samir/Samir_Haddad.fbx` + texturas | `ArteFonte/Samir/Samir_Haddad.blend` |
 
-**Elena nova:** os três FBX estão como Humanoid, cada um com o próprio avatar, porque os ossos têm nomes diferentes (`smartrig` no personagem, `mixamorig` nas animações); a Unity traduz as animações de um para o outro. Não use "Copy From Other Avatar" entre eles: dá erro de ossos não encontrados. A cápsula continua no jogo até a troca. Falta criar o material URP com as texturas e o Animator.
+**Elena nova:** os três FBX estão como Humanoid, cada um com o próprio avatar, porque os ossos têm nomes diferentes (`smartrig` no personagem, `mixamorig` nas animações); a Unity traduz as animações de um para o outro. Não use "Copy From Other Avatar" entre eles: dá erro de ossos não encontrados.
+
+Ela já está no jogo, no lugar da cápsula. O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
+- Material URP Lit `Art/Personagens/Elena/Materiais/Elena.mat`. Metal e lisura vão juntos em `Elena_MetalSmooth.png` (R = metal, A = 1 - rugosidade), gerado só se ainda não existir; para refazer, apague o arquivo e rode o menu.
+- Importação das animações: avanço do clipe sai para a raiz e é descartado (quem anda é o `PlayerMotor`), altura e giro ficam na pose, "Based Upon: Body Orientation". Os clipes originais do Meshy continuam no FBX, e o script acrescenta os trechos usados (nomes em português).
+- Controlador `Elena.controller`. Camada base: estado "Locomocao" (mistura em pé e agachada pelo parâmetro `Agachar`, e cada uma pela `Velocidade` em m/s, com os limites lidos de `Data/Player/MovimentoJogador`), "Esquiva" (gatilho `Esquivar`, no tempo exato da esquiva). Camada "Mira" com máscara do tronco (`Elena_Tronco.mask`), acesa ao mirar.
+- No prefab, o filho "Modelo" (o FBX com o Animator) fica sob o "Jogador", com os pés no fundo do colisor. O colisor, a câmera e os sistemas não mudaram.
+- `Player/PlayerAnimator` passa o estado do `PlayerMotor` e da mira para o Animator. Andando de costas (mirando), o andar toca ao contrário (parâmetro `Sentido`). Ao mirar, endireita o tronco (agachada, a pose dobra o corpo para a frente) e faz a arma provisória seguir a mão direita.
+- `PlayerCrouchVisual` não achata mais o corpo (a animação agacha); só desce câmera e faca. `PlayerDeathHandler` deita a Elena de bruços no chão (falta animação de morte).
+
+Trechos usados (constantes no topo do `ElenaSetup.cs`; para trocar uma animação, mude arquivo, take e quadros ali e rode o menu):
+
+| Trecho | Vem de | Observação |
+| --- | --- | --- |
+| Parada | `Idle_Turn_Right`, quadro 0 | Pose parada, sem respirar |
+| Andar | `Elena_Andando.fbx` | Natural a 1,56 m/s; a 3 m/s toca 1,4 vez mais rápido |
+| Correr | `run_fast_8` | Natural a 2,77 m/s; a 6 m/s toca 1,5 vez mais rápido (os pés escorregam um pouco) |
+| Agachada_Parada | `Sneaky_Walk_inplace`, quadro 48 | Altura pelos pés |
+| Agachada_Andando | `Sneaky_Walk_inplace` | Altura pelos pés |
+| Esquiva | `sliding_rool`, quadros 0 a 10 | Só o começo do mergulho; volta a andar em 0,2 s |
+| Mira | `Rifle_Aim_Turn_Right`, quadro 12 | Pose de fuzil (no quadro 0 os braços apontam 48° à esquerda) |
+
+Animações que faltam (o pacote do Meshy não tem; baixar no Meshy ou no Mixamo e pôr no lugar do trecho provisório): parada respirando, agachada parada, mira de pistola (parada e andando para os lados), esquiva rolando de verdade, golpe de faca, levar dano, morte, recarregar e interagir (pegar item). As animações do Meshy não têm dedos. A arma e a faca continuam sendo os blocos provisórios.
 
 Pendências dos modelos antigos (Elena_Varga e Samir) antes de entrarem no jogo:
 - São pesados demais para jogo: Elena tem 1,8 milhão de triângulos e Samir 1,5 milhão. O alvo é perto de 50 mil. O objeto `Elena_TESTE_LOW` do .blend tem o mesmo tamanho do original, ou seja, ainda não foi reduzido.
@@ -180,7 +203,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Fatia vertical: trocar a cápsula pela Elena animada (a Elena nova do Meshy já tem esqueleto e animações; falta o material URP e o Animator).
+1. Fatia vertical: o dono testar a Elena animada no Play. Depois, trocar os trechos provisórios pelas animações que faltam (lista em "Elena nova").
 2. Continuar a Aldeia: sobreviventes (Yusuf e Umm Karim), altar e a primeira tabuleta (passos 7 a 9), "Remédio para Yusuf" com a entrega de curativos à Dra. Weiss, patrulhas na estrada e a revelação dos filmes do Tom.
 3. Seguir área por área: Zigurate, Poço e Wadi.
 4. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.

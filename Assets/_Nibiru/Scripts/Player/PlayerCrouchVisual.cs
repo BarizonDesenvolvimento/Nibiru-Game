@@ -3,9 +3,9 @@ using UnityEngine;
 namespace Nibiru.Player
 {
     /// <summary>
-    /// Mostra o agachar: achata o corpo mantendo os pés no chão, desce o que fica perto
-    /// da cabeça (arma, faca) e o ponto que a câmera segue. Quando a Elena tiver modelo
-    /// e animações, isto dá lugar à animação de agachar.
+    /// Mostra o agachar: desce o que fica perto da cabeça (arma, faca) e o ponto que a câmera
+    /// segue. Com o modelo animado da Elena, o corpo agacha pela animação e "Corpo" fica vazio;
+    /// com um corpo de cápsula, ele é achatado mantendo os pés no chão.
     /// </summary>
     public class PlayerCrouchVisual : MonoBehaviour
     {
@@ -25,6 +25,9 @@ namespace Nibiru.Player
 
         [Tooltip("Quanto a câmera desce agachada, em metros.")]
         [SerializeField] float cameraDrop = 0.6f;
+
+        [Tooltip("Sem Corpo (modelo animado): quanto arma e faca descem agachada, em metros.")]
+        [SerializeField] float animatedLowerDrop = 0.3f;
 
         // O corpo é uma cápsula de 2 m com o centro na origem do Jogador.
         const float BodyHalfHeight = 1f;
@@ -51,8 +54,8 @@ namespace Nibiru.Player
                 body.localPosition = new Vector3(0f, -BodyHalfHeight * (1f - scaleY), 0f);
             }
 
-            // O topo do corpo desce o dobro do centro.
-            float topDrop = 2f * BodyHalfHeight * (1f - scaleY);
+            // Na cápsula, o topo do corpo desce o dobro do centro; no modelo, quem agacha é a animação.
+            float topDrop = body != null ? 2f * BodyHalfHeight * (1f - scaleY) : animatedLowerDrop * blend;
             for (int i = 0; i < lowerWithCrouch.Length; i++)
                 lowerWithCrouch[i].localPosition = lowerStartPositions[i] + Vector3.down * topDrop;
 
