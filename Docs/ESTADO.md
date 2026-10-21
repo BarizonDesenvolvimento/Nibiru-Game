@@ -16,9 +16,9 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) está pronto e testado pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
-- A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pela ponte em `Teste_Personagem` e `Regiao1_SitioDeUr`. Falta o dono testar. Veja "Elena nova" em Personagens 3D.
+- A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é o dono testar a Elena animada e, se aprovada, continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -184,7 +184,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até a prévia da Ninsar (21 de outubro de 2026). Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até a Elena animada (21 de outubro de 2026). Commits em português, pequenos e frequentes.
 
 ## Como testar sozinho pela ponte MCP
 
@@ -203,10 +203,9 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Fatia vertical: o dono testar a Elena animada no Play. Depois, trocar os trechos provisórios pelas animações que faltam (lista em "Elena nova").
-2. Continuar a Aldeia: sobreviventes (Yusuf e Umm Karim), altar e a primeira tabuleta (passos 7 a 9), "Remédio para Yusuf" com a entrega de curativos à Dra. Weiss, patrulhas na estrada e a revelação dos filmes do Tom.
-3. Seguir área por área: Zigurate, Poço e Wadi.
-4. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
-5. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-6. Personagens 3D: o Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
-7. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
+1. Continuar a Aldeia: sobreviventes (Yusuf e Umm Karim), altar e a primeira tabuleta (passos 7 a 9), "Remédio para Yusuf" com a entrega de curativos à Dra. Weiss, patrulhas na estrada e a revelação dos filmes do Tom.
+2. Seguir área por área: Zigurate, Poço e Wadi.
+3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
+4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
+5. Personagens 3D: trocar os trechos provisórios da Elena pelas animações que faltam (lista em "Elena nova"). O Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+6. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).

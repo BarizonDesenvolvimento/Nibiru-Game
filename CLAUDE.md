@@ -49,4 +49,4 @@ Docs/
 
 ## Fase atual
 
-Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2) e o encontro com o Samir na Aldeia (área 3, passo 6) estão prontos. A próxima prioridade é trocar a cápsula pela Elena animada; depois, continuar a Aldeia (passos 7 a 9) e seguir área por área. A Ninsar tem uma prévia animada na Unity, e o manto dela está pausado. Detalhes em `Docs/ESTADO.md`.
+Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2) e o encontro com o Samir na Aldeia (área 3, passo 6) e a Elena animada no lugar da cápsula estão prontos. A próxima prioridade é continuar a Aldeia (passos 7 a 9) e seguir área por área. A Ninsar tem uma prévia animada na Unity, e o manto dela está pausado. Detalhes em `Docs/ESTADO.md`.
