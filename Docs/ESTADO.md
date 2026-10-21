@@ -14,11 +14,11 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
-- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) está pronto e testado pelo dono.
+- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é continuar a Aldeia: a primeira tabuleta no altar e o plano de fuga (passos 8 e 9). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -27,6 +27,7 @@ A próxima prioridade é continuar a Aldeia: sobreviventes, altar e a primeira t
 | `Docs/GDD.md` | Design do jogo inteiro. Vale acima de tudo |
 | `Docs/Biblia.md` | História canônica: eras, panteão, personagens, mistérios |
 | `Docs/Regiao-1-Sitio-de-Ur.md` | Região 1 aprovada: mapa, missões, inimigos, itens, diálogos, sistemas (Grupos 1 e 2), controles, blockout e perguntas abertas |
+| `Docs/Arte/Regiao1_SitioDeUr_Arte.md` | Direção de arte da região 1: paleta (o azul de lápis-lazúli só onde Kur vaza), luz e lista de peças por área |
 | `Docs/Guia-MCP-Unity.md` | Como a Unity conversa com o Claude Code |
 | `Docs/ESTADO.md` | Este arquivo |
 
@@ -35,7 +36,7 @@ A próxima prioridade é continuar a Aldeia: sobreviventes, altar e a primeira t
 | Cena | Para que serve |
 | --- | --- |
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir de cápsula, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
-| `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento |
+| `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento, das Trincheiras e da Aldeia |
 | `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
 
 O blockout é gerado pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cena aberta** (`Scripts/Editor/Blockout/SitioDeUrBlockout.cs`). Para mudar o mapa, mude o script e rode o menu de novo; o menu também refaz a malha de navegação. Os discos dourados `Marca_...` marcam onde entra cada conteúdo.
@@ -71,13 +72,22 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - O passo "Atravesse as trincheiras e siga para a Aldeia" completa com `ChegouAAldeia`, no fim da conversa com o Samir (veja a Aldeia).
 - O rádio de campanha ainda não faz nada (avisar patrulhas fica para depois).
 
-**Aldeia, como funciona (até agora, passo 6):**
+**Aldeia, como funciona (até agora, passos 6 e 7):**
 - Uma área grande cobre a Aldeia com folga (evento `AproximouSeDaAldeia`): de onde a Elena vier, o encontro começa ao entrar nela.
 - Há 4 pontos fixos de encontro nas entradas (leste, sudeste, sul e norte). O componente `Sequences/PlaceAtPointAhead` escolhe o mais perto entre os que estão à frente da Elena e leva a cena (soldado, corpo e Samir) para lá, virada para ela. A cada execução, o menu confere se cada ponto está na malha de navegação e com 2,5 m livres em volta (avisos no Console).
 - Um soldado (figurante, sem IA) a encurrala (`Aldeia_Encurralada`). Depois da fala dele, o Samir aparece atrás e o derruba com a faca. Em seguida vem a conversa "O guia" (`Aldeia_OGuia`): o Samir nota a luz da tabuleta na bolsa ("Esconda isso"), diz que ninguém veio resgatar ninguém e desconversa se a Elena perguntar quem ele é. No fim, dispara `ChegouAAldeia`.
 - Objetivo "Siga o Samir até a Aldeia": ele anda pela malha de navegação até o pátio, na frente da casa do altar (`Sequences/WalkToPoint`). Ele espera quando a Elena fica mais de 10 m para trás, mas não quando ela está à frente.
 - No pátio: fala curta do Samir (`Aldeia_ChegadaPatio`), evento `ChegouAoPatioComSamir` e ponto de retorno. Ao voltar dele, o Samir já está no pátio e o soldado, no chão.
 - Se a Elena morrer antes do pátio, o encontro se repete.
+- Passo 7: depois da fala do pátio, o Samir entra na casa do altar (`WalkToPoint.WalkTo`) e aparece o objetivo "Siga o Samir até a casa". Dentro dela estão os sobreviventes, em cápsulas: Yusuf deitado numa esteira (parede oeste) e Umm Karim em pé, perto da cabeça dele.
+- No fundo da casa (gatilho `EntrouNaCasaDoAltar`, ligado só depois do pátio), começa "Os sobreviventes" (`Aldeia_Sobreviventes`): a Umm Karim se assusta, o Yusuf delira de febre ("ouvi alguém respirando debaixo das pedras"), a Umm Karim conta do avô ("lá embaixo alguém dorme") e o Samir aponta a tenda médica do zigurate. No fim, `ConheceuSobreviventes` começa a secundária "Remédio para Yusuf" (`Data/Quests/RemedioParaYusuf`): conseguir o item `Antibioticos` e entregar ao Yusuf (evento `EntregouAntibioticos`, que ainda nada dispara).
+- Logo depois, "O nicho" (`Aldeia_ONicho`): o Samir mostra o nicho, acende a lamparina e diz que ali ela pode descansar; a tabuleta fica morna (gancho do passo 8). Ele não revela que é Guardião. Evento `SamirMostrouONicho`.
+- Com a lamparina acesa, o nicho vira altar (`Checkpoint` no modo Altar, "Descansar no nicho"): marca o ponto de retorno de frente para o nicho, quantas vezes a Elena quiser, e dispara `DescansouNoNicho` (campo novo "Evento ao ativar" do `Checkpoint`), que fecha o objetivo "Descanse junto ao nicho antigo".
+- Depois disso, a Umm Karim e o Yusuf têm uma fala curta cada (`Aldeia_UmmKarimEspera`, `Aldeia_YusufEspera`), repetível.
+- Ao voltar de um checkpoint, o Samir já está dentro da casa (se ela já conheceu os sobreviventes), a lamparina continua acesa e as conversas não se repetem.
+- A missão "Remédio para Yusuf" entra na lista do `QuestManager` (que fica no Acampamento) pelo menu da Aldeia. Se rodar o menu do Acampamento de novo, rode o da Aldeia depois.
+
+**Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
 ## Sistemas prontos
 
@@ -186,7 +196,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até a Elena animada (21 de outubro de 2026). Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até o passo 7 da Aldeia (21 de outubro de 2026). Commits em português, pequenos e frequentes.
 
 ## Como testar sozinho pela ponte MCP
 
@@ -205,7 +215,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Continuar a Aldeia: sobreviventes (Yusuf e Umm Karim), altar e a primeira tabuleta (passos 7 a 9), "Remédio para Yusuf" com a entrega de curativos à Dra. Weiss, patrulhas na estrada e a revelação dos filmes do Tom.
+1. Continuar a Aldeia: a primeira tabuleta no altar e o plano de fuga (passos 8 e 9), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir), patrulhas na estrada e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
