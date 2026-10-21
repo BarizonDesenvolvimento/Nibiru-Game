@@ -15,9 +15,9 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) está pronto e testado pelo dono.
-- A **Ninsar** está sendo montada como personagem modular (corpo, manto, saia e lança), em 6 etapas: as etapas 0 e 1 (Git e encaixe das peças) estão prontas e aprovadas pelo dono. Veja "Ninsar" em Personagens 3D.
+- A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 
-O próximo passo é continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9).
+A próxima prioridade é a fatia vertical: trocar a cápsula pela Elena animada. Depois, continuar a Aldeia: sobreviventes, altar e a primeira tabuleta (passos 7 a 9).
 
 ## Documentos
 
@@ -35,6 +35,7 @@ O próximo passo é continuar a Aldeia: sobreviventes, altar e a primeira tabule
 | --- | --- |
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir de cápsula, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
 | `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento |
+| `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
 
 O blockout é gerado pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cena aberta** (`Scripts/Editor/Blockout/SitioDeUrBlockout.cs`). Para mudar o mapa, mude o script e rode o menu de novo; o menu também refaz a malha de navegação. Os discos dourados `Marca_...` marcam onde entra cada conteúdo.
 
@@ -123,7 +124,7 @@ Pendências dos modelos antigos (Elena_Varga e Samir) antes de entrarem no jogo:
 - A textura `_ORM` junta oclusão, rugosidade e metal num arquivo só e precisa ser convertida para o formato do material Lit do URP.
 - A arte-fonte de todos os personagens fica em `ArteFonte/<Personagem>/`, fora de `Assets`, para a Unity não depender do Blender instalado. Cópias de segurança do Blender (`.blend1`) não vão para o Git.
 
-### Ninsar (em andamento)
+### Ninsar
 
 Arte-fonte em `ArteFonte/Ninsar/`:
 
@@ -133,19 +134,30 @@ Arte-fonte em `ArteFonte/Ninsar/`:
 | `2_Rig/` | Corpo com esqueleto do AccuRig (`Ninsar_Corpo_Rig.fbx`, 101 ossos, com dedos) e as 19 animações do Meshy (`Ninsar_Animacoes/Ninsar_Animacoes.fbx`, esqueleto Mixamo de 28 ossos, **sem dedos**) | Sim |
 | `3_Blender/` | `Ninsar_Montagem.blend` (montagem original do dono, não mexer), `Ninsar_Final.blend` (cópia de trabalho), `Texturas/` (texturas das peças tiradas de dentro do .blend), `Scripts/` (Python do Blender) e `Renders/` (conferência, fora do Git) | Sim, menos `Renders/` |
 | `Imagens De Referencia/` | Folhas de referência do corpo, manto, saia e lança | Sim |
+| `Texturas/` | Texturas do manto enviadas pelo dono (os nomes dos dois arquivos vieram trocados: `Ninsar_Tecido_Manto.png` é a faixa de bordado e `Ninsar_Faixa_Bordado.png` é o tecido) e, em `Processadas/`, as versões prontas: tecido repetível sem emenda (5 x 5 losangos), faixa recortada em um ciclo completo estrela–cuneiforme–estrela–cuneiforme, as duas no verdete do manto do Meshy, com normal map e máscara do ouro (`Scripts/preparar_texturas_manto.py`) | Sim |
 
 Os scripts refazem tudo do zero, nesta ordem (no terminal, de dentro de `3_Blender`, com o `blender.exe` do Blender 5.2):
 1. `blender -b Ninsar_Montagem.blend -P Scripts/etapa1_escala.py`: cria o `Ninsar_Final.blend`. A malha do corpo já media 1,90 m; só a Armature tinha escala 0,01. Tudo fica com escala 1. Tira a ação "0_T-Pose" do AccuRig do esqueleto (fica guardada): o encaixe, os pesos e o FBX usam a pose de repouso. Põe as texturas PBR do Meshy no corpo (mesmos UVs).
 2. `blender -b Ninsar_Final.blend -P Scripts/etapa1_encaixe.py`: veste as peças. Os ajustes ficam no topo do script. O manto recua 9,5 cm, inclina 1° e cresce 3%; a saia vai da cintura (1,17 m) até 2 cm do chão, 8% mais larga. Onde o corpo ainda atravessa o pano, um empurrão suave leva o pano para fora (folga de 1,2 cm no manto e 0,8 cm na saia), mexendo as duas faces do pano juntas para não deformar o relevo. A parte da saia na altura do cinto de couro (que é do corpo) entra 4 mm sob a pele, para o cinto e o medalhão aparecerem por cima. Nas pernas (abaixo de 0,95 m, com transição até 1,12 m) não há empurrão: o pano fica com a forma original do Meshy, sem esticar os bordados; a física de tecido trata as colisões ali. O capuz é aproximado do crânio (folga de 1 a 2 cm no topo e nos lados, 3 a 4 cm em volta do rosto), fechando 85% do vão original, só do pescoço para cima. A lança vai para a mão direita: o cabo passa por baixo da palma, deitado e com a ponta para a frente na pose de braços abertos (fica em pé com o braço baixado e o antebraço para a frente).
 3. Conferência: `Scripts/renderizar_vistas.py -- <prefixo> [objetos escondidos]` (frente, lado e costas) e `Scripts/renderizar_pose_lanca.py` (braço baixado segurando a lança). Ferramentas de medida: `medir.py`, `fatias.py`, `otimizar_encaixe.py`.
 
-Essa versão vestida (manto e saia do Meshy) fica como referência. Etapas que faltam: 2) versões leves. A versão leve tirada do manto do Meshy falhou (casca fina demais para refazer a malha), então o manto vai ser refeito do zero por script, como um molde de roupa em malha quad uniforme (5 a 8 mil polígonos), vestido com simulação de tecido do Blender, com UVs de tecido repetível e faixas de bordado (texturas finais virão do dono). A saia segue como tubo regular encostado na superfície externa da saia do Meshy, com bake em 4096; 3) pesos, ossos extras no manto e na faixa da saia, lança presa na mão; 4) FBX na Unity como Humanoid, material URP e animações por retargeting; 5) física de tecido (conferir a faixa verde da saia que hoje dobra na coxa esquerda); 6) poses de mão para os dedos segurarem a lança. Na etapa 3, o capuz segue o osso da cabeça. A fenda da saia que mostra a coxa é proposital.
+O `Ninsar_Final.blend` guarda essa versão vestida (o manto do Meshy encaixado fica só como referência). A pose de repouso continua a de braços abertos do AccuRig.
+
+**Manto da Ninsar pausado; o manto gerado por script não alcançou a referência. Alternativas: capa curta com capuz abaixado, roupa feita no Marvelous Designer ou artista 3D freelancer; as texturas em `ArteFonte/Ninsar/Texturas/Processadas` servem para qualquer uma.** O que foi tentado (scripts guardados como histórico):
+- `etapa2_manto_leve.py`: versão leve tirada do manto do Meshy. Falhou: a casca do Meshy é fina demais (cerca de 2 mm) para refazer a malha.
+- `etapa2_manto_novo.py`: manto longo feito como molde (malha de quadrados, cavas, UV planificada por painéis, simulação de tecido). Ficou com cara de saco reto.
+- `etapa2_manto_poncho.py`: capa-poncho com frente aberta, aba com franja nos ombros e capuz largo, simulada com os braços baixados (só na pose). Também não chegou à silhueta da referência.
+- Ferramentas usadas: `comparar_referencia.py` (render ao lado da referência), `analisar_pano.py`, `medir_capuz.py`.
+
+**Prévia na Unity** (`Art/Personagens/Ninsar`): `Ninsar_Previa.fbx` sai do Blender por `Scripts/exportar_previa_unity.py` (corpo, saia com pesos simples na pelve, coxas e canelas, sem física, e a lança como filha do osso da mão direita) junto com as texturas no formato do URP (`*_MetalSmooth.png`: R = metal, A = lisura). `Ninsar_Animacoes.fbx` é a cópia das 19 animações do Meshy. O menu **Nibiru > Personagens > Montar prévia da Ninsar** (`Scripts/Editor/Personagens/NinsarPreviewSetup.cs`) configura os dois FBX como Humanoid (cada um com o próprio avatar), cria os materiais URP, o controlador `Ninsar_Previa.controller` (um estado por animação, parada no lugar e seguindo a orientação do corpo), o prefab `Prefabs/Personagens/Ninsar_Previa` e a cena `Teste_Ninsar`. Componentes de teste em `Scripts/Testes` (`AnimationPreview`, `OrbitPreviewCamera`). Limitações: os dedos não fecham na lança (as animações do Meshy não têm dedos) e a saia não tem física.
+
+Etapas que ficaram para depois: versão leve da saia com bake em 4096; pesos e ossos extras na faixa da saia; física de tecido (conferir a faixa verde da saia na coxa esquerda); poses de mão para os dedos segurarem a lança. A fenda da saia que mostra a coxa é proposital.
 
 ## Git
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
-- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 690 MB (450 MB até a Aldeia e 240 MB da arte-fonte da Ninsar). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até o encontro com o Samir, na Aldeia (primeiro push em 20 de outubro de 2026). Commits em português, pequenos e frequentes.
+- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
+- Tudo enviado ao GitHub até a prévia da Ninsar (21 de outubro de 2026). Commits em português, pequenos e frequentes.
 
 ## Como testar sozinho pela ponte MCP
 
@@ -164,9 +176,10 @@ Essa versão vestida (manto e saia do Meshy) fica como referência. Etapas que f
 
 ## Próximos passos
 
-1. Continuar a Aldeia: sobreviventes (Yusuf e Umm Karim), altar e a primeira tabuleta (passos 7 a 9), "Remédio para Yusuf" com a entrega de curativos à Dra. Weiss, patrulhas na estrada e a revelação dos filmes do Tom.
-2. Seguir área por área: Zigurate, Poço e Wadi.
-3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
-4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Terminar a Ninsar (etapas 2 a 6, veja Personagens 3D). Preparar os outros personagens 3D: a Elena nova (Meshy) já tem esqueleto e animações; falta o material URP, o Animator e trocar a cápsula por ela. O Samir ainda precisa reduzir polígonos e ganhar esqueleto.
-6. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
+1. Fatia vertical: trocar a cápsula pela Elena animada (a Elena nova do Meshy já tem esqueleto e animações; falta o material URP e o Animator).
+2. Continuar a Aldeia: sobreviventes (Yusuf e Umm Karim), altar e a primeira tabuleta (passos 7 a 9), "Remédio para Yusuf" com a entrega de curativos à Dra. Weiss, patrulhas na estrada e a revelação dos filmes do Tom.
+3. Seguir área por área: Zigurate, Poço e Wadi.
+4. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
+5. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
+6. Personagens 3D: o Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+7. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
