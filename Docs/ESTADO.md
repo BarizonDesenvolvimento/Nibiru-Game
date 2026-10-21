@@ -119,6 +119,8 @@ Feitos no Meshy, exportados do Blender para FBX:
 
 **Elena nova:** os três FBX estão como Humanoid, cada um com o próprio avatar, porque os ossos têm nomes diferentes (`smartrig` no personagem, `mixamorig` nas animações); a Unity traduz as animações de um para o outro. Não use "Copy From Other Avatar" entre eles: dá erro de ossos não encontrados.
 
+**Provisória:** o dono achou o rig e a animação desta Elena errados (ela fica esquisita em movimento). Ela serve para a fatia vertical, mas vai ser substituída por uma versão correta. Ao trocar, mantenha os nomes dos arquivos (ou mude as constantes no topo do `ElenaSetup.cs`) e rode o menu de novo: o `PlayerAnimator`, o controlador e o prefab continuam valendo.
+
 Ela já está no jogo, no lugar da cápsula. O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
 - Material URP Lit `Art/Personagens/Elena/Materiais/Elena.mat`. Metal e lisura vão juntos em `Elena_MetalSmooth.png` (R = metal, A = 1 - rugosidade), gerado só se ainda não existir; para refazer, apague o arquivo e rode o menu.
 - Importação das animações: avanço do clipe sai para a raiz e é descartado (quem anda é o `PlayerMotor`), altura e giro ficam na pose, "Based Upon: Body Orientation". Os clipes originais do Meshy continuam no FBX, e o script acrescenta os trechos usados (nomes em português).
@@ -207,5 +209,5 @@ Pendências vistas na prévia (ainda não corrigidas):
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Personagens 3D: trocar os trechos provisórios da Elena pelas animações que faltam (lista em "Elena nova"). O Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+5. Personagens 3D: substituir a Elena atual por uma com rig e animação corretos (a de agora é provisória) e trocar os trechos provisórios pelas animações que faltam (lista em "Elena nova"). O Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
