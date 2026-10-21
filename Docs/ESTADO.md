@@ -14,11 +14,11 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
-- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono.
+- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pela ponte, **esperando o teste do dono no Play**.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é continuar a Aldeia: a primeira tabuleta no altar e o plano de fuga (passos 8 e 9). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é o dono testar o passo 8 no Play e, depois, o plano de fuga (passo 9). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -38,6 +38,7 @@ A próxima prioridade é continuar a Aldeia: a primeira tabuleta no altar e o pl
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir de cápsula, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
 | `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento, das Trincheiras e da Aldeia |
 | `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
+| `Scenes/Memoria_Shuruppak` | Memória jogável da Tabuleta do Junco (Shuruppak ao pôr do sol). Não se joga sozinha: é carregada por cima da região no passo 8. Fica longe da origem, em (2000, 0, 2000) |
 
 O blockout é gerado pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cena aberta** (`Scripts/Editor/Blockout/SitioDeUrBlockout.cs`). Para mudar o mapa, mude o script e rode o menu de novo; o menu também refaz a malha de navegação. Os discos dourados `Marca_...` marcam onde entra cada conteúdo.
 
@@ -50,6 +51,7 @@ Cada área tem um script de editor que monta o conteúdo num grupo próprio da c
 | 1. Acampamento | **Nibiru > Conteúdo > Povoar Acampamento na cena aberta** | `Scripts/Editor/Content/CampContent.cs` |
 | 2. Trincheiras | **Nibiru > Conteúdo > Povoar Trincheiras na cena aberta** | `Scripts/Editor/Content/TrenchContent.cs` |
 | 3. Aldeia | **Nibiru > Conteúdo > Povoar Aldeia na cena aberta** | `Scripts/Editor/Content/VillageContent.cs` |
+| Memória de Shuruppak (passo 8) | **Nibiru > Conteúdo > Construir memória de Shuruppak** (refaz a cena `Memoria_Shuruppak` do zero e a põe na lista do Build) | `Scripts/Editor/Content/ShuruppakMemoryContent.cs` |
 
 As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicóptero, diálogos, passos de missão) ficam em `Scripts/Editor/Content/ContentKit.cs`. Rode as áreas em ordem (Acampamento, Trincheiras, Aldeia): o Acampamento cria a missão "Sobrevivente", e cada área seguinte só acrescenta os passos dela no fim (se ainda não estiverem lá).
 
@@ -85,7 +87,23 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Com a lamparina acesa, o nicho vira altar (`Checkpoint` no modo Altar, "Descansar no nicho"): marca o ponto de retorno de frente para o nicho, quantas vezes a Elena quiser, e dispara `DescansouNoNicho` (campo novo "Evento ao ativar" do `Checkpoint`), que fecha o objetivo "Descanse junto ao nicho antigo".
 - Depois disso, a Umm Karim e o Yusuf têm uma fala curta cada (`Aldeia_UmmKarimEspera`, `Aldeia_YusufEspera`), repetível.
 - Ao voltar de um checkpoint, o Samir já está dentro da casa (se ela já conheceu os sobreviventes), a lamparina continua acesa e as conversas não se repetem.
-- A missão "Remédio para Yusuf" entra na lista do `QuestManager` (que fica no Acampamento) pelo menu da Aldeia. Se rodar o menu do Acampamento de novo, rode o da Aldeia depois.
+- A missão "Remédio para Yusuf" entra na lista do `QuestManager` (que fica no Acampamento) pelo menu da Aldeia. Se rodar o menu do Acampamento de novo, rode o da Aldeia depois (ele também trava a leitura da tabuleta pelo inventário).
+
+**Aldeia, passo 8 (a primeira tabuleta):**
+- Na região, a tabuleta não se decifra mais pelo inventário antes da hora: aparece "A escrita brilha, mas ainda não faz sentido. Não aqui." (campo "Decipher From Inventory" do `TabletReader`, desligado só nesta cena pelo menu da Aldeia; no laboratório continua ligado). Depois de decifrada, ela pode ser relida pelo inventário.
+- Depois de descansar no nicho, o objetivo vira "Leia a tabuleta no nicho" e o aviso do nicho troca para "Ler a tabuleta" (o altar sai do ar até a leitura acabar e volta sozinho depois).
+- Ao ler (grupo `Primeira_Tabuleta`, `Sequencia_Leitura`): a tabuleta aparece em cima do nicho, a luz azul de Kur cresce nela (primeira vez que o azul aparece no jogo) e a chama da lamparina encolhe e treme (`Sequences/LightFade`). Conversa "A tabuleta desperta" (`Aldeia_ATabuletaDesperta`): o Samir diz "Doutora... não." e a Voz: "Tila. Você está viva, e está segura. [...] Agora, olhe."
+- A memória (`Memories/PlayableMemory`, dados em `Data/Memories/Memoria_Ziusudra`): a tela clareia em azul, a cena `Memoria_Shuruppak` é carregada por cima da região, a Elena vira o Ziusudra (cápsula de túnica clara, manto vermelho, barba e cajado), some o HUD de combate e ficam desligados esquiva, faca, armas, poder e inventário (`PlayerInputReader.SetCombatEnabled`). Abertura na tela: "Shuruppak, antes do Dilúvio / Você é Ziusudra". Objetivo: "Vá até a cabana de junco, à beira do rio".
+- Shuruppak: rua de casas de barro com toldos e panos coloridos, mercado, palmeiras, juncos, rio e o zigurate de topo dourado do outro lado. Conversas opcionais com a menina (o barulho que não deixa os deuses dormirem) e o pescador (o rio subindo). Paredes invisíveis atrás das casas e na beira do rio.
+- Na cabana de junco, a Voz fala através da parede (`Memoria_ParedeDeJunco`). Na primeira fala, o azul vaza pelas frestas da parede do fundo; no fim, o azul cresce e a memória termina. Pistas de que a voz esconde algo: "Porque vocês são meus" e "guarda bem o teu sangue... passa de filho para filho" (a Elena descende de Ziusudra). Fecha com "Tila. Viva.", a palavra do passo 1.
+- Na volta (`Sequencia_Volta`), a Elena está no mesmo lugar: tela da tabuleta com o texto, "Novo poder: Eco do Abzu" e "Transformação +5" (de 0 para 5). Aparece a **marca azul no pulso esquerdo** (`Tablets/TransformationMark`, no prefab da Elena; acesa sempre que a transformação passar de zero; material `Art/Personagens/Elena/Materiais/Elena_MarcaKur`). Fala "A marca" (`Aldeia_AMarca`): "Não tenha medo da marca. Ela só quer dizer que eu estou com você."
+- Conversa com o Samir (`Aldeia_DepoisDaTabuleta`), ele ao lado do nicho, de mão na faca: contar a verdade (Guardiões +5, evento `ContouAVerdadeAoSamir`), mentir (`MentiuAoSamir`, sem mudança agora; ele lembra depois) ou "Por que você está com a mão na faca?" (`SamirRevelouGuardiao`: ele revela que é Guardião). As três terminam em "precisamos sair desta aldeia" (gancho do passo 9) e disparam `ConversouSobreATabuleta`. Depois vem a dica do Eco do Abzu (Q ou LB).
+- Uma escrita cuneiforme escondida na parede do fundo da casa só aparece com o Eco (`Inscricao_Escondida`, `EchoHiddenMark`).
+- Ao voltar de um checkpoint depois da leitura: o poder, a marca e as escolhas continuam valendo, e nada se repete.
+- Enquanto o passo 9 não existe, a missão "Sobrevivente" aparece como concluída depois da conversa com o Samir.
+- Teste feito pela ponte: leitura, memória (andando com controle virtual), as conversas, a volta, as escolhas da verdade e da faca, a escrita revelada pelo Eco e a volta de um checkpoint. Falta o teste do dono no Play.
+
+**Memória jogável, como funciona (vale para as próximas):** um arquivo `MemoryDefinition` (cena, quem a Elena é, lugar, evento de entrada, evento de fim, cor da passagem) e um `PlayableMemory` na cena da região, chamado por um evento. Na cena da memória: um `MemorySpawn` (onde começa) e um `MemoryAvatar` (a aparência, com a origem nos pés e sem colisão). A cena da memória precisa estar na lista do Build e ficar longe da região, porque o sol da região é apagado durante a memória, mas o resto continua lá, parado.
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
@@ -113,7 +131,9 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Lullu e o chefe Primeiro Servo | `AI/LulluAI` | `Data/AI/Lullu`, `PrimeiroServo` |
 | HUD, telas e pausa | `UI/` | opções do jogador em `GameOptions` (salvas no computador) |
 | Helicóptero que avista a Elena, item largado ao morrer | `AI/HelicopterSpotter`, `Combat/DropOnDeath` | configurados no Inspector |
-| Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`) e `UI/NotificationPoster` | configurados no Inspector |
+| Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto, luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
+| Memória jogável (versão simples do Grupo 2): passagem para a cena do passado e volta | `Memories/` (`MemoryDefinition`, `PlayableMemory`, `MemorySpawn`, `MemoryAvatar`) | `Data/Memories` |
+| Marca da transformação no pulso | `Tablets/TransformationMark` (no prefab da Elena) | material `Elena_MarcaKur` |
 
 Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/AI/Soldado`, `Prefabs/AI/Lullu`.
 
@@ -131,7 +151,7 @@ Feitos no Meshy, exportados do Blender para FBX:
 
 **Provisória:** o dono achou o rig e a animação desta Elena errados (ela fica esquisita em movimento). Ela serve para a fatia vertical, mas vai ser substituída por uma versão correta. Ao trocar, mantenha os nomes dos arquivos (ou mude as constantes no topo do `ElenaSetup.cs`) e rode o menu de novo: o `PlayerAnimator`, o controlador e o prefab continuam valendo.
 
-Ela já está no jogo, no lugar da cápsula. O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
+Ela já está no jogo, no lugar da cápsula. O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes), inclusive a marca azul do pulso (`TransformationMark`):
 - Material URP Lit `Art/Personagens/Elena/Materiais/Elena.mat`. Metal e lisura vão juntos em `Elena_MetalSmooth.png` (R = metal, A = 1 - rugosidade), gerado só se ainda não existir; para refazer, apague o arquivo e rode o menu.
 - Importação das animações: avanço do clipe sai para a raiz e é descartado (quem anda é o `PlayerMotor`), altura e giro ficam na pose, "Based Upon: Body Orientation". Os clipes originais do Meshy continuam no FBX, e o script acrescenta os trechos usados (nomes em português).
 - Controlador `Elena.controller`. Camada base: estado "Locomocao" (mistura em pé e agachada pelo parâmetro `Agachar`, e cada uma pela `Velocidade` em m/s, com os limites lidos de `Data/Player/MovimentoJogador`), "Esquiva" (gatilho `Esquivar`, no tempo exato da esquiva). Camada "Mira" com máscara do tronco (`Elena_Tronco.mask`), acesa ao mirar.
@@ -195,8 +215,9 @@ Pendências vistas na prévia (ainda não corrigidas):
 ## Git
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
-- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, nenhum arquivo passa de 1 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até o passo 7 da Aldeia (21 de outubro de 2026). Commits em português, pequenos e frequentes.
+- **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
+- Tudo enviado ao GitHub até o passo 8 da Aldeia (21 de outubro de 2026), ainda sem o teste do dono. Commits em português, pequenos e frequentes.
+- O `ProjectSettings/ProjectSettings.asset` tem uma mudança que não veio do passo 8 (nome da empresa "Barizon Desenvolvimento"); ficou fora dos commits, para o dono decidir.
 
 ## Como testar sozinho pela ponte MCP
 
@@ -215,9 +236,19 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Continuar a Aldeia: a primeira tabuleta no altar e o plano de fuga (passos 8 e 9), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir), patrulhas na estrada e a revelação dos filmes do Tom.
+1. O dono testar o passo 8 no Play (veja "Como o dono testa o passo 8" abaixo). Depois, continuar a Aldeia: o plano de fuga (passo 9), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir), patrulhas na estrada e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D: substituir a Elena atual por uma com rig e animação corretos (a de agora é provisória) e trocar os trechos provisórios pelas animações que faltam (lista em "Elena nova"). O Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
-6. Versões simples do Grupo 2 (memória jogável, cenas, diário, crafting, save em disco).
+6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
+7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+
+### Como o dono testa o passo 8
+
+1. Abra `Regiao1_SitioDeUr` e jogue até descansar no nicho (ou volte do checkpoint do nicho).
+2. Aperte E (ou A) no nicho: "Ler a tabuleta". A pedra acende em azul e a lamparina encolhe.
+3. Em Shuruppak, ande pela rua até a cabana de junco à beira do rio (dá para falar com a menina e o pescador). Dentro da cabana, a voz fala e a parede do fundo brilha em azul.
+4. De volta à casa: a tela da tabuleta, a marca azul no pulso esquerdo e a conversa com o Samir. Escolha uma resposta.
+5. Aperte Q (ou LB): o Eco do Abzu acende a escrita escondida na parede do fundo.
+6. Para conferir a trava: num jogo novo, no Acampamento, usar a tabuleta pelo inventário só deve mostrar "Não aqui."
