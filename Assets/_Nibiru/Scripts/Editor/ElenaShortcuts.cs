@@ -71,7 +71,7 @@ namespace Nibiru.EditorTools
                 if (agent.isOnNavMesh) agent.isStopped = true;
         }
 
-        static void GiveWeapons()
+        internal static void GiveWeapons()
         {
             var inventory = Object.FindFirstObjectByType<PlayerInventory>();
             if (inventory == null) return;
