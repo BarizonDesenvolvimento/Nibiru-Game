@@ -116,8 +116,20 @@ namespace Nibiru.AI
 
         void OnDied()
         {
+            if (dead) return;
             dead = true;
             animator.SetTrigger(DeathId);
+        }
+
+        /// <summary>
+        /// Já no chão, no fim da animação de morte (ao voltar de um checkpoint depois da luta). Chame antes
+        /// de matar a vida: a IA tomba a raiz ao morrer, e o modelo fica onde estava em pé.
+        /// </summary>
+        public void LieDead()
+        {
+            dead = true;
+            if (visual != null) visual.GetPositionAndRotation(out aliveVisualPosition, out aliveVisualRotation);
+            animator.Play(DeathParam, 0, 1f);
         }
 
         void LateUpdate()

@@ -51,6 +51,13 @@ namespace Nibiru.Save
             if (player != null) Activate(player);
         }
 
+        /// <summary>Marca este ponto de retorno na hora, sem a Elena passar por ele (chamado por uma cena).</summary>
+        public void ActivateNow()
+        {
+            PlayerRespawn player = FindFirstObjectByType<PlayerRespawn>();
+            if (player != null) Activate(player);
+        }
+
         void Activate(PlayerRespawn player)
         {
             // Marca antes de guardar, para o próprio checkpoint já constar como ativado ao voltar.

@@ -32,6 +32,14 @@ namespace Nibiru.AI
         [Tooltip("Segundos sem ouvir nada até desistir e voltar a vagar.")]
         [Min(0f)] public float forgetTime = 6f;
 
+        [Header("Distração")]
+        [Tooltip("Um som que não é da Elena, deste alcance para cima (um holofote caindo), o distrai: ele vai até lá " +
+                 "e fica uns segundos sem ouvir os passos dela. Em metros; 0 = nada o distrai.")]
+        [Min(0f)] public float distractionNoise = 30f;
+
+        [Tooltip("Segundos distraído por esse som (encostar nele ou feri-lo acaba com a distração).")]
+        [Min(0f)] public float distractionTime = 5f;
+
         [Header("Ataque")]
         [Tooltip("Distância para começar o golpe, em metros.")]
         [Min(0f)] public float attackRange = 1.9f;

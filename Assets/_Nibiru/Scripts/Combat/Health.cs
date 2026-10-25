@@ -69,6 +69,13 @@ namespace Nibiru.Combat
             return true;
         }
 
+        /// <summary>Troca a vida máxima e enche a vida (o chefe lê a vida do arquivo de dados da luta).</summary>
+        public void SetMax(float value)
+        {
+            maxHealth = Mathf.Max(1f, value);
+            Current = maxHealth;
+        }
+
         /// <summary>Define a vida direto, sem eventos de dano ou cura. Usado ao voltar de um checkpoint.</summary>
         public void Restore(float value) => Current = Mathf.Clamp(value, 1f, maxHealth);
 
