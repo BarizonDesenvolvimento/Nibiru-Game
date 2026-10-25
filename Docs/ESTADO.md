@@ -14,11 +14,11 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
-- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pela ponte, **esperando o teste do dono no Play**.
+- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é o dono testar o passo 9 no Play e, depois, atravessar a base do zigurate (passo 10). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é atravessar a base do zigurate (passo 10). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -111,7 +111,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Depois: o Samir vai embora para o sul e some (`WalkToPoint.LeaveTo`), um ponto de retorno é marcado na beira da aldeia (longe da visão da patrulha) e o objetivo vira "Passe pela patrulha da estrada e entre na base da Fundação, no pé do zigurate". Ele fecha ao entrar na base pela ponta sul do muro (`EntrouNaBaseDaFundacao`). O portão do muro continua fechado (abre por dentro, no passo 10).
 - Ao voltar de um checkpoint depois do plano, tudo fica direto no estado final (caminhão parado, barreira, guarda, patrulha, helicóptero pousado e quieto, Samir longe), sem repetir a cena: o `StoryEventListener` ganhou a opção "Only On Load" (só ao carregar a cena) para isso.
 - Enquanto o passo 10 não existe, a missão "Sobrevivente" aparece como concluída ao entrar na base.
-- Teste feito pela ponte: o Samir indo até a beira, a cena do cerco, as duas versões da conversa (com e sem a revelação), o Samir indo embora, o ponto de retorno, a volta de um checkpoint e a entrada na base andando com controle virtual. Falta o teste do dono no Play.
+- Teste feito pela ponte: o Samir indo até a beira, a cena do cerco, as duas versões da conversa (com e sem a revelação), o Samir indo embora, o ponto de retorno, a volta de um checkpoint e a entrada na base andando com controle virtual. Testado e aprovado pelo dono no Play.
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
@@ -224,7 +224,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até o passo 8 da Aldeia, testado pelo dono (21 de outubro de 2026). Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até o passo 9 da Aldeia, testado pelo dono (25 de outubro de 2026). As mudanças em `ArteFonte/` feitas fora destas conversas (arte-fonte antiga apagada e pastas novas de personagens) ainda não estão no Git. Commits em português, pequenos e frequentes.
 - Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
 ## Como testar sozinho pela ponte MCP
@@ -244,7 +244,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. O dono testar o passo 9 no Play (veja "Como testar o passo 9" abaixo). Depois: atravessar a base do zigurate (passo 10), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Atravessar a base do zigurate (passo 10), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
