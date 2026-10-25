@@ -37,7 +37,7 @@ namespace Nibiru.Factions
 
             string color = ColorUtility.ToHtmlStringRGB(change.faction.color);
             string sign = change.amount > 0 ? "+" : string.Empty;
-            Notifications.Post($"<color=#{color}>{change.faction.displayName}</color> {sign}{change.amount}");
+            Notifications.PostImportant($"<color=#{color}>{change.faction.displayName}</color> {sign}{change.amount}");
             Changed?.Invoke(change.faction, after);
         }
 
