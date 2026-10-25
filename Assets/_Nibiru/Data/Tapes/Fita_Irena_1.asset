@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9937db15414450f408bdfac24f970473, type: 3}
+  m_Name: Fita_Irena_1
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.TapeDefinition
+  displayName: "Fita de Irena n\xBA 1"
+  speakerLabel: Irena, 1979
+  lines:
+  - text: "Elena, filha. Estou gravando isto num t\xFAnel que n\xE3o est\xE1 em nenhum
+      mapa, com uma lamparina que n\xE3o \xE9 minha."
+  - text: "Passei por esta passagem hoje. \xC9 estreita e antiga, e algu\xE9m a cavou
+      h\xE1 muito tempo para que ningu\xE9m precisasse sair pela porta."
+  - text: "Os Guardi\xF5es me deixaram passar, mas eles n\xE3o confiam em ningu\xE9m.
+      Nem em mim. Nem em quem vem comigo."
+  - text: "Os patrocinadores querem o que est\xE1 l\xE1 embaixo. Pagam bem, falam
+      baixo e sorriem demais. N\xE3o acredite em quem sorri demais."
+  - text: "Se um dia voc\xEA descer aqui, fa\xE7a o que eu n\xE3o consegui: pergunte
+      antes de abrir qualquer porta."
+  - text: "Estou com medo, e voc\xEA n\xE3o vai contar a ningu\xE9m que eu disse
+      isso."
+  - text: "Enquanto isso, coma direito, estude, e tire essa m\xFAsica do volume m\xE1ximo.
+      Eu volto assim que puder."
+  - text: Eu volto. Eu prometo, Elena.
+  voice: {fileID: 0}
+  secondsPerCharacter: 0.06
+  minSecondsPerLine: 2.4
+  pauseBetweenLines: 0.8
+  raiseOnCollected: {fileID: 11400000, guid: cc85e80ae7a8b4e46ad8c2c381fe8459, type: 2}
+  raiseOnFinished: {fileID: 11400000, guid: c770d5d2166a0e34b839606ac2550ceb, type: 2}
