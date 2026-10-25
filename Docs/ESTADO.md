@@ -20,7 +20,8 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
 - Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador de elite está no posto dele, no passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
-- Os outros personagens (Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
+- O **Lullu definitivo** (Meshy + AccuRig, com dedos, 2,10 m em pé) substituiu a cápsula no prefab `Prefabs/AI/Lullu` (e, de carona, no Primeiro Servo do laboratório, que é o mesmo prefab em escala 1,25), sem mudar a `LulluAI`. Testado pela ponte; falta o teste do dono. Veja "Lullu" em Personagens 3D.
+- Os outros personagens (Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
 A próxima prioridade é o teste do dono nos passos 10 e 11, depois o passo 12 (o Primeiro Servo, na mesma antecâmara), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
@@ -139,11 +140,11 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Tudo fica em `Conteudo_Poco/Poco_Ativo`, que só liga quando a Elena sai da base pelo nordeste (`SaiuDaBaseRumoAoPoco`). Rode o menu da Base antes (o Poço usa o evento dela).
 - Objetivos (passos 21 a 24 da missão): "Siga o corredor nordeste até a boca do Poço" (`ChegouABocaDoPoco`), "Desça o Poço pelos andaimes" (`DesceuOPoco`, ao pisar no fundo), "Atravesse o fundo do Poço sem acordar o Lullu, ou livre-se dele" (`PassouPeloLullu`, ao cruzar a boca da antecâmara) e "Avance pela antecâmara até o Selo de Kur" (`FlashDoPoco`). Enquanto o passo 12 não existe, a missão aparece como concluída depois do flash.
 - **Boca:** ao chegar (só ao vivo), a Elena vê o poço e ouve o raspar (`Poco_Boca`), e vem a dica de que o Lullu caça pelo som. Ronco grave e pedras caindo no Poço (`Poco_Ambiente_Loop`).
-- **Lullu** (prefab `AI/Lullu`, com a cápsula provisória): vagueia na boca da antecâmara (44, -14, 78), com respiração e raspar ouvidos da descida (`Lullu_Respiracao_Loop`, até 30 m). Preso ao chão: o campo novo **"Max Climb"** do `LulluAI` (2 m aqui; 0 = sem limite, como no laboratório) faz sons vindos de andaimes virarem pontos no chão, e a Elena a mais de 2,4 m acima dele fica fora do alcance. Andando agachada ele quase não ouve (1,8 m); andando, 6 m; correndo, 14 m.
+- **Lullu** (prefab `AI/Lullu`, agora com o modelo definitivo): vagueia na boca da antecâmara (44, -14, 78), com respiração e raspar ouvidos da descida (`Lullu_Respiracao_Loop`, até 30 m). Preso ao chão: o campo novo **"Max Climb"** do `LulluAI` (2 m aqui; 0 = sem limite, como no laboratório) faz sons vindos de andaimes virarem pontos no chão, e a Elena a mais de 2,4 m acima dele fica fora do alcance. Andando agachada ele quase não ouve (1,8 m); andando, 6 m; correndo, 14 m.
 - **Pontos de retorno:** um no último patamar de andaime (`Checkpoint_Pe_Da_Descida`, a ~9 m do Lullu e em silêncio, de frente para a descida) e outro dentro da antecâmara, a ~10 m dele e antes do flash (`Checkpoint_Antecamara`). Ao voltar de um checkpoint depois de passar pelo Lullu, ele não volta (`StoryEventListener` só ao carregar).
 - **Flash** (`Flash_Do_Selo`): a uns 12 m do Selo (z = 90,5), a Elena para de ser perseguida: o Lullu, se vivo, congela (`LulluAI.Pause`), a tela clareia (`UI/ScreenFlash`, atrás das conversas) e vem `Poco_Flash`: a tabuleta pulsa, "só luz e mãos" e a Voz, só legenda: "Você já esteve aqui." / "Não tem problema não lembrar. Eu lembro por você." Quando a Voz acaba (`FlashDoPoco`), a luz volta e o Lullu solta. O passo 12 começa daí.
 - **Blockout:** o vão da passagem dos Guardiões na parede oeste da antecâmara agora está fechado pela `Parede_Barco_Junco`, com o barco de junco sobre ondas em ouro e a lamparina quente. O passo 13 vai abri-la.
-- **Pendências do Poço:** o Lullu ainda é a cápsula do prefab (o modelo está pronto na `ArteFonte`, falta importar; `CharacterHeights` tem a altura dele) e morre tombando; sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a inscrição dos Guardiões do Poço (colecionável) e o segundo Lullu ficam para depois.
+- **Pendências do Poço:** o Lullu já tem modelo e animações (veja "Lullu" em Personagens 3D); sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a inscrição dos Guardiões do Poço (colecionável) e o segundo Lullu ficam para depois.
 - Teste feito pela ponte (teste automático, tudo OK): chegada à boca, descida caminhável pelos 4 lances, retorno em silêncio, Lullu preso ao chão (barulho do andaime: caça, não sobe, não golpeia), parede do barco, flash com o Lullu vivo (congela e solta) e sem ele.
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
@@ -183,7 +184,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Animação dos soldados: velocidade pelo deslocamento (malha de navegação ou cena), mira com o tronco girado para o cano apontar ao alvo, tiro, recarga, dano, morte para trás e de frente, e mira/tiro/queda chamados por cenas | `AI/SoldierAnimator` | configurado no prefab do soldado |
 | Animação de personagens que não são a Elena: andar e correr pela velocidade do NavMeshAgent, agachar, golpe de faca e gestos nas falas dele (continua animado com o jogo pausado no diálogo) | `AI/NpcAnimator` | configurado no prefab do personagem |
 
-Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/Personagens/Samir` (modelo + `NpcAnimator` + faca), `Prefabs/AI/Soldado` (com as variantes `Soldado_Lider` e `Soldado_Atirador`), `Prefabs/Personagens/Piloto` (sentado, nos helicópteros), `Prefabs/AI/Lullu`.
+Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/Personagens/Samir` (modelo + `NpcAnimator` + faca), `Prefabs/AI/Soldado` (com as variantes `Soldado_Lider` e `Soldado_Atirador`), `Prefabs/Personagens/Piloto` (sentado, nos helicópteros), `Prefabs/AI/Lullu` (colisor, agente, `LulluAI`, `LulluAnimator` e o filho `Corpo` com o modelo).
 
 ## Personagens 3D
 
@@ -205,7 +206,7 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | Pronto para importar |
 | Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Pronto (2 ossos de dedo sem peso) |
 | Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | Pronto para importar |
-| Lullu | `Lullu` | 2,10 m em pé | Pronto; pose A (41°) e pernas longas de criatura. Anda curvado, então na pose de caça fica bem mais baixo |
+| Lullu | `Lullu` | 2,10 m em pé | **No jogo** (prefab `AI/Lullu`); pose A (41°) e pernas longas de criatura. Curvado, a cabeça fica a uns 1,7 m |
 | Primeiro Servo | `PrimeiroServo` | 2,50 m | Pronto (5 ossos de dedo sem peso) |
 | Ninsar | `Ninsar` | 1,90 m | Prévia na Unity; manto pausado (Ato 2). Veja "Ninsar" abaixo |
 
@@ -322,6 +323,18 @@ Pendências do Samir:
 | 5. Depois do cerco: o Samir saindo agachado | Ao sul da beira da aldeia; ele passa agachado ao lado da Elena. Não ande para o norte (lá começa o cerco) |
 | 6. Laboratório: falar com o Samir | De frente para ele, com os inimigos parados |
 | 7. Vitrine: todas as animações lado a lado | Um chão vazio com uma cópia do Samir por animação, com o nome em cima; o golpe se repete |
+
+### Lullu
+
+O menu **Nibiru > Personagens > Montar Lullu animado** (`Scripts/Editor/Personagens/LulluSetup.cs`) refaz tudo (saia do Play antes; rode antes o menu da Elena, porque ele usa os cortes dela):
+- Copia da `ArteFonte/Lullu` o FBX do AccuRig (`2_Rig/Lullu.rig.fbx`) e as texturas do Meshy para `Art/Personagens/Lullu` (usa o `SoldiersSetup.ImportCharacter`, que agora é público). Humanoid com dedos (53 ossos), escala de importação 2,204 (2,10 m em pé), material URP de dois lados.
+- Controlador `Lullu.controller`: "Locomocao" pela velocidade (parado = `Idle`, andar = `WalkForward`, correr = `Fast Run`, nas velocidades dos dados `Data/AI/Lullu`), "Golpe" (`Stabbing`, pelo gatilho), "Morte" (cai para trás) e a camada aditiva "Reacoes" (`Hit Reaction`, peso 0,6).
+- O **prefab é editado no lugar** (mesmo arquivo, então as cenas já pegam o modelo): `Lullu` (colisor, agente, vida, `LulluAI`, `LulluAnimator`) > `Corpo` (o "body" da IA, com o `EchoRevealable`; os pés ficam 1 m abaixo da raiz) > `Modelo`. Saíram os olhos e as faixas da cápsula.
+- `AI/LulluAnimator` (novo, a IA não mudou): lê o estado da `LulluAI` e a vida; passa a velocidade (pelo deslocamento), o golpe (entrando em Golpe ou Investida), o dano e a morte ao Animator. **Postura de criatura:** o modelo é em pé, então o tronco, o pescoço e a cabeça são dobrados para a frente por cima da animação (22°, 22°, -18°, -12°; mais fraco andando e correndo, `movingWeight`). Morto, ele segura o `Corpo` de pé onde estava, porque a `LulluAI` tomba a raiz e a animação de morte já o deita.
+- **Colisor:** cápsula de 0,4 m de raio e 1,8 m de altura, do chão para cima (antes 0,35 x 2 m). **Audição:** a `LulluAI` mede distância e altura a partir da raiz, a 1 m do chão (cintura dele); a cabeça curvada fica a uns 1,7 m, então o "ouvido" fica 0,7 m abaixo da cabeça, sem efeito prático nos alcances (6, 14, 1,8 m). O alcance vertical da Elena nos andaimes (2,4 m acima da raiz) não mudou.
+- O andar agachado (`Sneak Walk`) não serviu: nas pernas longas dele o corpo vira uma rampa quase deitada. Por isso o andar é o normal, encurvado pelo `LulluAnimator`.
+- Pendências: o golpe é a estocada de faca do Mixamo (falta um golpe de garra); o atordoado do Eco ainda é só o tremor do corpo da `LulluAI`; falta um andar de criatura de verdade (quatro apoios ou arrastado); a investida do Primeiro Servo usa o mesmo golpe.
+- **Como testar:** os atalhos do passo 11 (**Nibiru > Testes > Passo 11**, 4 e 6) levam ao Lullu; corra ou atire perto dele para vê-lo caçar e golpear (ou fique agachada para ele não ouvir). No laboratório (**Nibiru > Testes > Elena > 1**, sem o `StopEnemies`, ou abrindo `Teste_Personagem`) o Primeiro Servo é o mesmo modelo maior.
 
 ### Soldados da Fundação
 
@@ -442,7 +455,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
-5. Personagens 3D, um por conversa: Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
