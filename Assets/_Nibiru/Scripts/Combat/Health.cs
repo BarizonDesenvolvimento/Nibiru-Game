@@ -39,6 +39,9 @@ namespace Nibiru.Combat
         public float Fraction => Current / maxHealth;
         public bool IsDead => Current <= 0f;
 
+        /// <summary>Só para testes: ignora todo dano (ligado pelos atalhos de teste do editor).</summary>
+        public bool Invincible { get; set; }
+
         public event Action<DamageInfo> Damaged;
         public event Action<float> Healed;
         public event Action Died;
@@ -55,7 +58,7 @@ namespace Nibiru.Combat
         /// <summary>Aplica dano. Devolve false se o golpe foi ignorado (morto ou invulnerável).</summary>
         public bool TakeDamage(DamageInfo info)
         {
-            if (IsDead || info.amount <= 0f) return false;
+            if (IsDead || info.amount <= 0f || Invincible) return false;
             if (invulnerability != null && invulnerability.IsInvulnerable) return false;
             if (damageModifier != null) info.amount *= damageModifier.DamageMultiplier(info);
             if (info.amount <= 0f) return false;

@@ -103,6 +103,9 @@ namespace Nibiru.EditorTools
             WorldState.Transformation = transformation;
             setup?.Invoke();
 
+            // Vida cheia no checkpoint do atalho, mesmo que ela estivesse morta ou ferida.
+            var health = motor.GetComponent<Combat.Health>();
+            health.Restore(health.Max);
             var point = new GameObject("Atalho_Retorno").transform;
             point.SetPositionAndRotation(spawn, Quaternion.Euler(0f, yaw, 0f));
             motor.GetComponent<PlayerRespawn>().SaveCheckpoint(point);
@@ -111,7 +114,6 @@ namespace Nibiru.EditorTools
             int oldPlayer = motor.GetInstanceID();
             StopWaiting();
             Checkpoints.Restart(RegionSceneName);
-            if (then == null) return;
 
             // Alguns quadros depois de recarregar, para os Start e os eventos refeitos rodarem.
             int readyFrame = -1;
@@ -121,7 +123,44 @@ namespace Nibiru.EditorTools
                 if (current == null || current.GetInstanceID() == oldPlayer) return false;
                 if (readyFrame < 0) readyFrame = Time.frameCount + 5;
                 return Time.frameCount >= readyFrame;
-            }, then);
+            }, () =>
+            {
+                ApplyInvincibility();
+                then?.Invoke();
+            });
+        }
+
+        // ---------- Elena invencível nos testes ----------
+
+        const string InvincibleKey = "Nibiru.TestShortcuts.Invencivel";
+        const string InvincibleMenu = "Nibiru/Testes/Elena invencível nos atalhos";
+
+        /// <summary>Ligado (o padrão), os atalhos de teste deixam a Elena sem perder vida.</summary>
+        public static bool Invincible
+        {
+            get => EditorPrefs.GetBool(InvincibleKey, true);
+            set => EditorPrefs.SetBool(InvincibleKey, value);
+        }
+
+        [MenuItem(InvincibleMenu, priority = 0)]
+        static void ToggleInvincible()
+        {
+            Invincible = !Invincible;
+            if (EditorApplication.isPlaying) ApplyInvincibility();
+            Debug.Log(Invincible ? "Atalhos de teste: Elena invencível." : "Atalhos de teste: Elena leva dano normalmente.");
+        }
+
+        [MenuItem(InvincibleMenu, true)]
+        static bool ToggleInvincibleCheck()
+        {
+            Menu.SetChecked(InvincibleMenu, Invincible);
+            return true;
+        }
+
+        static void ApplyInvincibility()
+        {
+            var motor = Object.FindFirstObjectByType<PlayerMotor>();
+            if (motor != null) motor.GetComponent<Combat.Health>().Invincible = Invincible;
         }
 
         /// <summary>Recomeça a região do zero, sem checkpoint (jogo novo no Acampamento).</summary>
