@@ -19,10 +19,12 @@ MonoBehaviour:
   hearingMultiplier: 1.3
   touchRange: 1.2
   forgetTime: 6
+  distractionNoise: 30
+  distractionTime: 5
   attackRange: 1.9
   attackWindup: 0.5
   attackRecovery: 0.8
-  attackDamage: 30
+  attackDamage: 25
   attackRadius: 1
   stunDuration: 3
   damageMultiplier: 0.25

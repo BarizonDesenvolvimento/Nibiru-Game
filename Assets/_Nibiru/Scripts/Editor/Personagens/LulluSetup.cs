@@ -37,7 +37,7 @@ namespace Nibiru.EditorTools
 
         // O golpe é a estocada do corte da Elena, mas com a altura medida pelos pés: no corte dela
         // (altura original) o corpo abaixa na estocada, e nele os pés afundavam no chão.
-        static readonly Cut Strike = new("Lullu_Golpe", "Stabbing", 15, 37, false, feet: true, mirror: true, original: true);
+        internal static readonly Cut Strike = new("Lullu_Golpe", "Stabbing", 15, 37, false, feet: true, mirror: true, original: true);
 
         [MenuItem("Nibiru/Personagens/Montar Lullu animado")]
         static void Build()
@@ -50,17 +50,18 @@ namespace Nibiru.EditorTools
             AssetDatabase.Refresh();
             SoldiersSetup.ImportCharacter(Character);
             ConfigureClips(Strike.file, new[] { Strike });
-            var controller = BuildController();
+            var controller = BuildController(ControllerPath, SettingsPath);
             if (controller == null) return;
             AssetDatabase.SaveAssets();
-            BuildPrefab(controller);
+            BuildPrefab(PrefabPath, ModelPath, controller, ColliderRadius, ColliderHeight);
             AssetDatabase.SaveAssets();
             Debug.Log("Lullu animado pronto no prefab " + PrefabPath + ".");
         }
 
         // ---------- Controlador ----------
 
-        static AnimatorController BuildController()
+        // Também usado pelo Primeiro Servo (PrimeiroServoSetup), com o controlador e os dados dele.
+        internal static AnimatorController BuildController(string controllerPath, string settingsPath)
         {
             // Cortes da Elena (ElenaSetup), retargetados para o Lullu pelo Humanoid.
             var idle = Clip("Idle", "Parada");
@@ -75,13 +76,13 @@ namespace Nibiru.EditorTools
                 return null;
             }
 
-            var settings = AssetDatabase.LoadAssetAtPath<LulluSettings>(SettingsPath);
+            var settings = AssetDatabase.LoadAssetAtPath<LulluSettings>(settingsPath);
             float wander = settings != null ? settings.wanderSpeed : 1.2f;
             float investigate = settings != null ? settings.investigateSpeed : 2.6f;
             float hunt = settings != null ? settings.huntSpeed : 5.5f;
 
-            AssetDatabase.DeleteAsset(ControllerPath);
-            var controller = AnimatorController.CreateAnimatorControllerAtPath(ControllerPath);
+            AssetDatabase.DeleteAsset(controllerPath);
+            var controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
             controller.AddParameter(LulluAnimator.SpeedParam, AnimatorControllerParameterType.Float);
             controller.AddParameter(LulluAnimator.StrikeParam, AnimatorControllerParameterType.Trigger);
             controller.AddParameter(LulluAnimator.HurtParam, AnimatorControllerParameterType.Trigger);
@@ -150,9 +151,10 @@ namespace Nibiru.EditorTools
         // ---------- Prefab ----------
 
         // Lullu (colisor, agente, vida, LulluAI, LulluAnimator) > Corpo (o "body" da IA, com o Eco) > Modelo.
-        static void BuildPrefab(AnimatorController controller)
+        // Também usado pelo Primeiro Servo, que é uma cópia do prefab do Lullu com outro modelo.
+        internal static void BuildPrefab(string prefabPath, string modelPath, AnimatorController controller, float colliderRadius, float colliderHeight)
         {
-            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            var root = PrefabUtility.LoadPrefabContents(prefabPath);
             try
             {
                 var body = root.transform.Find("Corpo");
@@ -165,7 +167,7 @@ namespace Nibiru.EditorTools
                 body.localRotation = Quaternion.identity;
                 body.localScale = Vector3.one;
 
-                var model = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath));
+                var model = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(modelPath));
                 model.name = "Modelo";
                 model.transform.SetParent(body, false);
                 var animator = model.GetComponent<Animator>();
@@ -174,9 +176,9 @@ namespace Nibiru.EditorTools
                 animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
 
                 var capsule = root.GetComponent<CapsuleCollider>();
-                capsule.radius = ColliderRadius;
-                capsule.height = ColliderHeight;
-                capsule.center = new Vector3(0f, FeetBelowRoot + ColliderHeight * 0.5f, 0f);
+                capsule.radius = colliderRadius;
+                capsule.height = colliderHeight;
+                capsule.center = new Vector3(0f, FeetBelowRoot + colliderHeight * 0.5f, 0f);
 
                 // Componente novo a cada execução: assim valem os valores de postura do script.
                 var oldAnimator = root.GetComponent<LulluAnimator>();
@@ -189,7 +191,7 @@ namespace Nibiru.EditorTools
                 serialized.FindProperty("visual").objectReferenceValue = body;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
 
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+                PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             }
             finally
             {
