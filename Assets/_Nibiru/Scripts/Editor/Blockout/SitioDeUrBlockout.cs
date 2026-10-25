@@ -289,6 +289,14 @@ namespace Nibiru.EditorTools.Blockout
             Box(g, "Ante_Parede_Oeste_Sul", new Vector3(35, -14, 80), new Vector3(36, -5, 94), rock);
             Box(g, "Ante_Parede_Oeste_Norte", new Vector3(35, -14, 98), new Vector3(36, -5, 102), rock);
             Box(g, "Ante_Parede_Oeste_Topo", new Vector3(35, -10, 94), new Vector3(36, -5, 98), rock);
+            // Parede do barco de junco: fecha o vão da passagem dos Guardiões (abre só no passo 13).
+            // Na face de dentro (x = 36), o barco sobre as ondas, entalhado em ouro, e a lamparina.
+            Box(g, "Parede_Barco_Junco", new Vector3(35, -14, 94), new Vector3(36, -10, 98), rock);
+            BoxC(g, "Barco_Casco", new Vector3(36.06f, -12.3f, 96f), new Vector3(0.12f, 0.35f, 1.7f), gold);
+            BoxC(g, "Barco_Mastro", new Vector3(36.06f, -11.6f, 96f), new Vector3(0.12f, 0.9f, 0.1f), gold);
+            for (int i = 0; i < 3; i++)
+                BoxC(g, $"Barco_Onda_{i + 1}", new Vector3(36.06f, -13.1f + i * 0.0f, 95.2f + i * 0.8f), new Vector3(0.12f, 0.1f, 0.5f), gold);
+            Light(g, "Luz_Barco_Junco", new Vector3(37.2f, -12f, 96f), new Color(1f, 0.75f, 0.45f), 1.5f, 5);
             Box(g, "Ante_Parede_Sul_Oeste", new Vector3(36, -14, 79), new Vector3(40, -5, 80), rock);
             Box(g, "Ante_Parede_Sul_Leste", new Vector3(50, -14, 79), new Vector3(54, -5, 80), rock);
             Box(g, "Ante_Parede_Norte", new Vector3(36, -14, 102), new Vector3(54, -5, 103), rock);
