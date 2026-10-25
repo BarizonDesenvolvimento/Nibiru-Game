@@ -14,11 +14,11 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
-- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono.
+- A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pela ponte, **esperando o teste do dono no Play**.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
 
-A próxima prioridade é o plano de fuga (passo 9). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é o dono testar o passo 9 no Play e, depois, atravessar a base do zigurate (passo 10). Animações que faltam da Elena estão em "Elena nova".
 
 ## Documentos
 
@@ -100,10 +100,18 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Conversa com o Samir (`Aldeia_DepoisDaTabuleta`), ele ao lado do nicho, de mão na faca: contar a verdade (Guardiões +5, evento `ContouAVerdadeAoSamir`), mentir (`MentiuAoSamir`, sem mudança agora; ele lembra depois) ou "Por que você está com a mão na faca?" (`SamirRevelouGuardiao`: ele revela que é Guardião). As três terminam em "precisamos sair desta aldeia" (gancho do passo 9) e disparam `ConversouSobreATabuleta`. Depois vem a dica do Eco do Abzu (Q ou LB).
 - Uma escrita cuneiforme escondida na parede do fundo da casa só aparece com o Eco (`Inscricao_Escondida`, `EchoHiddenMark`).
 - Ao voltar de um checkpoint depois da leitura: o poder, a marca e as escolhas continuam valendo, e nada se repete.
-- Enquanto o passo 9 não existe, a missão "Sobrevivente" aparece como concluída depois da conversa com o Samir.
 - Teste feito pela ponte: leitura, memória (andando com controle virtual), as conversas, a volta, as escolhas da verdade e da faca, a escrita revelada pelo Eco e a volta de um checkpoint. Testado e aprovado pelo dono no Play.
 
 **Memória jogável, como funciona (vale para as próximas):** um arquivo `MemoryDefinition` (cena, quem a Elena é, lugar, evento de entrada, evento de fim, cor da passagem) e um `PlayableMemory` na cena da região, chamado por um evento. Na cena da memória: um `MemorySpawn` (onde começa) e um `MemoryAvatar` (a aparência, com a origem nos pés e sem colisão). A cena da memória precisa estar na lista do Build e ficar longe da região, porque o sol da região é apagado durante a memória, mas o resto continua lá, parado.
+
+**Aldeia, passo 9 (o plano de fuga):**
+- Depois da conversa da tabuleta (`ConversouSobreATabuleta`), o Samir sai da casa do altar e anda até a beira norte da Aldeia, entre a mesquita e a estrada (objetivo "Siga o Samir até a beira da aldeia"). Ele espera quando a Elena fica para trás.
+- Ao chegar perto dele (gatilho `ChegouABeiraDaAldeia`, grupo `Plano_De_Fuga`), começa a cena do cerco: o Samir manda olhar a estrada (`Aldeia_OCercoChega`); um caminhão branco da Fundação chega pela estrada do norte; aparece a barreira de cavaletes de z = 41,5 (do oeste da Aldeia até o muro da base), com uma parede invisível e um soldado de guarda; um helicóptero cruza o céu e pousa no heliponto da base (e desliga, para o passo 10); dois soldados passam a patrulhar rente ao muro da base (x = -28, de z = -2 a 32).
+- Conversa "O cerco" (`Aldeia_OCerco`): estradas fechadas, a passagem dos Guardiões no Poço (atrás da parede com o barco de junco, na antecâmara) e o caminho pela base. Escolhas: "Você não vem comigo?" e, só se o Samir revelou que é Guardião no passo 8, "Os Guardiões sempre souberam desse caminho?" (campo "Requires" da escolha). Ele vai sozinho pelos canais secos do sul até o wadi, lembra do remédio do Yusuf na tenda médica e dá a dica de esperar a patrulha virar de costas. Evento `OuviuOPlanoDeFuga`.
+- Depois: o Samir vai embora para o sul e some (`WalkToPoint.LeaveTo`), um ponto de retorno é marcado na beira da aldeia (longe da visão da patrulha) e o objetivo vira "Passe pela patrulha da estrada e entre na base da Fundação, no pé do zigurate". Ele fecha ao entrar na base pela ponta sul do muro (`EntrouNaBaseDaFundacao`). O portão do muro continua fechado (abre por dentro, no passo 10).
+- Ao voltar de um checkpoint depois do plano, tudo fica direto no estado final (caminhão parado, barreira, guarda, patrulha, helicóptero pousado e quieto, Samir longe), sem repetir a cena: o `StoryEventListener` ganhou a opção "Only On Load" (só ao carregar a cena) para isso.
+- Enquanto o passo 10 não existe, a missão "Sobrevivente" aparece como concluída ao entrar na base.
+- Teste feito pela ponte: o Samir indo até a beira, a cena do cerco, as duas versões da conversa (com e sem a revelação), o Samir indo embora, o ponto de retorno, a volta de um checkpoint e a entrada na base andando com controle virtual. Falta o teste do dono no Play.
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
@@ -131,7 +139,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Lullu e o chefe Primeiro Servo | `AI/LulluAI` | `Data/AI/Lullu`, `PrimeiroServo` |
 | HUD, telas e pausa | `UI/` | opções do jogador em `GameOptions` (salvas no computador) |
 | Helicóptero que avista a Elena, item largado ao morrer | `AI/HelicopterSpotter`, `Combat/DropOnDeath` | configurados no Inspector |
-| Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto, luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
+| Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto (ou vai embora e some), luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
 | Memória jogável (versão simples do Grupo 2): passagem para a cena do passado e volta | `Memories/` (`MemoryDefinition`, `PlayableMemory`, `MemorySpawn`, `MemoryAvatar`) | `Data/Memories` |
 | Marca da transformação no pulso | `Tablets/TransformationMark` (no prefab da Elena) | material `Elena_MarcaKur` |
 
@@ -236,7 +244,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Continuar a Aldeia: o plano de fuga (passo 9), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir), patrulhas na estrada e a revelação dos filmes do Tom.
+1. O dono testar o passo 9 no Play (veja "Como testar o passo 9" abaixo). Depois: atravessar a base do zigurate (passo 10), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
@@ -244,9 +252,21 @@ Pendências vistas na prévia (ainda não corrigidas):
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
+### Como testar o passo 9
+
+Atalhos no menu **Nibiru > Testes > Passo 9** (`Scripts/Editor/Step9Shortcuts.cs`), com o mundo como se a Elena tivesse lido a tabuleta e respondido ao Samir:
+
+| Atalho | Onde começa |
+| --- | --- |
+| 1. Logo depois da conversa da tabuleta | De frente para o nicho; o Samir sai andando para a beira da aldeia |
+| 2. Na beira da aldeia, antes do cerco (o Samir revelou que é Guardião) | Alguns passos ao sul do Samir: ande para o norte até ele. Na conversa aparecem as duas perguntas |
+| 3. Na beira da aldeia, antes do cerco (o Samir não revelou) | O mesmo, mas a Elena contou a verdade no passo 8: só aparece "Você não vem comigo?" |
+| 4. Depois do plano: passar pela patrulha | No ponto de retorno da beira, virada para a estrada, com a patrulha andando |
+| 5. Na ponta sul do muro, entrando na base | A poucos passos da entrada da base: ande para o leste |
+
 ### Como testar o passo 8
 
-Atalhos no menu **Nibiru > Testes > Passo 8** (`Scripts/Editor/Step8Shortcuts.cs`): cada um abre a região, liga o Play e põe a Elena no momento certo, com o mundo como se ela tivesse jogado até ali (e um checkpoint de frente para o nicho). Funcionam com o Play desligado ou ligado.
+Os atalhos de todos os passos usam a mesma base, `Scripts/Editor/TestShortcuts.cs` (abre a região, liga o Play, monta o mundo e um checkpoint no lugar pedido e espera a cena recarregar). Atalhos no menu **Nibiru > Testes > Passo 8** (`Scripts/Editor/Step8Shortcuts.cs`): cada um abre a região, liga o Play e põe a Elena no momento certo, com o mundo como se ela tivesse jogado até ali (e um checkpoint de frente para o nicho). Funcionam com o Play desligado ou ligado.
 
 | Atalho | Onde começa |
 | --- | --- |
