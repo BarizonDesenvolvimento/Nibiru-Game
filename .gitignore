@@ -86,3 +86,6 @@ ArteFonte/*/3_Blender/Renders/
 
 # Cópia do CLAUDE.md criada pelo aplicativo Codex ao importar sessões do Claude Code
 /AGENTS.md
+
+# Pacotes de animacao baixados (Universal Animation Library); a pasta Mixamo continua no Git
+ArteFonte/Animacoes/Universal Animation Library*/
