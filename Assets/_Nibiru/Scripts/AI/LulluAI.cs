@@ -33,9 +33,14 @@ namespace Nibiru.AI
         [Tooltip("Corpo visual (filho), que encolhe ao preparar golpes e treme atordoado.")]
         [SerializeField] Transform body;
 
+        [Tooltip("Quanto ele sobe acima de onde começou, em metros. Com valor, ele não sobe rampas nem andaimes e " +
+                 "não alcança a Elena que está bem acima dele. 0 = sem limite.")]
+        [SerializeField] float maxClimb;
+
         // Janela em que o som ainda "aponta" para a Elena: depois disso ele ataca às cegas só se encostar.
         const float KnownWindow = 2f;
         const float LungeHitRange = 1.1f;
+        const float ReachHeight = 2.4f;
         const float TurnSpeed = 540f;
         const float PoseSpeed = 6f;
 
@@ -259,8 +264,39 @@ namespace Nibiru.AI
 
         void Hear(Vector3 point)
         {
-            targetPoint = point;
+            targetPoint = Constrain(point);
             lastHeardTime = Time.time;
+        }
+
+        // Com limite de subida, um som no alto (andaime, rampa) vira um ponto no chão logo abaixo.
+        Vector3 Constrain(Vector3 point)
+        {
+            if (maxClimb <= 0f || point.y <= home.y + maxClimb) return point;
+            point.y = home.y;
+            return NavMesh.SamplePosition(point, out NavMeshHit hit, 3f, NavMesh.AllAreas) ? hit.position : point;
+        }
+
+        /// <summary>
+        /// Congela (ou solta) o Lullu, para uma cena em que nenhum inimigo pode agir. Ao soltar, ele
+        /// esquece o que ouvia e volta a vagar.
+        /// </summary>
+        public void Pause(bool paused)
+        {
+            if (CurrentState == State.Morto) return;
+            if (paused)
+            {
+                if (agent.isOnNavMesh)
+                {
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                }
+                enabled = false;
+                return;
+            }
+            enabled = true;
+            lastHeardTime = -999f;
+            dashing = false;
+            Enter(State.Vagando);
         }
 
         bool CanChangeCourse() =>
@@ -312,7 +348,12 @@ namespace Nibiru.AI
             body.localRotation = Quaternion.Slerp(body.localRotation, bodyRotation * tilt, PoseSpeed * Time.deltaTime);
         }
 
-        float PlayerDistance() => Vector3.Distance(Flat(transform.position), Flat(player.position));
+        float PlayerDistance()
+        {
+            // Bem acima dele (num andaime), a Elena está fora do alcance, mesmo bem em cima.
+            if (maxClimb > 0f && player.position.y - transform.position.y > ReachHeight) return float.MaxValue;
+            return Vector3.Distance(Flat(transform.position), Flat(player.position));
+        }
 
         bool Arrived() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.3f;
 
