@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Base_AFoto
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: "(Ela fica um tempo olhando a foto. Tinha tr\xEAs anos quando a m\xE3e
+      sumiu. Conhece aquele riso das fotos l\xE1 de casa, e de mais nenhum lugar.)"
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "Mar\xE7o de 1979. Ela desapareceu em abril."
+    next: e3
+    raise: {fileID: 0}
+    choices: []
+  - id: e3
+    speaker: Elena
+    text: "E voc\xEA, quem \xE9? Por que o Kast guarda isso numa mesa, ao lado de
+      um e-mail sobre mim?"
+    next: e4
+    raise: {fileID: 0}
+    choices: []
+  - id: e4
+    speaker: Elena
+    text: "(Ela guarda a foto na bolsa, junto da tabuleta. Perto da porta da tenda,
+      um painel da Funda\xE7\xE3o tem um bot\xE3o com uma etiqueta: PORT\xC3O OESTE.)"
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: 475e0bbf10c296546badd4dea0d54fc0, type: 2}

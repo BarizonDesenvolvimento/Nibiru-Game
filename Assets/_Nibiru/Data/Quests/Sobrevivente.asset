@@ -86,5 +86,22 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: f9cb6397e6920b740afeaa83dddf27e3, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Atravesse o p\xE1tio at\xE9 a tenda de comando, do outro lado da
+      base"
+    completeOn: {fileID: 11400000, guid: d9865605a46b7994e92d146f580fd619, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Procure na mesa da tenda de comando
+    completeOn: {fileID: 11400000, guid: 475e0bbf10c296546badd4dea0d54fc0, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Abra o port\xE3o para a aldeia pelo painel da tenda"
+    completeOn: {fileID: 11400000, guid: 7adaecf4249b9af428f23487d579e9e8, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Saia da base pelo nordeste, rumo \xE0 boca do Po\xE7o"
+    completeOn: {fileID: 11400000, guid: c35270b8e29ce0843a073c0ce4034a40, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806595a0433460c4686ba30a99f73ef2, type: 3}
+  m_Name: AtiradorElite
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.AI.SniperSettings
+  patrolSpeed: 0
+  chaseSpeed: 0
+  waitAtWaypoint: 1.5
+  turnSpeed: 90
+  viewDistance: 45
+  viewAngle: 50
+  eyeHeight: 0.7
+  timeToSpot: 1
+  closeRange: 4
+  crouchedVisibility: 0.5
+  awarenessDecay: 0.25
+  hearingMultiplier: 0.5
+  attackRange: 70
+  preferredDistance: 0
+  fireInterval: 2.5
+  damage: 34
+  accuracy: 0.8
+  shotNoiseRadius: 40
+  magazineSize: 5
+  reloadTime: 3
+  loseSightTime: 2
+  searchTime: 6
+  takedownLockout: 5
+  reinforcementDelay: 3
+  reinforcementRadius: 30
+  warningTime: 1.5
+  sweepAngle: 80
+  sweepSpeed: 12
+  sweepPitch: 28
+  alertRadius: 60
+  radioMessage: "R\xE1dio: \"Aqui \xE9 o Corvo, no alto do zigurate. Alvo no p\xE1tio!\""
