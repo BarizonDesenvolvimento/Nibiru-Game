@@ -8,7 +8,8 @@ namespace Nibiru.AI
     /// </summary>
     public class AwarenessIndicator : MonoBehaviour
     {
-        [SerializeField] SoldierAI soldier;
+        [Tooltip("A IA do soldado (SoldierAI ou SniperAI). Vazio = procura no soldado acima.")]
+        [SerializeField] MonoBehaviour soldier;
         [SerializeField] TextMesh label;
 
         [SerializeField] Color suspiciousColor = new Color(1f, 0.85f, 0.25f);
@@ -18,14 +19,24 @@ namespace Nibiru.AI
         const float ShowAbove = 0.1f;
 
         Transform cameraTransform;
+        ISoldierBrain brain;
+
+        void Awake()
+        {
+            brain = soldier as ISoldierBrain;
+            if (brain == null) brain = GetComponentInParent<ISoldierBrain>();
+        }
 
         void LateUpdate()
         {
             if (cameraTransform == null && Camera.main != null) cameraTransform = Camera.main.transform;
+            // A IA pode ter sido trocada depois do Awake (o atirador troca a do prefab pela dele).
+            if (brain as Object == null) brain = GetComponentInParent<ISoldierBrain>();
+            if (brain as Object == null) return;
 
             string text = string.Empty;
             Color color = suspiciousColor;
-            switch (soldier.CurrentState)
+            switch (brain.CurrentState)
             {
                 case SoldierAI.State.Combate:
                     text = "!";
@@ -36,10 +47,10 @@ namespace Nibiru.AI
                     text = "?";
                     break;
                 case SoldierAI.State.Patrulha:
-                    if (soldier.Awareness > ShowAbove)
+                    if (brain.Awareness > ShowAbove)
                     {
                         text = "?";
-                        color.a = Mathf.Clamp01(soldier.Awareness * 2f);
+                        color.a = Mathf.Clamp01(brain.Awareness * 2f);
                     }
                     break;
             }

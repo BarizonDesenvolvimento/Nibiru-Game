@@ -7,7 +7,7 @@ namespace Nibiru.EditorTools.Audio
 {
     /// <summary>
     /// Gera sons provisórios (sintetizados) para testar as cenas enquanto não há áudio de verdade:
-    /// motor do helicóptero, tiro e chiado de rádio. Grava WAVs em Art/Audio/Provisorio; para
+    /// motor do helicóptero, tiro, chiado de rádio, bipe da mira laser e portão abrindo. Grava WAVs em Art/Audio/Provisorio; para
     /// trocar por um som definitivo, basta substituir o arquivo mantendo o nome, ou apontar a
     /// fonte de som para outro arquivo.
     /// Menu: Nibiru > Áudio > Gerar sons provisórios.
@@ -18,6 +18,8 @@ namespace Nibiru.EditorTools.Audio
         public const string Helicopter = Folder + "/Helicoptero_Loop.wav";
         public const string Gunshot = Folder + "/Tiro.wav";
         public const string RadioStatic = Folder + "/Radio_Chiado_Loop.wav";
+        public const string LaserWarning = Folder + "/Mira_Aviso.wav";
+        public const string GateOpening = Folder + "/Portao_Abrindo.wav";
 
         const int Rate = 44100;
 
@@ -35,6 +37,8 @@ namespace Nibiru.EditorTools.Audio
             Write(Helicopter, overwrite, MakeHelicopter);
             Write(Gunshot, overwrite, MakeGunshot);
             Write(RadioStatic, overwrite, MakeRadioStatic);
+            Write(LaserWarning, overwrite, MakeLaserWarning);
+            Write(GateOpening, overwrite, MakeGateOpening);
             AssetDatabase.Refresh();
         }
 
@@ -118,6 +122,47 @@ namespace Nibiru.EditorTools.Audio
                 samples[samples.Length - 1 - i] *= k;
             }
             return Normalize(samples, 0.6f);
+        }
+
+        // Dois bipes agudos e secos, de aparelho: o laser do atirador travou na Elena.
+        static float[] MakeLaserWarning()
+        {
+            var samples = new float[(int)(Rate * 0.45f)];
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float local = t < 0.25f ? t : t - 0.25f;
+                bool on = local < 0.12f;
+                float envelope = on ? Mathf.Clamp01(local / 0.005f) * Mathf.Clamp01((0.12f - local) / 0.01f) : 0f;
+                float tone = Mathf.Sin(2 * Mathf.PI * 2350f * t) + Mathf.Sin(2 * Mathf.PI * 4700f * t) * 0.25f;
+                samples[i] = tone * envelope;
+            }
+            return Normalize(samples, 0.5f);
+        }
+
+        // Portão de ferro correndo no trilho: motor grave, chiado de metal e uma batida no fim.
+        static float[] MakeGateOpening()
+        {
+            var random = new System.Random(31);
+            const float length = 4f, slam = 3.6f;
+            var samples = new float[(int)(Rate * length)];
+            float grind = 0f, low = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                grind += (white - grind) * 0.3f;
+                low += (white - low) * 0.03f;
+
+                float moving = Mathf.Clamp01(t / 0.3f) * Mathf.Clamp01((slam - t) / 0.2f);
+                float motor = (Mathf.Sin(2 * Mathf.PI * 48f * t) * 0.5f + low * 2f) * moving;
+                float squeal = Mathf.Sin(2 * Mathf.PI * (900f + 60f * Mathf.Sin(t * 7f)) * t) * 0.06f * moving;
+                float rattle = grind * (0.25f + 0.2f * Mathf.Sin(t * 31f)) * moving;
+                float hitT = t - slam;
+                float hit = hitT > 0f ? (white * 1.5f + Mathf.Sin(2 * Mathf.PI * 90f * t)) * Mathf.Exp(-hitT / 0.08f) : 0f;
+                samples[i] = motor + squeal + rattle + hit;
+            }
+            return Normalize(samples, 0.85f);
         }
 
         static float[] Normalize(float[] samples, float peak)

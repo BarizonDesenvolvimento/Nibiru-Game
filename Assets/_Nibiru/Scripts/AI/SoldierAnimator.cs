@@ -8,7 +8,7 @@ namespace Nibiru.AI
     /// <summary>
     /// Anima um soldado da Fundação: parado, andar e correr pela velocidade com que ele se move
     /// (pela malha de navegação ou levado por uma cena), mira e tiro de fuzil, recarga, dano e
-    /// morte. Com a IA ligada, tudo vem do SoldierAI e da vida; sem ela (figurantes de cena), as
+    /// morte. Com a IA ligada, tudo vem da IA (SoldierAI ou SniperAI) e da vida; sem ela (figurantes de cena), as
     /// sequências chamam <see cref="AimAt"/>, <see cref="Fire"/> e <see cref="Die"/>.
     /// Fica no modelo (o filho "Visual" do soldado). O controlador é montado pelo menu
     /// Nibiru > Personagens > Montar soldados da Fundação.
@@ -49,7 +49,7 @@ namespace Nibiru.AI
         static readonly int HurtId = Animator.StringToHash(HurtParam);
         static readonly int DieId = Animator.StringToHash(DieParam);
 
-        SoldierAI ai;
+        ISoldierBrain ai;
         Health health;
         Transform body;
         DialogueRunner runner;
@@ -66,7 +66,7 @@ namespace Nibiru.AI
         {
             if (animator == null) animator = GetComponentInChildren<Animator>();
             animator.applyRootMotion = false;
-            ai = GetComponentInParent<SoldierAI>();
+            ai = GetComponentInParent<ISoldierBrain>();
             health = GetComponentInParent<Health>();
             body = ai != null ? ai.transform : transform;
             aimLayer = animator.GetLayerIndex(AimLayer);
@@ -166,7 +166,7 @@ namespace Nibiru.AI
             dead = true;
             scriptedAim = false;
             if (ai != null)
-                foreach (Collider collider in ai.GetComponents<Collider>()) collider.enabled = false;
+                foreach (Collider collider in ai.transform.GetComponents<Collider>()) collider.enabled = false;
         }
 
         void OnDamaged(DamageInfo info)
@@ -193,7 +193,7 @@ namespace Nibiru.AI
             animator.SetFloat(SpeedId, speed, speedDamping, dt);
 
             // Com a IA ligada, ela decide a mira; a mira de cena vale só para figurantes.
-            if (ai != null && ai.enabled) scriptedAim = false;
+            if (ai != null && ai.IsActive) scriptedAim = false;
             bool reloading = !dead && Time.time < reloadUntil;
             bool aiming = !dead && !reloading && (scriptedAim || (ai != null && ai.IsAiming));
             float step = aimBlend > 0f ? dt / aimBlend : 1f;
