@@ -17,9 +17,10 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
-- Os outros personagens (soldados, Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
+- Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador está reservado para o passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
+- Os outros personagens (Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é importar os outros personagens (o kit comum do Samir já serve para eles) e atravessar a base do zigurate (passo 10). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é atravessar a base do zigurate (passo 10, com o posto do atirador de elite) e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -132,7 +133,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Faca | `Combat/PlayerMeleeAttack` | `Data/Combat/Faca` |
 | Armas de fogo | `Combat/PlayerWeapons` | `Data/Combat/Pistola`, `Espingarda` |
 | Furtividade e ruído | `Stealth/` | valores em `MovimentoJogador` e nas armas |
-| IA dos soldados | `AI/SoldierAI`, `SoldierPerception` | `Data/AI/SoldadoContencao`, `LiderEsquadrao` |
+| IA dos soldados (com carregador: recarrega a cada 8 tiros, em 2,4 s) | `AI/SoldierAI`, `SoldierPerception` | `Data/AI/SoldadoContencao`, `LiderEsquadrao` |
 | Missões e eventos | `Quests/` | `Data/Quests`, `Data/Events` |
 | Diálogos | `Dialogue/` | `Data/Dialogues` |
 | Facções e reputação | `Factions/` | `Data/Factions` |
@@ -143,9 +144,10 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto (ou vai embora e some), luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
 | Memória jogável (versão simples do Grupo 2): passagem para a cena do passado e volta | `Memories/` (`MemoryDefinition`, `PlayableMemory`, `MemorySpawn`, `MemoryAvatar`) | `Data/Memories` |
 | Marca da transformação no pulso | `Tablets/TransformationMark` (no prefab da Elena) | material `Elena_MarcaKur` |
+| Animação dos soldados: velocidade pelo deslocamento (malha de navegação ou cena), mira com o tronco girado para o cano apontar ao alvo, tiro, recarga, dano, morte para trás e de frente, e mira/tiro/queda chamados por cenas | `AI/SoldierAnimator` | configurado no prefab do soldado |
 | Animação de personagens que não são a Elena: andar e correr pela velocidade do NavMeshAgent, agachar, golpe de faca e gestos nas falas dele (continua animado com o jogo pausado no diálogo) | `AI/NpcAnimator` | configurado no prefab do personagem |
 
-Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/Personagens/Samir` (modelo + `NpcAnimator` + faca), `Prefabs/AI/Soldado`, `Prefabs/AI/Lullu`.
+Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/Personagens/Samir` (modelo + `NpcAnimator` + faca), `Prefabs/AI/Soldado` (com as variantes `Soldado_Lider` e `Soldado_Atirador`), `Prefabs/Personagens/Piloto` (sentado, nos helicópteros), `Prefabs/AI/Lullu`.
 
 ## Personagens 3D
 
@@ -159,11 +161,11 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | Samir Haddad | `Samir` | 1,75 m | **No jogo** (prefab `Personagens/Samir`) |
 | Yusuf | `Yusuf` | 1,74 m | Pronto para importar |
 | Umm Karim | `Umm Karim` | 1,58 m | Pronto para importar |
-| Dra. Weiss | `Dra. Weiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (alguns dedos não dobram) |
-| Soldado da Contenção | `Soldado` | 1,82 m | Pronto (1 osso de dedo sem peso) |
-| Líder de esquadra | `LiderDeEsquadra` | 1,80 m | Pronto para importar |
-| Atirador de elite | `AtiradorDeElite` | 1,78 m | Pronto para importar |
-| Piloto | `Piloto` | 1,78 m | Pronto para importar |
+| Dra. Weiss | `Dra. Weiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (o `FingerWeightFix` corrige na importação) |
+| Soldado da Contenção | `Soldado` | 1,82 m | **No jogo** (prefab `AI/Soldado`); o osso de dedo sem peso é corrigido na importação |
+| Líder de esquadra | `LiderDeEsquadra` | 1,80 m | **No jogo** (prefab `AI/Soldado_Lider`) |
+| Atirador de elite | `AtiradorDeElite` | 1,78 m | **Na Unity** (prefab `AI/Soldado_Atirador`), reservado para o passo 10 |
+| Piloto | `Piloto` | 1,78 m | **No jogo** (prefab `Personagens/Piloto`, sentado nos helicópteros) |
 | Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | Pronto para importar |
 | Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Pronto (2 ossos de dedo sem peso) |
 | Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | Pronto para importar |
@@ -174,6 +176,8 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 As alturas ficam também em `Scripts/Editor/Personagens/CharacterHeights.cs`: `CharacterHeights.FitImportScale(fbx, "Nome")` ajusta o "Scale Factor" da importação até o modelo medir a altura da tabela (use na montagem de cada personagem).
 
 A Elena e o Samir antigos (`Elena_Varga`, `Samir_Haddad`, 1,5 a 1,8 milhão de triângulos, sem esqueleto) e a Elena provisória do Meshy saíram do projeto (os arquivos do `Samir_Haddad` que ainda estavam em `Art/Personagens/Samir` foram apagados com a entrada do Samir novo).
+
+**Dedos sem peso:** `Scripts/Editor/Personagens/FingerWeightFix.cs` corrige na importação, em todo modelo de `Art/Personagens`, as falanges do AccuRig que vieram sem peso: cada uma recebe a pele do trecho dela, tirada das falanges vizinhas (e da mão, na primeira), com transição suave nas juntas. O FBX original não muda; o Console mostra quais ossos foram corrigidos.
 
 **Kit comum para os próximos personagens:** `Scripts/Editor/Personagens/CharacterSetupKit.cs` (texturas e material URP de dois lados, importação Humanoid na altura da tabela, cortes do Mixamo com o avatar do X Bot e árvore de velocidades). Os cortes são acrescentados ao arquivo do Mixamo sem apagar os de outros personagens. O `SamirSetup` é o exemplo de uso. A Elena ainda usa o `ElenaSetup` próprio, com as mesmas regras. O Tom não entra agora.
 
@@ -188,9 +192,10 @@ Em `ArteFonte/Animacoes/Mixamo` (baixadas "sem pele"; o `X Bot.fbx` é o boneco 
 | Female Walk | Andar de passarela, com o queixo erguido e o tronco para trás. Não serviu para a Elena; pode servir para outra personagem |
 | Run Forward | Ainda não conferida (candidata a corrida da Elena) |
 | Laying Idle, Laying Shaking Head, Look Around | Boas, para NPCs (Yusuf deitado na esteira) |
-| Standing React Death Backward, walking to dying | Mortes |
+| Standing React Death Backward | Morte para trás (Elena e soldados) |
 | Run Look Back, Unarmed Run Back, jump forward/backward | Corrida olhando para trás, corrida de costas e pulos; sem uso por enquanto |
-| Walking, firing rifle, rifle aiming idle, rifle run, strafe, walking backwards, start/stop walking, run backwards | **Pacote de fuzil** (o "Walking" anda segurando fuzil). Servem para os soldados |
+| Walking, firing rifle, rifle aiming idle, rifle run, walking to dying | **Usadas nos soldados** (veja a tabela deles). O "Walking" anda segurando fuzil |
+| strafe, walking backwards, start/stop walking, run backwards | Resto do pacote de fuzil; sem uso por enquanto |
 | Run | Corrida de pernas abertas e cruzadas, com o pé virando para fora. Não usar |
 | Stable Sword Inward/Outward Slash | Golpes de espada que giram o tronco quase 180°. Não servem para faca |
 
@@ -198,6 +203,8 @@ Em `ArteFonte/Animacoes/Mixamo` (baixadas "sem pele"; o `X Bot.fbx` é o boneco 
 - Humanoid com **"Copy From Other Avatar" do `X Bot.fbx`**. O avatar feito da própria animação sem pele parte do primeiro quadro, não da pose T, e entorta a animação inteira (a corrida ficava girada 40°).
 - Giro da raiz: **"Based Upon: Body Orientation"** para andar, correr e agachar (a Run e a Sneak Walk correm na diagonal) e **"Original"** para golpes em que o corpo fica de lado (Stabbing), senão o braço vai para o lado.
 - Antes de usar, ver a animação no X Bot: os nomes enganam (o "Walking" é com fuzil).
+- **Exceção, animações de fuzil:** giro "Original" em todas. Pela direção do corpo, o corpo fica de frente e o fuzil atravessado (cano 70° para a esquerda); no giro original elas andam reto e o fuzil fica só 27° à esquerda (postura de lado), compensado girando o tronco na mira.
+- No editor, sem câmera olhando, um Animator só mexe nos ossos em "Always Animate" (senão fica em pose T): ao medir poses por script, ligue isso antes.
 
 ### Elena
 
@@ -280,6 +287,64 @@ Pendências do Samir:
 | 6. Laboratório: falar com o Samir | De frente para ele, com os inimigos parados |
 | 7. Vitrine: todas as animações lado a lado | Um chão vazio com uma cópia do Samir por animação, com o nome em cima; o golpe se repete |
 
+### Soldados da Fundação
+
+O menu **Nibiru > Personagens > Montar soldados da Fundação** (`Scripts/Editor/Personagens/SoldiersSetup.cs`) refaz tudo (saia do Play antes; rode antes o menu da Elena, porque os soldados usam os cortes de recarga, dano e morte dela):
+- Copia da `ArteFonte`, se ainda não estiverem na Unity, o FBX do AccuRig (`<Nome>.Rig.fbx`) e as texturas PBR do Meshy (`1_Meshy`) para `Art/Personagens/<Nome>/`, e as animações de fuzil para `Art/Animacoes/Mixamo`. Importa como Humanoid com dedos, na altura da tabela, com material URP de dois lados (como o Samir).
+- Controlador `Art/Personagens/Soldado/Soldados.controller` (o mesmo para os 3 armados): "Locomocao" pela `Velocidade` (parado, patrulha a 1,6 m/s, corrida na velocidade da perseguição), "Morte" e "Morte_Frente" na camada base; camadas do tronco (`Soldado_Tronco.mask`) "Mira" (com "Disparo" pelo gatilho `Atirar`), "Recarregar" (no tempo da recarga da IA) e "Reacoes" (aditiva, o tranco do `Dano`).
+- Fuzil provisório em formas simples (coronha e guarda-mão de madeira, corpo, carregador e cano), preso ao osso da mão direita. O encaixe é medido na pose de mira: empunhadura na palma direita e cano na direção da mão esquerda. O filho `Fuzil/Cano` é de onde sai o tiro (`muzzle` do `SoldierAI`).
+- Prefabs dos modelos `Prefabs/Personagens/Soldado`, `LiderDeEsquadra`, `AtiradorDeElite` (modelo + `SoldierAnimator` + fuzil) e `Piloto` (modelo sentado, sem fuzil).
+- Prefab com IA `Prefabs/AI/Soldado` (o de antes: sai a cápsula, o capacete, a faixa e a arma; entra o modelo como filho "Visual", com os pés 1 m abaixo da raiz; colisor na altura dele) e as variantes `Soldado_Lider` e `Soldado_Atirador` (a mesma IA, vida e colisor, com outro modelo).
+- No laboratório, o "Lider" passa a usar o `Soldado_Lider`; os outros soldados já são o prefab Soldado.
+- Os controladores são apagados e criados de novo a cada execução; o menu reimporta os prefabs no fim (sem isso, a cópia deles na memória fica sem controlador e as variantes gravam o controlador vazio).
+
+| Trecho | Vem de | Observação |
+| --- | --- | --- |
+| Parado | `rifle aiming idle` | Fuzil em prontidão (não há "parado com fuzil baixo" na pasta) |
+| Patrulha | `Walking` | Andar com fuzil, natural a 0,95 m/s; na patrulha toca mais rápido |
+| Correr | `rifle run` | Perseguição |
+| Mira | `rifle aiming idle` | Só o tronco; o `SoldierAnimator` gira o tronco 27° para o cano apontar para a frente |
+| Disparo | `firing rifle` | Coice, a cada tiro |
+| Recarregar | `Reloading` (corte da Elena) | Fuzil atravessado, mão no carregador |
+| Dano | `Hit Reaction` (corte da Elena) | Aditiva, peso 0,6 |
+| Morte | `Standing React Death Backward` (corte da Elena) | Cai de costas (tiro, golpe de frente) |
+| Morte_Frente | `walking to dying`, quadros 40 a 92 | Cai de bruços (golpe pelas costas: a facada do Samir) |
+| Piloto sentado | `Piloto_Sentado.anim`, feito pelo menu | Pose montada pelos músculos do Humanoid (não há ninguém sentado na pasta do Mixamo). Para trocar, baixe um "Sitting Idle" no Mixamo |
+
+`AI/SoldierAnimator` (no modelo de cada soldado):
+- Velocidade pelo deslocamento do soldado: vale para a malha de navegação e para cenas que levam o figurante.
+- Com a IA ligada: mira enquanto o `SoldierAI` está em combate vendo a Elena, coice a cada tiro (`SoldierAI.Fired`), recarga (`SoldierAI.ReloadStarted`), dano e morte pela vida (`Health`).
+- Para cenas, sem IA: `AimAt(true)`, `Fire()`, `Die()` (para trás), `DieForward()` (de frente), `LieDead()` e `LieDeadForward()` (já no chão, ao voltar de um checkpoint). Morto, o colisor em pé do soldado é desligado.
+- Continua respirando durante os diálogos (tempo real).
+
+Outras mudanças que vieram com os soldados:
+- `SoldierAI`: carregador (`magazineSize` 8 e `reloadTime` 2,4 s nos dados do soldado; o primeiro carregador começa num ponto aleatório para eles não recarregarem juntos). Com modelo animado, a morte não tomba mais a raiz.
+- `EchoRevealable`: num personagem animado, a silhueta do Eco é uma cópia da malha presa aos mesmos ossos.
+- `ContentKit.Soldier` escolhe o modelo (`SoldierModel`: Soldado, Lider, Atirador; sem dizer, o líder usa o do Líder). `ContentKit.Helicopter` ganhou cabine com vidro (`BO_Vidro`, criado se não existir), banco e o piloto.
+- Acampamento: o soldado aponta o fuzil para o trabalhador 2 s antes do tiro e o disparo tem coice; o líder de esquadra comanda do heliponto.
+- Trincheiras: o líder é o modelo do Líder de esquadra (ainda larga o rádio e a munição ao morrer).
+- Aldeia: o soldado do encontro aparece de fuzil apontado para a Elena e cai de bruços com a facada (saiu o corpo-cápsula `Corpo_Soldado_Encontro`); ao voltar de um checkpoint, ele já está caído. O guarda da barreira do cerco é o modelo do Líder de esquadra, com a IA de soldado comum.
+
+**Como testar os soldados:** menu **Nibiru > Testes > Soldados** (`Scripts/Editor/SoldierShortcuts.cs`):
+
+| Atalho | O que mostra |
+| --- | --- |
+| 1. Acampamento: a execução vista do mirante | Em uns 15 s o helicóptero pousa; o soldado mira e atira no trabalhador. Depois, a patrulha |
+| 2. Acampamento: o piloto no helicóptero pousado | O piloto pelo vidro, com os soldados parados nesta partida |
+| 3. Trincheiras: patrulha e o líder, com pistola | Combate: tiro, recarga, dano, morte e o rádio que o líder larga |
+| 4. Aldeia: o soldado do encontro (mira e cai com a facada) | O mesmo do Samir, atalho 1: ande para o oeste |
+| 5. Aldeia: volta de checkpoint com o soldado caído | O mesmo do Samir, atalho 2 |
+| 6. Cerco: o líder na barreira, a patrulha e o piloto | Na Aldeia, com pistola, depois do plano de fuga |
+| 7. Laboratório: combate com os soldados | Os três atacam a Elena |
+| 8. Vitrine: os 4 soldados e as animações lado a lado | Tiro, recarga, dano e mortes se repetem |
+| 9. Ferir o soldado mais perto / 10. Matar o soldado mais perto | Com o Play ligado |
+
+Pendências dos soldados:
+- O fuzil é provisório (formas simples).
+- O piloto fica parado sentado, com a pose feita por script.
+- O atirador de elite ainda não tem posto nem dados próprios (entra no passo 10).
+- No atalho 7 (laboratório), o contador da pistola apareceu "0 / 0" num teste; não foi investigado.
+
 ### Ninsar
 
 Arte-fonte em `ArteFonte/Ninsar/`:
@@ -317,14 +382,14 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até o Samir definitivo, testado pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as animações do Mixamo em `ArteFonte/`. Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até os soldados da Fundação, testados pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as animações do Mixamo em `ArteFonte/`. Os 4 soldados somaram cerca de 250 MB ao LFS (modelos e texturas em `Art/Personagens`). Commits em português, pequenos e frequentes.
 - Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
 ## Como testar sozinho pela ponte MCP
 
 - A ponte é o `unity-editor-mcp` (porta 7800). Se cair, a Unity provavelmente está reabrindo o projeto; espere ela terminar.
 - Para testar comandos, crie um controle virtual (`InputSystem.AddDevice<Gamepad>`) e aplique o estado a cada quadro em `InputSystem.onBeforeUpdate`. O script `Scripts/Editor/BackgroundInputInEditor.cs` (menu **Nibiru > Testes**) faz o jogo aceitar comandos com a Unity em segundo plano, só no editor.
-- Nunca recompile com o Play ligado: isso recarrega os scripts no meio da partida e quebra estados. Saia do Play antes. Depois de recompilar pela ponte, espere a ponte voltar (ela cai durante a recarga) antes de ligar o Play; senão a recarga acontece no meio do Play (sinal: erros repetidos a cada quadro, como no `TrainingDummy`).
+- Nunca recompile com o Play ligado: isso recarrega os scripts no meio da partida e quebra estados. Saia do Play antes e espere ele desligar de fato (`EditorApplication.isPlaying` falso): recompilar logo depois do comando de parar ainda pegou o Play saindo. Depois de recompilar pela ponte, espere a ponte voltar (ela cai durante a recarga) antes de ligar o Play; senão a recarga acontece no meio do Play (sinal: erros repetidos a cada quadro, como no `TrainingDummy`).
 - Para olhar animações sem atrapalhar quem está jogando: uma cópia do modelo longe da cena, com o mesmo controlador e Animator em "Always Animate", posta num quadro exato com `Play(estado, 0, t)` + `Update(0)`, e uma câmera de teste própria.
 - O dono do projeto às vezes joga ao mesmo tempo que os testes (inclusive com um controle de verdade): posição, vida e munição podem mudar entre um comando e outro.
 - No prefab Elena, a raiz ("Elena") é só o grupo; o personagem é o filho "Jogador", com a etiqueta Player. Para reconhecer a Elena numa área, procure o `PlayerMotor` no objeto que entrou, não a etiqueta da raiz.
@@ -341,8 +406,8 @@ Pendências vistas na prévia (ainda não corrigidas):
 1. Atravessar a base do zigurate (passo 10), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
-4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Personagens 3D, um por conversa: soldados (Soldado, Líder, Atirador, Piloto), Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
+5. Personagens 3D, um por conversa: Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
