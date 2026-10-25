@@ -35,19 +35,27 @@ namespace Nibiru.EditorTools
 
         public static void Register(string id, Action begin) => moments[id] = begin;
 
-        /// <summary>Roda o momento: na hora, se o Play já está ligado; senão, abre a região e liga o Play.</summary>
-        public static void Go(string id)
+        /// <summary>
+        /// Roda o momento: na hora, se o Play já está ligado na cena pedida; senão, abre a cena
+        /// (a região, se nenhuma for dada) e liga o Play.
+        /// </summary>
+        public static void Go(string id, string scenePath = RegionScenePath)
         {
-            if (EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying && SceneManager.GetActiveScene().path == scenePath)
             {
                 Run(id);
                 return;
             }
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogWarning($"Este atalho é da cena {System.IO.Path.GetFileNameWithoutExtension(scenePath)}. Saia do Play e use o atalho de novo.");
+                return;
+            }
 
-            if (SceneManager.GetActiveScene().path != RegionScenePath)
+            if (SceneManager.GetActiveScene().path != scenePath)
             {
                 if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-                EditorSceneManager.OpenScene(RegionScenePath);
+                EditorSceneManager.OpenScene(scenePath);
             }
             SessionState.SetString(PendingKey, id);
             EditorApplication.isPlaying = true;

@@ -26,7 +26,7 @@ namespace Nibiru.EditorTools
 
         // Passos da missão Sobrevivente: "Siga o Samir até a beira da aldeia" e "Passe pela patrulha...".
         const int FollowSamirStep = 15;
-        const int CrossRoadStep = 16;
+        internal const int CrossRoadStep = 16;
         const int TransformationAfterTablet = 5;
 
         // Um pouco ao sul da beira da aldeia, olhando para o norte: ao andar, a Elena entra na cena do cerco.
@@ -88,7 +88,7 @@ namespace Nibiru.EditorTools
         }
 
         // Mundo até o fim do passo 8. Se o Samir não revelou que é Guardião, a Elena contou a verdade (Guardiões +5).
-        static void Start(bool revealed, string[] extra, int questStep, Vector3 spawn, float yaw, Action then)
+        internal static void Start(bool revealed, string[] extra, int questStep, Vector3 spawn, float yaw, Action then)
         {
             var events = Step8Shortcuts.EventsUntilStep7.Concat(Step8Events)
                 .Append(revealed ? "SamirRevelouGuardiao" : "ContouAVerdadeAoSamir")

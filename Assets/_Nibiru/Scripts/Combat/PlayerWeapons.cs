@@ -67,6 +67,9 @@ namespace Nibiru.Combat
         /// <summary>True se a mira está sobre algo que pode levar dano (a mira fica vermelha).</summary>
         public bool AimOnTarget { get; private set; }
 
+        /// <summary>Avisa a cada tiro disparado (para o coice da animação, som e efeitos).</summary>
+        public event System.Action Fired;
+
         void Awake()
         {
             if (input == null) input = GetComponent<PlayerInputReader>();
@@ -173,6 +176,7 @@ namespace Nibiru.Combat
             ShowTracer(firstPoint);
             if (cameraController != null) cameraController.AddRecoil(Equipped.recoil);
             Noise.Emit(transform.position, Equipped.noiseRadius, gameObject);
+            Fired?.Invoke();
         }
 
         // Dispara um projétil e devolve onde ele parou.

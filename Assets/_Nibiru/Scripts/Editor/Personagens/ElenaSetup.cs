@@ -9,18 +9,20 @@ using UnityEngine;
 namespace Nibiru.EditorTools
 {
     /// <summary>
-    /// Troca a cápsula pela Elena animada no prefab Prefabs/Player/Elena: configura a importação
-    /// dos FBX do Meshy (Humanoid, cada um com o próprio avatar), cria o material URP, o controlador
-    /// Elena.controller (ligado ao PlayerMotor pelo PlayerAnimator) e põe o modelo no filho "Jogador".
+    /// Monta a Elena animada no prefab Prefabs/Player/Elena: configura a importação do FBX do
+    /// AccuRig (Humanoid, com dedos, na altura de 1,70 m) e das animações do Mixamo (Humanoid, com o
+    /// avatar do X Bot em pose T), cria o material URP, o controlador Elena.controller (ligado ao
+    /// PlayerMotor e ao combate pelo PlayerAnimator) e põe o modelo no filho "Jogador".
     /// Pode rodar de novo: refaz controlador, máscara e modelo no prefab; o material só é atualizado.
     /// Menu: Nibiru > Personagens > Montar Elena animada.
     /// </summary>
     static class ElenaSetup
     {
         const string Root = "Assets/_Nibiru/Art/Personagens/Elena";
-        const string ModelPath = Root + "/Elena_Personagem.fbx";
-        const string AnimationsPath = Root + "/Elena_Animacoes.fbx";
-        const string WalkPath = Root + "/Elena_Andando.fbx";
+        const string ModelPath = Root + "/Elena.fbx";
+        const string Mixamo = "Assets/_Nibiru/Art/Animacoes/Mixamo/";
+        // Boneco do Mixamo em pose T: o esqueleto de referência de todas as animações do Mixamo.
+        const string MixamoReferencePath = Mixamo + "X Bot.fbx";
         const string MetalSmoothPath = Root + "/Elena_MetalSmooth.png";
         const string MaterialPath = Root + "/Materiais/Elena.mat";
         const string ControllerPath = Root + "/Elena.controller";
@@ -28,42 +30,60 @@ namespace Nibiru.EditorTools
         const string MarkMaterialPath = Root + "/Materiais/Elena_MarcaKur.mat";
         const string PrefabPath = "Assets/_Nibiru/Prefabs/Player/Elena.prefab";
         const string SettingsPath = "Assets/_Nibiru/Data/Player/MovimentoJogador.asset";
+        const string KnifePath = "Assets/_Nibiru/Data/Combat/Faca.asset";
+        const string PistolPath = "Assets/_Nibiru/Data/Combat/Pistola.asset";
         const string ModelChild = "Modelo";
         const string CapsuleChild = "Corpo";
         const string GunChild = "ArmaNaMao";
+        const string KnifeChild = "PivoFaca";
+        const string BladeChild = "Lamina";
 
         /// <summary>
-        /// Um trecho de animação usado pelo controlador. Quadros -1 = clipe inteiro.
-        /// naturalSpeed: velocidade (m/s) em que os pés da animação não escorregam; 0 = parada.
+        /// Um trecho de animação usado pelo controlador. Quadros contados como no Mixamo e no Blender
+        /// (o primeiro é 1); -1 = clipe inteiro.
+        /// moving: a animação anda; a velocidade em que os pés não escorregam é lida do próprio clipe (já na escala da Elena).
         /// feet: a altura vem dos pés (o pé mais baixo fica no chão), em vez da altura original do clipe.
-        /// Para trocar uma animação (por exemplo, uma "Idle" nova do Meshy), mude o arquivo e o take aqui.
+        /// keepTravel: o deslocamento do corpo fica na pose (a queda da morte vai mesmo para trás).
+        /// mirror: espelha esquerda e direita (golpe feito com a outra mão).
+        /// original: o giro segue o arquivo ("Based Upon: Original"), e não a direção do corpo.
+        /// Para trocar uma animação, mude o arquivo e os quadros aqui e rode o menu de novo.
         /// </summary>
         readonly struct Cut
         {
-            public readonly string name, file, take;
+            public readonly string name, file;
             public readonly int first, last;
-            public readonly bool loop, feet;
-            public readonly float naturalSpeed;
+            public readonly bool loop, moving, feet, keepTravel, mirror, original;
 
-            public Cut(string name, string file, string take, int first, int last, bool loop, float naturalSpeed = 0f, bool feet = false)
+            public Cut(string name, string file, int first, int last, bool loop,
+                bool moving = false, bool feet = false, bool keepTravel = false, bool mirror = false, bool original = false)
             {
-                this.name = name; this.file = file; this.take = take;
-                this.first = first; this.last = last; this.loop = loop; this.naturalSpeed = naturalSpeed; this.feet = feet;
+                this.name = name; this.file = Mixamo + file + ".fbx";
+                this.first = first; this.last = last; this.loop = loop;
+                this.moving = moving; this.feet = feet; this.keepTravel = keepTravel; this.mirror = mirror;
+                this.original = original;
             }
         }
 
-        // O pacote do Meshy não tem "parada", "agachada parada" nem "mirando": por enquanto são
-        // quadros parados tirados de outras animações.
-        static readonly Cut Idle = new("Parada", AnimationsPath, "Idle_Turn_Right", 0, 1, true);
-        static readonly Cut Walk = new("Andar", WalkPath, "mixamo.com", -1, -1, true, 1.56f);
-        static readonly Cut Run = new("Correr", AnimationsPath, "run_fast_8", -1, -1, true, 2.77f);
-        // Quadro do andar furtivo com os dois pés apoiados e as mãos perto do corpo.
-        static readonly Cut CrouchIdle = new("Agachada_Parada", AnimationsPath, "Sneaky_Walk_inplace", 48, 49, true, feet: true);
-        static readonly Cut CrouchWalk = new("Agachada_Andando", AnimationsPath, "Sneaky_Walk_inplace", -1, -1, true, 0.5f, feet: true);
-        static readonly Cut Dodge = new("Esquiva", AnimationsPath, "sliding_rool", 0, 10, false);
-        // Quadro da mira de fuzil em que os braços apontam reto para a frente (no 0 apontam 48° à esquerda).
-        static readonly Cut Aim = new("Mira", AnimationsPath, "Rifle_Aim_Turn_Right", 12, 13, true);
-        static readonly Cut[] Cuts = { Idle, Walk, Run, CrouchIdle, CrouchWalk, Dodge, Aim };
+        static readonly Cut Idle = new("Parada", "Idle", -1, -1, true);
+        // Andar neutro, de tronco reto. O "Female Walk" anda com o queixo erguido e o tronco para trás.
+        static readonly Cut Walk = new("Andar", "WalkForward", -1, -1, true, moving: true);
+        // Pique atlético a 5,7 m/s, quase a corrida do jogo (6 m/s): os pés quase não escorregam.
+        static readonly Cut Run = new("Correr", "Fast Run", -1, -1, true, moving: true);
+        // O Mixamo não tem agachada parada: um quadro do andar furtivo com os dois pés apoiados.
+        static readonly Cut CrouchIdle = new("Agachada_Parada", "Sneak Walk", 17, 18, true, feet: true);
+        static readonly Cut CrouchWalk = new("Agachada_Andando", "Sneak Walk", -1, -1, true, moving: true, feet: true);
+        // Só o mergulho e a cambalhota, sem o levantar do fim.
+        static readonly Cut Dodge = new("Esquiva", "Stand To Roll", 10, 50, false);
+        // Quadro da mira de pistola com os dois braços esticados (depois do 90 ela abaixa a arma).
+        static readonly Cut Aim = new("Mira", "Pistol Aim", 20, 21, true);
+        static readonly Cut Reload = new("Recarregar", "Reloading", 8, 92, false);
+        // A facada, do começo do bote até recolher o braço (pico no quadro 29). No Mixamo ela é com a
+        // mão esquerda; espelhada, fica na direita, onde está a faca.
+        static readonly Cut Slash = new("Golpe_Faca", "Stabbing", 15, 37, false, mirror: true, original: true);
+        // Somado por cima do que ela estiver fazendo (camada aditiva): só o tranco do golpe.
+        static readonly Cut Hurt = new("Dano", "Hit Reaction", 13, 60, false);
+        static readonly Cut Death = new("Morte", "Standing React Death Backward", -1, -1, false, keepTravel: true);
+        static readonly Cut[] Cuts = { Idle, Walk, Run, CrouchIdle, CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death };
 
         [MenuItem("Nibiru/Personagens/Montar Elena animada")]
         static void Build()
@@ -77,8 +97,9 @@ namespace Nibiru.EditorTools
             ConfigureTextures();
             var material = BuildMaterial();
             ConfigureModel(material);
-            ConfigureAnimations(AnimationsPath, true);
-            ConfigureAnimations(WalkPath, false);
+            var mixamoAvatar = ConfigureMixamoReference();
+            foreach (string file in Cuts.Select(c => c.file).Distinct())
+                ConfigureAnimations(file, mixamoAvatar);
             var controller = BuildController();
             BuildPrefab(controller);
             AssetDatabase.SaveAssets();
@@ -165,6 +186,8 @@ namespace Nibiru.EditorTools
             material.SetTexture("_MetallicGlossMap", AssetDatabase.LoadAssetAtPath<Texture2D>(MetalSmoothPath));
             material.EnableKeyword("_METALLICSPECGLOSSMAP");
             material.SetFloat("_Smoothness", 1f);
+            // O AccuRig marca o material como de dois lados (mangas e gola mostram o avesso).
+            material.SetFloat("_Cull", (float)UnityEngine.Rendering.CullMode.Off);
             EditorUtility.SetDirty(material);
             return material;
         }
@@ -173,10 +196,15 @@ namespace Nibiru.EditorTools
 
         static void ConfigureModel(Material material)
         {
+            // A escala vem antes do avatar: o Humanoid guarda o tamanho dos ossos e é refeito do zero
+            // a cada execução (senão ele fica com as medidas de antes do ajuste).
+            CharacterHeights.FitImportScale(ModelPath, "Elena");
             var importer = (ModelImporter)AssetImporter.GetAtPath(ModelPath);
+            importer.humanDescription = new HumanDescription();
             importer.animationType = ModelImporterAnimationType.Human;
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
             importer.importAnimation = false;
+            importer.importBlendShapes = false;
             foreach (var renderer in AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath).GetComponentsInChildren<Renderer>())
                 foreach (var original in renderer.sharedMaterials.Where(m => m != null && m != material))
                     importer.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), original.name), material);
@@ -185,39 +213,45 @@ namespace Nibiru.EditorTools
             Debug.Log($"Avatar da Elena: {(avatar != null && avatar.isValid && avatar.isHuman ? "Humanoid válido" : "PROBLEMA no Humanoid")}");
         }
 
-        // keepAll: mantém também os clipes originais do Meshy (para prévia), além dos trechos do controlador.
-        static void ConfigureAnimations(string path, bool keepAll)
+        // As animações do Mixamo baixadas sem pele não têm pose T: o avatar feito delas mesmas parte do
+        // primeiro quadro, e o erro vai para a animação inteira (na corrida, o corpo ficava girado 40°).
+        // Todas usam o avatar do X Bot, que está em pose T e tem os mesmos nomes de ossos.
+        static Avatar ConfigureMixamoReference()
+        {
+            var importer = (ModelImporter)AssetImporter.GetAtPath(MixamoReferencePath);
+            importer.animationType = ModelImporterAnimationType.Human;
+            importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+            importer.importAnimation = false;
+            importer.materialImportMode = ModelImporterMaterialImportMode.None;
+            importer.SaveAndReimport();
+            var avatar = AssetDatabase.LoadAllAssetsAtPath(MixamoReferencePath).OfType<Avatar>().First();
+            Debug.Log($"Avatar de referência do Mixamo (X Bot): {(avatar.isValid && avatar.isHuman ? "Humanoid válido" : "PROBLEMA no Humanoid")}");
+            return avatar;
+        }
+
+        static void ConfigureAnimations(string path, Avatar mixamoAvatar)
         {
             var importer = (ModelImporter)AssetImporter.GetAtPath(path);
             importer.animationType = ModelImporterAnimationType.Human;
-            importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+            importer.avatarSetup = ModelImporterAvatarSetup.CopyFromOther;
+            importer.sourceAvatar = mixamoAvatar;
             importer.materialImportMode = ModelImporterMaterialImportMode.None;
             importer.importAnimation = true;
 
-            var defaults = importer.defaultClipAnimations;
+            var source = importer.defaultClipAnimations[0];
+            // O Unity conta os quadros a partir do primeiro do take; nos cortes, o primeiro é 1.
+            float offset = source.firstFrame - 1f;
             var clips = new System.Collections.Generic.List<ModelImporterClipAnimation>();
-            if (keepAll)
-                foreach (var clip in defaults)
-                {
-                    Prepare(clip, clip.takeName.ToLowerInvariant().Contains("walk") || clip.takeName.ToLowerInvariant().Contains("run"));
-                    clips.Add(clip);
-                }
             foreach (var cut in Cuts.Where(c => c.file == path))
             {
-                var source = defaults.First(c => c.takeName == cut.take);
                 var clip = new ModelImporterClipAnimation
                 {
                     name = cut.name,
                     takeName = source.takeName,
-                    firstFrame = cut.first >= 0 ? cut.first : source.firstFrame,
-                    lastFrame = cut.last >= 0 ? cut.last : source.lastFrame,
+                    firstFrame = cut.first >= 0 ? cut.first + offset : source.firstFrame,
+                    lastFrame = cut.last >= 0 ? cut.last + offset : source.lastFrame,
                 };
-                Prepare(clip, cut.loop);
-                if (cut.feet)
-                {
-                    clip.keepOriginalPositionY = false;
-                    clip.heightFromFeet = true;
-                }
+                Prepare(clip, cut);
                 clips.Add(clip);
             }
             importer.clipAnimations = clips.ToArray();
@@ -225,18 +259,28 @@ namespace Nibiru.EditorTools
         }
 
         // O movimento é do PlayerMotor: o avanço da animação sai para a raiz (e é descartado, sem
-        // root motion), a altura e o giro ficam na pose. "Based Upon: Body Orientation" é obrigatório
-        // nas animações do Meshy, senão a Elena fica virada para trás.
-        static void Prepare(ModelImporterClipAnimation clip, bool loop)
+        // root motion), a altura e o giro ficam na pose. Na morte, o avanço também fica na pose.
+        // "Based Upon: Body Orientation" no giro: o corpo aponta para a frente do Jogador. Algumas
+        // animações do Mixamo (Run, Sneak Walk) correm na diagonal, com o corpo girado uns 35°.
+        // A facada é a exceção: o corpo fica de lado na estocada, e só o giro original manda o braço
+        // para a frente.
+        static void Prepare(ModelImporterClipAnimation clip, Cut cut)
         {
-            clip.loopTime = loop;
+            clip.loopTime = cut.loop;
+            clip.mirror = cut.mirror;
             clip.lockRootRotation = true;
-            clip.keepOriginalOrientation = false;
+            clip.keepOriginalOrientation = cut.original;
             clip.lockRootHeightY = true;
-            clip.keepOriginalPositionY = true;
-            clip.lockRootPositionXZ = false;
-            clip.keepOriginalPositionXZ = false;
+            clip.keepOriginalPositionY = !cut.feet;
+            clip.heightFromFeet = cut.feet;
+            clip.lockRootPositionXZ = cut.keepTravel;
+            clip.keepOriginalPositionXZ = cut.keepTravel;
+            // Na camada aditiva (dano), a pose de referência é o primeiro quadro do trecho.
+            clip.hasAdditiveReferencePose = false;
         }
+
+        // Velocidade (m/s) em que os pés não escorregam: o avanço médio do clipe, na escala da Elena.
+        static float NaturalSpeed(Cut cut) => cut.moving ? Clip(cut).averageSpeed.magnitude : 0f;
 
         static AnimationClip Clip(Cut cut) =>
             AssetDatabase.LoadAllAssetsAtPath(cut.file).OfType<AnimationClip>().First(c => c.name == cut.name);
@@ -246,6 +290,7 @@ namespace Nibiru.EditorTools
         static AnimatorController BuildController()
         {
             var settings = AssetDatabase.LoadAssetAtPath<PlayerMovementSettings>(SettingsPath);
+            var knife = AssetDatabase.LoadAssetAtPath<MeleeAttackDefinition>(KnifePath);
             AssetDatabase.DeleteAsset(ControllerPath);
             var controller = AnimatorController.CreateAnimatorControllerAtPath(ControllerPath);
             controller.AddParameter(PlayerAnimator.SpeedParam, AnimatorControllerParameterType.Float);
@@ -256,7 +301,8 @@ namespace Nibiru.EditorTools
                 type = AnimatorControllerParameterType.Float,
                 defaultFloat = 1f,
             });
-            controller.AddParameter(PlayerAnimator.DodgeParam, AnimatorControllerParameterType.Trigger);
+            foreach (string trigger in new[] { PlayerAnimator.DodgeParam, PlayerAnimator.MeleeParam, PlayerAnimator.HurtParam, PlayerAnimator.DieParam })
+                controller.AddParameter(trigger, AnimatorControllerParameterType.Trigger);
 
             // Locomoção: em pé e agachada, misturadas pelo Agachar; cada uma pela velocidade.
             var machine = controller.layers[0].stateMachine;
@@ -272,7 +318,7 @@ namespace Nibiru.EditorTools
             standing.name = "EmPe";
             Speeds(standing,
                 (Idle, 0f),
-                (Walk, Walk.naturalSpeed),
+                (Walk, NaturalSpeed(Walk)),
                 (Walk, settings.walkSpeed),
                 (Run, settings.runSpeed));
 
@@ -282,38 +328,86 @@ namespace Nibiru.EditorTools
                 (CrouchIdle, 0f),
                 (CrouchWalk, settings.crouchSpeed));
 
-            // Esquiva: o trecho toca no tempo exato da esquiva do PlayerMotor.
-            var dodgeClip = Clip(Dodge);
-            var dodge = machine.AddState("Esquiva", new Vector3(300f, 120f));
-            dodge.motion = dodgeClip;
-            dodge.speed = dodgeClip.length / settings.dodgeDuration;
-            var toDodge = machine.AddAnyStateTransition(dodge);
-            toDodge.AddCondition(AnimatorConditionMode.If, 0f, PlayerAnimator.DodgeParam);
-            toDodge.hasExitTime = false;
-            toDodge.duration = 0.05f;
-            toDodge.canTransitionToSelf = false;
-            var back = dodge.AddTransition(locomotion);
-            back.hasExitTime = true;
-            back.exitTime = 1f;
-            back.hasFixedDuration = true;
-            back.duration = 0.2f;
+            // Esquiva e golpe de faca: cada trecho toca no tempo exato da ação no jogo.
+            OneShot(machine, locomotion, Dodge, PlayerAnimator.DodgeParam, settings.dodgeDuration, new Vector3(300f, 60f), 0.05f);
+            OneShot(machine, locomotion, Slash, PlayerAnimator.MeleeParam, knife.TotalTime, new Vector3(300f, 140f), 0.08f);
 
-            // Mira: só o tronco, braços e cabeça; o peso é controlado pelo PlayerAnimator.
-            controller.AddLayer(PlayerAnimator.AimLayer);
-            var layers = controller.layers;
-            layers[1].avatarMask = BuildUpperBodyMask();
-            layers[1].defaultWeight = 0f;
-            layers[1].blendingMode = AnimatorLayerBlendingMode.Override;
-            controller.layers = layers;
-            var aim = controller.layers[1].stateMachine.AddState("Mira");
-            aim.motion = Clip(Aim);
+            // Morte: cai e fica no chão (sem volta; a tela de morte recomeça a cena).
+            var death = machine.AddState("Morte", new Vector3(300f, 220f));
+            death.motion = Clip(Death);
+            var toDeath = machine.AddAnyStateTransition(death);
+            toDeath.AddCondition(AnimatorConditionMode.If, 0f, PlayerAnimator.DieParam);
+            toDeath.hasExitTime = false;
+            toDeath.duration = 0.1f;
+            toDeath.canTransitionToSelf = false;
+
+            // Mira e recarregar: só o tronco, braços, dedos e cabeça; o peso vem do PlayerAnimator.
+            var mask = BuildUpperBodyMask();
+            AddLayer(controller, PlayerAnimator.AimLayer, mask, AnimatorLayerBlendingMode.Override, 0f)
+                .AddState("Mira").motion = Clip(Aim);
+            var pistol = AssetDatabase.LoadAssetAtPath<FirearmDefinition>(PistolPath);
+            var reload = AddLayer(controller, PlayerAnimator.ReloadLayer, mask, AnimatorLayerBlendingMode.Override, 0f).AddState("Recarregar");
+            var reloadClip = Clip(Reload);
+            reload.motion = reloadClip;
+            reload.speed = reloadClip.length / pistol.reloadTime;
+
+            // Dano: aditivo, por cima de tudo; fica num estado vazio até levar um golpe. Com peso 1 o
+            // tranco do Mixamo joga a cabeça para trás demais.
+            var reactions = AddLayer(controller, "Reacoes", mask, AnimatorLayerBlendingMode.Additive, 0.55f);
+            var calm = reactions.AddState("Nada");
+            reactions.defaultState = calm;
+            var hurt = reactions.AddState("Dano", new Vector3(300f, 60f));
+            hurt.motion = Clip(Hurt);
+            hurt.speed = 1.3f;
+            var toHurt = reactions.AddAnyStateTransition(hurt);
+            toHurt.AddCondition(AnimatorConditionMode.If, 0f, PlayerAnimator.HurtParam);
+            toHurt.hasExitTime = false;
+            toHurt.duration = 0.05f;
+            toHurt.canTransitionToSelf = true;
+            var calmDown = hurt.AddTransition(calm);
+            calmDown.hasExitTime = true;
+            calmDown.exitTime = 0.85f;
+            calmDown.duration = 0.15f;
 
             EditorUtility.SetDirty(controller);
             return controller;
         }
 
-        // Cada animação entra na velocidade em que deve tocar. Quando a velocidade do jogo é maior
-        // que a natural da animação, ela acelera só em parte (raiz quadrada): passos rápidos demais
+        // Um estado que entra pelo gatilho (de qualquer estado) e volta sozinho para a locomoção.
+        static void OneShot(AnimatorStateMachine machine, AnimatorState back, Cut cut, string trigger,
+            float gameDuration, Vector3 position, float blendIn)
+        {
+            var clip = Clip(cut);
+            var state = machine.AddState(cut.name, position);
+            state.motion = clip;
+            state.speed = clip.length / gameDuration;
+            var enter = machine.AddAnyStateTransition(state);
+            enter.AddCondition(AnimatorConditionMode.If, 0f, trigger);
+            enter.hasExitTime = false;
+            enter.duration = blendIn;
+            enter.canTransitionToSelf = false;
+            var leave = state.AddTransition(back);
+            leave.hasExitTime = true;
+            leave.exitTime = 1f;
+            leave.hasFixedDuration = true;
+            leave.duration = 0.2f;
+        }
+
+        static AnimatorStateMachine AddLayer(AnimatorController controller, string name, AvatarMask mask,
+            AnimatorLayerBlendingMode blending, float weight)
+        {
+            controller.AddLayer(name);
+            var layers = controller.layers;
+            var layer = layers[layers.Length - 1];
+            layer.avatarMask = mask;
+            layer.defaultWeight = weight;
+            layer.blendingMode = blending;
+            controller.layers = layers;
+            return layer.stateMachine;
+        }
+
+        // Cada animação entra na velocidade em que deve tocar. Abaixo da velocidade natural, ela
+        // desacelera junto; acima, acelera só em parte (raiz quadrada): passos rápidos demais
         // parecem mais errados que um pouco de escorregão.
         static void Speeds(BlendTree tree, params (Cut cut, float speed)[] entries)
         {
@@ -326,9 +420,9 @@ namespace Nibiru.EditorTools
             for (int i = 0; i < children.Length; i++)
             {
                 var (cut, speed) = entries[i];
-                children[i].timeScale = cut.naturalSpeed > 0f && speed > cut.naturalSpeed
-                    ? Mathf.Clamp(Mathf.Sqrt(speed / cut.naturalSpeed), 1f, 2.5f)
-                    : 1f;
+                float natural = NaturalSpeed(cut);
+                float ratio = natural > 0f && speed > 0f ? speed / natural : 1f;
+                children[i].timeScale = ratio > 1f ? Mathf.Clamp(Mathf.Sqrt(ratio), 1f, 2.5f) : ratio;
             }
             tree.children = children;
         }
@@ -359,11 +453,13 @@ namespace Nibiru.EditorTools
             {
                 var player = root.GetComponentInChildren<PlayerMotor>().transform;
 
-                // Tira a cápsula (o "Corpo" direto do Jogador; o da arma fica) e um modelo anterior.
-                foreach (string name in new[] { CapsuleChild, ModelChild })
+                // Tira a cápsula (o "Corpo" direto do Jogador; o da arma fica) e o modelo anterior,
+                // mesmo se o FBX dele já foi apagado (a Unity o mostra como "Modelo (Missing Prefab...)").
+                foreach (Transform child in player.Cast<Transform>().ToArray())
                 {
-                    var old = player.Find(name);
-                    if (old != null) Object.DestroyImmediate(old.gameObject);
+                    bool old = child.name == CapsuleChild || child.name == ModelChild
+                        || (child.name.StartsWith(ModelChild) && PrefabUtility.IsPrefabAssetMissing(child.gameObject));
+                    if (old) Object.DestroyImmediate(child.gameObject);
                 }
 
                 var model = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath), root.scene);
@@ -382,16 +478,28 @@ namespace Nibiru.EditorTools
                 animator.applyRootMotion = false;
                 animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
 
+                // A faca provisória vira uma lâmina curta, que sai do punho da mão direita.
+                var knife = player.Find(KnifeChild);
+                var blade = knife != null ? knife.Find(BladeChild) : null;
+                if (blade != null)
+                {
+                    blade.localPosition = new Vector3(0f, 0f, 0.14f);
+                    blade.localScale = new Vector3(0.025f, 0.012f, 0.2f);
+                }
+
                 var playerAnimator = player.GetComponent<PlayerAnimator>();
                 if (playerAnimator == null) playerAnimator = player.gameObject.AddComponent<PlayerAnimator>();
                 var serialized = new SerializedObject(playerAnimator);
                 serialized.FindProperty("animator").objectReferenceValue = animator;
                 serialized.FindProperty("motor").objectReferenceValue = player.GetComponent<PlayerMotor>();
                 serialized.FindProperty("weapons").objectReferenceValue = player.GetComponent<PlayerWeapons>();
+                serialized.FindProperty("melee").objectReferenceValue = player.GetComponent<PlayerMeleeAttack>();
+                serialized.FindProperty("health").objectReferenceValue = player.GetComponent<Health>();
                 serialized.FindProperty("heldGun").objectReferenceValue = player.Find(GunChild);
+                serialized.FindProperty("heldKnife").objectReferenceValue = knife;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
 
-                // O agachar agora é da animação: o visual do agachar só desce câmera, arma e faca.
+                // O agachar é da animação: o visual do agachar só desce câmera, arma e faca.
                 var crouchVisual = player.GetComponent<PlayerCrouchVisual>();
                 if (crouchVisual != null)
                 {
@@ -427,22 +535,6 @@ namespace Nibiru.EditorTools
             serialized.FindProperty("animator").objectReferenceValue = animator;
             serialized.FindProperty("material").objectReferenceValue = material;
             serialized.ApplyModifiedPropertiesWithoutUndo();
-        }
-
-        // Para pôr só a marca no prefab, sem refazer a Elena inteira (usado uma vez pela ponte).
-        static void InstallTransformationMark()
-        {
-            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
-            try
-            {
-                var player = root.GetComponentInChildren<PlayerMotor>().transform;
-                AddTransformationMark(player, player.Find(ModelChild).GetComponent<Animator>());
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
-            }
-            finally
-            {
-                PrefabUtility.UnloadPrefabContents(root);
-            }
         }
     }
 }

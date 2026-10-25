@@ -31,8 +31,12 @@ namespace Nibiru.Player
             motor.enabled = false;
             GetComponent<CharacterController>().enabled = false;
 
-            // Por enquanto a Elena só tomba de bruços (falta a animação de morte). O Jogador fica no
-            // meio do corpo, então desce quase até o chão para o corpo deitado não flutuar.
+            // Com a animação de morte, o PlayerAnimator faz a Elena cair.
+            var animated = GetComponent<PlayerAnimator>();
+            if (animated != null && animated.HasDeathAnimation) return;
+
+            // Sem animação (cápsula), ela só tomba de bruços. O Jogador fica no meio do corpo, então
+            // desce quase até o chão para o corpo deitado não flutuar.
             transform.SetPositionAndRotation(
                 transform.position + Vector3.down * 0.85f,
                 Quaternion.Euler(90f, transform.eulerAngles.y, 0f));
