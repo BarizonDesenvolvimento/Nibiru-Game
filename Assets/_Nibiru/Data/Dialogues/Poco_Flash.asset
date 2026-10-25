@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Poco_Flash
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: "(A tabuleta pulsa dentro da bolsa, quente como uma m\xE3o. No fundo da
+      antec\xE2mara, o azul nas rachaduras do Selo bate no mesmo ritmo.)"
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "(O ar clareia. O ch\xE3o, as paredes e os andaimes somem, e s\xF3 sobram
+      luz e m\xE3os. Muitas m\xE3os, de todos os lados, segurando os bra\xE7os dela.)"
+    next: v1
+    raise: {fileID: 0}
+    choices: []
+  - id: v1
+    speaker: Voz
+    text: "Voc\xEA j\xE1 esteve aqui."
+    next: v2
+    raise: {fileID: 0}
+    choices: []
+  - id: v2
+    speaker: Voz
+    text: "N\xE3o tem problema n\xE3o lembrar. Eu lembro por voc\xEA."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: e10912087bc5c784d8fe706255c08ba5, type: 2}

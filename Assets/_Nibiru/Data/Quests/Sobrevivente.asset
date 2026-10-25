@@ -103,5 +103,21 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: c35270b8e29ce0843a073c0ce4034a40, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Siga o corredor nordeste at\xE9 a boca do Po\xE7o"
+    completeOn: {fileID: 11400000, guid: ae0935f3f46c2c146aeeeddc88e66a6c, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Des\xE7a o Po\xE7o pelos andaimes"
+    completeOn: {fileID: 11400000, guid: dd4833752aa651d4b830deee8a7540b9, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Atravesse o fundo do Po\xE7o sem acordar o Lullu, ou livre-se dele"
+    completeOn: {fileID: 11400000, guid: 9b585efd0eb8b3a4bb247b571bfee462, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Avance pela antec\xE2mara at\xE9 o Selo de Kur"
+    completeOn: {fileID: 11400000, guid: e10912087bc5c784d8fe706255c08ba5, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []
