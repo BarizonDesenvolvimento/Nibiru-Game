@@ -364,13 +364,34 @@ namespace Nibiru.EditorTools.Blockout
             Box(g, "Rampa_Parede_Oeste", new Vector3(29, -14, 110), new Vector3(30, 0, 140), earth);
             Box(g, "Rampa_Parede_Leste", new Vector3(34, -14, 110), new Vector3(35, 0, 140), earth);
 
-            // Wadi: leito de rio seco entre duas margens altas.
-            Box(g, "Wadi_Margem_Oeste", new Vector3(18, 0, 112), new Vector3(24, 3, 150), earth);
-            Box(g, "Wadi_Margem_Leste", new Vector3(42, 0, 112), new Vector3(48, 3, 150), earth);
-            BoxC(g, "Caminhonete_Samir", new Vector3(33, 1, 146), new Vector3(2.2f, 2, 5), sand);
+            // Wadi: leito de rio seco entre margens altas, em três trechos (uns 60 m do pé da rampa até a
+            // caminhonete): A, ao norte, saindo da rampa; B, a curva para leste; C, ao norte de novo.
+            // A margem do canto de fora (norte do trecho B) corta a vista longa: de A não se vê C.
+            //   A: x 24 a 42, z 112 a 150 (chão do mapa)      B: x 24 a 66, z 150 a 164
+            //   C: x 54 a 66, z 164 a 180
+            const float bank = 4f;
+            Slab(g, "Wadi_Leito_B", 24, 66, 150, 164, sand);
+            Slab(g, "Wadi_Leito_C", 54, 66, 164, 180, sand);
+            Box(g, "Wadi_Margem_Oeste", new Vector3(18, -1, 112), new Vector3(24, bank, 164), earth);
+            Box(g, "Wadi_Margem_Leste_A", new Vector3(42, -1, 112), new Vector3(48, bank, 150), earth);
+            Box(g, "Wadi_Margem_Sul_B", new Vector3(42, -1, 144), new Vector3(72, bank, 150), earth);
+            Box(g, "Wadi_Margem_Norte_B", new Vector3(18, -1, 164), new Vector3(54, bank + 1, 170), earth);
+            Box(g, "Wadi_Margem_Oeste_C", new Vector3(48, -1, 164), new Vector3(54, bank + 1, 186), earth);
+            Box(g, "Wadi_Margem_Leste_C", new Vector3(66, -1, 150), new Vector3(72, bank, 186), earth);
+            Box(g, "Wadi_Margem_Fim", new Vector3(48, -1, 180), new Vector3(72, bank, 186), earth);
+
+            // Pedras e a carcaça de um carro no trecho B: cobertura para quem anda agachado junto à margem sul.
+            BoxC(g, "Pedra_B1", new Vector3(34, 0.8f, 153f), new Vector3(3f, 1.6f, 2f), rock, 12);
+            BoxC(g, "Pedra_B2", new Vector3(45, 0.9f, 152.5f), new Vector3(2.4f, 1.8f, 3f), rock, -20);
+            BoxC(g, "Pedra_B3", new Vector3(60, 0.8f, 153f), new Vector3(2.6f, 1.6f, 2.4f), rock, 30);
+            BoxC(g, "Carcaca_Carro", new Vector3(38, 0.7f, 159f), new Vector3(1.9f, 1.4f, 4.4f), metal, 70);
+            BoxC(g, "Pedra_C1", new Vector3(57.5f, 0.9f, 170f), new Vector3(2f, 1.8f, 2.6f), rock, -10);
+
+            BoxC(g, "Caminhonete_Samir", new Vector3(60, 1, 176), new Vector3(2.2f, 2, 5), sand);
             Palm(g, "Palmeira_Wadi_1", new Vector3(26, 0, 132));
             Palm(g, "Palmeira_Wadi_2", new Vector3(40, 0, 126));
-            Marker(g, "Escolha_de_Faccao", new Vector3(33, 0.5f, 142), 0);
+            Palm(g, "Palmeira_Wadi_3", new Vector3(63, 0, 157));
+            Marker(g, "Escolha_de_Faccao", new Vector3(60, 0.5f, 168), 0);
         }
 
         // ---------- Malha de navegação ----------
@@ -403,7 +424,7 @@ namespace Nibiru.EditorTools.Blockout
             Label(g, "3 · ALDEIA", new Vector3(-56, 16, -20));
             Label(g, "4 · ZIGURATE E BASE", new Vector3(10, 26, 20));
             Label(g, "5 · BOCA DO POÇO", new Vector3(45, 12, 75));
-            Label(g, "6 · WADI", new Vector3(33, 10, 130));
+            Label(g, "6 · WADI", new Vector3(40, 10, 152));
         }
 
         // ---------- Peças ----------
