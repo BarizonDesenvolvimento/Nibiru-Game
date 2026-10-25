@@ -185,6 +185,10 @@ namespace Nibiru.EditorTools.Blockout
 
         // ---------- 4. Zigurate e base avançada ----------
 
+        // O pátio da base vai do muro oeste (x = -22) à cerca leste (x = 60) e da cerca sul (z = -6)
+        // ao pé do zigurate (z = 30). Entra-se pelo canto sudoeste, entre a ponta do muro e a cerca.
+        // Uma avenida livre (z de 4 a 13) liga o portão do muro à tenda de comando: de lá se vê o
+        // portão abrir. A saída para o Poço é pelo nordeste, entre o zigurate e a cerca leste.
         static void BuildZiggurat(Transform g)
         {
             // Três terraços de tijolo dourado; escadaria na face sul.
@@ -193,27 +197,57 @@ namespace Nibiru.EditorTools.Blockout
             Box(g, "Zigurate_Terraco_3", new Vector3(0, 14, 47), new Vector3(20, 19, 61), adoberDark);
             Ramp(g, "Escadaria_1", new Vector3(10, 8, 30), new Vector3(10, 0, 13), 8, adoberDark);
             Ramp(g, "Escadaria_2", new Vector3(10, 14, 39), new Vector3(10, 8, 31), 6, adoberDark);
-            BoxC(g, "Posto_Atirador", new Vector3(10, 15, 41), new Vector3(3, 2, 2), white);
 
-            // Base da Fundação ao pé do zigurate: tendas brancas, contêineres e heliponto.
-            BoxC(g, "Tenda_Comando", new Vector3(26, 1.5f, 6), new Vector3(8, 3, 6), white);
-            BoxC(g, "Tenda_Medica", new Vector3(-8, 1.5f, 8), new Vector3(7, 3, 6), white);
-            BoxC(g, "Tenda_Provas", new Vector3(32, 1.5f, 22), new Vector3(6, 3, 5), white);
-            BoxC(g, "Tenda_Alojamento", new Vector3(-12, 1.5f, 20), new Vector3(8, 3, 6), white);
-            for (int i = 0; i < 6; i++)
+            // Ninho do atirador na beira sul do 2º terraço, a leste da escadaria: sacos de areia na
+            // frente e dos lados, uma caixa de munição atrás. Ele olha o pátio inteiro de cima.
+            BoxC(g, "Posto_Atirador_Frente", new Vector3(20, 14.35f, 39.5f), new Vector3(4, 0.7f, 0.8f), olive);
+            BoxC(g, "Posto_Atirador_Lado_Oeste", new Vector3(17.6f, 14.35f, 40.6f), new Vector3(0.8f, 0.7f, 2.2f), olive);
+            BoxC(g, "Posto_Atirador_Lado_Leste", new Vector3(22.4f, 14.35f, 40.6f), new Vector3(0.8f, 0.7f, 2.2f), olive);
+            BoxC(g, "Posto_Atirador_Caixa", new Vector3(21.5f, 14.3f, 42.6f), new Vector3(1, 0.6f, 0.6f), olive);
+            Marker(g, "Atirador_De_Elite", new Vector3(20, 14.03f, 40.6f), 180);
+
+            // Tendas da Fundação: ocas, com porta. Comando com a porta para a avenida (oeste);
+            // médica e de provas com a porta para o sul. O alojamento é fechado.
+            HollowTent(g, "Tenda_Comando", new Vector3(27, 0, 7), new Vector3(7, 3, 9), 1.8f, white, -90f);
+            HollowTent(g, "Tenda_Medica", new Vector3(-10, 0, 17), new Vector3(7, 3, 6), 1.6f, white, 180f);
+            HollowTent(g, "Tenda_Provas", new Vector3(32, 0, 22), new Vector3(6, 3, 5), 1.6f, white, 180f);
+            BoxC(g, "Tenda_Alojamento", new Vector3(-16, 1.5f, 25), new Vector3(8, 3, 6), white);
+            // Toldo na porta da tenda de comando: de cima, o atirador não vê quem está embaixo dele.
+            BoxC(g, "Toldo_Tenda_Comando", new Vector3(20.5f, 2.75f, 7), new Vector3(4, 0.1f, 6), turquoise);
+            Cyl(g, "Toldo_Poste_Sul", new Vector3(18.6f, 1.35f, 4.2f), 0.06f, 2.7f, metal);
+            Cyl(g, "Toldo_Poste_Norte", new Vector3(18.6f, 1.35f, 9.8f), 0.06f, 2.7f, metal);
+
+            // Contêineres: uma fileira ao sul da avenida (a cobertura de quem entra), dois ao norte e um
+            // em pé junto da tenda de comando. Nenhum atravessa a avenida.
+            Vector3[] containers =
             {
-                var pos = new Vector3(2 + (i % 3) * 7, 1.3f, 2 + (i / 3) * 6);
-                BoxC(g, $"Conteiner_{i + 1}", pos, new Vector3(6, 2.6f, 2.5f), i % 2 == 0 ? turquoise : white);
-            }
+                new Vector3(-6, 1.3f, 1), new Vector3(4, 1.3f, 1), new Vector3(14, 1.3f, 1),
+                new Vector3(0, 1.3f, 17), new Vector3(22, 1.3f, 17), new Vector3(18, 1.3f, 13),
+            };
+            for (int i = 0; i < containers.Length; i++)
+                BoxC(g, $"Conteiner_{i + 1}", containers[i], new Vector3(6, 2.6f, 2.5f), i % 2 == 0 ? turquoise : white, i == 5 ? 90f : 0f);
             Cyl(g, "Heliponto_Base", new Vector3(40, 0.05f, 12), 6, 0.1f, white);
             for (int i = 0; i < 4; i++)
                 Cyl(g, $"Bandeira_Fundacao_{i + 1}", new Vector3(-16 + i * 12, 3, -2), 0.08f, 6, turquoise);
 
-            // Muralha baixa a oeste (a rota alta) com o portão que abre para a Aldeia (atalho).
+            // Cerca da Fundação: ao sul (deixando a entrada no canto sudoeste) e a leste, até o wadi.
+            Box(g, "Cerca_Sul", new Vector3(-14, 0, -6.15f), new Vector3(60, 2.4f, -5.85f), metal);
+            Box(g, "Cerca_Leste", new Vector3(59.85f, 0, -6), new Vector3(60.15f, 2.4f, 112), metal);
+
+            // Muralha baixa a oeste, com o vão do portão que abre para a Aldeia (o portão em si é do
+            // conteúdo do passo 10, porque se move). Fecha o vão entre o muro e o zigurate.
             Box(g, "Muralha_Sul", new Vector3(-24, 0, -4), new Vector3(-22, 3, 6), adoberDark);
             Box(g, "Muralha_Norte", new Vector3(-24, 0, 12), new Vector3(-22, 3, 40), adoberDark);
-            Ramp(g, "Rampa_Muralha", new Vector3(-23, 3, 22), new Vector3(-23, 0, 32), 2, adoberDark);
-            BoxC(g, "Portao_Para_Aldeia", new Vector3(-23, 1.5f, 9), new Vector3(0.4f, 3, 6), wood);
+            Box(g, "Muralha_Canto", new Vector3(-22, 0, 30), new Vector3(-20, 3, 40), adoberDark);
+
+            // Rota alta: escada de madeira por dentro do muro, perto da entrada; por cima do muro
+            // (com uma passarela sobre o portão); rampa sobre o muro até um patamar no 1º terraço;
+            // e rampa de andaime pela face oeste até o 2º terraço, atrás do atirador.
+            Ramp(g, "Rota_Alta_Escada_Muro", new Vector3(-21.2f, 0, -2), new Vector3(-21.2f, 3, 4), 1.6f, wood);
+            BoxC(g, "Rota_Alta_Passarela_Portao", new Vector3(-23, 2.9f, 9), new Vector3(2, 0.2f, 6), wood);
+            Ramp(g, "Rota_Alta_Rampa_Terraco_1", new Vector3(-23, 3, 26), new Vector3(-23, 8, 36), 2, wood);
+            BoxC(g, "Rota_Alta_Patamar", new Vector3(-22, 7.9f, 37.5f), new Vector3(4, 0.2f, 3), wood);
+            Ramp(g, "Rota_Alta_Rampa_Terraco_2", new Vector3(-11, 8, 44), new Vector3(-11, 14, 56), 2, wood);
         }
 
         // ---------- 5. Boca do Poço (desce ao subsolo) ----------
@@ -377,22 +411,25 @@ namespace Nibiru.EditorTools.Blockout
             go.transform.localScale = new Vector3(width, thickness, direction.magnitude);
         }
 
-        // Barraca por dentro: três paredes, frente com vão de porta virado para o norte e teto.
-        // "floorCenter" é o centro do chão; "size" é largura, altura e fundo.
-        static void HollowTent(Transform parent, string name, Vector3 floorCenter, Vector3 size, float doorWidth, Material m)
+        // Barraca por dentro: três paredes, frente com vão de porta e teto. Sem giro, a porta fica
+        // virada para o norte; "yaw" gira a barraca inteira (-90 = porta para o oeste, 180 = para o sul).
+        // "floorCenter" é o centro do chão; "size" é largura, altura e fundo (antes de girar).
+        static void HollowTent(Transform parent, string name, Vector3 floorCenter, Vector3 size, float doorWidth, Material m, float yaw = 0f)
         {
             const float wall = 0.12f;
             Transform tent = new GameObject(name).transform;
             tent.SetParent(parent, false);
-            float halfW = size.x / 2, halfD = size.z / 2, y = floorCenter.y + size.y / 2;
+            tent.SetPositionAndRotation(floorCenter, Quaternion.Euler(0f, yaw, 0f));
+            float halfW = size.x / 2, halfD = size.z / 2, y = size.y / 2;
             float sideWidth = (size.x - doorWidth) / 2;
 
-            BoxC(tent, "Fundo", new Vector3(floorCenter.x, y, floorCenter.z - halfD + wall / 2), new Vector3(size.x, size.y, wall), m);
-            BoxC(tent, "Lado_Oeste", new Vector3(floorCenter.x - halfW + wall / 2, y, floorCenter.z), new Vector3(wall, size.y, size.z), m);
-            BoxC(tent, "Lado_Leste", new Vector3(floorCenter.x + halfW - wall / 2, y, floorCenter.z), new Vector3(wall, size.y, size.z), m);
-            BoxC(tent, "Frente_Oeste", new Vector3(floorCenter.x - halfW + sideWidth / 2, y, floorCenter.z + halfD - wall / 2), new Vector3(sideWidth, size.y, wall), m);
-            BoxC(tent, "Frente_Leste", new Vector3(floorCenter.x + halfW - sideWidth / 2, y, floorCenter.z + halfD - wall / 2), new Vector3(sideWidth, size.y, wall), m);
-            BoxC(tent, "Teto", new Vector3(floorCenter.x, floorCenter.y + size.y + wall / 2, floorCenter.z), new Vector3(size.x + 0.3f, wall, size.z + 0.3f), m);
+            void Piece(string piece, Vector3 local, Vector3 pieceSize) => BoxC(tent, piece, tent.TransformPoint(local), pieceSize, m, yaw);
+            Piece("Fundo", new Vector3(0, y, -halfD + wall / 2), new Vector3(size.x, size.y, wall));
+            Piece("Lado_Esquerdo", new Vector3(-halfW + wall / 2, y, 0), new Vector3(wall, size.y, size.z));
+            Piece("Lado_Direito", new Vector3(halfW - wall / 2, y, 0), new Vector3(wall, size.y, size.z));
+            Piece("Frente_Esquerda", new Vector3(-halfW + sideWidth / 2, y, halfD - wall / 2), new Vector3(sideWidth, size.y, wall));
+            Piece("Frente_Direita", new Vector3(halfW - sideWidth / 2, y, halfD - wall / 2), new Vector3(sideWidth, size.y, wall));
+            Piece("Teto", new Vector3(0, size.y + wall / 2, 0), new Vector3(size.x + 0.3f, wall, size.z + 0.3f));
         }
 
         static void Cyl(Transform parent, string name, Vector3 center, float radius, float height, Material m)

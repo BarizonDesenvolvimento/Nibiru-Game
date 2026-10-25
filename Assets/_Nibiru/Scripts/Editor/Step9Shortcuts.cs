@@ -33,8 +33,8 @@ namespace Nibiru.EditorTools
         static readonly Vector3 BeforeLookoutSpot = new Vector3(-46f, 0f, -1f);
         // Onde o ponto de retorno depois do plano devolve a Elena, virada para a estrada.
         static readonly Vector3 AfterPlanSpot = new Vector3(-47.5f, 0f, 6.5f);
-        // Na ponta sul do muro da base, a poucos passos da entrada.
-        static readonly Vector3 WallCornerSpot = new Vector3(-24f, 0f, -9f);
+        // Na ponta sul do muro da base, a poucos passos da entrada (o vão entre o muro e a cerca sul).
+        static readonly Vector3 WallCornerSpot = new Vector3(-26f, 0f, -5f);
 
         const string SamirPath = "Conteudo_Aldeia/Encontro_Samir/Cena/Samir";
         const string LookoutPath = "Conteudo_Aldeia/Plano_De_Fuga/Samir_Beira";

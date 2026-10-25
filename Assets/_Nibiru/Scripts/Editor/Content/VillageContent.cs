@@ -119,9 +119,9 @@ namespace Nibiru.EditorTools.Content
         // Helicóptero: entra pelo sudoeste, cruza a Aldeia e pousa no heliponto da base.
         static readonly Vector3[] HeliPath = { new Vector3(-75f, 32f, -70f), new Vector3(-20f, 28f, -15f), new Vector3(40f, 8f, 12f), new Vector3(40f, 0f, 12f) };
 
-        // Entrada da base: depois da ponta sul do muro, já dentro da base.
-        static readonly Vector3 BaseZoneCenter = new Vector3(-13f, 1f, -8f);
-        static readonly Vector3 BaseZoneSize = new Vector3(16f, 2f, 24f);
+        // Entrada da base: o vão entre a ponta sul do muro (x = -22) e o começo da cerca sul (x = -14).
+        static readonly Vector3 BaseZoneCenter = new Vector3(-17.5f, 1f, -2f);
+        static readonly Vector3 BaseZoneSize = new Vector3(9f, 2f, 8f);
 
         // ---------- Dados ----------
 
