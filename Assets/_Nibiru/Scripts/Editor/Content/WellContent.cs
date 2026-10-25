@@ -22,10 +22,10 @@ namespace Nibiru.EditorTools.Content
     ///
     /// O Lullu fica preso ao chão do fundo do poço e da antecâmara (não sobe os andaimes). A ordem é
     /// descida, Lullu, ponto de retorno, flash. Durante o flash não há inimigo agindo: o Lullu, se
-    /// ainda vivo, fica congelado até a Voz falar. O passo 11 acaba aí; o 12 (o Primeiro Servo)
-    /// começa daí.
+    /// ainda vivo, fica congelado até a Voz falar. O passo 11 acaba aí; o 12 (o Primeiro Servo,
+    /// montado por FirstServantContent) começa daí.
     ///
-    /// O Lullu usa a cápsula provisória do prefab (o modelo ainda não foi importado). Os arquivos de
+    /// Os arquivos de
     /// dados só são criados se ainda não existirem. Os objetos ficam em "Conteudo_Poco" e são
     /// reconstruídos a cada execução. Rode depois da Base do Zigurate.
     /// Menu: Nibiru > Conteúdo > Povoar Boca do Poço na cena aberta.
@@ -97,6 +97,8 @@ namespace Nibiru.EditorTools.Content
             LulluAI lullu = BuildLullu(Group(active, "Lullu"));
             BuildDescent(Group(active, "Descida"), lullu);
             BuildFlash(Group(active, "Flash_Do_Selo"), lullu);
+            // Passo 12: o Primeiro Servo acorda quando a Voz do flash acaba.
+            FirstServantContent.Build(active, lullu);
 
             // Tudo do Poço só existe depois de a Elena sair da base pelo nordeste (fim do passo 10).
             active.gameObject.SetActive(false);

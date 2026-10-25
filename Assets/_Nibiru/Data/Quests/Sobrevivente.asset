@@ -119,5 +119,13 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: e10912087bc5c784d8fe706255c08ba5, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: Sobreviva ao Primeiro Servo
+    completeOn: {fileID: 11400000, guid: c3217f7dc239abd4788345d7436af98f, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Procure a passagem atr\xE1s da parede do barco de junco"
+    completeOn: {fileID: 11400000, guid: 6bb3ff3a8844b4142992e73b55e37b4f, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

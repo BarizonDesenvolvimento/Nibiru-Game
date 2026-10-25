@@ -312,7 +312,8 @@ namespace Nibiru.EditorTools.Blockout
             // por cima) e os cantos da sala são cortados em diagonal. O menu Nibiru > Testes > Conferir
             // cantos sem saída (Poço) mostra o que ainda prende.
             Box(g, "Plataforma_Oeste", new Vector3(36, -14, 84), new Vector3(43, -11, 90), wood);
-            Ramp(g, "Rampa_Plataforma_Oeste", new Vector3(37.5f, -11, 90), new Vector3(37.5f, -14, 96), 3, wood);
+            // Curta (37°) para terminar antes da parede do barco (z 94–98), que abre no passo 13.
+            Ramp(g, "Rampa_Plataforma_Oeste", new Vector3(37.5f, -11, 90), new Vector3(37.5f, -14, 94), 3, wood);
             Ramp(g, "Rampa_Plataforma_Oeste_2", new Vector3(43, -11, 86), new Vector3(47.5f, -14, 86), 2, wood);
             Box(g, "Plataforma_Leste", new Vector3(47, -14, 92), new Vector3(54, -10, 102), wood);
             Ramp(g, "Rampa_Plataforma_Leste", new Vector3(50, -10, 92), new Vector3(50, -14, 84), 2, wood);
@@ -329,11 +330,11 @@ namespace Nibiru.EditorTools.Blockout
             // O mesmo no pé da 3ª rampa (canto sudeste do poço): um pilar de andaime fecha o vão.
             Box(g, "Patamar_3_Base", new Vector3(48, -14, 70), new Vector3(50, -10.8f, 73.5f), wood);
             Box(g, "Lance_4_Guarda", new Vector3(44, -14, 72), new Vector3(48.5f, -10, 72.25f), wood);
-            Light(g, "Luz_Holofote_1", new Vector3(40, -7, 86), new Color(1f, 0.86f, 0.6f), 4, 14);
-            Light(g, "Luz_Holofote_2", new Vector3(50, -7, 96), new Color(1f, 0.86f, 0.6f), 4, 14);
+            // Os holofotes da arena são do conteúdo do Poço (WellContent): postes que caem com um tiro.
             Light(g, "Luz_Poco", new Vector3(45, -6, 75), new Color(1f, 0.9f, 0.7f), 3, 16);
             Marker(g, "Encontro_Lullu_1", new Vector3(44, -13, 74), 0);
-            Marker(g, "Chefe_Primeiro_Servo", new Vector3(45, -13, 92), 180);
+            // O Primeiro Servo sai das rachaduras do Selo, a uns 9 m de onde a Elena para no flash.
+            Marker(g, "Chefe_Primeiro_Servo", new Vector3(45, -13, 99), 180);
         }
 
         // ---------- 6. Passagem dos Guardiões e Wadi ----------
