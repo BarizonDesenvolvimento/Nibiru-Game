@@ -64,7 +64,7 @@ Cinco personagens carregam a história; cada facção tem um rosto, e cada um po
 
 | Personagem | Quem é | O que quer | Papel no jogo |
 | --- | --- | --- | --- |
-| **Elena Varga** | Arqueóloga, 38 anos, protagonista. Cética e teimosa | Descobrir o que aconteceu com a equipe e com ela mesma | Personagem jogável. Ganha poderes ao decifrar tabuletas |
+| **Elena Varga** | Arqueóloga, 27 anos, protagonista. Cética e teimosa. Tinha 3 anos quando a mãe, Irena, desapareceu em 1979, e quase não tem lembranças dela | Descobrir o que aconteceu com a equipe e com ela mesma | Personagem jogável. Ganha poderes ao decifrar tabuletas |
 | **Dr. Aurelian Kast** | Diretor da Fundação Enlil. Elegante, paciente, convicto | Acordar os Anunnaki e ser recompensado por eles | Antagonista principal. Quer a Elena viva |
 | **Samir Haddad** | Guia local e último dos Guardiões da região | Manter os deuses dormindo, a qualquer custo | Primeiro aliado. Pode trair a Elena se ela se transformar demais |
 | **Ninsar** | Híbrida, líder dos Despertos. Aparência quase humana | Liberdade para os híbridos, longe dos deuses e da Fundação | Aliada possível no Ato 2. Espelho do que a Elena pode virar |

@@ -68,9 +68,10 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 
 ### Elena Varga
 
-- **No começo:** arqueóloga cética, que vive à sombra da mãe desaparecida e odeia teorias da conspiração.
+- **Quem é:** 27 anos em 2003 (nasceu em 1976). Tinha 3 anos quando a mãe desapareceu, em 1979, e quase não tem lembranças dela: conhece Irena mais pelas fotos, pelos artigos e pelo que os outros contam.
+- **No começo:** arqueóloga jovem e cética, que vive à sombra da mãe desaparecida e odeia teorias da conspiração.
 - **O segredo:** descende de Ziusudra e dos primeiros híbridos. A mãe, Irena, descobriu isso em 1979 e escondeu a filha da Fundação.
-- **A ferida:** acha que a mãe a abandonou.
+- **A ferida:** acha que a mãe a abandonou. Sente falta de alguém de quem mal se lembra.
 - **Para onde pode ir:** humana que recusa a herança, deusa que a abraça, ou alguém que encontra um terceiro caminho.
 
 ### Dr. Aurelian Kast
