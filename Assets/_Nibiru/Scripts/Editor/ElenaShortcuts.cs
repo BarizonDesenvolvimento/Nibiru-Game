@@ -62,7 +62,7 @@ namespace Nibiru.EditorTools
 
         // No laboratório os inimigos vêm atrás da Elena parada e a matam: para testar as animações,
         // eles ficam parados (só nesta partida; nada é salvo na cena).
-        static void StopEnemies()
+        internal static void StopEnemies()
         {
             foreach (var soldier in Object.FindObjectsByType<AI.SoldierAI>(FindObjectsSortMode.None)) soldier.enabled = false;
             foreach (var eyes in Object.FindObjectsByType<AI.SoldierPerception>(FindObjectsSortMode.None)) eyes.enabled = false;
