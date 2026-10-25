@@ -14,13 +14,14 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
+- A **base do zigurate** (área 4) começou: o **passo 10** (atravessar a base, com a patrulha, o líder, o atirador de elite no alto do zigurate, o golpe de faca pelas costas, o e-mail do Kast e a foto de 1979, o portão para a Aldeia e a saída para o Poço) está pronto e testado pela ponte, esperando o teste do dono. Veja "Base do zigurate, passo 10".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
-- Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador está reservado para o passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
+- Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador de elite está no posto dele, no passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
 - Os outros personagens (Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é atravessar a base do zigurate (passo 10, com o posto do atirador de elite) e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é o teste do dono no passo 10, depois o passo 11 (descer o Poço), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -53,6 +54,7 @@ Cada área tem um script de editor que monta o conteúdo num grupo próprio da c
 | 1. Acampamento | **Nibiru > Conteúdo > Povoar Acampamento na cena aberta** | `Scripts/Editor/Content/CampContent.cs` |
 | 2. Trincheiras | **Nibiru > Conteúdo > Povoar Trincheiras na cena aberta** | `Scripts/Editor/Content/TrenchContent.cs` |
 | 3. Aldeia | **Nibiru > Conteúdo > Povoar Aldeia na cena aberta** | `Scripts/Editor/Content/VillageContent.cs` |
+| 4. Base do zigurate | **Nibiru > Conteúdo > Povoar Base do Zigurate na cena aberta** | `Scripts/Editor/Content/ZigguratContent.cs` |
 | Memória de Shuruppak (passo 8) | **Nibiru > Conteúdo > Construir memória de Shuruppak** (refaz a cena `Memoria_Shuruppak` do zero e a põe na lista do Build) | `Scripts/Editor/Content/ShuruppakMemoryContent.cs` |
 
 As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicóptero, diálogos, passos de missão) ficam em `Scripts/Editor/Content/ContentKit.cs`. Rode as áreas em ordem (Acampamento, Trincheiras, Aldeia): o Acampamento cria a missão "Sobrevivente", e cada área seguinte só acrescenta os passos dela no fim (se ainda não estiverem lá).
@@ -115,6 +117,22 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Enquanto o passo 10 não existe, a missão "Sobrevivente" aparece como concluída ao entrar na base.
 - Teste feito pela ponte: o Samir indo até a beira, a cena do cerco, as duas versões da conversa (com e sem a revelação), o Samir indo embora, o ponto de retorno, a volta de um checkpoint e a entrada na base andando com controle virtual. Testado e aprovado pelo dono no Play.
 
+**Base do zigurate, passo 10 (atravessar a base):**
+- Blockout novo da base (`BuildZiggurat` em `SitioDeUrBlockout.cs`): pátio do muro oeste (x = -22) à cerca leste (x = 60) e da cerca sul (z = -6) ao pé do zigurate (z = 30). Entra-se pelo canto sudoeste, no vão entre a ponta do muro e a cerca (a área `EntrouNaBaseDaFundacao` do passo 9 foi movida para esse vão). Uma avenida livre (z de 4 a 13) liga o portão do muro à porta da tenda de comando: de lá se vê o portão. Tendas ocas com porta: comando (porta para o oeste, com toldo), médica e de provas (porta para o sul); alojamento fechado. Seis contêineres (três ao sul da avenida, cobertura de quem entra). A saída para o Poço é pelo nordeste, entre o zigurate e a cerca leste.
+- Tudo da base fica no grupo `Conteudo_Base/Base_Ativa`, que só liga quando a Elena entra (o portão fechado está sempre lá). Ao entrar, ao vivo, a fala "Base_Chegada" (ela vê o laser) e a dica do golpe pelas costas. Ponto de retorno logo depois da entrada, fora do alcance do atirador.
+- Objetivos (passos 17 a 20 da missão): "Atravesse o pátio até a tenda de comando" (`ChegouATendaDeComando`), "Procure na mesa da tenda de comando" (`LeuOsDocumentosDoKast`), "Abra o portão para a aldeia pelo painel da tenda" (`AbriuOPortaoDaAldeia`) e "Saia da base pelo nordeste, rumo à boca do Poço" (`SaiuDaBaseRumoAoPoco`). Enquanto o passo 11 não existe, a missão aparece como concluída na saída.
+- Soldados: uma dupla dando a volta pela avenida e pelo corredor entre os contêineres e a cerca sul; o líder de esquadra de guarda na porta da tenda de comando (chama reforços se o combate durar).
+- **Atirador de elite** (`AI/SniperAI`, dados em `Data/AI/AtiradorElite`): no ninho de sacos de areia do 2º terraço, a leste da escadaria, olhando o pátio. Não sai do lugar. Vigiando, a mira laser vermelha varre o pátio e mostra para onde ele olha; desconfiado, o laser vai até o vulto ou o som. Ao perceber a Elena: aviso pelo rádio na tela, os soldados até 60 m vão até onde ela está, o laser trava nela com um bipe e o primeiro tiro só sai depois do **tempo de aviso** (1,5 s), de novo cada vez que ele a reencontra. Perdendo-a de vista, mira onde a viu e depois volta a vigiar. O pé do zigurate (uns 10 m antes da face) e quem está sob o toldo da tenda ficam fora da vista dele.
+- **Para ajustar o atirador jogando:** selecione `Data/AI/AtiradorElite` no Project. Os campos são os de um soldado ("Até onde enxerga" = alcance, "Tempo entre tiros", "Dano"...) mais o grupo "Atirador de elite" ("Tempo de aviso", varredura do laser, raio do aviso pelo rádio). Mudanças com o Play ligado continuam valendo depois.
+- Rotas: por baixo, de contêiner em contêiner; pela avenida, no aberto (combate); ou a **rota alta**: escada de madeira por dentro do muro, perto da entrada; por cima do muro (passarela sobre o portão); rampa sobre o muro até um patamar no 1º terraço; rampa de andaime pela face oeste até o 2º terraço; e por trás do 3º terraço até as costas do atirador.
+- **Golpe de faca pelas costas** (vale para todos os soldados): atrás de um soldado que não está em combate e não viu a Elena nos últimos 5 s (campo "Golpe pelas costas" nos dados de cada tipo de soldado), aparece "[botão da faca]  Golpe pelas costas". A faca vira a Elena para ele e ele cai de frente, morto, quase sem barulho (1 m). Distância e abertura das costas no `PlayerMeleeAttack` da Elena. A animação é a mesma estocada da faca.
+- Tenda de comando: "Examinar a mesa" mostra o e-mail do Kast (`Data/Documents/Base_EmailDoKast`: "a filha de Irena", "a herança precisa estar presente") e depois a foto de 1979 (`Base_Foto1979`), na tela de leitura das tabuletas; em seguida a Elena comenta a foto (`Base_AFoto`). Depois da leitura: ponto de retorno dentro da tenda e o painel "Abrir o portão para a aldeia" na parede norte, junto da porta.
+- O portão do muro oeste (`Conteudo_Base/Portao_Aldeia`) é branco com faixa turquesa e corre por dentro do muro, com som provisório de motor e trilho, ouvido da tenda. A Elena comenta (`Base_OPortao`). Recorta a malha de navegação: fechado, os soldados não passam. Ao voltar de um checkpoint, já aberto.
+- Antibióticos na tenda médica e o 3º rolo de filme na tenda de provas: só pegáveis. Os passos de item que já existiam nas secundárias valem (pegar os antibióticos fecha "Consiga antibióticos"; o rolo conta para "O que o Tom viu"). A entrega ao Yusuf e a revelação dos filmes ficam para depois.
+- Documentos (`Documents/DocumentDefinition` e `DocumentView`): cada documento é um arquivo em `Data/Documents` (título, texto, linha de baixo, evento ao ler). Os outros documentos da Fundação podem usar o mesmo.
+- Ficam para depois: o segundo líder de esquadra, a passagem do helicóptero sobre a base e a foto como item no inventário.
+- Teste feito pela ponte (teste automático, tudo OK): chegada ao vivo vindo do passo 9, rota alta caminhável até atrás do atirador, golpe pelas costas no líder e no atirador (cai de frente, ninguém entra em combate, o laser apaga), mesa da tenda, painel e portão, saída. À parte: na avenida, o atirador viu, travou, atirou depois do aviso e a patrulha veio.
+
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
 ## Sistemas prontos
@@ -141,6 +159,9 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Lullu e o chefe Primeiro Servo | `AI/LulluAI` | `Data/AI/Lullu`, `PrimeiroServo` |
 | HUD, telas e pausa | `UI/` | opções do jogador em `GameOptions` (salvas no computador) |
 | Helicóptero que avista a Elena, item largado ao morrer | `AI/HelicopterSpotter`, `Combat/DropOnDeath` | configurados no Inspector |
+| Atirador de elite (posto fixo, mira laser, tempo de aviso) | `AI/SniperAI` (o animador e o símbolo sobre a cabeça leem qualquer IA de soldado por `AI/ISoldierBrain`) | `Data/AI/AtiradorElite` (`SniperSettings`) |
+| Golpe de faca pelas costas | `Combat/PlayerMeleeAttack`, `Combat/ITakedownTarget` (nos soldados), aviso em `UI/InteractionPromptUI` | "Golpe pelas costas" nos dados de cada soldado |
+| Documentos (e-mail, foto, cartas) na tela de leitura | `Documents/` (`DocumentDefinition`, `DocumentView`) | `Data/Documents` |
 | Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto (ou vai embora e some), luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
 | Memória jogável (versão simples do Grupo 2): passagem para a cena do passado e volta | `Memories/` (`MemoryDefinition`, `PlayableMemory`, `MemorySpawn`, `MemoryAvatar`) | `Data/Memories` |
 | Marca da transformação no pulso | `Tablets/TransformationMark` (no prefab da Elena) | material `Elena_MarcaKur` |
@@ -164,7 +185,7 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | Dra. Weiss | `Dra. Weiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (o `FingerWeightFix` corrige na importação) |
 | Soldado da Contenção | `Soldado` | 1,82 m | **No jogo** (prefab `AI/Soldado`); o osso de dedo sem peso é corrigido na importação |
 | Líder de esquadra | `LiderDeEsquadra` | 1,80 m | **No jogo** (prefab `AI/Soldado_Lider`) |
-| Atirador de elite | `AtiradorDeElite` | 1,78 m | **Na Unity** (prefab `AI/Soldado_Atirador`), reservado para o passo 10 |
+| Atirador de elite | `AtiradorDeElite` | 1,78 m | **No jogo** (prefab `AI/Soldado_Atirador`, com a IA trocada pela `SniperAI` no passo 10) |
 | Piloto | `Piloto` | 1,78 m | **No jogo** (prefab `Personagens/Piloto`, sentado nos helicópteros) |
 | Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | Pronto para importar |
 | Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Pronto (2 ossos de dedo sem peso) |
@@ -342,7 +363,6 @@ Outras mudanças que vieram com os soldados:
 Pendências dos soldados:
 - O fuzil é provisório (formas simples).
 - O piloto fica parado sentado, com a pose feita por script.
-- O atirador de elite ainda não tem posto nem dados próprios (entra no passo 10).
 - No atalho 7 (laboratório), o contador da pistola apareceu "0 / 0" num teste; não foi investigado.
 
 ### Ninsar
@@ -403,13 +423,33 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Atravessar a base do zigurate (passo 10), o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Teste do dono no passo 10; depois o passo 11 (descer o Poço), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D, um por conversa: Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+
+### Como testar o passo 10
+
+Atalhos no menu **Nibiru > Testes > Passo 10** (`Scripts/Editor/Step10Shortcuts.cs`), com o mundo como se a Elena tivesse feito o plano de fuga e entrado na base, e com pistola, 24 balas e faca:
+
+| Atalho | Onde começa |
+| --- | --- |
+| 1. Entrando na base | No ponto de retorno da entrada. Atravesse o pátio até a tenda de comando, a leste |
+| 2. Atrás dos contêineres, perto do laser | Agachada atrás dos contêineres do sul; a avenida à frente fica à vista do atirador |
+| 3. Na avenida, à vista do atirador | Parada no aberto: o laser trava, o bipe toca e, depois do aviso, ele atira (a patrulha vem) |
+| 4. Na rota alta, atrás do atirador | No 2º terraço, agachada: chegue perto e use a faca ("Golpe pelas costas") |
+| 5. Atrás do líder, na porta da tenda | Agachada sob o toldo, atrás do líder: o aviso do golpe aparece na hora |
+| 6. Na tenda de comando, diante da mesa | Examine a mesa: e-mail, foto e a fala da Elena |
+| 7. Depois dos documentos: o painel do portão | Use o painel e olhe pela porta: o portão do muro oeste abre |
+| 8. Portão aberto: saindo para o Poço | Ande para o norte, entre o zigurate e a cerca leste |
+| 9. Teste automático (resumo no Console) | Roda os testes sozinho e escreve OK ou FALHOU para cada um no Console (`Scripts/Editor/Step10Tests.cs`) |
+
+Para ver a chegada ao vivo (a fala do laser), use o atalho 5 do passo 9 e ande para o leste.
+
+**Elena invencível nos testes:** **Nibiru > Testes > Elena invencível nos atalhos** (ligado por padrão, com a marca de visto) faz os atalhos de todos os passos começarem com a vida cheia e sem perder vida (`Health.Invincible`, só ligado pelos atalhos). Desligue para testar dano e morte (por exemplo, no atalho 3).
 
 ### Como testar o passo 9
 
