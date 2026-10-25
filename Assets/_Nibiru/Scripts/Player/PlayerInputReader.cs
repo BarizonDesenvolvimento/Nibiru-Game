@@ -193,7 +193,26 @@ namespace Nibiru.Player
             runLatched = false;
             if (!isActiveAndEnabled) return;
             if (enabled) map.Enable();
-            else map.Disable();
+            else
+            {
+                map.Disable();
+                if (lookWhileLocked) look.Enable();
+            }
+        }
+
+        bool lookWhileLocked;
+
+        /// <summary>
+        /// Deixa a câmera girar mesmo com os controles da Elena desligados (nas conversas da viagem de
+        /// caminhonete, a Elena só olha em volta). O resto continua desligado.
+        /// </summary>
+        public void SetLookWhileLocked(bool value)
+        {
+            if (lookWhileLocked == value) return;
+            lookWhileLocked = value;
+            if (!isActiveAndEnabled || gameplayEnabled) return;
+            if (value) look.Enable();
+            else look.Disable();
         }
 
         /// <summary>

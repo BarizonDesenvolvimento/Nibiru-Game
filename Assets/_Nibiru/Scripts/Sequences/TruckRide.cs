@@ -117,6 +117,8 @@ namespace Nibiru.Sequences
 
             while (true)
             {
+                // Na conversa a Elena só olha em volta; com a pausa aberta, nem isso.
+                input.SetLookWhileLocked(!Paused);
                 if (!Paused)
                 {
                     float dt = Time.unscaledDeltaTime;
@@ -130,6 +132,7 @@ namespace Nibiru.Sequences
                 yield return null;
             }
 
+            input.SetLookWhileLocked(false);
             state = State.Arrived;
             StoryEvents.Raise(raiseOnArrive);
             yield return WaitUnpaused(1f);

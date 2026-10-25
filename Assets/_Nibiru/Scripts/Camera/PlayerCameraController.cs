@@ -101,7 +101,7 @@ namespace Nibiru.Cameras
             }
             else
             {
-                degrees = Vector2.Scale(look, settings.gamepadSpeed) * Time.deltaTime * GameOptions.GamepadSensitivity;
+                degrees = Vector2.Scale(look, settings.gamepadSpeed) * Time.unscaledDeltaTime * GameOptions.GamepadSensitivity;
             }
 
             // A opção do jogador inverte em cima do que o projeto definiu.
