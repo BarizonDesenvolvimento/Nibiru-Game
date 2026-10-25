@@ -356,12 +356,11 @@ namespace Nibiru.EditorTools.Content
 
             GameObject soldier = Soldier(scene, "Soldado_Encontro", origin, origin + forward, null, leader: false);
             soldier.SetActive(false);
-            GameObject body = Body(scene, "Corpo_Soldado_Encontro", origin - forward * 0.4f, scene.eulerAngles.y + 90f, "BO_VerdeOliva");
-            body.SetActive(false);
+            AI.SoldierAnimator soldierAnimator = AnimatorOf(soldier);
 
             Transform samirDestination = Point(g, "Destino_Samir", destination);
             samirDestination.rotation = Quaternion.Euler(0f, SamirDestinationYaw, 0f);
-            // Perto o bastante do soldado para a facada alcançar, logo atrás do corpo no chão.
+            // Perto o bastante do soldado para a facada alcançar, logo atrás dele.
             GameObject samir = Samir(scene, origin - forward * 1.1f, samirDestination);
             var samirAnimator = SamirAnimator(samir);
 
@@ -372,8 +371,9 @@ namespace Nibiru.EditorTools.Content
             var cornered = DialogueTrigger(g, "Dialogo_Encurralada", dlg.encurralada);
             var guide = DialogueTrigger(g, "Dialogo_OGuia", dlg.oGuia);
 
-            // Ao entrar na área: o soldado surge na entrada à frente da Elena e a encurrala; depois
-            // da fala dele, o Samir aparece atrás e o derruba; então os dois conversam.
+            // Ao entrar na área: o soldado surge na entrada à frente da Elena e a encurrala, de fuzil
+            // apontado; depois da fala dele, o Samir aparece atrás e o derruba (ele cai de frente);
+            // então os dois conversam.
             var encounter = g.gameObject.AddComponent<TimedSequence>();
             SetField(encounter, "skipIfRaised", ev.chegouAAldeia);
             SetSteps(encounter,
@@ -381,6 +381,7 @@ namespace Nibiru.EditorTools.Content
                 {
                     Call(e, picker.Place);
                     SetActive(e, soldier, true);
+                    Call(e, soldierAnimator.AimAt, true);
                     Call(e, cornered.StartDialogue);
                 }),
                 S("Samir surge atrás do soldado e dá a facada", 0.4f, e =>
@@ -388,11 +389,7 @@ namespace Nibiru.EditorTools.Content
                     SetActive(e, samir, true);
                     if (samirAnimator != null) Call(e, samirAnimator.Strike);
                 }),
-                S("Samir derruba o soldado", 0.6f, e =>
-                {
-                    SetActive(e, soldier, false);
-                    SetActive(e, body, true);
-                }),
+                S("Samir derruba o soldado", 0.35f, e => Call(e, soldierAnimator.DieForward)),
                 S("conversa com o Samir", 1f, e => Call(e, guide.StartDialogue)));
 
             // A área cobre a Aldeia inteira com folga: de onde a Elena vier, entra por ela.
@@ -408,7 +405,7 @@ namespace Nibiru.EditorTools.Content
             SetField(arrival.GetComponent<StoryEventListener>(), "replayOnLoad", false);
             Checkpoint(g, "Checkpoint_Patio", PatioCenter, new Vector3(6f, 2f, 5f), new Vector3(-44.5f, 0f, -19.5f), 215f);
 
-            // Depois da conversa, ao vivo e ao voltar de um checkpoint: soldado no chão, Samir
+            // Depois da conversa, ao vivo e ao voltar de um checkpoint: soldado caído, Samir
             // andando para o pátio (ou já lá, se a Elena já tinha chegado) e o pátio esperando.
             var walker = samir.GetComponent<WalkToPoint>();
             var walkOrSnap = g.gameObject.AddComponent<StoryEventBranch>();
@@ -417,8 +414,8 @@ namespace Nibiru.EditorTools.Content
             Call(GetField<UnityEvent>(walkOrSnap, "ifNotRaised"), walker.Walk);
             Listener(g.gameObject, ev.chegouAAldeia, e =>
             {
-                SetActive(e, soldier, false);
-                SetActive(e, body, true);
+                SetActive(e, soldier, true);
+                Call(e, soldierAnimator.LieDeadForward);
                 SetActive(e, samir, true);
                 SetActive(e, patio, true);
                 Call(e, walkOrSnap.Run);
@@ -695,7 +692,8 @@ namespace Nibiru.EditorTools.Content
             GameObject truck = FoundationTruck(g, out MoveAlongPath truckMove);
             GameObject barrier = Barrier(Group(g, "Barreira_Norte"));
             Transform guards = Group(g, "Guarda_Barreira");
-            Soldier(guards, "Soldado_Barreira", guardSpot, guardSpot + Vector3.back, null, leader: false);
+            // O guarda da barreira é o líder de esquadra (a IA continua a de um soldado comum).
+            Soldier(guards, "Soldado_Barreira", guardSpot, guardSpot + Vector3.back, null, leader: false, SoldierModel.Lider);
             guards.gameObject.SetActive(false);
 
             Transform patrol = Group(g, "Patrulha_Estrada");

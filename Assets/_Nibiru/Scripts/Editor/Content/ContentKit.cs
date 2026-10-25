@@ -25,7 +25,7 @@ namespace Nibiru.EditorTools.Content
     {
         public const string DataFolder = "Assets/_Nibiru/Data";
         const string MaterialFolder = "Assets/_Nibiru/Art/Materials/Blockout";
-        const string SoldierPrefab = "Assets/_Nibiru/Prefabs/AI/Soldado.prefab";
+        const string GlassMaterial = "BO_Vidro";
 
         /// <summary>Começo dos códigos fixos (PersistentId) da área que está sendo montada.</summary>
         public static string IdPrefix = "conteudo";
@@ -192,8 +192,20 @@ namespace Nibiru.EditorTools.Content
             heli.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
             Transform h = heli.transform;
 
-            Local(PrimitiveType.Cube, h, "Cabine", new Vector3(0f, 1.6f, 0.4f), new Vector3(2.4f, 2.2f, 5f), "BO_BrancoFundacao", ColliderMode.Solid);
-            Local(PrimitiveType.Cube, h, "Faixa", new Vector3(0f, 1.3f, 0.4f), new Vector3(2.45f, 0.35f, 5.05f), "BO_TurquesaFundacao");
+            // Cabine: a parte de trás fechada, a da frente com piso e vidro (o piloto aparece lá dentro).
+            Local(PrimitiveType.Cube, h, "Cabine", new Vector3(0f, 1.6f, -0.6f), new Vector3(2.4f, 2.2f, 3f), "BO_BrancoFundacao", ColliderMode.Solid);
+            Local(PrimitiveType.Cube, h, "Piso_Cabine", new Vector3(0f, 0.85f, 1.9f), new Vector3(2.4f, 0.7f, 2f), "BO_BrancoFundacao", ColliderMode.Solid);
+            GameObject glass = Local(PrimitiveType.Cube, h, "Vidro", new Vector3(0f, 1.95f, 1.9f), new Vector3(2.3f, 1.5f, 2f), "BO_BrancoFundacao", ColliderMode.Solid);
+            glass.GetComponent<Renderer>().sharedMaterial = Glass();
+            glass.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            Local(PrimitiveType.Cube, h, "Faixa", new Vector3(0f, 1f, 0.4f), new Vector3(2.45f, 0.3f, 5.05f), "BO_TurquesaFundacao");
+            Local(PrimitiveType.Cube, h, "Assento", new Vector3(0.5f, 1.35f, 1.7f), new Vector3(0.55f, 0.3f, 0.5f), "BO_VerdeOliva");
+            Local(PrimitiveType.Cube, h, "Encosto", new Vector3(0.5f, 1.8f, 1.42f), new Vector3(0.55f, 0.8f, 0.12f), "BO_VerdeOliva");
+
+            // O piloto, sentado no banco da direita.
+            var pilot = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(EditorTools.SoldiersSetup.PilotPrefab), h);
+            pilot.name = "Piloto";
+            pilot.transform.SetLocalPositionAndRotation(new Vector3(0.5f, 1.5f, 1.68f), Quaternion.identity);
             Local(PrimitiveType.Cube, h, "Cauda", new Vector3(0f, 2.1f, -4.3f), new Vector3(0.5f, 0.6f, 5f), "BO_BrancoFundacao");
             Local(PrimitiveType.Cube, h, "Leme", new Vector3(0f, 2.8f, -6.6f), new Vector3(0.15f, 1.4f, 0.8f), "BO_TurquesaFundacao");
             Local(PrimitiveType.Cube, h, "Esqui_E", new Vector3(-1.1f, 0.08f, 0.4f), new Vector3(0.15f, 0.15f, 4.6f), "BO_Metal");
@@ -218,13 +230,42 @@ namespace Nibiru.EditorTools.Content
             return heli;
         }
 
+        // Vidro azulado e transparente da cabine (criado se ainda não existir).
+        static Material Glass()
+        {
+            Material glass = Mat(GlassMaterial);
+            if (glass != null) return glass;
+            glass = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            glass.SetColor("_BaseColor", new Color(0.55f, 0.7f, 0.75f, 0.3f));
+            glass.SetFloat("_Surface", 1f);
+            glass.SetFloat("_Blend", 0f);
+            glass.SetFloat("_Smoothness", 0.9f);
+            glass.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            glass.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            glass.SetFloat("_ZWrite", 0f);
+            glass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            glass.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            AssetDatabase.CreateAsset(glass, $"{MaterialFolder}/{GlassMaterial}.mat");
+            return glass;
+        }
+
+        /// <summary>Qual soldado da Fundação: o Soldado é o das patrulhas; o Líder comanda; o Atirador fica no posto dele.</summary>
+        public enum SoldierModel { Soldado, Lider, Atirador }
+
         /// <summary>
         /// Soldado do prefab, de guarda ou com patrulha. Nasce como figurante (sem IA, sem
         /// percepção e sem malha de navegação): um evento liga tudo com <see cref="WakeSoldiers"/>.
+        /// Sem modelo dado, o líder usa o do Líder de esquadra e os outros, o do Soldado.
         /// </summary>
-        public static GameObject Soldier(Transform parent, string name, Vector3 position, Vector3 lookAt, Transform[] patrol, bool leader)
+        public static GameObject Soldier(Transform parent, string name, Vector3 position, Vector3 lookAt, Transform[] patrol, bool leader, SoldierModel? model = null)
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(SoldierPrefab);
+            string path = (model ?? (leader ? SoldierModel.Lider : SoldierModel.Soldado)) switch
+            {
+                SoldierModel.Lider => EditorTools.SoldiersSetup.LeaderPrefab,
+                SoldierModel.Atirador => EditorTools.SoldiersSetup.SniperPrefab,
+                _ => EditorTools.SoldiersSetup.SoldierPrefab,
+            };
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
             go.name = name;
             Vector3 flat = Vector3.ProjectOnPlane(lookAt - position, Vector3.up);
@@ -268,6 +309,9 @@ namespace Nibiru.EditorTools.Content
             }
         }
 
+        /// <summary>O animador do modelo do soldado (para mirar, atirar e cair numa cena).</summary>
+        public static SoldierAnimator AnimatorOf(GameObject soldier) => soldier.GetComponentInChildren<SoldierAnimator>(true);
+
         public static Transform MuzzleOf(GameObject soldier)
         {
             var so = new SerializedObject(soldier.GetComponent<SoldierAI>());
@@ -298,6 +342,10 @@ namespace Nibiru.EditorTools.Content
         // Chamada com um objeto como argumento (por exemplo, WalkTo de um ponto).
         public static void Call<T>(UnityEvent e, UnityAction<T> action, T argument) where T : Object =>
             UnityEventTools.AddObjectPersistentListener(e, action, argument);
+
+        // Chamada com um sim/não como argumento (por exemplo, AimAt de um soldado).
+        public static void Call(UnityEvent e, UnityAction<bool> action, bool argument) =>
+            UnityEventTools.AddBoolPersistentListener(e, action, argument);
 
         public static void SetActive(UnityEvent e, GameObject go, bool active) =>
             UnityEventTools.AddBoolPersistentListener(e, go.SetActive, active);

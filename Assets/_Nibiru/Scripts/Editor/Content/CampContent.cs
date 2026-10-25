@@ -1,3 +1,4 @@
+using Nibiru.AI;
 using Nibiru.Dialogue;
 using Nibiru.EditorTools.Audio;
 using Nibiru.Inventory;
@@ -384,7 +385,7 @@ namespace Nibiru.EditorTools.Content
             workerBody.SetActive(false);
 
             // Soldados: descem do helicóptero só como figurantes (sem IA) e começam a procurar
-            // a Elena depois da execução.
+            // a Elena depois da execução. O líder de esquadra comanda do heliponto.
             Transform soldiers = Group(g, "Soldados");
             Transform routeA = Group(g, "Rota_Soldado_A");
             Transform routeB = Group(g, "Rota_Soldado_B");
@@ -406,6 +407,7 @@ namespace Nibiru.EditorTools.Content
 
             Vector3 workerEnd = workerPoints[1].position;
             GameObject shooter = Soldier(soldiers, "Soldado_A", new Vector3(30.5f, 0f, -86f), workerEnd, patrolA, leader: false);
+            SoldierAnimator shooterAnimator = AnimatorOf(shooter);
             Soldier(soldiers, "Soldado_B", new Vector3(27f, 0f, -85f), workerEnd, patrolB, leader: false);
             Soldier(soldiers, "Lider_Heliponto", new Vector3(33f, 0f, -79f), new Vector3(10f, 0f, -95f), null, leader: true);
             soldiers.gameObject.SetActive(false);
@@ -463,10 +465,12 @@ namespace Nibiru.EditorTools.Content
                     SetActive(e, worker, true);
                     Call(e, workerMove.Play);
                 }),
-                S("trabalhador chega perto", 5f, null),
+                S("o soldado aponta o fuzil para o trabalhador", 3f, e => Call(e, shooterAnimator.AimAt, true)),
+                S("trabalhador chega perto", 2f, null),
                 S("tiro: no mirante ou depois do tempo", 20f, e =>
                 {
                     Call(e, shot.Fire);
+                    Call(e, shooterAnimator.Fire);
                     SetActive(e, worker, false);
                     SetActive(e, workerBody, true);
                 }, ev.chegouAoMirante),
