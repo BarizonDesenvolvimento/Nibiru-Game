@@ -52,7 +52,20 @@ namespace Nibiru.Cameras
                 ? allowed
                 : Mathf.MoveTowards(currentDistance, allowed, settings.returnSpeed * deltaTime);
 
-            camera.SetPositionAndRotation(shoulderPoint + back * currentDistance, rotation);
+            // Última conferência, do ponto seguido até a câmera em linha reta: num vão estreito (uma porta
+            // na espessura da parede, um túnel) o ombro pode sair da pedra e o recuo, que começa colado
+            // nela, passar por dentro do canto. Se a linha bate em algo, a câmera para antes.
+            Vector3 desired = shoulderPoint + back * currentDistance;
+            Vector3 toCamera = desired - pivot;
+            float fullLength = toCamera.magnitude;
+            if (fullLength > 0.0001f)
+            {
+                Vector3 direction = toCamera / fullLength;
+                float free = FreeDistance(pivot, direction, fullLength);
+                if (free < fullLength) desired = pivot + direction * free;
+            }
+
+            camera.SetPositionAndRotation(desired, rotation);
             UpdateFieldOfView(camera);
         }
 
