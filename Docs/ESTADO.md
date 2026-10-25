@@ -16,7 +16,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
 - A **base do zigurate** (área 4) começou: o **passo 10** (atravessar a base, com a patrulha, o líder, o atirador de elite no alto do zigurate, o golpe de faca pelas costas, o e-mail do Kast e a foto de 1979, o portão para a Aldeia e a saída para o Poço) está pronto e testado pela ponte, esperando o teste do dono. Veja "Base do zigurate, passo 10".
 - A **Boca do Poço** (área 5) começou: o **passo 11** (descer o Poço ouvindo o Lullu lá embaixo, passar por ele, ponto de retorno e o flash a uns 12 m do Selo de Kur, com a Voz) está pronto e testado pela ponte, esperando o teste do dono. Veja "Boca do Poço, passo 11".
-- O **passo 12** (a luta com o Primeiro Servo na antecâmara, em três fases, com os holofotes que caem e atraem o chefe) está pronto em blockout, com o **modelo definitivo do Primeiro Servo**, e testado pela ponte, esperando o teste do dono. Veja "Antecâmara do Poço, passo 12".
+- O **passo 12** (a luta com o Primeiro Servo na antecâmara, em três fases, com os holofotes que caem e atraem o chefe) está pronto em blockout, com o **modelo definitivo do Primeiro Servo**, testado pela ponte e **testado no Play pelo dono e aprovado no funcionamento** (o equilíbrio ainda precisa de ajuste, veja "Pendências para o teste completo da fatia"). Veja "Antecâmara do Poço, passo 12".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
@@ -486,6 +486,10 @@ Pendências vistas na prévia (ainda não corrigidas):
 - O Kast aparece em pessoa ou só pelo rádio na região 1?
 - Qual o peso da consequência na Aldeia ao devolver a tabuleta ao Poço?
 - Nome definitivo do jogo, dublagem da Elena e idiomas de lançamento (do GDD).
+
+## Pendências para o teste completo da fatia
+
+- **Equilíbrio da luta do Primeiro Servo:** com pouca munição a luta fica impossível e na faca é difícil demais. Decidir entre munição na arena, faca mais forte contra o Servo atordoado ou munição mínima garantida antes da antecâmara.
 
 ## Próximos passos
 
