@@ -1,4 +1,5 @@
 using Nibiru.Combat;
+using Nibiru.Environment;
 using Nibiru.Player;
 using Nibiru.Stealth;
 using UnityEngine;
@@ -84,7 +85,7 @@ namespace Nibiru.AI
             Vector3 target = PlayerAimPoint();
             Vector3 toPlayer = target - eye;
             float distance = toPlayer.magnitude;
-            if (distance > settings.viewDistance) return false;
+            if (distance > settings.viewDistance * Storm.ViewDistanceMultiplier) return false;
 
             Vector3 flat = Vector3.ProjectOnPlane(toPlayer, Vector3.up);
             if (flat.sqrMagnitude > 0.01f && Vector3.Angle(transform.forward, flat) > settings.viewAngle * 0.5f) return false;
@@ -121,8 +122,10 @@ namespace Nibiru.AI
             bool loud = noise.radius >= LoudNoiseRadius;
             if (!fromPlayer && !loud) return;
 
+            // O vento da tempestade cobre passos e golpes, mas não tiros (sons altos).
+            float masking = loud ? 1f : Storm.HearingMultiplier;
             float distance = Vector3.Distance(transform.position, noise.position);
-            if (distance > noise.radius * settings.hearingMultiplier) return;
+            if (distance > noise.radius * settings.hearingMultiplier * masking) return;
 
             hasNoise = true;
             noisePosition = noise.position;

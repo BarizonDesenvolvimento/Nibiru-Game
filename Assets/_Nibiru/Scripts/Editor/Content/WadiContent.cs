@@ -1,4 +1,5 @@
 using Nibiru.Dialogue;
+using Nibiru.Environment;
 using Nibiru.Factions;
 using Nibiru.Quests;
 using UnityEditor;
@@ -23,6 +24,7 @@ namespace Nibiru.EditorTools.Content
 
         internal static Events ev;
         internal static DialogueDefinition radioKast, radioKastDesconfia;
+        internal static StormSettings stormSettings;
 
         [MenuItem("Nibiru/Conteúdo/Povoar Wadi na cena aberta")]
         static void Populate()
@@ -42,6 +44,9 @@ namespace Nibiru.EditorTools.Content
                 ficou = Event("FicouComATabuleta", "Primeira escolha de facção: a Elena ficou com a tabuleta. Fundação -5, Guardiões -5, transformação +3 escondida. O passo 15 e a região 2 leem isto."),
                 escolheu = Event("EscolheuONoWadi", "A Elena terminou a conversa do rádio e a primeira escolha de facção está feita (qualquer das três). Fecha o passo 14."),
             };
+
+            if (!AssetDatabase.IsValidFolder($"{DataFolder}/Tempestade")) AssetDatabase.CreateFolder(DataFolder, "Tempestade");
+            stormSettings = Asset<StormSettings>("Tempestade/TempestadeDoWadi", t => { });
 
             FactionDefinition foundation = Load<FactionDefinition>("Factions/FundacaoEnlil");
             FactionDefinition guardians = Load<FactionDefinition>("Factions/Guardioes");

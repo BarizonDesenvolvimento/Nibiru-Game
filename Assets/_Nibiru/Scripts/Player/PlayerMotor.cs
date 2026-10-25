@@ -1,4 +1,5 @@
 using Nibiru.Combat;
+using Nibiru.Environment;
 using UnityEngine;
 
 namespace Nibiru.Player
@@ -106,7 +107,7 @@ namespace Nibiru.Player
             {
                 // Mirando: anda devagar para qualquer lado, sempre de frente para a mira.
                 IsRunning = false;
-                float aimSpeed = IsCrouching ? Mathf.Min(settings.aimWalkSpeed, settings.crouchSpeed) : settings.aimWalkSpeed;
+                float aimSpeed = (IsCrouching ? Mathf.Min(settings.aimWalkSpeed, settings.crouchSpeed) : settings.aimWalkSpeed) * Storm.MoveSpeedMultiplier;
                 horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, moveDirection * aimSpeed, settings.acceleration * dt);
                 Vector3 aimForward = CameraRelative(Vector2.up);
                 if (aimForward.sqrMagnitude > InputDeadZoneSqr)
@@ -116,9 +117,9 @@ namespace Nibiru.Player
 
             // Correndo, vai sempre na velocidade máxima; andando, o analógico controla a velocidade.
             IsRunning = input.RunActive && hasInput && !IsCrouching;
-            Vector3 targetVelocity = IsRunning
+            Vector3 targetVelocity = (IsRunning
                 ? moveDirection.normalized * settings.runSpeed
-                : moveDirection * (IsCrouching ? settings.crouchSpeed : settings.walkSpeed);
+                : moveDirection * (IsCrouching ? settings.crouchSpeed : settings.walkSpeed)) * Storm.MoveSpeedMultiplier;
             horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, settings.acceleration * dt);
 
             if (hasInput)
