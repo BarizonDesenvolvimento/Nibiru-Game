@@ -307,10 +307,28 @@ namespace Nibiru.EditorTools.Blockout
             Light(g, "Luz_Selo", new Vector3(45, -10, 100), new Color(0.35f, 0.55f, 1f), 3, 12);
 
             // Andaimes em dois níveis na arena, com rampas (a luta usa altura e barulho).
-            Box(g, "Plataforma_Oeste", new Vector3(37, -14, 84), new Vector3(43, -11, 90), wood);
-            Ramp(g, "Rampa_Plataforma_Oeste", new Vector3(40, -11, 90), new Vector3(40, -14, 96), 2, wood);
-            Box(g, "Plataforma_Leste", new Vector3(47, -14, 92), new Vector3(53, -10, 100), wood);
+            // Sem canto que prenda a Elena (vale para o Lullu e para o Primeiro Servo): as plataformas
+            // vão até a parede (sem fresta estreita), cada uma tem duas rampas (dá para dar a volta
+            // por cima) e os cantos da sala são cortados em diagonal. O menu Nibiru > Testes > Conferir
+            // cantos sem saída (Poço) mostra o que ainda prende.
+            Box(g, "Plataforma_Oeste", new Vector3(36, -14, 84), new Vector3(43, -11, 90), wood);
+            Ramp(g, "Rampa_Plataforma_Oeste", new Vector3(37.5f, -11, 90), new Vector3(37.5f, -14, 96), 3, wood);
+            Ramp(g, "Rampa_Plataforma_Oeste_2", new Vector3(43, -11, 86), new Vector3(47.5f, -14, 86), 2, wood);
+            Box(g, "Plataforma_Leste", new Vector3(47, -14, 92), new Vector3(54, -10, 102), wood);
             Ramp(g, "Rampa_Plataforma_Leste", new Vector3(50, -10, 92), new Vector3(50, -14, 84), 2, wood);
+            Ramp(g, "Rampa_Plataforma_Leste_2", new Vector3(47, -10, 96), new Vector3(41, -14, 96), 2, wood);
+            foreach (var (name, corner) in new[]
+            {
+                ("Ante_Canto_SO", new Vector3(36, 80)), ("Ante_Canto_SE", new Vector3(54, 80)),
+                ("Ante_Canto_NO", new Vector3(36, 102)), ("Ante_Canto_NE", new Vector3(54, 102)),
+                ("Poco_Canto_SO", new Vector3(40, 70)), ("Poco_Canto_SE", new Vector3(50, 70)),
+                ("Ante_Canto_Plat_O", new Vector3(36, 84)), ("Ante_Canto_Plat_L", new Vector3(54, 92)),
+            })
+                BoxC(g, name, new Vector3(corner.x, -9.5f, corner.y), new Vector3(3f, 9f, 3f), rock, 45f);
+            // Sob a 4ª rampa da descida, junto da parede sul do poço, ficava um corredor sem saída: a guarda o fecha.
+            // O mesmo no pé da 3ª rampa (canto sudeste do poço): um pilar de andaime fecha o vão.
+            Box(g, "Patamar_3_Base", new Vector3(48, -14, 70), new Vector3(50, -10.8f, 73.5f), wood);
+            Box(g, "Lance_4_Guarda", new Vector3(44, -14, 72), new Vector3(48.5f, -10, 72.25f), wood);
             Light(g, "Luz_Holofote_1", new Vector3(40, -7, 86), new Color(1f, 0.86f, 0.6f), 4, 14);
             Light(g, "Luz_Holofote_2", new Vector3(50, -7, 96), new Color(1f, 0.86f, 0.6f), 4, 14);
             Light(g, "Luz_Poco", new Vector3(45, -6, 75), new Color(1f, 0.9f, 0.7f), 3, 16);
