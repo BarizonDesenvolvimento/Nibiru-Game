@@ -43,7 +43,9 @@ namespace Nibiru.AI
         static readonly int HurtId = Animator.StringToHash(HurtParam);
         static readonly int DeathId = Animator.StringToHash(DeathParam);
 
-        Transform spine, chest, neck, head;
+        Transform spine, chest, neck, head, leftFoot, rightFoot, model;
+        Vector3 modelBase;
+        float restAnkleHeight;
         Vector3 lastPosition;
         float speed;
         bool dead;
@@ -63,7 +65,14 @@ namespace Nibiru.AI
                 chest = animator.GetBoneTransform(HumanBodyBones.Chest);
                 neck = animator.GetBoneTransform(HumanBodyBones.Neck);
                 head = animator.GetBoneTransform(HumanBodyBones.Head);
+                leftFoot = animator.GetBoneTransform(HumanBodyBones.LeftFoot);
+                rightFoot = animator.GetBoneTransform(HumanBodyBones.RightFoot);
             }
+            // Altura dos tornozelos em repouso, ainda na pose do modelo (antes da primeira animação).
+            model = animator.transform;
+            modelBase = model.localPosition;
+            if (leftFoot != null && rightFoot != null && visual != null)
+                restAnkleHeight = (Mathf.Min(leftFoot.position.y, rightFoot.position.y) - visual.position.y) / Mathf.Max(0.01f, visual.lossyScale.y);
             lastPosition = transform.position;
         }
 
@@ -121,6 +130,8 @@ namespace Nibiru.AI
             }
             if (visual != null) visual.GetPositionAndRotation(out aliveVisualPosition, out aliveVisualRotation);
 
+            KeepFeetOnGround();
+
             // Curva inteira parado; andando e correndo, um pouco menos (a corrida já vem inclinada).
             float weight = Mathf.Lerp(1f, movingWeight, Mathf.Clamp01(speed / Mathf.Max(0.1f, fullyMovingSpeed)));
             Vector3 right = animator.transform.right;
@@ -128,6 +139,18 @@ namespace Nibiru.AI
             Bend(chest, chestBend * weight, right);
             Bend(neck, neckBend * weight, right);
             Bend(head, headBend * weight, right);
+        }
+
+        // Algumas animações (a estocada) baixam o corpo e a sola entra no chão. Sem mexer na animação,
+        // o modelo sobe o que faltar para o pé mais baixo ficar na altura de repouso dele.
+        void KeepFeetOnGround()
+        {
+            if (model == null || leftFoot == null || rightFoot == null || visual == null) return;
+            model.localPosition = modelBase;
+            float scale = Mathf.Max(0.01f, visual.lossyScale.y);
+            float lowest = (Mathf.Min(leftFoot.position.y, rightFoot.position.y) - visual.position.y) / scale;
+            float lift = Mathf.Clamp(restAnkleHeight - lowest, 0f, 0.25f);
+            if (lift > 0f) model.localPosition = modelBase + Vector3.up * lift;
         }
 
         // Gira o osso para a frente em torno do eixo "direita" do corpo. Os filhos acompanham,
