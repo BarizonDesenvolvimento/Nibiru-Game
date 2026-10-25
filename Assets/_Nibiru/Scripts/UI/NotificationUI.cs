@@ -23,18 +23,22 @@ namespace Nibiru.UI
 
         [Header("Avisos importantes (no meio da tela)")]
         [Tooltip("Quanto tempo cada aviso importante fica na tela, em segundos.")]
-        [SerializeField, Min(0.1f)] float importantDuration = 5f;
+        [SerializeField, Min(0.1f)] float importantDuration = 9f;
+
+        [Tooltip("Quanto o aviso importante leva para aparecer e para sumir (fade), em segundos.")]
+        [SerializeField, Min(0f)] float importantFade = 0.6f;
 
         [Tooltip("Altura do aviso importante na tela (0 = embaixo, 1 = em cima).")]
         [SerializeField, Range(0.3f, 0.9f)] float importantHeight = 0.62f;
 
         [Tooltip("Quanto o texto importante é maior que o comum.")]
-        [SerializeField, Min(1f)] float importantScale = 1.6f;
+        [SerializeField, Min(1f)] float importantScale = 1.15f;
 
         class Lane
         {
             public Text label;
             public float duration;
+            public float shownAt;
             public readonly List<Entry> entries = new List<Entry>();
         }
 
@@ -78,18 +82,18 @@ namespace Nibiru.UI
 
             var text = go.AddComponent<Text>();
             text.font = label.font;
-            text.fontStyle = FontStyle.Bold;
-            text.color = Color.white;
+            text.fontStyle = FontStyle.Normal;
+            text.color = new Color(1f, 1f, 1f, 0.92f);
             text.supportRichText = true;
             text.raycastTarget = false;
             text.alignment = TextAnchor.MiddleCenter;
             text.fontSize = Mathf.RoundToInt(label.fontSize * importantScale);
-            text.horizontalOverflow = HorizontalWrapMode.Wrap;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow; // cada aviso numa linha só, sem quebrar
             text.verticalOverflow = VerticalWrapMode.Overflow;
 
             var outline = go.AddComponent<Outline>();
-            outline.effectColor = new Color(0f, 0f, 0f, 0.85f);
-            outline.effectDistance = new Vector2(2f, -2f);
+            outline.effectColor = new Color(0f, 0f, 0f, 0.55f);
+            outline.effectDistance = new Vector2(1f, -1f);
             return new Lane { label = text, duration = importantDuration };
         }
 
@@ -139,12 +143,29 @@ namespace Nibiru.UI
         void Tick(Lane lane)
         {
             bool removed = lane.entries.RemoveAll(e => e.expiresAt <= Time.unscaledTime) > 0;
+            if (lane == important) Fade(lane);
             // Mostra de novo o que esperou a conversa acabar.
             if (removed || (lane.entries.Count > 0 && lane.label.text.Length == 0)) Rebuild(lane);
         }
 
+        // Aparece e some com um fade: sobe nos primeiros instantes e desce no fim do aviso mais antigo.
+        void Fade(Lane lane)
+        {
+            if (lane.entries.Count == 0 || importantFade <= 0f) { lane.label.canvasRenderer.SetAlpha(1f); return; }
+            float earliestEnd = float.MaxValue;
+            foreach (Entry entry in lane.entries) earliestEnd = Mathf.Min(earliestEnd, entry.expiresAt);
+            float fadeIn = Mathf.Clamp01((Time.unscaledTime - lane.shownAt) / importantFade);
+            float fadeOut = Mathf.Clamp01((earliestEnd - Time.unscaledTime) / importantFade);
+            lane.label.canvasRenderer.SetAlpha(Mathf.Min(fadeIn, fadeOut));
+        }
+
         void Rebuild(Lane lane)
         {
+            if (lane.label.text.Length == 0)
+            {
+                lane.shownAt = Time.unscaledTime;
+                if (lane == important && importantFade > 0f) lane.label.canvasRenderer.SetAlpha(0f);
+            }
             builder.Clear();
             foreach (Entry entry in lane.entries) builder.AppendLine(entry.text);
             lane.label.text = builder.ToString();
