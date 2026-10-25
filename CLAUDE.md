@@ -52,3 +52,12 @@ Docs/
 ## Fase atual
 
 Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2), a Aldeia até o passo 7 (área 3: encontro com o Samir, sobreviventes e o nicho dos Guardiões como altar) e a Elena definitiva (AccuRig com dedos, animações do Mixamo) no lugar da cápsula estão prontos. O Samir definitivo e os 4 soldados da Fundação (Soldado, Líder de esquadra, Atirador de elite e Piloto) também já estão no jogo. Os outros personagens estão prontos na ArteFonte e entram na Unity um por conversa. Os passos 8 (a primeira tabuleta, a memória de Ziusudra e o Eco do Abzu) e 9 (o plano de fuga) estão prontos e testados pelo dono. A próxima prioridade é o passo 10 (atravessar a base do zigurate) e seguir área por área. A Ninsar tem uma prévia animada na Unity, e o manto dela está pausado. Detalhes em `Docs/ESTADO.md`.
+
+## Eficiência (vale para toda tarefa)
+- Investigue só o que a tarefa toca; não audite o projeto. Não releia arquivos nem reconsulte o editor se nada mudou.
+- Unity MCP só quando o trabalho exigir o editor. Prefira filtros, consultas pontuais e logs só com erros. Para checagens repetidas, crie um item de menu que imprima um resumo curto.
+- Antes de uma tentativa, tenha uma hipótese. Depois de 2 tentativas sem resolver o mesmo problema, pare e me resuma o que descobriu.
+- Teste na medida do risco: primeiro a verificação mais específica, depois a suíte ampla se a mudança tocar vários sistemas.
+- Não refatore nem melhore o que não foi pedido. Ao terminar, atualize o ESTADO.md, faça os commits e encerre.
+- Relatório final curto: o que mudou, como foi testado, o que ficou pendente.
+- Se a tarefa estiver crescendo além do combinado, proponha dividir em outra conversa em vez de continuar.
