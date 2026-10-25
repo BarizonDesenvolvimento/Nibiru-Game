@@ -19,6 +19,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **passo 12** (a luta com o Primeiro Servo na antecâmara, em três fases, com os holofotes que caem e atraem o chefe) está pronto em blockout, com o **modelo definitivo do Primeiro Servo**, testado pela ponte e **testado no Play pelo dono e aprovado no funcionamento** (o equilíbrio ainda precisa de ajuste, veja "Pendências para o teste completo da fatia"). Veja "Antecâmara do Poço, passo 12".
 - O **passo 13** (a passagem dos Guardiões: ler a inscrição na parede do barco de junco, a tabuleta pulsa e a parede afunda; o túnel com lamparinas acesas; a fita de Irena nº 1 que toca enquanto a Elena anda; o salvamento no topo da rampa, na saída para o wadi) está pronto em blockout e testado pela ponte, esperando o teste do dono. Veja "Passagem dos Guardiões, passo 13".
 - O **passo 14** (o wadi: um leito de uns 60 m com curva, tempestade de areia provisória, um líder de esquadra, o rádio do Kast que espera a fita de Irena terminar e a primeira escolha de facção, com três opções) está pronto em blockout, testado pela ponte e **testado no Play pelo dono e aprovado**. Fechado. Veja "Wadi, passo 14".
+- O **passo 15** (a fuga na caminhonete do Samir até o fim da demo: nicho do túnel para quem devolve a tabuleta, embarque, viagem em trilho com a conversa "A estrada" de cada escolha, diário, tela de fim da demo e menu principal provisório) está pronto em blockout e testado pela ponte, esperando o teste do dono. Veja "Fuga, passo 15".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
@@ -27,7 +28,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Primeiro Servo definitivo** (Meshy + AccuRig, com dedos, 2,50 m em pé, máscara de ouro) está no prefab `Prefabs/AI/PrimeiroServo`, usado no passo 12 e no laboratório. Veja "Primeiro Servo" em Personagens 3D.
 - Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é o teste do dono nos passos 10, 11 e 13 (o 12 e o 14 já foram aprovados), depois o passo 15 (a fuga na caminhonete, que precisa considerar as três escolhas do passo 14) e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é o teste do dono nos passos 10, 11, 13 e 15 (o 12 e o 14 já foram aprovados), depois as animações de sentado da Elena e do Samir na caminhonete e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -46,6 +47,7 @@ A próxima prioridade é o teste do dono nos passos 10, 11 e 13 (o 12 e o 14 já
 | --- | --- |
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir animado com conversa de teste, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
 | `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento, das Trincheiras e da Aldeia |
+| `Scenes/MenuPrincipal` | Menu principal provisório (Novo jogo, Sair). Primeira da lista do Build; a tela de fim da demo volta para ele. Criada por **Nibiru > Conteúdo > Criar menu principal provisório** |
 | `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
 | `Scenes/Memoria_Shuruppak` | Memória jogável da Tabuleta do Junco (Shuruppak ao pôr do sol). Não se joga sozinha: é carregada por cima da região no passo 8. Fica longe da origem, em (2000, 0, 2000) |
 
@@ -63,6 +65,7 @@ Cada área tem um script de editor que monta o conteúdo num grupo próprio da c
 | 4. Base do zigurate | **Nibiru > Conteúdo > Povoar Base do Zigurate na cena aberta** | `Scripts/Editor/Content/ZigguratContent.cs` |
 | 5. Boca do Poço | **Nibiru > Conteúdo > Povoar Boca do Poço na cena aberta** | `Scripts/Editor/Content/WellContent.cs` |
 | 6. Wadi | **Nibiru > Conteúdo > Povoar Wadi na cena aberta** | `Scripts/Editor/Content/WadiContent.cs` |
+| 7. Fuga (passo 15) | **Nibiru > Conteúdo > Povoar Fuga na cena aberta** (rode depois do Poço e do Wadi). O menu principal vem de **Nibiru > Conteúdo > Criar menu principal provisório** | `Scripts/Editor/Content/EscapeContent.cs` |
 | Memória de Shuruppak (passo 8) | **Nibiru > Conteúdo > Construir memória de Shuruppak** (refaz a cena `Memoria_Shuruppak` do zero e a põe na lista do Build) | `Scripts/Editor/Content/ShuruppakMemoryContent.cs` |
 
 As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicóptero, diálogos, passos de missão) ficam em `Scripts/Editor/Content/ContentKit.cs`. Rode as áreas em ordem (Acampamento, Trincheiras, Aldeia): o Acampamento cria a missão "Sobrevivente", e cada área seguinte só acrescenta os passos dela no fim (se ainda não estiverem lá).
@@ -220,6 +223,20 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **Avisos de reputação (ajustados no teste do dono):** `Notifications.PostImportant` (usado por `Reputation.Apply`) mostra o aviso no **meio da tela, acima da Elena**, numa linha só, com texto só um pouco maior que o comum (fonte normal, contorno fino), por **9 s**, com fade de 0,6 s ("Fundação passa a confiar menos em você (-5)"). Os avisos comuns continuam pequenos no canto. **Durante uma conversa todos os avisos esperam** (escondidos, sem contar tempo) e aparecem quando ela acaba; antes eles sumiam enquanto a Elena lia a resposta. Ajustes no `NotificationUI` do HUD: "Important Duration", "Important Fade", "Important Height" e "Important Scale".
 - **Cuidado ao criar interface por código (travamento que houve):** a primeira versão do aviso clonava o texto com `Instantiate`, mas o texto fica no mesmo objeto do `NotificationUI`, então o clone levava o componente junto e ele clonava de novo, sem parar (estouro de pilha e a Unity despejando milhões de linhas no console, que continuaram a cada Play até reiniciar a Unity). Regra: **nunca clone, por código, um objeto que tem o próprio script que está clonando**; crie o objeto novo com `new GameObject` e copie só o que precisa (fonte, tamanho). Se a Unity travar assim, pare o Play e reinicie o editor.
 - Teste feito pela ponte (teste automático, 10 itens): veja "Como testar o passo 14".
+
+**Fuga, passo 15 (a caminhonete do Samir até o fim da demo):**
+- Montado pelo menu da Fuga (`EscapeContent.cs`), em `Conteudo_Fuga`. A caixa `Caminhonete_Samir` do blockout é desligada pelo menu e dá lugar à caminhonete de verdade (chassi, capô, cabine aberta, caçamba sem tampa, rodas e faróis), no mesmo lugar (60, 176). Se refizer o blockout, rode o menu da Fuga de novo.
+- Objetivos (passos 32 a 34 da missão): "Leve a tabuleta ao nicho dos Guardiões, no túnel" (`TabuletaResolvida`), "Entre na caminhonete do Samir" (`EmbarcouNaCaminhonete`) e "Fuja para Tell Amar" (`FimDaViagem`). Quem **entrega** ou **fica com** a tabuleta tem o primeiro passo cumprido na hora (o evento dispara com a escolha); só quem **devolve** o vê. Depois do passo 34 a missão "Sobrevivente" se conclui.
+- **Samir:** só aparece na caminhonete depois da escolha (entregou ou ficou) ou depois de a tabuleta ser enterrada (devolveu). A escolha do passo 3 (confiar ou desconfiar do Kast) **não** tem efeito na fuga (decisão do dono).
+- **Devolver ao Poço:** aparece o **nicho dos Guardiões no túnel** (parede oeste, depois da lamparina 2: pedra baixa, lamparina de barro com luz quente, barco de junco sobre ondas em ouro) e o Samir ao lado dele. "Enterrar a tabuleta" (conversa `Fuga_Nicho`: "Deixa aqui. Os Guardiões levam ao Poço.", provisória) tira a tabuleta do inventário (`Inventory/ItemRemover`; o poder e a transformação ficam), mostra a tabuleta no nicho, dispara `EnterrouATabuleta` e `TabuletaResolvida` e marca um ponto de retorno ao lado do nicho. A Elena volta pelo túnel e pelo wadi até a caminhonete.
+- **Decisão de história:** o nicho do túnel é um **ponto de passagem dos Guardiões rumo ao Poço**: o que se deixa ali eles levam até o Poço. Isso substitui, para esta fatia, o "enterrar no nicho da Aldeia" da especificação; falta refletir isso no `Docs/Regiao-1-Sitio-de-Ur.md`.
+- **Embarque:** com a tabuleta resolvida, a traseira da caminhonete tem o salvamento automático `Autosave_Embarque` e a interação "Entrar na caminhonete". Morrer antes de entrar volta ao ponto de retorno com a escolha, a reputação, a transformação e o inventário intactos.
+- **Viagem** (`Sequences/TruckRide`, sem física de veículo): a tela escurece (0,7 s), a caminhonete aparece numa estrada provisória longe do mapa (x = 400 a 440, z = 300 a 1550, sem colisão, com pedras dos lados), a tela clareia e a caminhonete anda por um trilho. A conversa "A estrada" (`Fuga_Estrada_Entregou`, `_Devolveu` ou `_Ficou`, escolhida pelo evento da escolha) começa 2 s depois. **Duração mínima de 60 s**; se a conversa for mais longa, a caminhonete chega ao fim do trilho e espera a última fala, e a tela de fim nunca corta uma fala. O trilho usa o tempo real, então anda também durante a conversa (que pausa o jogo).
+- **A Elena na viagem:** presa na caçamba (movimento, interação, combate e dano desligados); a câmera gira livre. Pausar (Esc) congela o trilho e continuar o retoma; "Voltar ao último checkpoint" na pausa recomeça do embarque.
+- **Fim:** ao chegar, o diário (`Data/Documents/Diario_Entrada_1`, texto provisório, na tela de leitura dos documentos) dispara `LeuODiario`; ao fechá-lo dispara `FimDaFatia`, que abre a **tela provisória de fim da demo** (`UI/DemoEndScreen`). Confirmar zera a partida e os pontos de retorno e volta ao **menu principal** (`UI/MainMenuUI`, cena `Scenes/MenuPrincipal`, primeira da lista do Build: "Novo jogo" e "Sair do jogo", setas ou direcional e Enter ou A). "Novo jogo" abre a região do começo.
+- **Para ajustar jogando:** as falas estão em `Data/Dialogues/Fuga_*`; o diário em `Data/Documents/Diario_Entrada_1`; a duração mínima (60 s), o atraso da conversa (2 s) e o trilho no `TruckRide` da `Conteudo_Fuga/Caminhonete/Caminhonete_Do_Samir`.
+- **Provisório e pendências:** **faltam as animações de sentado (Elena) e de dirigir (Samir)**: a Elena fica em pé na caçamba e o Samir em pé na cabine (a cabine é uma caixa atrás, então ele não aparece); falta voz nas falas; a estrada, a caminhonete e a tempestade são formas simples; o diário é só uma tela de texto; a tabuleta de quem **entrega** continua no inventário (só os eventos mudam); o menu principal não tem opções nem save; o segundo líder de esquadra e a passagem do helicóptero sobre a base continuam como pendência da base do zigurate.
+- Teste feito pela ponte (teste automático, 3 itens): veja "Como testar o passo 15".
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
@@ -541,13 +558,24 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Teste do dono nos passos 10, 11 e 13 (o 14 já foi aprovado); depois o passo 15 (a fuga na caminhonete e o diário: **tem de considerar as três escolhas do passo 14** e a volta ao Poço de quem devolve a tabuleta), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Teste do dono nos passos 10, 11, 13 e 15 (o 12 e o 14 já foram aprovados); depois as animações de sentado e de dirigir na caminhonete (Mixamo), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+
+### Como testar o passo 15
+
+Atalhos no menu **Nibiru > Testes > Passo 15** (`Scripts/Editor/Step15Shortcuts.cs`), com o mundo como se a Elena tivesse feito a escolha do wadi, e com pistola, 24 balas, faca e a tabuleta:
+1. **Entregou a tabuleta**, junto da caminhonete (vá à traseira e use "Entrar na caminhonete").
+2. **Devolve ao Poço**, no wadi: volte pela rampa e pelo túnel até o nicho, enterre a tabuleta e volte à caminhonete.
+3. **Ficou com a tabuleta**, junto da caminhonete.
+4. **Devolve ao Poço, diante do nicho** do túnel (o Samir espera ao lado).
+5, 6 e 7. **Meio da viagem** (entregou, devolve, ficou): a caminhonete já na estrada, a conversa da escolha, a pausa (Esc) e o fim.
+8. **Fim da viagem**: o diário e a tela de fim da demo.
+9. **Teste automático** (resumo no Console, uns 3 minutos): para os três ramos confere objetivo, Samir, zona de embarque e conversa certa; morrer antes de embarcar e voltar mantém escolha, reputação, transformação e tabuleta; Elena presa na caminhonete; viagem de pelo menos 60 s (mediu 62,6 s); pausa congela o trilho e continuar o retoma; conversa mais longa que o trilho: o trilho espera e `FimDaViagem` só vem depois da última fala; diário, `FimDaFatia`, tela de fim aberta e, no ramo Devolve, volta ao menu principal (jogo zerado) e "Novo jogo" abre a região do começo; no Devolve também o nicho: enterrar tira a tabuleta, marca o retorno e a volta do ponto de retorno mantém tudo. Passou nos três ramos; os testes dos passos 13 e 14 continuam OK.
 
 ### Como testar o passo 14
 
