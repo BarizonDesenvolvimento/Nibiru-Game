@@ -77,5 +77,14 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: eb59999fd6b02974c804d24dc683c075, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Siga o Samir at\xE9 a beira da aldeia"
+    completeOn: {fileID: 11400000, guid: 0816d66cd07099a44b8076d2774b725a, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Passe pela patrulha da estrada e entre na base da Funda\xE7\xE3o,
+      no p\xE9 do zigurate"
+    completeOn: {fileID: 11400000, guid: f9cb6397e6920b740afeaa83dddf27e3, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

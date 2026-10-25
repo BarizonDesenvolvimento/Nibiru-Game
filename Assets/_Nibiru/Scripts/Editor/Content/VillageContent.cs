@@ -26,7 +26,9 @@ namespace Nibiru.EditorTools.Content
     /// dos Guardiões, que vira altar de salvamento. Passo 8: no nicho, a Elena lê a Tabuleta do
     /// Junco (a tabuleta reage com o azul de Kur), vive a memória de Ziusudra (cena
     /// Memoria_Shuruppak, montada pelo menu da memória), ganha o Eco do Abzu e a marca no pulso,
-    /// e responde ao Samir, que está com a mão na faca.
+    /// e responde ao Samir, que está com a mão na faca. Passo 9: da beira norte da Aldeia, os dois
+    /// veem a Fundação fechar as estradas; o Samir conta da passagem dos Guardiões no Poço e vai
+    /// sozinho pelos canais do sul; a Elena passa pela patrulha da estrada e entra na base.
     ///
     /// O encontro acontece numa das entradas da Aldeia: a que estiver à frente da Elena e mais
     /// perto dela quando ela entra na área. Os pontos são conferidos na malha de navegação e
@@ -89,20 +91,54 @@ namespace Nibiru.EditorTools.Content
         // Face de dentro da parede do fundo da casa do altar.
         const float BackWallInside = -31.5f;
 
+        // Passo 9. Beira norte da Aldeia, entre a mesquita e a estrada da base: o Samir olha a estrada.
+        static readonly Vector3 LookoutSpot = new Vector3(-44.5f, 0f, 8f);
+        static readonly Vector3 LookoutZoneCenter = new Vector3(-45.5f, 1f, 6f);
+        static readonly Vector3 LookoutZoneSize = new Vector3(10f, 2f, 8f);
+
+        // Ponto de retorno depois do plano, com a Elena virada para a estrada (leste), a mais de
+        // 18 m (o alcance da visão dos soldados) da linha da patrulha.
+        static readonly Vector3 CheckpointCenter = new Vector3(-45.5f, 1f, 5f);
+        static readonly Vector3 CheckpointSize = new Vector3(12f, 2f, 10f);
+        static readonly Vector3 CheckpointSpawn = new Vector3(-47.5f, 0f, 6.5f);
+
+        // O Samir sai pelo sul da Aldeia, rumo aos canais secos.
+        static readonly Vector3 SamirExitSpot = new Vector3(-52f, 0f, -46f);
+
+        // Barreira da Fundação na estrada do norte: do oeste da Aldeia até o muro da base (x = -24).
+        const float BarrierZ = 41.5f;
+        const float BarrierWestX = -90f;
+        const float BarrierEastX = -24f;
+        static readonly Vector3 GuardSpot = new Vector3(-46f, 0f, 43.5f);
+        static readonly Vector3[] TruckPath = { new Vector3(-95f, 0f, 46f), new Vector3(-48f, 0f, 46f) };
+
+        // Patrulha rente ao muro da base, entre a ponta sul (z = -4) e o meio do muro.
+        static readonly Vector3 PatrolSouth = new Vector3(-28f, 0f, -2f);
+        static readonly Vector3 PatrolNorth = new Vector3(-28f, 0f, 32f);
+
+        // Helicóptero: entra pelo sudoeste, cruza a Aldeia e pousa no heliponto da base.
+        static readonly Vector3[] HeliPath = { new Vector3(-75f, 32f, -70f), new Vector3(-20f, 28f, -15f), new Vector3(40f, 8f, 12f), new Vector3(40f, 0f, 12f) };
+
+        // Entrada da base: depois da ponta sul do muro, já dentro da base.
+        static readonly Vector3 BaseZoneCenter = new Vector3(-13f, 1f, -8f);
+        static readonly Vector3 BaseZoneSize = new Vector3(16f, 2f, 24f);
+
         // ---------- Dados ----------
 
         class Events
         {
             public StoryEvent aproximouSeDaAldeia, chegouAAldeia, chegouAoPatioComSamir,
                 entrouNaCasaDoAltar, conheceuSobreviventes, samirMostrouONicho, descansouNoNicho, entregouAntibioticos,
-                tocouATabuleta, decifrouTabuleta, contouAVerdadeAoSamir, mentiuAoSamir, samirRevelouGuardiao, conversouSobreATabuleta;
+                tocouATabuleta, decifrouTabuleta, contouAVerdadeAoSamir, mentiuAoSamir, samirRevelouGuardiao, conversouSobreATabuleta,
+                chegouABeiraDaAldeia, ouviuOPlanoDeFuga, entrouNaBaseDaFundacao;
         }
 
         class Dialogues
         {
             public DialogueDefinition encurralada, oGuia, chegadaPatio,
                 sobreviventes, oNicho, ummKarimEspera, yusufEspera,
-                tabuletaDesperta, aMarca, depoisDaTabuleta;
+                tabuletaDesperta, aMarca, depoisDaTabuleta,
+                oCercoChega, oCerco;
         }
 
         static Events ev;
@@ -126,6 +162,7 @@ namespace Nibiru.EditorTools.Content
             GameObject samir = BuildSamirEncounter(Group(root, "Encontro_Samir"));
             var (altar, lamp) = BuildSurvivorsAndAltar(Group(root, "Casa_Altar"), samir);
             BuildFirstTablet(Group(root, "Primeira_Tabuleta"), samir, altar, lamp);
+            BuildEscapePlan(Group(root, "Plano_De_Fuga"), samir);
             RegisterQuest(yusufQuest);
             LockTabletUntilAltar();
 
@@ -152,6 +189,9 @@ namespace Nibiru.EditorTools.Content
                 mentiuAoSamir = Event("MentiuAoSamir", "Depois da tabuleta, a Elena mentiu ao Samir (\"só li um mito\"). Ele percebeu e vai lembrar disso mais tarde."),
                 samirRevelouGuardiao = Event("SamirRevelouGuardiao", "A Elena perguntou por que ele estava com a mão na faca, e o Samir revelou que é Guardião."),
                 conversouSobreATabuleta = Event("ConversouSobreATabuleta", "A Elena respondeu ao Samir depois de ler a tabuleta. Fecha o passo 8."),
+                chegouABeiraDaAldeia = Event("ChegouABeiraDaAldeia", "Seguindo o Samir, a Elena chegou à beira norte da Aldeia. Começa a cena do cerco (passo 9)."),
+                ouviuOPlanoDeFuga = Event("OuviuOPlanoDeFuga", "O Samir contou da passagem dos Guardiões no Poço e foi embora pelos canais do sul. A Fundação fechou as estradas."),
+                entrouNaBaseDaFundacao = Event("EntrouNaBaseDaFundacao", "A Elena passou pela patrulha da estrada e entrou na base da Fundação, no pé do zigurate. Fecha o passo 9."),
             };
             ziusudraMemory = ShuruppakMemoryContent.MemoryData();
 
@@ -241,6 +281,23 @@ namespace Nibiru.EditorTools.Content
                     N("faca2", "Samir", "Quem ouve essa voz muda, doutora. Devagar. Se um dia ela falar mais alto que você, eu vou perceber.", "faca3"),
                     N("faca3", "Samir", "(Ele tira a mão da faca.) Hoje você ainda é você.", "fim"),
                     N("fim", "Samir", "Guarde essa pedra onde ninguém veja. A Fundação está fechando as estradas, e nós dois precisamos sair desta aldeia.")),
+
+                oCercoChega = Dialogue("Aldeia_OCercoChega", null,
+                    N("s1", "Samir", "(Ele se encosta na parede da última casa e aponta para o norte, para a estrada.) Abaixe-se. Olhe.")),
+
+                oCerco = Dialogue("Aldeia_OCerco", ev.ouviuOPlanoDeFuga,
+                    N("s1", "Samir", "Fecharam a estrada do norte. A do rio também: ouvi os caminhões de madrugada. E olhe o helicóptero descendo na base.", "e1"),
+                    N("e1", "Elena", "Então estamos presos.", "s2"),
+                    N("s2", "Samir", "A aldeia está. Nós, não. Existe um caminho mais velho que qualquer estrada. Começa lá embaixo, no Poço, e sai no leito seco do wadi, longe do cerco. Minha caminhonete está lá.", "e2"),
+                    N("e2", "Elena", "No Poço? Onde a minha equipe morreu?", "s3"),
+                    N("s3", "Samir", "Na antecâmara tem uma parede com o barco de junco, igual ao do nicho. A passagem fica atrás dela.", "s4"),
+                    N("s4", "Samir", "Mas para chegar ao Poço, você vai ter que atravessar a base deles, no pé do zigurate.", null,
+                        C("Você não vem comigo?", "s5", null),
+                        new DialogueChoice { text = "Os Guardiões sempre souberam desse caminho?", next = "g1", requires = ev.samirRevelouGuardiao }),
+                    N("g1", "Samir", "Nós cavamos esse caminho, doutora. Há muito tempo. Para sair lá de baixo... ou para levar alguma coisa de volta.", "s5"),
+                    N("s5", "Samir", "Sozinho, eu passo pelos canais secos do sul até o wadi. Com você e essa pedra acendendo a cada passo, não. Eu espero você na caminhonete.", "s6"),
+                    N("s6", "Samir", "A tenda médica também fica na base. Se ainda quer salvar o Yusuf, o remédio está lá.", "s7"),
+                    N("s7", "Samir", "A patrulha anda rente ao muro. Espere os dois virarem de costas e contorne a ponta sul do muro.")),
             };
 
             var antibiotics = Asset<ItemDefinition>("Items/Antibioticos", item =>
@@ -272,7 +329,9 @@ namespace Nibiru.EditorTools.Content
                     Step("Descanse junto ao nicho antigo (E ou A)", ev.descansouNoNicho),
                     Step("Leia a tabuleta no nicho", ShuruppakMemoryContent.EnteredMemory()),
                     Step("Vá até a cabana de junco, à beira do rio", ShuruppakMemoryContent.HeardTheReedWall()),
-                    Step("Responda ao Samir", ev.conversouSobreATabuleta));
+                    Step("Responda ao Samir", ev.conversouSobreATabuleta),
+                    Step("Siga o Samir até a beira da aldeia", ev.chegouABeiraDaAldeia),
+                    Step("Passe pela patrulha da estrada e entre na base da Fundação, no pé do zigurate", ev.entrouNaBaseDaFundacao));
 
             AssetDatabase.SaveAssets();
         }
@@ -590,6 +649,192 @@ namespace Nibiru.EditorTools.Content
             serialized.FindProperty("decipherFromInventory").boolValue = false;
             serialized.ApplyModifiedProperties();
             PrefabUtility.RecordPrefabInstancePropertyModifications(reader);
+        }
+
+        // ---------- Plano de fuga (passo 9) ----------
+
+        static void BuildEscapePlan(Transform g, GameObject samir)
+        {
+            // Pontos conferidos antes de criar peças novas, para elas não contarem como obstáculo.
+            Vector3 lookout = OnNavMesh(LookoutSpot, "Samir_Beira", 0.5f);
+            Vector3 exit = OnNavMesh(SamirExitSpot, "Samir_Saida", 0.5f);
+            Vector3 patrolSouth = OnNavMesh(PatrolSouth, "Patrulha_Sul", 0.5f);
+            Vector3 patrolNorth = OnNavMesh(PatrolNorth, "Patrulha_Norte", 0.5f);
+            Vector3 guardSpot = OnNavMesh(GuardSpot, "Guarda_Barreira", 0.5f);
+
+            var walker = samir.GetComponent<WalkToPoint>();
+            Transform samirLookout = Point(g, "Samir_Beira", lookout);
+            samirLookout.rotation = Quaternion.Euler(0f, 0f, 0f);
+            Transform samirExit = Point(g, "Samir_Saida", exit);
+
+            // Depois da conversa da tabuleta, o Samir sai da casa e anda até a beira norte (ao
+            // voltar de um checkpoint, ele já está lá). Os 0,6 s deixam o resto da cena se arrumar antes.
+            var toLookout = g.gameObject.AddComponent<StoryEventBranch>();
+            SetField(toLookout, "storyEvent", ev.chegouABeiraDaAldeia);
+            Call(GetField<UnityEvent>(toLookout, "ifRaised"), walker.SnapTo, samirLookout);
+            Call(GetField<UnityEvent>(toLookout, "ifNotRaised"), walker.WalkTo, samirLookout);
+            var goToLookout = g.gameObject.AddComponent<TimedSequence>();
+            SetField(goToLookout, "skipIfRaised", ev.ouviuOPlanoDeFuga);
+            SetSteps(goToLookout, S("Samir vai até a beira da aldeia", 0.6f, e => Call(e, toLookout.Run)));
+
+            GameObject lookoutZone = EventZone(g, "Gatilho_Beira", LookoutZoneCenter, LookoutZoneSize, ev.chegouABeiraDaAldeia);
+            lookoutZone.SetActive(false);
+            Listener(g.gameObject, ev.conversouSobreATabuleta, e =>
+            {
+                Call(e, goToLookout.Play);
+                SetActive(e, lookoutZone, true);
+            });
+
+            // O cerco: caminhão, barreira com guarda, helicóptero pousando na base e a patrulha.
+            GameObject truck = FoundationTruck(g, out MoveAlongPath truckMove);
+            GameObject barrier = Barrier(Group(g, "Barreira_Norte"));
+            Transform guards = Group(g, "Guarda_Barreira");
+            Soldier(guards, "Soldado_Barreira", guardSpot, guardSpot + Vector3.back, null, leader: false);
+            guards.gameObject.SetActive(false);
+
+            Transform patrol = Group(g, "Patrulha_Estrada");
+            Transform[] route = { Point(g, "Patrulha_Ponto_Sul", patrolSouth), Point(g, "Patrulha_Ponto_Norte", patrolNorth) };
+            Soldier(patrol, "Soldado_Estrada_A", patrolSouth, patrolNorth, route, leader: false);
+            Soldier(patrol, "Soldado_Estrada_B", patrolNorth, patrolSouth, new[] { route[1], route[0] }, leader: false);
+            patrol.gameObject.SetActive(false);
+
+            GameObject heli = LandingHelicopter(g, out MoveAlongPath heliMove);
+
+            var notice = DialogueTrigger(g, "Dialogo_OCercoChega", dlg.oCercoChega);
+            var plan = DialogueTrigger(g, "Dialogo_OCerco", dlg.oCerco);
+
+            // Depois do plano: ponto de retorno ali mesmo e a área da base esperando a Elena.
+            Transform checkpointGroup = Group(g, "Ponto_De_Retorno");
+            Checkpoint(checkpointGroup, "Checkpoint_Beira", CheckpointCenter, CheckpointSize, CheckpointSpawn, 90f);
+            checkpointGroup.gameObject.SetActive(false);
+            GameObject baseZone = EventZone(g, "Gatilho_Base", BaseZoneCenter, BaseZoneSize, ev.entrouNaBaseDaFundacao);
+            baseZone.SetActive(false);
+
+            // Ao vivo: o Samir mostra a estrada, a Fundação fecha o cerco aos poucos e ele explica o plano.
+            var siege = g.gameObject.AddComponent<TimedSequence>();
+            SetField(siege, "skipIfRaised", ev.ouviuOPlanoDeFuga);
+            SetSteps(siege,
+                S("o Samir manda a Elena olhar a estrada", 0.3f, e => Call(e, notice.StartDialogue)),
+                S("caminhão na estrada e helicóptero no céu", 0.3f, e =>
+                {
+                    SetActive(e, truck, true);
+                    Call(e, truckMove.Play);
+                    SetActive(e, heli, true);
+                    Call(e, heliMove.Play);
+                }),
+                S("a barreira fecha a estrada, com um guarda", 5f, e =>
+                {
+                    SetActive(e, barrier, true);
+                    SetActive(e, guards.gameObject, true);
+                    WakeSoldiers(e, guards);
+                }),
+                S("a patrulha começa a andar rente ao muro", 1f, e =>
+                {
+                    SetActive(e, patrol.gameObject, true);
+                    WakeSoldiers(e, patrol);
+                }),
+                S("conversa O cerco", 2.5f, e => Call(e, plan.StartDialogue)),
+                S("o Samir vai embora pelos canais do sul", 0.5f, e =>
+                {
+                    Call(e, walker.LeaveTo, samirExit);
+                    SetActive(e, checkpointGroup.gameObject, true);
+                    SetActive(e, baseZone, true);
+                }));
+            Listener(siege.gameObject, ev.chegouABeiraDaAldeia, e => Call(e, siege.Play));
+            SetField(siege.GetComponents<StoryEventListener>().Last(), "replayOnLoad", false);
+
+            // Ao voltar de um checkpoint depois do plano: tudo direto no estado final, e o Samir longe.
+            var samirGone = new GameObject("Samir_Foi_Embora").AddComponent<TimedSequence>();
+            samirGone.transform.SetParent(g, false);
+            SetSteps(samirGone, S("o Samir já foi para o wadi", 0.8f, e => SetActive(e, samir, false)));
+            Listener(g.gameObject, ev.ouviuOPlanoDeFuga, e =>
+            {
+                SetActive(e, truck, true);
+                Call(e, truckMove.SnapToEnd);
+                SetActive(e, heli, true);
+                Call(e, heliMove.SnapToEnd);
+                SilenceHelicopter(e, heli);
+                SetActive(e, barrier, true);
+                SetActive(e, guards.gameObject, true);
+                WakeSoldiers(e, guards);
+                SetActive(e, patrol.gameObject, true);
+                WakeSoldiers(e, patrol);
+                SetActive(e, checkpointGroup.gameObject, true);
+                SetActive(e, baseZone, true);
+                Call(e, samirGone.Play);
+            });
+            SetField(g.GetComponents<StoryEventListener>().Last(), "onlyOnLoad", true);
+        }
+
+        // Caminhão branco da Fundação com faixa turquesa, chegando pela estrada do norte.
+        static GameObject FoundationTruck(Transform g, out MoveAlongPath move)
+        {
+            Transform path = Group(g, "Caminho_Caminhao");
+            Transform[] points = TruckPath.Select((p, i) => Point(path, $"Ponto_{i + 1}", p)).ToArray();
+
+            var truck = new GameObject("Caminhao_Fundacao");
+            truck.transform.SetParent(g, false);
+            truck.transform.SetPositionAndRotation(TruckPath[0], Quaternion.Euler(0f, 90f, 0f));
+            Transform t = truck.transform;
+            Local(PrimitiveType.Cube, t, "Cabine", new Vector3(0f, 1.3f, 2.2f), new Vector3(2.3f, 2f, 1.8f), "BO_BrancoFundacao", ColliderMode.Solid);
+            Local(PrimitiveType.Cube, t, "Carroceria", new Vector3(0f, 1.5f, -1.1f), new Vector3(2.4f, 2.4f, 4.6f), "BO_BrancoFundacao", ColliderMode.Solid);
+            Local(PrimitiveType.Cube, t, "Faixa", new Vector3(0f, 1.1f, -1.1f), new Vector3(2.45f, 0.3f, 4.65f), "BO_TurquesaFundacao");
+            foreach (float z in new[] { 2.1f, -0.4f, -2.4f })
+                foreach (float x in new[] { -1.1f, 1.1f })
+                {
+                    GameObject wheel = Local(PrimitiveType.Cylinder, t, "Roda", new Vector3(x, 0.45f, z), new Vector3(0.9f, 0.15f, 0.9f), "BO_Metal");
+                    wheel.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+                }
+
+            move = truck.AddComponent<MoveAlongPath>();
+            SetField(move, "points", points);
+            SetField(move, "speed", 9f);
+            SetField(move, "slowDownDistance", 12f);
+            truck.SetActive(false);
+            return truck;
+        }
+
+        // Cavaletes listrados ao longo de toda a estrada do norte, do oeste da aldeia até o muro da
+        // base, com uma parede invisível atrás: o caminho norte para o Poço fica fechado.
+        static GameObject Barrier(Transform g)
+        {
+            float length = BarrierEastX - BarrierWestX;
+            for (float x = BarrierWestX + 1.5f; x < BarrierEastX; x += 4f)
+            {
+                Transform horse = Group(g, $"Cavalete_{Mathf.RoundToInt(x)}");
+                horse.position = new Vector3(x, 0f, BarrierZ);
+                Local(PrimitiveType.Cube, horse, "Perna_E", new Vector3(-1.1f, 0.5f, 0f), new Vector3(0.12f, 1f, 0.5f), "BO_Metal");
+                Local(PrimitiveType.Cube, horse, "Perna_D", new Vector3(1.1f, 0.5f, 0f), new Vector3(0.12f, 1f, 0.5f), "BO_Metal");
+                Local(PrimitiveType.Cube, horse, "Barra_Alta", new Vector3(0f, 0.95f, 0f), new Vector3(2.6f, 0.22f, 0.08f), "BO_BrancoFundacao");
+                Local(PrimitiveType.Cube, horse, "Barra_Baixa", new Vector3(0f, 0.55f, 0f), new Vector3(2.6f, 0.22f, 0.08f), "BO_TurquesaFundacao");
+            }
+            var wall = new GameObject("Parede_Invisivel");
+            wall.transform.SetParent(g, false);
+            wall.transform.position = new Vector3(BarrierWestX + length * 0.5f, 1.5f, BarrierZ);
+            wall.AddComponent<BoxCollider>().size = new Vector3(length, 3f, 0.6f);
+            g.gameObject.SetActive(false);
+            return g.gameObject;
+        }
+
+        // Helicóptero que cruza o céu da Aldeia e pousa no heliponto da base. Ao pousar, desliga.
+        static GameObject LandingHelicopter(Transform g, out MoveAlongPath move)
+        {
+            Transform path = Group(g, "Caminho_Helicoptero");
+            Transform[] points = HeliPath.Select((p, i) => Point(path, $"Ponto_{i + 1}", p)).ToArray();
+            GameObject heli = Helicopter(g, "Helicoptero_Base", HeliPath[0], 45f);
+            move = heli.AddComponent<MoveAlongPath>();
+            SetField(move, "points", points);
+            SetField(move, "speed", 20f);
+            SetField(move, "slowDownDistance", 18f);
+            SilenceHelicopter(GetField<UnityEvent>(move, "onArrived"), heli);
+            heli.SetActive(false);
+            return heli;
+        }
+
+        static void SilenceHelicopter(UnityEvent e, GameObject heli)
+        {
+            Call(e, heli.GetComponent<AudioSource>().Stop);
+            foreach (Spinner spinner in heli.GetComponentsInChildren<Spinner>()) SetEnabled(e, spinner, false);
         }
 
         // Marca dos altares dos Guardiões: o barco de junco sobre ondas entalhado na frente do nicho
