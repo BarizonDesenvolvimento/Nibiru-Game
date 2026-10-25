@@ -15,13 +15,14 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
 - A **base do zigurate** (área 4) começou: o **passo 10** (atravessar a base, com a patrulha, o líder, o atirador de elite no alto do zigurate, o golpe de faca pelas costas, o e-mail do Kast e a foto de 1979, o portão para a Aldeia e a saída para o Poço) está pronto e testado pela ponte, esperando o teste do dono. Veja "Base do zigurate, passo 10".
+- A **Boca do Poço** (área 5) começou: o **passo 11** (descer o Poço ouvindo o Lullu lá embaixo, passar por ele, ponto de retorno e o flash a uns 12 m do Selo de Kur, com a Voz) está pronto e testado pela ponte, esperando o teste do dono. Veja "Boca do Poço, passo 11".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
 - Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador de elite está no posto dele, no passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
 - Os outros personagens (Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é o teste do dono no passo 10, depois o passo 11 (descer o Poço), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é o teste do dono nos passos 10 e 11, depois o passo 12 (o Primeiro Servo, na mesma antecâmara), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -55,6 +56,7 @@ Cada área tem um script de editor que monta o conteúdo num grupo próprio da c
 | 2. Trincheiras | **Nibiru > Conteúdo > Povoar Trincheiras na cena aberta** | `Scripts/Editor/Content/TrenchContent.cs` |
 | 3. Aldeia | **Nibiru > Conteúdo > Povoar Aldeia na cena aberta** | `Scripts/Editor/Content/VillageContent.cs` |
 | 4. Base do zigurate | **Nibiru > Conteúdo > Povoar Base do Zigurate na cena aberta** | `Scripts/Editor/Content/ZigguratContent.cs` |
+| 5. Boca do Poço | **Nibiru > Conteúdo > Povoar Boca do Poço na cena aberta** | `Scripts/Editor/Content/WellContent.cs` |
 | Memória de Shuruppak (passo 8) | **Nibiru > Conteúdo > Construir memória de Shuruppak** (refaz a cena `Memoria_Shuruppak` do zero e a põe na lista do Build) | `Scripts/Editor/Content/ShuruppakMemoryContent.cs` |
 
 As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicóptero, diálogos, passos de missão) ficam em `Scripts/Editor/Content/ContentKit.cs`. Rode as áreas em ordem (Acampamento, Trincheiras, Aldeia): o Acampamento cria a missão "Sobrevivente", e cada área seguinte só acrescenta os passos dela no fim (se ainda não estiverem lá).
@@ -133,6 +135,17 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Ficam para depois: o segundo líder de esquadra, a passagem do helicóptero sobre a base e a foto como item no inventário.
 - Teste feito pela ponte (teste automático, tudo OK): chegada ao vivo vindo do passo 9, rota alta caminhável até atrás do atirador, golpe pelas costas no líder e no atirador (cai de frente, ninguém entra em combate, o laser apaga), mesa da tenda, painel e portão, saída. À parte: na avenida, o atirador viu, travou, atirou depois do aviso e a patrulha veio.
 
+**Boca do Poço, passo 11 (descer o Poço):**
+- Tudo fica em `Conteudo_Poco/Poco_Ativo`, que só liga quando a Elena sai da base pelo nordeste (`SaiuDaBaseRumoAoPoco`). Rode o menu da Base antes (o Poço usa o evento dela).
+- Objetivos (passos 21 a 24 da missão): "Siga o corredor nordeste até a boca do Poço" (`ChegouABocaDoPoco`), "Desça o Poço pelos andaimes" (`DesceuOPoco`, ao pisar no fundo), "Atravesse o fundo do Poço sem acordar o Lullu, ou livre-se dele" (`PassouPeloLullu`, ao cruzar a boca da antecâmara) e "Avance pela antecâmara até o Selo de Kur" (`FlashDoPoco`). Enquanto o passo 12 não existe, a missão aparece como concluída depois do flash.
+- **Boca:** ao chegar (só ao vivo), a Elena vê o poço e ouve o raspar (`Poco_Boca`), e vem a dica de que o Lullu caça pelo som. Ronco grave e pedras caindo no Poço (`Poco_Ambiente_Loop`).
+- **Lullu** (prefab `AI/Lullu`, com a cápsula provisória): vagueia na boca da antecâmara (44, -14, 78), com respiração e raspar ouvidos da descida (`Lullu_Respiracao_Loop`, até 30 m). Preso ao chão: o campo novo **"Max Climb"** do `LulluAI` (2 m aqui; 0 = sem limite, como no laboratório) faz sons vindos de andaimes virarem pontos no chão, e a Elena a mais de 2,4 m acima dele fica fora do alcance. Andando agachada ele quase não ouve (1,8 m); andando, 6 m; correndo, 14 m.
+- **Pontos de retorno:** um no último patamar de andaime (`Checkpoint_Pe_Da_Descida`, a ~9 m do Lullu e em silêncio, de frente para a descida) e outro dentro da antecâmara, a ~10 m dele e antes do flash (`Checkpoint_Antecamara`). Ao voltar de um checkpoint depois de passar pelo Lullu, ele não volta (`StoryEventListener` só ao carregar).
+- **Flash** (`Flash_Do_Selo`): a uns 12 m do Selo (z = 90,5), a Elena para de ser perseguida: o Lullu, se vivo, congela (`LulluAI.Pause`), a tela clareia (`UI/ScreenFlash`, atrás das conversas) e vem `Poco_Flash`: a tabuleta pulsa, "só luz e mãos" e a Voz, só legenda: "Você já esteve aqui." / "Não tem problema não lembrar. Eu lembro por você." Quando a Voz acaba (`FlashDoPoco`), a luz volta e o Lullu solta. O passo 12 começa daí.
+- **Blockout:** o vão da passagem dos Guardiões na parede oeste da antecâmara agora está fechado pela `Parede_Barco_Junco`, com o barco de junco sobre ondas em ouro e a lamparina quente. O passo 13 vai abri-la.
+- **Pendências do Poço:** o Lullu ainda é a cápsula do prefab (o modelo está pronto na `ArteFonte`, falta importar; `CharacterHeights` tem a altura dele) e morre tombando; sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a inscrição dos Guardiões do Poço (colecionável) e o segundo Lullu ficam para depois.
+- Teste feito pela ponte (teste automático, tudo OK): chegada à boca, descida caminhável pelos 4 lances, retorno em silêncio, Lullu preso ao chão (barulho do andaime: caça, não sobe, não golpeia), parede do barco, flash com o Lullu vivo (congela e solta) e sem ele.
+
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
 ## Sistemas prontos
@@ -161,6 +174,8 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Helicóptero que avista a Elena, item largado ao morrer | `AI/HelicopterSpotter`, `Combat/DropOnDeath` | configurados no Inspector |
 | Atirador de elite (posto fixo, mira laser, tempo de aviso) | `AI/SniperAI` (o animador e o símbolo sobre a cabeça leem qualquer IA de soldado por `AI/ISoldierBrain`) | `Data/AI/AtiradorElite` (`SniperSettings`) |
 | Golpe de faca pelas costas | `Combat/PlayerMeleeAttack`, `Combat/ITakedownTarget` (nos soldados), aviso em `UI/InteractionPromptUI` | "Golpe pelas costas" nos dados de cada soldado |
+| Lullu preso ao chão (`maxClimb`) e congelável (`Pause`) | `AI/LulluAI` | `Data/AI/Lullu`; o campo "Max Climb" fica no componente |
+| Flash de luz na tela (atrás das conversas) | `UI/ScreenFlash` (`FadeIn`, `FadeOut`) | cor e tempos no Inspector |
 | Documentos (e-mail, foto, cartas) na tela de leitura | `Documents/` (`DocumentDefinition`, `DocumentView`) | `Data/Documents` |
 | Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto (ou vai embora e some), luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
 | Memória jogável (versão simples do Grupo 2): passagem para a cena do passado e volta | `Memories/` (`MemoryDefinition`, `PlayableMemory`, `MemorySpawn`, `MemoryAvatar`) | `Data/Memories` |
@@ -423,13 +438,29 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Teste do dono no passo 10; depois o passo 11 (descer o Poço), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Teste do dono nos passos 10 e 11; depois o passo 12 (o Primeiro Servo na antecâmara, com os andaimes e holofotes da arena), o passo 13 (a passagem atrás da parede do barco), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D, um por conversa: Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+
+### Como testar o passo 11
+
+Atalhos no menu **Nibiru > Testes > Passo 11** (`Scripts/Editor/Step11Shortcuts.cs`), com o mundo como se a Elena tivesse atravessado a base e saído pelo nordeste, e com pistola, 24 balas e faca:
+
+| Atalho | Onde começa |
+| --- | --- |
+| 1. Saindo da base, a caminho do Poço | No corredor nordeste; ande para o norte até a boca |
+| 2. Na boca do Poço | No alto dos andaimes; desça pelos lances ouvindo o Lullu |
+| 3. Descendo os andaimes, ouvindo o Lullu | No primeiro patamar |
+| 4. Ponto de retorno do pé da descida (o Lullu no fundo) | No último patamar, em silêncio; agachada, passe por ele |
+| 5. Depois do Lullu: rumo ao flash | Na antecâmara, sem o Lullu; ande para o norte |
+| 6. Flash com o Lullu ainda vivo (ele congela) | Um passo antes do flash, com o Lullu no fundo |
+| 7. Teste automático (resumo no Console) | Roda os testes sozinho e escreve OK ou FALHOU no Console (`Scripts/Editor/Step11Tests.cs`) |
+
+Para ver o Lullu perseguir, corra ou atire perto dele; para ele não ouvir, agache. Do andaime ele não alcança a Elena.
 
 ### Como testar o passo 10
 
