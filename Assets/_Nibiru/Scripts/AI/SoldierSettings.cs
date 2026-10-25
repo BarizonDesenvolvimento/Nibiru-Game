@@ -67,6 +67,12 @@ namespace Nibiru.AI
         [Tooltip("Até onde o tiro dele é ouvido, em metros.")]
         [Min(0f)] public float shotNoiseRadius = 25f;
 
+        [Tooltip("Tiros antes de recarregar.")]
+        [Min(1)] public int magazineSize = 8;
+
+        [Tooltip("Tempo da recarga, em segundos (ele não atira enquanto isso).")]
+        [Min(0.1f)] public float reloadTime = 2.4f;
+
         [Tooltip("Segundos sem ver a Elena até passar a procurar por ela.")]
         [Min(0f)] public float loseSightTime = 3f;
 

@@ -61,6 +61,8 @@ namespace Nibiru.AI
         float reinforcementAt;
         bool reinforcementsCalled;
         float tracerHideTime;
+        int shotsLeft;
+        float reloadEndTime = -1f;
 
         /// <summary>Soldados com a IA ligada agora (para avisos de fora, como o helicóptero).</summary>
         public static IReadOnlyList<SoldierAI> All => all;
@@ -68,6 +70,16 @@ namespace Nibiru.AI
         public State CurrentState { get; private set; }
         public bool IsLeader => isLeader;
         public float Awareness => perception.Awareness;
+
+        /// <summary>Em combate, vendo a Elena e sem recarregar: o fuzil fica apontado para ela.</summary>
+        public bool IsAiming => enabled && CurrentState == State.Combate && perception.CanSeePlayer && !IsReloading;
+        public bool IsReloading => Time.time < reloadEndTime;
+        public float ReloadTime => settings.reloadTime;
+
+        /// <summary>A cada tiro (para a animação do disparo).</summary>
+        public event System.Action Fired;
+        /// <summary>Quando o carregador acaba e ele começa a recarregar.</summary>
+        public event System.Action ReloadStarted;
 
         void Awake()
         {
@@ -78,6 +90,8 @@ namespace Nibiru.AI
             guardPosition = transform.position;
             guardRotation = transform.rotation;
             if (tracer != null) tracer.enabled = false;
+            // O primeiro carregador começa pela metade ou mais, para os soldados não recarregarem juntos.
+            shotsLeft = Random.Range((settings.magazineSize + 1) / 2, settings.magazineSize + 1);
         }
 
         void OnEnable()
@@ -230,7 +244,7 @@ namespace Nibiru.AI
             agent.isStopped = !approach;
             if (approach) agent.SetDestination(playerPosition);
 
-            if (clearShot && distance <= settings.attackRange && Time.time >= nextShotTime)
+            if (clearShot && distance <= settings.attackRange && Time.time >= nextShotTime && !IsReloading)
                 Shoot(target, distance);
         }
 
@@ -281,6 +295,14 @@ namespace Nibiru.AI
 
             ShowTracer(end);
             Noise.Emit(transform.position, settings.shotNoiseRadius, gameObject);
+            Fired?.Invoke();
+
+            // Carregador vazio: recarrega antes do próximo tiro (uma brecha para a Elena).
+            if (--shotsLeft > 0) return;
+            shotsLeft = settings.magazineSize;
+            reloadEndTime = Time.time + settings.reloadTime;
+            nextShotTime = Mathf.Max(nextShotTime, reloadEndTime + 0.2f);
+            ReloadStarted?.Invoke();
         }
 
         void CallReinforcements()
@@ -320,7 +342,13 @@ namespace Nibiru.AI
             perception.enabled = false;
             if (tracer != null) tracer.enabled = false;
 
-            // Por enquanto só tomba; com modelo e animações entra a animação de morte.
+            // Com modelo animado, quem cai é a animação de morte; o colisor em pé sai do caminho.
+            if (GetComponentInChildren<SoldierAnimator>() != null)
+            {
+                foreach (Collider body in GetComponents<Collider>()) body.enabled = false;
+                return;
+            }
+            // Sem modelo (a cápsula antiga): só tomba.
             transform.SetPositionAndRotation(
                 transform.position + Vector3.down * 0.6f,
                 transform.rotation * Quaternion.Euler(-85f, 0f, 0f));
