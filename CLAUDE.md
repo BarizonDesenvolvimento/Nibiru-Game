@@ -26,6 +26,7 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 - Faça commits pequenos e frequentes, com mensagens em português.
 - Arquivos pesados (modelos, imagens, áudio, vídeo) vão pelo Git LFS, já configurado em `.gitattributes`. Nenhum arquivo fora do LFS pode passar de 100 MB (limite do GitHub).
 - Modelos 3D entram na Unity como FBX em `Assets/_Nibiru/Art/Personagens`; a arte-fonte de todos os personagens (.blend, rigs, referências) fica em `ArteFonte/<Personagem>/`, fora de `Assets`. Os arquivos brutos baixados do Meshy (`ArteFonte/*/1_Meshy`) ficam fora do Git, menos os que estão nas exceções do `.gitignore`.
+- Animações vêm da biblioteca em `ArteFonte/Animacoes` (fora do Git e de `Assets`). Consulte `Docs/CATALOGO_ANIMACOES.md` antes de pedir ou baixar uma animação. Importe para `Assets` só as que forem usadas, como Humanoid.
 - Teste cada sistema no Play pela ponte MCP antes de pedir o teste do dono (o jeito está em `Docs/ESTADO.md`). Nunca recompile scripts com o Play ligado.
 - Um passo por vez: ao terminar um sistema, mostre o resultado e espere o dono testar no Play antes de seguir.
 - Todo passo novo da missão ganha um menu de atalhos de teste em **Nibiru > Testes > Passo N**, como o do passo 8 (`Scripts/Editor/Step8Shortcuts.cs`): cada atalho liga o Play e põe a Elena num momento do passo, com o mundo como se ela tivesse jogado até ali. Teste os atalhos pela ponte e liste-os no `Docs/ESTADO.md` ao pedir o teste do dono.

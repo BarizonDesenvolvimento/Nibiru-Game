@@ -314,7 +314,7 @@ A Elena e o Samir antigos (`Elena_Varga`, `Samir_Haddad`, 1,5 a 1,8 milhão de t
 
 ### Animações do Mixamo
 
-Em `ArteFonte/Animacoes/Mixamo` (baixadas "sem pele"; o `X Bot.fbx` é o boneco em pose T). As usadas são copiadas para `Assets/_Nibiru/Art/Animacoes/Mixamo`.
+A biblioteca inteira (pacotes do Mixamo e Universal Animation Library) fica em `ArteFonte/Animacoes`, **fora do Git** (`.gitignore`) e fora de `Assets`; o catálogo de tudo que há nela, com as marcas das pendências (garra, urro, saída das rachaduras, locomoção, sentado, dirigir), está em `Docs/CATALOGO_ANIMACOES.md`. Consulte-o antes de pedir uma animação. Em `ArteFonte/Animacoes/Mixamo` (baixadas "sem pele"; o `X Bot.fbx` é o boneco em pose T). As usadas são copiadas para `Assets/_Nibiru/Art/Animacoes/Mixamo`.
 
 | Animação | Situação |
 | --- | --- |
@@ -533,7 +533,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até os soldados da Fundação, testados pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as animações do Mixamo em `ArteFonte/`. Os 4 soldados somaram cerca de 250 MB ao LFS (modelos e texturas em `Art/Personagens`). Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até os soldados da Fundação, testados pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as primeiras animações do Mixamo (a biblioteca de animações agora está fora do Git; a cópia no LFS fica só no histórico). Os 4 soldados somaram cerca de 250 MB ao LFS (modelos e texturas em `Art/Personagens`). Commits em português, pequenos e frequentes.
 - Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
 ## Como testar sozinho pela ponte MCP
