@@ -37,7 +37,8 @@ namespace Nibiru.EditorTools
         static readonly Vector3 ScaffoldSpot = new Vector3(41f, -3.5f, 79f);
         static readonly Vector3 FootCheckpointSpot = new Vector3(49f, -10.5f, 71f);
         static readonly Vector3 AfterLulluSpot = new Vector3(45f, -14f, 88f);
-        static readonly Vector3 NearFlashSpot = new Vector3(45f, -14f, 89.4f);
+        // A área do flash começa em z = 89,9 e a Elena tem 0,5 m de raio: daqui ela fica 60 cm antes dela.
+        static readonly Vector3 NearFlashSpot = new Vector3(45f, -14f, 88.8f);
 
         static Step11Shortcuts()
         {
@@ -51,8 +52,11 @@ namespace Nibiru.EditorTools
                 "no ponto de retorno do pé da descida (num patamar, em silêncio). O Lullu vagueia no fundo; agachada, passe por ele."));
             Register("passo11.depois_lullu", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco", "PassouPeloLullu" }, SealStep, AfterLulluSpot, 0f,
                 "na antecâmara, depois do Lullu (que não está mais lá). Ande para o norte: a uns 12 m do Selo começa o flash.", crouch: true));
+            // "Passou pelo Lullu" acontece ao vivo, depois de recarregar, como quando ela cruza a boca
+            // da antecâmara andando: guardado antes, o Lullu sumiria ao carregar a cena.
             Register("passo11.flash_vivo", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco" }, PassLulluStep, NearFlashSpot, 0f,
-                "na antecâmara, um passo antes do flash, com o Lullu ainda vivo no fundo. Ande para o norte: ele congela até a Voz falar."));
+                "na antecâmara, um passo antes do flash, com o Lullu ainda vivo no fundo. Ande para o norte: ele congela até a Voz falar.",
+                raiseLive: new[] { "PassouPeloLullu" }));
         }
 
         [MenuItem(MenuRoot + "1. Saindo da base, a caminho do Poço")]
@@ -74,10 +78,12 @@ namespace Nibiru.EditorTools
         static void LiveFlash() => Go("passo11.flash_vivo");
 
         // Mundo de quem acabou de sair da base (passos 1 a 10), mais estes eventos, com as armas.
-        static void Begin(string[] extra, int questStep, Vector3 spawn, float yaw, string message, bool crouch = false)
+        // Os de raiseLive acontecem depois de recarregar.
+        static void Begin(string[] extra, int questStep, Vector3 spawn, float yaw, string message, bool crouch = false, string[] raiseLive = null)
         {
             Action then = () =>
             {
+                foreach (string e in raiseLive ?? new string[0]) Raise(e);
                 ElenaShortcuts.GiveWeapons();
                 if (crouch) After(0.2f, Crouch);
             };

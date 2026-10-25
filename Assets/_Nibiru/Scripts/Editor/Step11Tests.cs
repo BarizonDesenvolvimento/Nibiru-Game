@@ -266,16 +266,16 @@ namespace Nibiru.EditorTools
                 lullu = Object.FindFirstObjectByType<LulluAI>();
                 if (withLullu && lullu == null) { Result(false, "Lullu não encontrado"); return true; }
                 if (!withLullu && lullu != null) { Result(false, "o Lullu devia ter sumido depois de passar por ele"); return true; }
+                // O atalho põe a Elena antes da área do flash: se ele já começou, foi antes da hora.
+                if (Raised("ChegouPertoDoSelo")) { Result(false, $"o flash começou sozinho no ponto do atalho, em {player.transform.position}"); return true; }
                 lulluFrozen = false;
-                // Passa antes pela boca da antecâmara (o objetivo "passe pelo Lullu"), como andando.
-                Teleport(new Vector3(45f, -14f + FeetToCenter, 84.6f), 0f);
-                mark = Time.time;
                 phase = 2;
                 return false;
             }
             if (phase == 2)
             {
-                if (Time.time < mark + 0.6f) return false;
+                // "Passou pelo Lullu" vem do atalho, logo depois de recarregar.
+                if (!Raised("PassouPeloLullu")) return false;
                 Teleport(new Vector3(45f, -14f + FeetToCenter, 90.6f), 0f);
                 mark = Time.time;
                 phase = 3;
