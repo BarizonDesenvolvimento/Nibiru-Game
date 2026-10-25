@@ -18,6 +18,9 @@ namespace Nibiru.Sequences
         [Tooltip("Para e espera quando a Elena fica para trás, mais longe que isto (em metros). Zero = nunca espera.")]
         [SerializeField, Min(0f)] float waitIfPlayerFartherThan = 10f;
 
+        [Tooltip("Corre nesta velocidade (m/s) quando a Elena vai à frente e mais longe que a distância de espera. Zero = nunca corre.")]
+        [SerializeField, Min(0f)] float catchUpSpeed = 0f;
+
         [Tooltip("Depois de chegar, vira devagar na direção da Elena.")]
         [SerializeField] bool facePlayerAfterArriving = true;
 
@@ -29,15 +32,21 @@ namespace Nibiru.Sequences
         NavMeshAgent agent;
         Player.PlayerMotor player;
         bool walking, arrived, leaving;
+        float walkSpeed;
 
         public bool IsWalking => walking;
 
-        void Awake() => agent = GetComponent<NavMeshAgent>();
+        void Awake()
+        {
+            agent = GetComponent<NavMeshAgent>();
+            walkSpeed = agent.speed;
+        }
 
         public void Walk()
         {
             if (destination == null || !agent.isOnNavMesh) return;
             agent.isStopped = false;
+            agent.speed = walkSpeed;
             agent.SetDestination(destination.position);
             walking = true;
             arrived = false;
@@ -91,6 +100,8 @@ namespace Nibiru.Sequences
                     bool far = Vector3.Distance(transform.position, player.transform.position) > waitIfPlayerFartherThan;
                     bool behind = Vector3.Distance(player.transform.position, goal) > Vector3.Distance(transform.position, goal);
                     agent.isStopped = far && behind;
+                    // E corre para alcançá-la quando ela vai longe à frente.
+                    if (catchUpSpeed > 0f) agent.speed = far && !behind ? catchUpSpeed : walkSpeed;
                 }
 
                 if (agent.pathPending || agent.remainingDistance > agent.stoppingDistance + 0.1f) return;
@@ -102,8 +113,10 @@ namespace Nibiru.Sequences
             else if (arrived && facePlayerAfterArriving && player != null)
             {
                 Vector3 flat = Vector3.ProjectOnPlane(player.transform.position - transform.position, Vector3.up);
+                // No diálogo o jogo pausa: ele vira no tempo real, para não falar de costas para a Elena.
+                float dt = Time.timeScale > 0f ? Time.deltaTime : Time.unscaledDeltaTime;
                 if (flat.sqrMagnitude > 0.01f)
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(flat), TurnSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(flat), TurnSpeed * dt);
             }
         }
 

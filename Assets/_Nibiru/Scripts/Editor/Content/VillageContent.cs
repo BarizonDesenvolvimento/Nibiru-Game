@@ -361,7 +361,9 @@ namespace Nibiru.EditorTools.Content
 
             Transform samirDestination = Point(g, "Destino_Samir", destination);
             samirDestination.rotation = Quaternion.Euler(0f, SamirDestinationYaw, 0f);
-            GameObject samir = Samir(scene, origin - forward * 1.6f, samirDestination);
+            // Perto o bastante do soldado para a facada alcançar, logo atrás do corpo no chão.
+            GameObject samir = Samir(scene, origin - forward * 1.1f, samirDestination);
+            var samirAnimator = SamirAnimator(samir);
 
             var picker = g.gameObject.AddComponent<PlaceAtPointAhead>();
             SetField(picker, "points", points);
@@ -381,7 +383,11 @@ namespace Nibiru.EditorTools.Content
                     SetActive(e, soldier, true);
                     Call(e, cornered.StartDialogue);
                 }),
-                S("Samir surge atrás do soldado", 0.4f, e => SetActive(e, samir, true)),
+                S("Samir surge atrás do soldado e dá a facada", 0.4f, e =>
+                {
+                    SetActive(e, samir, true);
+                    if (samirAnimator != null) Call(e, samirAnimator.Strike);
+                }),
                 S("Samir derruba o soldado", 0.6f, e =>
                 {
                     SetActive(e, soldier, false);
@@ -734,9 +740,11 @@ namespace Nibiru.EditorTools.Content
                     WakeSoldiers(e, patrol);
                 }),
                 S("conversa O cerco", 2.5f, e => Call(e, plan.StartDialogue)),
-                S("o Samir vai embora pelos canais do sul", 0.5f, e =>
+                S("o Samir vai embora pelos canais do sul, agachado por causa da patrulha", 0.5f, e =>
                 {
                     Call(e, walker.LeaveTo, samirExit);
+                    var samirAnimator = SamirAnimator(samir);
+                    if (samirAnimator != null) Call(e, samirAnimator.Sneak);
                     SetActive(e, checkpointGroup.gameObject, true);
                     SetActive(e, baseZone, true);
                 }));
@@ -912,27 +920,39 @@ namespace Nibiru.EditorTools.Content
             SetField(manager, "quests", quests.Append(quest).ToArray());
         }
 
-        // Samir em formas simples: cápsula cinza com a faca na mão, andando pela malha de navegação.
+        // Samir: o modelo animado (prefab do menu Nibiru > Personagens > Montar Samir animado),
+        // andando pela malha de navegação. Corre para alcançar a Elena quando ela vai longe à frente.
         static GameObject Samir(Transform parent, Vector3 position, Transform destination)
         {
             var samir = new GameObject("Samir");
             samir.transform.SetParent(parent, false);
             samir.transform.SetPositionAndRotation(position, parent.rotation);
-            Local(PrimitiveType.Capsule, samir.transform, "Corpo", new Vector3(0f, 0.9f, 0f), new Vector3(0.6f, 0.9f, 0.6f), "BO_Rocha", ColliderMode.Solid);
-            Local(PrimitiveType.Cube, samir.transform, "Faca", new Vector3(0.38f, 0.95f, 0.3f), new Vector3(0.04f, 0.03f, 0.28f), "BO_Metal");
+            var body = samir.AddComponent<CapsuleCollider>();
+            body.radius = 0.3f;
+            body.height = 1.75f;
+            body.center = new Vector3(0f, 0.875f, 0f);
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(SamirSetup.PrefabPath) != null)
+                SamirSetup.AddVisual(samir.transform, 0f);
+            else
+                Debug.LogWarning("Aldeia: prefab do Samir não encontrado. Rode Nibiru > Personagens > Montar Samir animado e povoe a Aldeia de novo.");
 
             var agent = samir.AddComponent<NavMeshAgent>();
-            agent.speed = 3.2f;
+            agent.speed = SamirSetup.WalkSpeed;
             agent.angularSpeed = 360f;
             agent.acceleration = 10f;
             agent.radius = 0.35f;
             agent.height = 1.8f;
             agent.stoppingDistance = 0.2f;
 
-            SetField(samir.AddComponent<WalkToPoint>(), "destination", destination);
+            var walker = samir.AddComponent<WalkToPoint>();
+            SetField(walker, "destination", destination);
+            SetField(walker, "catchUpSpeed", SamirSetup.RunSpeed);
             samir.SetActive(false);
             return samir;
         }
+
+        // O NpcAnimator do Samir (golpe de faca, agachar), ou null se o modelo não estiver nele.
+        static AI.NpcAnimator SamirAnimator(GameObject samir) => samir.GetComponentInChildren<AI.NpcAnimator>(true);
 
         // Leva o ponto para a malha de navegação e confere se há espaço livre em volta dele.
         static Vector3 OnNavMesh(Vector3 wanted, string label, float clearance)
