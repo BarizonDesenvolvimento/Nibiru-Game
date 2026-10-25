@@ -23,6 +23,9 @@ namespace Nibiru.EditorTools.Audio
 
         public const string LulluBreathing = Folder + "/Lullu_Respiracao_Loop.wav";
         public const string WellAmbience = Folder + "/Poco_Ambiente_Loop.wav";
+        public const string ServantRoar = Folder + "/Servo_Urro.wav";
+        public const string MaskCrack = Folder + "/Mascara_Racha.wav";
+        public const string FloodlightCrash = Folder + "/Holofote_Queda.wav";
 
         const int Rate = 44100;
 
@@ -44,6 +47,9 @@ namespace Nibiru.EditorTools.Audio
             Write(GateOpening, overwrite, MakeGateOpening);
             Write(LulluBreathing, overwrite, MakeLulluBreathing);
             Write(WellAmbience, overwrite, MakeWellAmbience);
+            Write(ServantRoar, overwrite, MakeServantRoar);
+            Write(MaskCrack, overwrite, MakeMaskCrack);
+            Write(FloodlightCrash, overwrite, MakeFloodlightCrash);
             AssetDatabase.Refresh();
         }
 
@@ -215,6 +221,72 @@ namespace Nibiru.EditorTools.Audio
                 samples[i] = rumble * 14f + drone + stones * 0.5f;
             }
             return FadeEdges(Normalize(samples, 0.6f));
+        }
+
+        // Urro do Primeiro Servo: um rugido grave e rouco que sobe e cai, com a garganta raspando.
+        static float[] MakeServantRoar()
+        {
+            var random = new System.Random(61);
+            var samples = new float[(int)(Rate * 1.9f)];
+            float low = 0f, lowest = 0f, phase = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                low += (white - low) * 0.2f;
+                lowest += (white - lowest) * 0.02f;
+                float envelope = Mathf.Clamp01(t / 0.15f) * Mathf.Exp(-Mathf.Max(0f, t - 1.1f) / 0.3f);
+                // Altura da voz: sobe no começo e afunda no fim.
+                float pitch = 70f + 40f * Mathf.Sin(Mathf.PI * Mathf.Clamp01(t / 1.6f));
+                phase += pitch / Rate;
+                float voice = Mathf.Sin(2 * Mathf.PI * phase) + 0.5f * Mathf.Sin(4 * Mathf.PI * phase) + 0.3f * Mathf.Sin(6 * Mathf.PI * phase);
+                float growl = (low - lowest) * (0.6f + 0.4f * Mathf.Sin(t * 2 * Mathf.PI * 28f));
+                samples[i] = (voice * 0.6f * (0.7f + 0.3f * Mathf.Sin(t * 2 * Mathf.PI * 9f)) + growl * 2.2f) * envelope;
+            }
+            return Normalize(samples, 0.95f);
+        }
+
+        // A máscara rachando: estalos secos de metal e pedra, um atrás do outro.
+        static float[] MakeMaskCrack()
+        {
+            var random = new System.Random(67);
+            var samples = new float[(int)(Rate * 0.7f)];
+            float body = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                body += (white - body) * 0.5f;
+                float s = 0f;
+                foreach (float at in new[] { 0f, 0.07f, 0.16f, 0.31f })
+                {
+                    float hit = t - at;
+                    if (hit < 0f) continue;
+                    s += (body * 1.4f + Mathf.Sin(2 * Mathf.PI * (2400f - at * 3000f) * t) * 0.4f) * Mathf.Exp(-hit / 0.012f);
+                }
+                samples[i] = s;
+            }
+            return Normalize(samples, 0.8f);
+        }
+
+        // Holofote caindo: o poste bate de metal no chão e o vidro se quebra.
+        static float[] MakeFloodlightCrash()
+        {
+            var random = new System.Random(71);
+            var samples = new float[(int)(Rate * 1.4f)];
+            float body = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                body += (white - body) * 0.1f;
+                float clang = (Mathf.Sin(2 * Mathf.PI * 310f * t) + Mathf.Sin(2 * Mathf.PI * 467f * t) * 0.7f + Mathf.Sin(2 * Mathf.PI * 1230f * t) * 0.3f) * Mathf.Exp(-t / 0.35f);
+                float thud = body * 4f * Mathf.Exp(-t / 0.08f);
+                float glassT = t - 0.04f;
+                float glass = glassT > 0f && random.NextDouble() < 0.08 ? white * 2.5f * Mathf.Exp(-glassT / 0.25f) : 0f;
+                samples[i] = clang * 0.5f + thud + glass;
+            }
+            return Normalize(samples, 0.95f);
         }
 
         // Suaviza o começo e o fim para o loop não estalar na emenda.
