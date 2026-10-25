@@ -28,7 +28,7 @@ namespace Nibiru.Sequences
 
         NavMeshAgent agent;
         Player.PlayerMotor player;
-        bool walking, arrived;
+        bool walking, arrived, leaving;
 
         public bool IsWalking => walking;
 
@@ -48,6 +48,17 @@ namespace Nibiru.Sequences
         {
             destination = newDestination;
             Walk();
+        }
+
+        /// <summary>
+        /// Vai embora: anda até o ponto sem esperar a Elena e some ao chegar (por exemplo, o
+        /// Samir saindo da Aldeia pelos canais).
+        /// </summary>
+        public void LeaveTo(Transform newDestination)
+        {
+            waitIfPlayerFartherThan = 0f;
+            leaving = true;
+            WalkTo(newDestination);
         }
 
         /// <summary>Troca o destino e põe o personagem direto nele, sem disparar a chegada.</summary>
@@ -86,6 +97,7 @@ namespace Nibiru.Sequences
                 walking = false;
                 arrived = true;
                 onArrived.Invoke();
+                if (leaving) gameObject.SetActive(false);
             }
             else if (arrived && facePlayerAfterArriving && player != null)
             {

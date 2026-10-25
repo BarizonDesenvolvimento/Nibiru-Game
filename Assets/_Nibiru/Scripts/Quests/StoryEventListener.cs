@@ -18,6 +18,9 @@ namespace Nibiru.Quests
         [Tooltip("Ao carregar a cena, refaz a reação se o evento já aconteceu antes.")]
         [SerializeField] bool replayOnLoad = true;
 
+        [Tooltip("Só ao carregar a cena (volta de um checkpoint), e não na hora em que o evento acontece. Para pôr direto no estado final o que, ao vivo, uma sequência faz aos poucos.")]
+        [SerializeField] bool onlyOnLoad;
+
         void OnEnable() => StoryEvents.Raised += OnRaised;
 
         void OnDisable() => StoryEvents.Raised -= OnRaised;
@@ -29,7 +32,7 @@ namespace Nibiru.Quests
 
         void OnRaised(StoryEvent raised)
         {
-            if (raised == storyEvent) response.Invoke();
+            if (raised == storyEvent && !onlyOnLoad) response.Invoke();
         }
     }
 }
