@@ -35,6 +35,10 @@ namespace Nibiru.EditorTools
         const float ColliderHeight = 1.8f;
         const float ColliderRadius = 0.4f;
 
+        // O golpe é a estocada do corte da Elena, mas com a altura medida pelos pés: no corte dela
+        // (altura original) o corpo abaixa na estocada, e nele os pés afundavam no chão.
+        static readonly Cut Strike = new("Lullu_Golpe", "Stabbing", 15, 37, false, feet: true, mirror: true, original: true);
+
         [MenuItem("Nibiru/Personagens/Montar Lullu animado")]
         static void Build()
         {
@@ -45,6 +49,7 @@ namespace Nibiru.EditorTools
             }
             AssetDatabase.Refresh();
             SoldiersSetup.ImportCharacter(Character);
+            ConfigureClips(Strike.file, new[] { Strike });
             var controller = BuildController();
             if (controller == null) return;
             AssetDatabase.SaveAssets();
@@ -61,7 +66,7 @@ namespace Nibiru.EditorTools
             var idle = Clip("Idle", "Parada");
             var walk = Clip("WalkForward", "Andar");
             var run = Clip("Fast Run", "Correr");
-            var strike = Clip("Stabbing", "Golpe_Faca");
+            var strike = Clip("Stabbing", Strike.name);
             var hurt = Clip("Hit Reaction", "Dano");
             var death = Clip("Standing React Death Backward", "Morte");
             if (new[] { idle, walk, run, strike, hurt, death }.Any(c => c == null))
