@@ -21,6 +21,9 @@ namespace Nibiru.EditorTools.Audio
         public const string LaserWarning = Folder + "/Mira_Aviso.wav";
         public const string GateOpening = Folder + "/Portao_Abrindo.wav";
 
+        public const string LulluBreathing = Folder + "/Lullu_Respiracao_Loop.wav";
+        public const string WellAmbience = Folder + "/Poco_Ambiente_Loop.wav";
+
         const int Rate = 44100;
 
         [MenuItem("Nibiru/Áudio/Gerar sons provisórios")]
@@ -39,6 +42,8 @@ namespace Nibiru.EditorTools.Audio
             Write(RadioStatic, overwrite, MakeRadioStatic);
             Write(LaserWarning, overwrite, MakeLaserWarning);
             Write(GateOpening, overwrite, MakeGateOpening);
+            Write(LulluBreathing, overwrite, MakeLulluBreathing);
+            Write(WellAmbience, overwrite, MakeWellAmbience);
             AssetDatabase.Refresh();
         }
 
@@ -163,6 +168,66 @@ namespace Nibiru.EditorTools.Audio
                 samples[i] = motor + squeal + rattle + hit;
             }
             return Normalize(samples, 0.85f);
+        }
+
+        // Respiração rouca que não é de gente (duas inspirações lentas em 5 s) e unhas raspando pedra.
+        static float[] MakeLulluBreathing()
+        {
+            var random = new System.Random(41);
+            var samples = new float[Rate * 5];
+            float low = 0f, lowest = 0f, scrape = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                low += (white - low) * 0.12f;
+                lowest += (white - lowest) * 0.015f;
+                float breath = Mathf.Pow(Mathf.Max(0f, Mathf.Sin(2 * Mathf.PI * t / 2.5f)), 1.5f);
+                float rasp = (low - lowest) * breath * (0.7f + 0.3f * Mathf.Sin(t * 53f));
+
+                // Raspão: ruído áspero em rajadas curtas, uma vez e meia por segundo.
+                float gate = Mathf.Max(0f, Mathf.Sin(2 * Mathf.PI * t * 0.6f + 1f)) > 0.85f ? 1f : 0f;
+                scrape += (white - scrape) * 0.45f;
+                samples[i] = rasp * 1.6f + scrape * gate * 0.35f * (0.5f + 0.5f * Mathf.Sin(t * 90f));
+            }
+            return FadeEdges(Normalize(samples, 0.7f));
+        }
+
+        // Fundo do Poço: ronco grave e ar parado, com duas pedras que caem e batem ao longe.
+        static float[] MakeWellAmbience()
+        {
+            var random = new System.Random(53);
+            var samples = new float[Rate * 8];
+            float rumble = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                rumble += (white - rumble) * 0.004f;
+                float drone = Mathf.Sin(2 * Mathf.PI * 38f * t) * 0.18f + Mathf.Sin(2 * Mathf.PI * 57f * t) * 0.08f;
+                float stones = 0f;
+                foreach (float at in new[] { 1.7f, 2.0f, 5.6f })
+                {
+                    float hit = t - at;
+                    if (hit < 0f) continue;
+                    stones += (white * 0.9f + Mathf.Sin(2 * Mathf.PI * (260f + at * 40f) * t) * 0.5f) * Mathf.Exp(-hit / 0.05f);
+                }
+                samples[i] = rumble * 14f + drone + stones * 0.5f;
+            }
+            return FadeEdges(Normalize(samples, 0.6f));
+        }
+
+        // Suaviza o começo e o fim para o loop não estalar na emenda.
+        static float[] FadeEdges(float[] samples)
+        {
+            int fade = Rate / 20;
+            for (int i = 0; i < fade; i++)
+            {
+                float k = (float)i / fade;
+                samples[i] *= k;
+                samples[samples.Length - 1 - i] *= k;
+            }
+            return samples;
         }
 
         static float[] Normalize(float[] samples, float peak)
