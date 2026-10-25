@@ -67,24 +67,19 @@ namespace Nibiru.Dialogue
                 waited += Time.deltaTime;
                 yield return null;
             }
-            // Outra conversa em andamento também segura o rádio (a fala dele nunca atropela nada).
-            while (runner.IsRunning) yield return null;
+            // Outra conversa em andamento (ou o controle travado) também segura o rádio: a fala dele
+            // nunca atropela nada, e só conta como começada quando a conversa de fato abre.
+            DialogueDefinition chosen = alternateDialogue != null && StoryEvents.HasBeenRaised(alternateWhenRaised)
+                ? alternateDialogue
+                : dialogue;
+            while (!runner.Play(chosen)) yield return null;
+            StoryEvents.Raise(raiseOnStart);
             waiting = null;
-            StartRadio();
         }
 
         // A fita só segura o rádio se foi pega, ainda não terminou e está de fato tocando.
         bool TapeIsPlaying =>
             tape != null && tapePlayer != null && tape.IsCollected && !tape.IsFinished && tapePlayer.IsPlaying;
-
-        void StartRadio()
-        {
-            DialogueDefinition chosen = alternateDialogue != null && StoryEvents.HasBeenRaised(alternateWhenRaised)
-                ? alternateDialogue
-                : dialogue;
-            StoryEvents.Raise(raiseOnStart);
-            runner.Play(chosen);
-        }
 
         void OnDisable() => waiting = null;
     }

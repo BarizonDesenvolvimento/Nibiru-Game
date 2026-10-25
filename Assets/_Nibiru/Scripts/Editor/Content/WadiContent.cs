@@ -32,20 +32,23 @@ namespace Nibiru.EditorTools.Content
         static readonly Vector3 ArrivalZoneCenter = new Vector3(60f, 1.5f, 162f);
         static readonly Vector3 ArrivalZoneSize = new Vector3(12f, 3f, 2f);
 
-        // Ponto de retorno antes do rádio: no trecho B, a uns 8 m antes da curva, longe da patrulha.
-        static readonly Vector3 PreRadioCheckpointCenter = new Vector3(53f, 1.5f, 157f);
-        static readonly Vector3 PreRadioCheckpointSize = new Vector3(2f, 3f, 12f);
-        static readonly Vector3 PreRadioCheckpointSpawn = new Vector3(51.5f, 0f, 157f);
+        // Ponto de retorno antes do rádio: atravessa o trecho B inteiro (todo caminho passa por ele) e devolve a
+        // Elena junto da margem sul, a mais de 11 m do líder (o alcance da vista dele na tempestade).
+        static readonly Vector3 PreRadioCheckpointCenter = new Vector3(52.5f, 1.5f, 157f);
+        static readonly Vector3 PreRadioCheckpointSize = new Vector3(2f, 3f, 14f);
+        static readonly Vector3 PreRadioCheckpointSpawn = new Vector3(51f, 0f, 151.4f);
 
         // Salvamento automático depois da escolha, junto do soldado.
         static readonly Vector3 PostChoiceCenter = new Vector3(60f, 1.5f, 171f);
         static readonly Vector3 PostChoiceSize = new Vector3(8f, 3f, 2f);
         static readonly Vector3 PostChoiceSpawn = new Vector3(60f, 0f, 172.5f);
 
-        // Rota do líder de esquadra: vai e volta pela metade norte do trecho B, a oeste da curva.
+        // Rota do líder de esquadra: vai e volta rente à margem norte do trecho B, a oeste da curva. Quem anda
+        // agachada pela margem sul (z ~ 151) fica a mais de 11 m dele, fora do alcance da vista dele na tempestade
+        // (20 m x 0,55), e as pedras tapam o resto.
         static readonly Vector3[] LeaderPatrol =
         {
-            new Vector3(38f, 0f, 160.5f), new Vector3(49f, 0f, 160.5f),
+            new Vector3(38f, 0f, 162.2f), new Vector3(46f, 0f, 162.2f),
         };
 
         internal class Events
