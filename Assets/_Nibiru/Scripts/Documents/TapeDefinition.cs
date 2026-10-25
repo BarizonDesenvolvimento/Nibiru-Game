@@ -55,6 +55,15 @@ namespace Nibiru.Documents
         public float SecondsFor(Line line) =>
             Mathf.Max(minSecondsPerLine, (line.text?.Length ?? 0) * secondsPerCharacter);
 
+        /// <summary>
+        /// Quanto a fita dura de verdade: o clipe de voz, quando há, ou o tempo das legendas (mais a
+        /// partida do gravador) enquanto não há voz. É o que o rádio do Kast usa como teto de espera.
+        /// </summary>
+        public float PlaybackSeconds => voice != null ? voice.length : TotalSeconds + StartDelaySeconds;
+
+        /// <summary>Espera do gravador antes da primeira fala (a do TapePlayer).</summary>
+        public const float StartDelaySeconds = 0.6f;
+
         /// <summary>Duração total da fita, em segundos.</summary>
         public float TotalSeconds
         {

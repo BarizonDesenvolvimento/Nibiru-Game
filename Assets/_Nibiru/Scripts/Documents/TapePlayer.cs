@@ -25,7 +25,7 @@ namespace Nibiru.Documents
         [SerializeField] AudioSource voice;
 
         [Tooltip("Segundos de espera antes da primeira fala.")]
-        [SerializeField, Min(0f)] float startDelay = 0.6f;
+        [SerializeField, Min(0f)] float startDelay = TapeDefinition.StartDelaySeconds;
 
         SubtitleUI subtitles;
         Coroutine running;

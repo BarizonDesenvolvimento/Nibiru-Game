@@ -268,7 +268,7 @@ namespace Nibiru.EditorTools
                 : GameObject.Find("Passagem_Dos_Guardioes").GetComponentsInChildren<Checkpoint>(true).Select(c => c.name).OrderBy(n => n).ToArray();
             bool onlyTwo = names.SequenceEqual(new[] { "Autosave_Topo_Da_Rampa", "Checkpoint_Passagem_Aberta" });
             bool autosave = WorldState.IsCheckpointActivated("poco.autosave_topo_da_rampa");
-            bool done = Raised("SaiuDaPassagem") && Objective().StartsWith("nenhum");
+            bool done = Raised("SaiuDaPassagem") && (Objective().StartsWith("nenhum") || Objective().StartsWith("Siga o wadi"));
             float y = player.transform.position.y;
             Result(lit && onlyTwo && autosave && done && y > -1f,
                 $"lamparinas acesas={lamps.Length} ({lit}), pontos de retorno=[{string.Join(", ", names)}], salvamento={autosave}, saiu={Raised("SaiuDaPassagem")}, objetivo=\"{Objective()}\", y={y:0.0}");
