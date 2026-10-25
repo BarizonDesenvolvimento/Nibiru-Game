@@ -28,7 +28,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Primeiro Servo definitivo** (Meshy + AccuRig, com dedos, 2,50 m em pé, máscara de ouro) está no prefab `Prefabs/AI/PrimeiroServo`, usado no passo 12 e no laboratório. Veja "Primeiro Servo" em Personagens 3D.
 - Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é o teste do dono nos passos 10, 11 e 13 (o 12, o 14 e o 15 já foram aprovados), depois as animações de sentado da Elena e do Samir na caminhonete (o dono as traz) e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+Os passos 10 a 15 foram todos testados no Play e aprovados pelo dono (a luta do passo 12 segue com o equilíbrio pendente). A próxima prioridade são as animações da biblioteca (`Docs/CATALOGO_ANIMACOES.md`): garra, urro e saída das rachaduras da criatura, locomoção da Elena, e sentado e dirigindo na caminhonete (falta baixar um sentado da Elena); depois importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -558,7 +558,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Teste do dono nos passos 10, 11 e 13 (o 12, o 14 e o 15 já foram aprovados); depois as animações de sentado e de dirigir na caminhonete (Mixamo), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Importar as animações do catálogo (criatura, Elena, caminhonete); os passos 10 a 15 já foram aprovados pelo dono. Depois, o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
