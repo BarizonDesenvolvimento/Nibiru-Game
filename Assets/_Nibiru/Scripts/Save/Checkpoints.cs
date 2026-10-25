@@ -31,6 +31,9 @@ namespace Nibiru.Save
 
         public static void Save(Data data) => last = data;
 
+        /// <summary>Esquece o ponto de retorno (ao voltar ao menu principal).</summary>
+        public static void Clear() => last = null;
+
         /// <summary>O último checkpoint, se ele for desta cena.</summary>
         public static bool TryGetFor(string sceneName, out Data data)
         {
