@@ -28,6 +28,7 @@ namespace Nibiru.EditorTools.Audio
         public const string FloodlightCrash = Folder + "/Holofote_Queda.wav";
         public const string WallOpening = Folder + "/Parede_Abrindo.wav";
         public const string TunnelAmbience = Folder + "/Passagem_Ambiente_Loop.wav";
+        public const string StormWind = Folder + "/Vento_Tempestade_Loop.wav";
 
         const int Rate = 44100;
 
@@ -54,6 +55,7 @@ namespace Nibiru.EditorTools.Audio
             Write(FloodlightCrash, overwrite, MakeFloodlightCrash);
             Write(WallOpening, overwrite, MakeWallOpening);
             Write(TunnelAmbience, overwrite, MakeTunnelAmbience);
+            Write(StormWind, overwrite, MakeStormWind);
             AssetDatabase.Refresh();
         }
 
@@ -339,6 +341,26 @@ namespace Nibiru.EditorTools.Audio
                 samples[i] = s;
             }
             return Normalize(FadeEdges(samples), 0.6f);
+        }
+
+        // Vento da tempestade de areia: ruído filtrado que sobe e desce em rajadas, com um assobio. 6 s sem emenda.
+        static float[] MakeStormWind()
+        {
+            var random = new System.Random(97);
+            var samples = new float[Rate * 6];
+            float low = 0f, high = 0f, lowest = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                low += (white - low) * 0.05f;
+                high += (white - high) * 0.4f;
+                lowest += (white - lowest) * 0.004f;
+                float gust = 0.5f + 0.3f * Mathf.Sin(2 * Mathf.PI * t / 6f) + 0.2f * Mathf.Sin(2 * Mathf.PI * t * 2f / 6f + 1f);
+                float whistle = Mathf.Sin(2 * Mathf.PI * (720f + 90f * Mathf.Sin(2 * Mathf.PI * t / 3f)) * t) * 0.05f * gust;
+                samples[i] = ((low - lowest) * 3.5f + (high - low) * 1.2f) * gust + whistle;
+            }
+            return Normalize(FadeEdges(samples), 0.7f);
         }
 
         // Suaviza o começo e o fim para o loop não estalar na emenda.
