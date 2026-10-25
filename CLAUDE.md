@@ -40,14 +40,15 @@ Assets/
     Data/           (ScriptableObjects: missões, eventos, itens, diálogos, tabuletas, poderes, facções, IA)
     Prefabs/        (Player/Elena é a Elena com câmera e HUD; use em toda cena)
     Scenes/         (Teste_Personagem = laboratório; Regiao1_SitioDeUr = região 1)
-    Art/            (assets próprios; Personagens/ com os modelos 3D em FBX)
+    Art/            (assets próprios; Personagens/ com os modelos 3D em FBX, Animacoes/Mixamo/ com
+                     as animações usadas e o X Bot de referência)
   ThirdParty/       (assets comprados ou baixados, sem modificar)
-ArteFonte/          (arte-fonte por personagem, fora da Unity: Elena/, Samir/, Ninsar/
-                     com 1_Meshy, 2_Rig, 3_Blender e Imagens De Referencia)
+ArteFonte/          (arte-fonte fora da Unity: uma pasta por personagem com Referencias, 1_Meshy e 2_Rig
+                     (rig do AccuRig com dedos); a Ninsar também tem 3_Blender; Animacoes/Mixamo/)
 Docs/
   GDD.md, Biblia.md, Regiao-1-Sitio-de-Ur.md, ESTADO.md
 ```
 
 ## Fase atual
 
-Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2), a Aldeia até o passo 7 (área 3: encontro com o Samir, sobreviventes e o nicho dos Guardiões como altar) e a Elena animada no lugar da cápsula estão prontos. Os passos 8 (a primeira tabuleta, a memória de Ziusudra e o Eco do Abzu) e 9 (o plano de fuga) estão prontos e testados pelo dono. A próxima prioridade é o passo 10 (atravessar a base do zigurate) e seguir área por área. A Ninsar tem uma prévia animada na Unity, e o manto dela está pausado. Detalhes em `Docs/ESTADO.md`.
+Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2), a Aldeia até o passo 7 (área 3: encontro com o Samir, sobreviventes e o nicho dos Guardiões como altar) e a Elena definitiva (AccuRig com dedos, animações do Mixamo) no lugar da cápsula estão prontos. Os outros personagens estão prontos na ArteFonte e entram na Unity um por conversa, começando pelo Samir. Os passos 8 (a primeira tabuleta, a memória de Ziusudra e o Eco do Abzu) e 9 (o plano de fuga) estão prontos e testados pelo dono. A próxima prioridade é o passo 10 (atravessar a base do zigurate) e seguir área por área. A Ninsar tem uma prévia animada na Unity, e o manto dela está pausado. Detalhes em `Docs/ESTADO.md`.

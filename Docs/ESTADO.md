@@ -2,7 +2,7 @@
 
 Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem precisar reler o histórico. Atualize este arquivo ao fim de cada etapa grande.
 
-Última atualização: 21 de outubro de 2026.
+Última atualização: 25 de outubro de 2026.
 
 ## Onde estamos
 
@@ -11,14 +11,14 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O protótipo do personagem está pronto.
 - Os **14 sistemas essenciais** da fatia (Grupo 1 de `Docs/Regiao-1-Sitio-de-Ur.md`) estão prontos e testados.
 - O **blockout** do mapa do Sítio de Ur está construído.
-- Os modelos 3D da **Elena** e do **Samir** chegaram ao projeto, ainda sem esqueleto nem animação.
 - O **Acampamento** (área 1) está povoado e testado pelo dono: passos 1 a 4 da missão "Sobrevivente" e o começo de "O que o Tom viu".
 - As **Trincheiras** (área 2) estão povoadas e testadas pelo dono: passo 5 da missão (ordem pelo rádio, primeira furtividade, pistola), helicóptero passando baixo, Dra. Weiss (só a primeira conversa), 2º rolo de filme e rádio de campanha.
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
-- A **Elena animada** substituiu a cápsula no prefab `Prefabs/Player/Elena` (parada, andar, correr, agachar, esquivar e mirar), testada pelo dono em `Teste_Personagem` e `Regiao1_SitioDeUr`. Veja "Elena nova" em Personagens 3D.
+- A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
+- Os outros personagens (Samir, soldados, Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é atravessar a base do zigurate (passo 10). Animações que faltam da Elena estão em "Elena nova".
+A próxima prioridade é importar os outros personagens (começando pelo Samir) e atravessar a base do zigurate (passo 10). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -147,45 +147,95 @@ Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em 
 
 ## Personagens 3D
 
-Feitos no Meshy, exportados do Blender para FBX:
+Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (imagem de referência), `1_Meshy/` (FBX e texturas PNG baixados do Meshy; fora do Git) e `2_Rig/` (FBX do AccuRig com esqueleto e dedos). Cada personagem entra na Unity numa conversa própria.
 
-| Personagem | FBX | Fonte original |
-| --- | --- | --- |
-| Elena Varga (nova, para usar) | `Art/Personagens/Elena/Elena_Personagem.fbx` (15 mil triângulos, esqueleto), `Elena_Animacoes.fbx` (16 animações), `Elena_Andando.fbx` e texturas `Elena_BaseColor/Metallic/Normal/Roughness.png` | Meshy (sem .blend) |
-| Elena Varga (antiga, pesada) | `Art/Personagens/Elena/Elena_Varga.fbx` + texturas | `ArteFonte/Elena/Elena_Varga.blend` |
-| Samir Haddad | `Art/Personagens/Samir/Samir_Haddad.fbx` + texturas | `ArteFonte/Samir/Samir_Haddad.blend` |
+**Como chegam (conferido em 25/10/2026, no Blender):** todos têm o esqueleto do AccuRig com 101 ossos (30 de dedo), pose T ou A, todos os vértices com peso e de 19 a 31 mil triângulos (bom para jogo). O Meshy entrega todos com cerca de **0,95 m**: a altura certa vem da escala de importação (tabela abaixo). No FBX do rig, a cor e o normal (4096) estão embutidos e só metal e rugosidade (2048) saem soltos; as PNG completas estão em `1_Meshy/` (os mesmos UVs; se sumirem, baixe de novo no Meshy).
 
-**Elena nova:** os três FBX estão como Humanoid, cada um com o próprio avatar, porque os ossos têm nomes diferentes (`smartrig` no personagem, `mixamorig` nas animações); a Unity traduz as animações de um para o outro. Não use "Copy From Other Avatar" entre eles: dá erro de ossos não encontrados.
+| Personagem | Pasta | Altura | Situação |
+| --- | --- | --- | --- |
+| Elena Varga | `Elena` | 1,70 m | **No jogo** (prefab `Player/Elena`) |
+| Samir Haddad | `Samir` | 1,75 m | Pronto para importar |
+| Yusuf | `Yusuf` | 1,74 m | Pronto para importar |
+| Umm Karim | `Umm Karim` | 1,58 m | Pronto para importar |
+| Dra. Weiss | `Dra. Weiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (alguns dedos não dobram) |
+| Soldado da Contenção | `Soldado` | 1,82 m | Pronto (1 osso de dedo sem peso) |
+| Líder de esquadra | `LiderDeEsquadra` | 1,80 m | Pronto para importar |
+| Atirador de elite | `AtiradorDeElite` | 1,78 m | Pronto para importar |
+| Piloto | `Piloto` | 1,78 m | Pronto para importar |
+| Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | Pronto para importar |
+| Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Pronto (2 ossos de dedo sem peso) |
+| Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | Pronto para importar |
+| Lullu | `Lullu` | 2,10 m em pé | Pronto; pose A (41°) e pernas longas de criatura. Anda curvado, então na pose de caça fica bem mais baixo |
+| Primeiro Servo | `PrimeiroServo` | 2,50 m | Pronto (5 ossos de dedo sem peso) |
+| Ninsar | `Ninsar` | 1,90 m | Prévia na Unity; manto pausado (Ato 2). Veja "Ninsar" abaixo |
 
-**Provisória:** o dono achou o rig e a animação desta Elena errados (ela fica esquisita em movimento). Ela serve para a fatia vertical, mas vai ser substituída por uma versão correta. Ao trocar, mantenha os nomes dos arquivos (ou mude as constantes no topo do `ElenaSetup.cs`) e rode o menu de novo: o `PlayerAnimator`, o controlador e o prefab continuam valendo.
+As alturas ficam também em `Scripts/Editor/Personagens/CharacterHeights.cs`: `CharacterHeights.FitImportScale(fbx, "Nome")` ajusta o "Scale Factor" da importação até o modelo medir a altura da tabela (use na montagem de cada personagem).
 
-Ela já está no jogo, no lugar da cápsula. O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes), inclusive a marca azul do pulso (`TransformationMark`):
-- Material URP Lit `Art/Personagens/Elena/Materiais/Elena.mat`. Metal e lisura vão juntos em `Elena_MetalSmooth.png` (R = metal, A = 1 - rugosidade), gerado só se ainda não existir; para refazer, apague o arquivo e rode o menu.
-- Importação das animações: avanço do clipe sai para a raiz e é descartado (quem anda é o `PlayerMotor`), altura e giro ficam na pose, "Based Upon: Body Orientation". Os clipes originais do Meshy continuam no FBX, e o script acrescenta os trechos usados (nomes em português).
-- Controlador `Elena.controller`. Camada base: estado "Locomocao" (mistura em pé e agachada pelo parâmetro `Agachar`, e cada uma pela `Velocidade` em m/s, com os limites lidos de `Data/Player/MovimentoJogador`), "Esquiva" (gatilho `Esquivar`, no tempo exato da esquiva). Camada "Mira" com máscara do tronco (`Elena_Tronco.mask`), acesa ao mirar.
-- No prefab, o filho "Modelo" (o FBX com o Animator) fica sob o "Jogador", com os pés no fundo do colisor. O colisor, a câmera e os sistemas não mudaram.
-- `Player/PlayerAnimator` passa o estado do `PlayerMotor` e da mira para o Animator. Andando de costas (mirando), o andar toca ao contrário (parâmetro `Sentido`). Ao mirar, endireita o tronco (agachada, a pose dobra o corpo para a frente) e faz a arma provisória seguir a mão direita.
-- `PlayerCrouchVisual` não achata mais o corpo (a animação agacha); só desce câmera e faca. `PlayerDeathHandler` deita a Elena de bruços no chão (falta animação de morte).
+A Elena e o Samir antigos (`Elena_Varga`, `Samir_Haddad`, 1,5 a 1,8 milhão de triângulos, sem esqueleto) e a Elena provisória do Meshy saíram do projeto. O Tom não entra agora.
 
-Trechos usados (constantes no topo do `ElenaSetup.cs`; para trocar uma animação, mude arquivo, take e quadros ali e rode o menu):
+### Animações do Mixamo
+
+Em `ArteFonte/Animacoes/Mixamo` (baixadas "sem pele"; o `X Bot.fbx` é o boneco em pose T). As usadas são copiadas para `Assets/_Nibiru/Art/Animacoes/Mixamo`.
+
+| Animação | Situação |
+| --- | --- |
+| Idle, WalkForward, Fast Run, Sneak Walk, Stand To Roll, Pistol Aim, Reloading, Stabbing, Hit Reaction, Standing React Death Backward | Usadas na Elena (veja a tabela dela) |
+| Female Walk | Andar de passarela, com o queixo erguido e o tronco para trás. Não serviu para a Elena; pode servir para outra personagem |
+| Run Forward | Ainda não conferida (candidata a corrida da Elena) |
+| Talking 1 a 4, Laying Idle, Laying Shaking Head, Look Around | Boas, para NPCs (conversas; Yusuf deitado na esteira) |
+| Standing React Death Backward, walking to dying | Mortes |
+| Run Look Back, Unarmed Run Back, jump forward/backward | Corrida olhando para trás, corrida de costas e pulos; sem uso por enquanto |
+| Walking, firing rifle, rifle aiming idle, rifle run, strafe, walking backwards, start/stop walking, run backwards | **Pacote de fuzil** (o "Walking" anda segurando fuzil). Servem para os soldados |
+| Run | Corrida de pernas abertas e cruzadas, com o pé virando para fora. Não usar |
+| Stable Sword Inward/Outward Slash | Golpes de espada que giram o tronco quase 180°. Não servem para faca |
+
+**Como importar animações do Mixamo (vale para todos os personagens):**
+- Humanoid com **"Copy From Other Avatar" do `X Bot.fbx`**. O avatar feito da própria animação sem pele parte do primeiro quadro, não da pose T, e entorta a animação inteira (a corrida ficava girada 40°).
+- Giro da raiz: **"Based Upon: Body Orientation"** para andar, correr e agachar (a Run e a Sneak Walk correm na diagonal) e **"Original"** para golpes em que o corpo fica de lado (Stabbing), senão o braço vai para o lado.
+- Antes de usar, ver a animação no X Bot: os nomes enganam (o "Walking" é com fuzil).
+
+### Elena
+
+O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
+- Modelo `Art/Personagens/Elena/Elena.fbx` (cópia de `ArteFonte/Elena/2_Rig/Elena.rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,787 (1,70 m), sem blendshapes.
+- Texturas `Elena_BaseColor/Normal/Metallic/Roughness.png` (cópias das PNG de `1_Meshy`). Material URP Lit `Materiais/Elena.mat`, de dois lados (como no AccuRig). Metal e lisura vão juntos em `Elena_MetalSmooth.png` (R = metal, A = 1 - rugosidade), gerado só se ainda não existir; para refazer, apague o arquivo e rode o menu.
+- Animações: avanço do clipe descartado (quem anda é o `PlayerMotor`), altura e giro na pose. A velocidade natural de cada andar e corrida é lida do próprio clipe.
+- Controlador `Elena.controller`. Camada base: "Locomocao" (em pé e agachada pelo `Agachar`, cada uma pela `Velocidade`), "Esquiva", "Golpe_Faca" e "Morte" (cada uma no tempo exato da ação do jogo). Camadas do tronco (`Elena_Tronco.mask`): "Mira", "Recarregar" (no tempo da recarga da pistola) e "Reacoes" (aditiva, peso 0,55: o tranco do dano por cima de tudo).
+- No prefab, o filho "Modelo" fica sob o "Jogador", com os pés no fundo do colisor. A faca provisória (`PivoFaca/Lamina`) virou uma lâmina curta.
+- `Player/PlayerAnimator` passa o estado do movimento, da mira e do combate ao Animator. Ele também cuida de:
+  - endireitar o tronco ao mirar;
+  - dar o coice a cada tiro (evento `PlayerWeapons.Fired`);
+  - levar a arma e a faca para a mão direita;
+  - tocar dano e morte (eventos do `Health`);
+  - esconder o corpo (só a sombra) quando a câmera encosta nela.
+- `PlayerDeathHandler` só tomba o corpo quando não há animação de morte.
 
 | Trecho | Vem de | Observação |
 | --- | --- | --- |
-| Parada | `Idle_Turn_Right`, quadro 0 | Pose parada, sem respirar |
-| Andar | `Elena_Andando.fbx` | Natural a 1,56 m/s; a 3 m/s toca 1,4 vez mais rápido |
-| Correr | `run_fast_8` | Natural a 2,77 m/s; a 6 m/s toca 1,5 vez mais rápido (os pés escorregam um pouco) |
-| Agachada_Parada | `Sneaky_Walk_inplace`, quadro 48 | Altura pelos pés |
-| Agachada_Andando | `Sneaky_Walk_inplace` | Altura pelos pés |
-| Esquiva | `sliding_rool`, quadros 0 a 10 | Só o começo do mergulho; volta a andar em 0,2 s |
-| Mira | `Rifle_Aim_Turn_Right`, quadro 12 | Pose de fuzil (no quadro 0 os braços apontam 48° à esquerda) |
+| Parada | `Idle` | Respirando |
+| Andar | `WalkForward` | Tronco reto. Natural a 1,7 m/s; a 3 m/s toca 1,3 vez mais rápido |
+| Correr | `Fast Run` | Pique a 5,4 m/s (o jogo corre a 6). **Provisória:** os braços abrem demais; trocar por uma corrida mais atlética |
+| Agachada_Parada | `Sneak Walk`, quadro 17 | Quadro parado do andar furtivo (falta "Crouch Idle") |
+| Agachada_Andando | `Sneak Walk` | Altura pelos pés |
+| Esquiva | `Stand To Roll`, quadros 10 a 50 | Mergulho e cambalhota, em 0,4 s |
+| Mira | `Pistol Aim`, quadro 20 | Pistola com as duas mãos |
+| Recarregar | `Reloading`, quadros 8 a 92 | Gesto de fuzil; trocar por recarga de pistola quando houver |
+| Golpe_Faca | `Stabbing`, quadros 15 a 37, espelhada | Estocada com a mão direita, giro "Original" |
+| Dano | `Hit Reaction`, quadros 13 a 60 | Aditiva |
+| Morte | `Standing React Death Backward` | Cai para trás e fica deitada |
 
-Animações que faltam (o pacote do Meshy não tem; baixar no Meshy ou no Mixamo e pôr no lugar do trecho provisório): parada respirando, agachada parada, mira de pistola (parada e andando para os lados), esquiva rolando de verdade, golpe de faca, levar dano, morte, recarregar e interagir (pegar item). As animações do Meshy não têm dedos. A arma e a faca continuam sendo os blocos provisórios.
+Animações que faltam: corrida mais atlética (a Run Forward está na pasta para conferir), agachada parada ("Crouch Idle"), tiro e recarga de pistola, andar de costas mirando (hoje é o andar tocado ao contrário) e interagir (pegar item). A arma continua sendo o bloco provisório.
 
-Pendências dos modelos antigos (Elena_Varga e Samir) antes de entrarem no jogo:
-- São pesados demais para jogo: Elena tem 1,8 milhão de triângulos e Samir 1,5 milhão. O alvo é perto de 50 mil. O objeto `Elena_TESTE_LOW` do .blend tem o mesmo tamanho do original, ou seja, ainda não foi reduzido.
-- Não têm esqueleto nem animações. O Samir está em pose A, boa para o Mixamo; a Elena está em pose natural, o que dificulta o rig automático.
-- A textura `_ORM` junta oclusão, rugosidade e metal num arquivo só e precisa ser convertida para o formato do material Lit do URP.
-- A arte-fonte de todos os personagens fica em `ArteFonte/<Personagem>/`, fora de `Assets`, para a Unity não depender do Blender instalado. Cópias de segurança do Blender (`.blend1`) não vão para o Git.
+**Como testar a Elena:** menu **Nibiru > Testes > Elena** (`Scripts/Editor/ElenaShortcuts.cs`):
+
+| Atalho | O que faz |
+| --- | --- |
+| 1. Laboratório (Teste_Personagem) com pistola e faca | Abre o laboratório com pistola, 24 balas e faca, e os inimigos parados (só nesta partida; senão eles vêm atrás dela e a matam) |
+| 2. Região, na beira da Aldeia, com pistola e faca | Depois do plano de fuga, com a patrulha andando rente ao muro |
+| 3. Levar dano (10 de vida) | Com o Play ligado |
+| 4. Morrer | Com o Play ligado |
+
+A base dos atalhos (`TestShortcuts.Go`) agora aceita a cena: atalhos de outras cenas além da região.
 
 ### Ninsar
 
@@ -224,14 +274,15 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até o passo 9 da Aldeia, testado pelo dono (25 de outubro de 2026). As mudanças em `ArteFonte/` feitas fora destas conversas (arte-fonte antiga apagada e pastas novas de personagens) ainda não estão no Git. Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até a Elena definitiva, testada pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as animações do Mixamo em `ArteFonte/`. Commits em português, pequenos e frequentes.
 - Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
 ## Como testar sozinho pela ponte MCP
 
 - A ponte é o `unity-editor-mcp` (porta 7800). Se cair, a Unity provavelmente está reabrindo o projeto; espere ela terminar.
 - Para testar comandos, crie um controle virtual (`InputSystem.AddDevice<Gamepad>`) e aplique o estado a cada quadro em `InputSystem.onBeforeUpdate`. O script `Scripts/Editor/BackgroundInputInEditor.cs` (menu **Nibiru > Testes**) faz o jogo aceitar comandos com a Unity em segundo plano, só no editor.
-- Nunca recompile com o Play ligado: isso recarrega os scripts no meio da partida e quebra estados. Saia do Play antes.
+- Nunca recompile com o Play ligado: isso recarrega os scripts no meio da partida e quebra estados. Saia do Play antes. Depois de recompilar pela ponte, espere a ponte voltar (ela cai durante a recarga) antes de ligar o Play; senão a recarga acontece no meio do Play (sinal: erros repetidos a cada quadro, como no `TrainingDummy`).
+- Para olhar animações sem atrapalhar quem está jogando: uma cópia do modelo longe da cena, com o mesmo controlador e Animator em "Always Animate", posta num quadro exato com `Play(estado, 0, t)` + `Update(0)`, e uma câmera de teste própria.
 - O dono do projeto às vezes joga ao mesmo tempo que os testes (inclusive com um controle de verdade): posição, vida e munição podem mudar entre um comando e outro.
 - No prefab Elena, a raiz ("Elena") é só o grupo; o personagem é o filho "Jogador", com a etiqueta Player. Para reconhecer a Elena numa área, procure o `PlayerMotor` no objeto que entrou, não a etiqueta da raiz.
 - Diálogos pausam o tempo do jogo (as sequências também param). Para avançar pela ponte, chame `DialogueRunner.Continue()` ou `Choose(i)`, um comando por vez.
@@ -248,7 +299,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Personagens 3D: substituir a Elena atual por uma com rig e animação corretos (a de agora é provisória) e trocar os trechos provisórios pelas animações que faltam (lista em "Elena nova"). O Samir ainda precisa reduzir polígonos e ganhar esqueleto. Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+5. Personagens 3D, um por conversa: Samir, soldados (Soldado, Líder, Atirador, Piloto), Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece. Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
