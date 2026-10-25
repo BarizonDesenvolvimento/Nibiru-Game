@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4698389607436093536}
   - component: {fileID: 1832847150820073334}
   - component: {fileID: 4152701128841890416}
-  - component: {fileID: 6117206835265844309}
+  - component: {fileID: 7659729966755891093}
   m_Layer: 0
   m_Name: Lullu
   m_TagString: Untagged
@@ -111,7 +111,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 77a0f6d7860ee7149ab75acb77dd4581, type: 2}
   body: {fileID: 628181838636184801}
   maxClimb: 0
---- !u!114 &6117206835265844309
+--- !u!114 &7659729966755891093
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e2bf912b57ca64a9f547e7ef07701e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.AI.LulluAnimator
-  animator: {fileID: 5461447667707433537}
+  animator: {fileID: 5548787989668312768}
   brain: {fileID: 4152701128841890416}
   health: {fileID: 1832847150820073334}
   visual: {fileID: 628181838636184801}
@@ -163,7 +163,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2101731196494645307}
+  - {fileID: 2009007389719653562}
   m_Father: {fileID: 8592615905081354045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7885736691135180161
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d7ff1346939df479ddf6d5e4c7a386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.EchoRevealable
---- !u!1001 &1918639124212281296
+--- !u!1001 &2047964577892830033
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -267,13 +267,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a9d504a9e8098c47b5ff7aa72c91638, type: 3}
---- !u!4 &2101731196494645307 stripped
+--- !u!4 &2009007389719653562 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a9d504a9e8098c47b5ff7aa72c91638, type: 3}
-  m_PrefabInstance: {fileID: 1918639124212281296}
+  m_PrefabInstance: {fileID: 2047964577892830033}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &5461447667707433537 stripped
+--- !u!95 &5548787989668312768 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 8a9d504a9e8098c47b5ff7aa72c91638, type: 3}
-  m_PrefabInstance: {fileID: 1918639124212281296}
+  m_PrefabInstance: {fileID: 2047964577892830033}
   m_PrefabAsset: {fileID: 0}
