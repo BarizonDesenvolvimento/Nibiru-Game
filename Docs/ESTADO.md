@@ -18,6 +18,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **Boca do Poço** (área 5) começou: o **passo 11** (descer o Poço ouvindo o Lullu lá embaixo, passar por ele, ponto de retorno e o flash a uns 12 m do Selo de Kur, com a Voz) está pronto e testado pela ponte, esperando o teste do dono. Veja "Boca do Poço, passo 11".
 - O **passo 12** (a luta com o Primeiro Servo na antecâmara, em três fases, com os holofotes que caem e atraem o chefe) está pronto em blockout, com o **modelo definitivo do Primeiro Servo**, testado pela ponte e **testado no Play pelo dono e aprovado no funcionamento** (o equilíbrio ainda precisa de ajuste, veja "Pendências para o teste completo da fatia"). Veja "Antecâmara do Poço, passo 12".
 - O **passo 13** (a passagem dos Guardiões: ler a inscrição na parede do barco de junco, a tabuleta pulsa e a parede afunda; o túnel com lamparinas acesas; a fita de Irena nº 1 que toca enquanto a Elena anda; o salvamento no topo da rampa, na saída para o wadi) está pronto em blockout e testado pela ponte, esperando o teste do dono. Veja "Passagem dos Guardiões, passo 13".
+- O **passo 14** (o wadi: um leito de uns 60 m com curva, tempestade de areia provisória, um líder de esquadra, o rádio do Kast que espera a fita de Irena terminar e a primeira escolha de facção, com três opções) está pronto em blockout e testado pela ponte, esperando o teste do dono. Veja "Wadi, passo 14".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
@@ -26,7 +27,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Primeiro Servo definitivo** (Meshy + AccuRig, com dedos, 2,50 m em pé, máscara de ouro) está no prefab `Prefabs/AI/PrimeiroServo`, usado no passo 12 e no laboratório. Veja "Primeiro Servo" em Personagens 3D.
 - Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é o teste do dono nos passos 10, 11 e 13 (o 12 já foi aprovado), depois o passo 14 (o wadi e a primeira escolha de facção), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é o teste do dono nos passos 10, 11, 13 e 14 (o 12 já foi aprovado), depois o passo 15 (a fuga na caminhonete, que precisa considerar as três escolhas do passo 14) e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -61,6 +62,7 @@ Cada área tem um script de editor que monta o conteúdo num grupo próprio da c
 | 3. Aldeia | **Nibiru > Conteúdo > Povoar Aldeia na cena aberta** | `Scripts/Editor/Content/VillageContent.cs` |
 | 4. Base do zigurate | **Nibiru > Conteúdo > Povoar Base do Zigurate na cena aberta** | `Scripts/Editor/Content/ZigguratContent.cs` |
 | 5. Boca do Poço | **Nibiru > Conteúdo > Povoar Boca do Poço na cena aberta** | `Scripts/Editor/Content/WellContent.cs` |
+| 6. Wadi | **Nibiru > Conteúdo > Povoar Wadi na cena aberta** | `Scripts/Editor/Content/WadiContent.cs` |
 | Memória de Shuruppak (passo 8) | **Nibiru > Conteúdo > Construir memória de Shuruppak** (refaz a cena `Memoria_Shuruppak` do zero e a põe na lista do Build) | `Scripts/Editor/Content/ShuruppakMemoryContent.cs` |
 
 As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicóptero, diálogos, passos de missão) ficam em `Scripts/Editor/Content/ContentKit.cs`. Rode as áreas em ordem (Acampamento, Trincheiras, Aldeia): o Acampamento cria a missão "Sobrevivente", e cada área seguinte só acrescenta os passos dela no fim (se ainda não estiverem lá).
@@ -181,7 +183,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **Abrir a parede:** de frente para a parede, "Ler a inscrição" (`DialogueStarter` na área `Ler_Inscricao`; a faixa de glifos dourados fica sobre o barco). A Elena lê em voz alta (conversa `Passagem_Inscricao`, legenda), a tabuleta pulsa numa **luz azul** sobre a inscrição (2 pulsos), a parede **afunda no chão** em 4 s, com som de pedra e poeira, e some (colisão e desenho). Só então vale `AbriuAPassagem`. Fala `Passagem_Aberta` ("Alguém ainda cuida deste caminho") e, logo depois, o **único ponto de retorno** da passagem (`Checkpoint_Passagem_Aberta`, de frente para o túnel). Voltando dele, a parede já está aberta, sem pulso nem conversa (`GuardianPassage.SnapOpen`).
 - **Túnel** (blockout que já existia): 4 lamparinas de barro **acesas** (também na arte final: alguém cuida da passagem; luz quente, a chama treme), som ambiente (vento e pingos). Sem inimigos nem enigma: os Guardiões aparecem só como marca, lamparinas e a fita.
 - **Fita de Irena nº 1** (`Documents/TapeDefinition`, `TapePickup`, `TapePlayer`; legenda no pé da tela por `UI/SubtitleUI`): "Pegar a fita" num degrau de pedra. Toca **enquanto a Elena anda**, sem pausar o jogo nem tomar o controle (legenda mais o chiado de fita; sem voz gravada ainda). Pegar fica registrado no evento `ColetouAFitaDeIrena1` e terminar no `FitaDeIrena1Terminou`: a futura tela de documentos e fitas (a mesma da foto de 1979) lê daí (`TapeDefinition.IsCollected` e `IsFinished`). Sem menu. O `TapePlayer` fica num objeto que nunca desliga, então **sair do túnel não corta a fita**. Se a Elena voltar de um salvamento guardado com a fita pega e não terminada, ela toca de novo do começo.
-- **Passo 14 (pendência explícita):** o **rádio do Kast no wadi deve esperar a fita terminar**: espere `TapePlayer.IsPlaying == false` ou o evento `FitaDeIrena1Terminou` antes de começar.
+- **Passo 14 (feito):** o rádio do Kast no wadi espera a fita terminar (`Dialogue/RadioAfterTape`, veja "Wadi, passo 14").
 - **Saída:** no topo da rampa (z = 139), `SaiuDaPassagem` e um **salvamento automático** (`Autosave_Topo_Da_Rampa`). A caminhonete do Samir (z = 143,5 em diante) fecha o fim da rampa; o passo 14 parte daí.
 - **Voltar à antecâmara:** com a passagem aberta nada trava: a parede não fecha mais, a inscrição some, o Servo continua caído e nenhum evento ou conversa se repete.
 - **Câmera no túnel estreito:** o teste varre 1536 posições de câmera (16 pontos do túnel e da rampa, 12 direções, 4 inclinações, mirando ou não). Achou um defeito: na porta da parede (dentro da espessura dela) a câmera passava pelo canto. Corrigi em `ThirdPersonCameraMode` com uma conferência final do ponto seguido até a câmera, que vale para o jogo inteiro (a câmera só chega um pouco mais perto quando a linha bate em algo).
@@ -192,6 +194,30 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **Provisório / para arte e polimento:** túnel, parede, glifos, lamparinas e a fita em formas simples; poeira de quadradinhos; sons sintetizados; fita só com legenda (falta a voz de Irena); a tabuleta é uma luz, sem animação; kit de túnel, entalhes em relevo e decals.
 - **Pendências:** nenhuma nova além das acima. As outras duas inscrições dos Guardiões (incluindo a do Poço) continuam pendentes, como antes.
 - Teste feito pela ponte (teste automático, 7 itens, tudo OK): leitura, pulso e parede afundando com o ponto de retorno; volta do ponto de retorno com a parede já aberta; túnel caminhável da parede ao topo da rampa, lamparinas acesas, só dois pontos de retorno, salvamento e fim do passo; fita pega, tocando com o controle livre, não cortada ao sair e terminando; fita retomada ao voltar do salvamento; câmera; e a volta à antecâmara. O teste do passo 11 (que usa a parede e a câmera) continua todo OK.
+
+**Wadi, passo 14 (tempestade, o rádio do Kast e a primeira escolha de facção):**
+- Montado pelo menu **Nibiru > Conteúdo > Povoar Wadi na cena aberta** (`Scripts/Editor/Content/WadiContent.cs`), em `Conteudo_Wadi/Wadi_Ativo`, que só liga quando a passagem abre (`AbriuAPassagem`). Rode antes o menu da Boca do Poço (o Wadi usa os eventos e a fita dele) e, se refizer o blockout, rode o do Poço e depois o do Wadi.
+- **Blockout novo** (`BuildPassageAndWadi`): o leito tem uns 60 m em três trechos. A: do topo da rampa (32, 141) para o norte até z = 150. B: a curva para leste (x de 24 a 66, z de 150 a 164). C: de novo para o norte (x de 54 a 66, z de 164 a 180), com a caminhonete do Samir no fim (60, 176). A margem norte do trecho B é o canto de fora da curva e corta a vista longa: do topo da rampa não se vê o trecho C. Pedras e a carcaça de um carro no trecho B dão cobertura. A malha de navegação foi refeita.
+- Objetivos (passos 29 a 31 da missão): "Siga o wadi até o soldado ferido" (`ChegouAoSoldadoFerido`), "Ouça o rádio do soldado" (`RadioDoKastComecou`) e "Decida o que fazer com a tabuleta" (`EscolheuONoWadi`). Depois do 31 a missão aparece como concluída, até o passo 15 existir.
+- **Tempestade** (`Environment/Storm`, `StormController`, `StormSettings`; dados em `Data/Tempestade/TempestadeDoWadi`): só o que mexe na jogabilidade, provisório. A intensidade sobe com o z da Elena, de 138 (topo da rampa) a 150, e desce se ela voltar. No máximo: névoa de areia (`RenderSettings`), a Elena anda a 90% (`PlayerMotor`), os soldados enxergam 55% do alcance normal e ouvem passos e golpes a 50% do alcance (`SoldierPerception`); **tiros não são cobertos**. Vento em loop provisório (`Vento_Tempestade_Loop`). Fora do wadi (intensidade 0) todos os multiplicadores valem 1 e o jogo é o de sempre.
+- **Líder de esquadra** (`Lider_Do_Wadi`, o mesmo prefab e a mesma IA dos soldados, sem comportamento novo): patrulha rente à margem norte do trecho B (de x = 38 a 46, z = 162,2). A margem sul fica a mais de 11 m dele, fora da vista dele na tempestade (20 m x 0,55): dá para passar agachada sem ser vista. O combate é possível (ele chama reforços como os outros líderes).
+- **Ambiente:** um veículo da Fundação com faróis passa de vez em quando sobre a margem norte e três vultos de soldados andam pela margem leste do trecho C (`Sequences/LoopingPasser` liga, anda e desliga; sem colisão nem inteligência). Provisório; vozes não têm áudio ainda.
+- **Achar o soldado sem HUD:** o rádio caído chia (`Radio_Chiado_Loop`, audível a até 60 m) e tem um LED vermelho que pisca (`Environment/BlinkingLight`), ponto de luz provisório. Depois da escolha, o chiado se cala e o LED apaga.
+- **Rádio do Kast** (`Dialogue/RadioAfterTape`): ao cruzar a faixa da entrada do trecho C (`ChegouAoSoldadoFerido`), o rádio **espera a fita de Irena nº 1 terminar** e começa sozinho, sem a Elena voltar ao gatilho. Se a fita nunca foi pega, ou já terminou (inclusive num jogo carregado de depois dela), começa na hora. Nunca espera para sempre: o teto é a duração real da fita (`TapeDefinition.PlaybackSeconds`: o clipe de voz, ou o tempo das legendas enquanto não há voz) mais 5 s, contado em tempo de jogo (com o jogo pausado o relógio não anda). Outra conversa em andamento também segura o rádio. Duas versões da fala de abertura, pelo que a Elena respondeu no rádio do acampamento (`KastDesconfiou`): `Data/Dialogues/Wadi_RadioKast` e `Wadi_RadioKast_Desconfia`. Textos provisórios.
+- **A escolha** ("O que fazer com a tabuleta", no fim da conversa do rádio: o Kast promete soltar a Aldeia, o Samir entra na frequência e diz que a tabuleta tem de voltar ao Poço, a Voz sussurra "Não abra mão de nada"):
+
+| Opção | Reputação | Evento que os próximos passos leem | Efeito escondido |
+| --- | --- | --- | --- |
+| Deixar a tabuleta no chão para o Kast | Fundação +15, Guardiões -15 | `EntregouATabuleta` | nenhum |
+| Levar a tabuleta de volta ao Poço, com o Samir | Guardiões +15, Fundação -15 | `DevolveuATabuleta` | nenhum |
+| Ficar com a tabuleta | Fundação -5, Guardiões -5 | `FicouComATabuleta` | transformação +3, **sem aviso** (`Tablets/SilentTransformationGain`); a única pista é a fala da Voz ("Sábia") |
+
+  Qualquer opção dispara também `EscolheuONoWadi` ao fim da conversa (fecha o passo 14). A reputação já vai no `WorldState` (volta certa de um ponto de retorno). A escolha fica guardada pelos eventos, que o passo 15 e a região 2 leem com `StoryEvents.HasBeenRaised`. O poder da Elena fica com ela em qualquer opção, como na especificação. A barra de transformação do HUD lê o valor sozinha e mostra o total (3 pontos a mais); só não há aviso nem número novo.
+- **Pontos de retorno:** `Autosave_Topo_Da_Rampa` (passo 13), `Checkpoint_Antes_Do_Radio` (atravessa o trecho B inteiro e devolve a Elena à margem sul, longe do líder; o rádio recomeça ao voltar) e `Autosave_Depois_Da_Escolha` (só liga depois da escolha, junto do soldado). Ao voltar do salvamento depois da escolha: escolha, reputação e transformação continuam, o rádio está calado e nada se repete.
+- **Ainda não faz (por decisão):** "Devolver ao Poço" só marca a escolha e mostra a reação do Kast e do Samir; a volta pela passagem e o enterro da tabuleta no nicho não existem. **Pendência para o plano do passo 15:** a fuga na caminhonete precisa considerar as **três** escolhas (as reações do Samir mudam: furioso, de acordo ou em silêncio) e a região 2 lê `EntregouATabuleta`, `DevolveuATabuleta` e `FicouComATabuleta`.
+- **Provisório / para arte e polimento:** tempestade só com névoa, lentidão e vento (faltam partículas, céu laranja, rajadas, cor e luz definitivas); soldado ferido como cápsula, rádio e veículo em caixas; sem voz do Kast, do Samir e dos soldados; sons sintetizados; falas provisórias.
+- **Para ajustar jogando** (mudanças com o Play ligado continuam valendo depois): `Data/Tempestade/TempestadeDoWadi` (onde a tempestade começa e fica cheia, lentidão, alcance da audição e da vista dos soldados, névoa, vento); `Data/Tapes/Fita_Irena_1` (a margem de segurança do rádio fica no `RadioAfterTape`, 5 s).
+- Teste feito pela ponte (teste automático, 10 itens): veja "Como testar o passo 14".
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
@@ -217,6 +243,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Facções e reputação | `Factions/` | `Data/Factions` |
 | Tabuletas, transformação, Eco do Abzu | `Tablets/`, `Powers/` | `Data/Tablets`, `Data/Powers` |
 | Lullu e o chefe Primeiro Servo | `AI/LulluAI` | `Data/AI/Lullu`, `PrimeiroServo` |
+| Tempestade de areia (névoa, lentidão, vento que cobre passos) | `Environment/Storm`, `StormController` | `Data/Tempestade` |
 | Luta do Primeiro Servo: fases pela vida, urro e sinais de cada troca, barra de vida no alto da tela, vitória | `AI/FirstServantFight` | `Data/AI/PrimeiroServo_Luta` (`FirstServantSettings`) |
 | Holofote em poste que cai com um tiro e distrai com o estrondo | `Combat/FallingFloodlight` | configurado no Inspector |
 | HUD, telas e pausa | `UI/` | opções do jogador em `GameOptions` (salvas no computador) |
@@ -512,13 +539,30 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Teste do dono nos passos 10, 11 e 13; depois o passo 14 (o wadi: tempestade, o rádio do Kast e a primeira escolha de facção; o rádio tem de esperar a fita de Irena terminar, veja o passo 13), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Teste do dono nos passos 10, 11, 13 e 14; depois o passo 15 (a fuga na caminhonete e o diário: **tem de considerar as três escolhas do passo 14** e a volta ao Poço de quem devolve a tabuleta), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+
+### Como testar o passo 14
+
+Atalhos no menu **Nibiru > Testes > Passo 14** (`Scripts/Editor/Step14Shortcuts.cs`), com o mundo como se a Elena tivesse vencido o Primeiro Servo e atravessado a passagem, e com pistola, 24 balas e faca:
+
+| Atalho | Onde começa |
+| --- | --- |
+| 1. Início do wadi, no topo da rampa | Ande para o norte: a tempestade sobe, a Elena fica mais lenta, o líder patrulha o trecho da curva e o chiado do rádio se ouve de longe |
+| 2. Gatilho do rádio, com a fita de Irena tocando | Antes da entrada do trecho final, com a fita tocando: ao entrar, o rádio espera e começa quando a fita termina (mesmo que você já tenha se afastado) |
+| 3. Gatilho do rádio, sem a fita (nunca pega) | O mesmo, mas a fita nunca foi pega: o rádio começa na hora |
+| 4. Direto à escolha de facção | Junto do soldado; as falas avançam sozinhas até as três opções, que ficam na tela para você escolher |
+| 5. Forçar: entregar a tabuleta à Fundação | O rádio fala sozinho e a primeira opção é escolhida |
+| 6. Forçar: devolver ao Poço com o Samir | O mesmo, com a segunda opção |
+| 7. Forçar: ficar com a tabuleta | O mesmo, com a terceira opção (a transformação sobe 3 sem aviso) |
+| 8. Teste automático (resumo no Console) | Roda os testes sozinho e escreve OK ou FALHOU para cada um no Console (`Scripts/Editor/Step14Tests.cs`) |
+
+O teste automático (10 itens) cobre: o percurso a pé e a tempestade; o líder de esquadra e a margem sul fora da vista dele; o vento que cobre passos mas não tiros; o rádio com a fita tocando, já terminada, nunca pega e com uma fita que não acaba (o teto); e cada uma das três escolhas, que são salvas, recarregadas do salvamento automático e disparam o evento. Para ver a espera da fita no jogo de verdade (uns 50 s), use o atalho 2 e fique perto do soldado. Ajuste a tempestade em `Data/Tempestade/TempestadeDoWadi`.
 
 ### Como testar o passo 13
 
