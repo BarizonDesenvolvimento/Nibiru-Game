@@ -24,7 +24,7 @@ namespace Nibiru.EditorTools
         const int PassLulluStep = 23;
         const int SealStep = 24;
 
-        static readonly string[] LeftBase =
+        internal static readonly string[] LeftBase =
         {
             "ChegouABeiraDaAldeia", "OuviuOPlanoDeFuga", "EntrouNaBaseDaFundacao",
             "ChegouATendaDeComando", "LeuOEmailDoKast", "ViuAFotoDe1979", "LeuOsDocumentosDoKast",
@@ -38,24 +38,24 @@ namespace Nibiru.EditorTools
         static readonly Vector3 FootCheckpointSpot = new Vector3(49f, -10.5f, 71f);
         static readonly Vector3 AfterLulluSpot = new Vector3(45f, -14f, 88f);
         // A área do flash começa em z = 89,9 e a Elena tem 0,5 m de raio: daqui ela fica 60 cm antes dela.
-        static readonly Vector3 NearFlashSpot = new Vector3(45f, -14f, 88.8f);
+        internal static readonly Vector3 NearFlashSpot = new Vector3(45f, -14f, 88.8f);
 
         static Step11Shortcuts()
         {
             Register("passo11.corredor", () => Begin(null, MouthStep, CorridorSpot, 0f,
-                "no corredor nordeste, saindo da base. Ande para o norte até a boca do Poço."));
+                "Passo 11: no corredor nordeste, saindo da base. Ande para o norte até a boca do Poço."));
             Register("passo11.boca", () => Begin(new[] { "ChegouABocaDoPoco" }, DescendStep, MouthSpot, 0f,
-                "na boca do Poço, no alto dos andaimes. Desça pelos lances: lá embaixo se ouve o Lullu."));
+                "Passo 11: na boca do Poço, no alto dos andaimes. Desça pelos lances: lá embaixo se ouve o Lullu."));
             Register("passo11.andaime", () => Begin(new[] { "ChegouABocaDoPoco" }, DescendStep, ScaffoldSpot, 90f,
-                "no patamar do primeiro lance. Continue descendo ouvindo o raspar do Lullu lá embaixo.", crouch: false));
+                "Passo 11: no patamar do primeiro lance. Continue descendo ouvindo o raspar do Lullu lá embaixo.", crouch: false));
             Register("passo11.pe", () => Begin(new[] { "ChegouABocaDoPoco" }, DescendStep, FootCheckpointSpot, 270f,
-                "no ponto de retorno do pé da descida (num patamar, em silêncio). O Lullu vagueia no fundo; agachada, passe por ele."));
+                "Passo 11: no ponto de retorno do pé da descida (num patamar, em silêncio). O Lullu vagueia no fundo; agachada, passe por ele."));
             Register("passo11.depois_lullu", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco", "PassouPeloLullu" }, SealStep, AfterLulluSpot, 0f,
-                "na antecâmara, depois do Lullu (que não está mais lá). Ande para o norte: a uns 12 m do Selo começa o flash.", crouch: true));
+                "Passo 11: na antecâmara, depois do Lullu (que não está mais lá). Ande para o norte: a uns 12 m do Selo começa o flash.", crouch: true));
             // "Passou pelo Lullu" acontece ao vivo, depois de recarregar, como quando ela cruza a boca
             // da antecâmara andando: guardado antes, o Lullu sumiria ao carregar a cena.
             Register("passo11.flash_vivo", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco" }, PassLulluStep, NearFlashSpot, 0f,
-                "na antecâmara, um passo antes do flash, com o Lullu ainda vivo no fundo. Ande para o norte: ele congela até a Voz falar.",
+                "Passo 11: na antecâmara, um passo antes do flash, com o Lullu ainda vivo no fundo. Ande para o norte: ele congela até a Voz falar.",
                 raiseLive: new[] { "PassouPeloLullu" }));
         }
 
@@ -78,17 +78,19 @@ namespace Nibiru.EditorTools
         static void LiveFlash() => Go("passo11.flash_vivo");
 
         // Mundo de quem acabou de sair da base (passos 1 a 10), mais estes eventos, com as armas.
-        // Os de raiseLive acontecem depois de recarregar.
-        static void Begin(string[] extra, int questStep, Vector3 spawn, float yaw, string message, bool crouch = false, string[] raiseLive = null)
+        // Os de raiseLive acontecem depois de recarregar. Também usado pelos atalhos do passo 12.
+        internal static void Begin(string[] extra, int questStep, Vector3 spawn, float yaw, string message, bool crouch = false,
+            string[] raiseLive = null, Action thenAlso = null)
         {
             Action then = () =>
             {
                 foreach (string e in raiseLive ?? new string[0]) Raise(e);
                 ElenaShortcuts.GiveWeapons();
+                thenAlso?.Invoke();
                 if (crouch) After(0.2f, Crouch);
             };
             Step9Shortcuts.Start(revealed: true, extra: LeftBase.Concat(extra ?? new string[0]).ToArray(), questStep, spawn, yaw, then);
-            Debug.Log("Passo 11: " + message);
+            Debug.Log(message);
         }
 
         // Agacha a Elena (como se o jogador tivesse apertado Agachar).
