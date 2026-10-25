@@ -110,7 +110,7 @@ namespace Nibiru.EditorTools
         // ---------- Modelo e material ----------
 
         // Cópia do FBX do AccuRig e das texturas do Meshy, se ainda não estiverem na Unity.
-        static void ImportCharacter(string character)
+        public static void ImportCharacter(string character)
         {
             string root = ArtRoot + character;
             string source = Path.Combine(Application.dataPath, "..", "ArteFonte", character);
