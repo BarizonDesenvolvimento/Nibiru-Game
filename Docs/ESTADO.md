@@ -16,9 +16,10 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
-- Os outros personagens (Samir, soldados, Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
+- O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
+- Os outros personagens (soldados, Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é importar os outros personagens (começando pelo Samir) e atravessar a base do zigurate (passo 10). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é importar os outros personagens (o kit comum do Samir já serve para eles) e atravessar a base do zigurate (passo 10). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -35,7 +36,7 @@ A próxima prioridade é importar os outros personagens (começando pelo Samir) 
 
 | Cena | Para que serve |
 | --- | --- |
-| `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir de cápsula, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
+| `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir animado com conversa de teste, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
 | `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento, das Trincheiras e da Aldeia |
 | `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
 | `Scenes/Memoria_Shuruppak` | Memória jogável da Tabuleta do Junco (Shuruppak ao pôr do sol). Não se joga sozinha: é carregada por cima da região no passo 8. Fica longe da origem, em (2000, 0, 2000) |
@@ -77,8 +78,8 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 **Aldeia, como funciona (até agora, passos 6 e 7):**
 - Uma área grande cobre a Aldeia com folga (evento `AproximouSeDaAldeia`): de onde a Elena vier, o encontro começa ao entrar nela.
 - Há 4 pontos fixos de encontro nas entradas (leste, sudeste, sul e norte). O componente `Sequences/PlaceAtPointAhead` escolhe o mais perto entre os que estão à frente da Elena e leva a cena (soldado, corpo e Samir) para lá, virada para ela. A cada execução, o menu confere se cada ponto está na malha de navegação e com 2,5 m livres em volta (avisos no Console).
-- Um soldado (figurante, sem IA) a encurrala (`Aldeia_Encurralada`). Depois da fala dele, o Samir aparece atrás e o derruba com a faca. Em seguida vem a conversa "O guia" (`Aldeia_OGuia`): o Samir nota a luz da tabuleta na bolsa ("Esconda isso"), diz que ninguém veio resgatar ninguém e desconversa se a Elena perguntar quem ele é. No fim, dispara `ChegouAAldeia`.
-- Objetivo "Siga o Samir até a Aldeia": ele anda pela malha de navegação até o pátio, na frente da casa do altar (`Sequences/WalkToPoint`). Ele espera quando a Elena fica mais de 10 m para trás, mas não quando ela está à frente.
+- Um soldado (figurante, sem IA) a encurrala (`Aldeia_Encurralada`). Depois da fala dele, o Samir aparece logo atrás e o derruba com uma facada (animação de golpe, faca na mão direita). Em seguida vem a conversa "O guia" (`Aldeia_OGuia`): o Samir nota a luz da tabuleta na bolsa ("Esconda isso"), diz que ninguém veio resgatar ninguém e desconversa se a Elena perguntar quem ele é. No fim, dispara `ChegouAAldeia`.
+- Objetivo "Siga o Samir até a Aldeia": ele anda pela malha de navegação até o pátio, na frente da casa do altar (`Sequences/WalkToPoint`). Ele espera quando a Elena fica mais de 10 m para trás e corre (5 m/s) para alcançá-la quando ela vai mais de 10 m à frente (campo "Catch Up Speed" do `WalkToPoint`).
 - No pátio: fala curta do Samir (`Aldeia_ChegadaPatio`), evento `ChegouAoPatioComSamir` e ponto de retorno. Ao voltar dele, o Samir já está no pátio e o soldado, no chão.
 - Se a Elena morrer antes do pátio, o encontro se repete.
 - Passo 7: depois da fala do pátio, o Samir entra na casa do altar (`WalkToPoint.WalkTo`) e aparece o objetivo "Siga o Samir até a casa". Dentro dela estão os sobreviventes, em cápsulas: Yusuf deitado numa esteira (parede oeste) e Umm Karim em pé, perto da cabeça dele.
@@ -108,7 +109,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Depois da conversa da tabuleta (`ConversouSobreATabuleta`), o Samir sai da casa do altar e anda até a beira norte da Aldeia, entre a mesquita e a estrada (objetivo "Siga o Samir até a beira da aldeia"). Ele espera quando a Elena fica para trás.
 - Ao chegar perto dele (gatilho `ChegouABeiraDaAldeia`, grupo `Plano_De_Fuga`), começa a cena do cerco: o Samir manda olhar a estrada (`Aldeia_OCercoChega`); um caminhão branco da Fundação chega pela estrada do norte; aparece a barreira de cavaletes de z = 41,5 (do oeste da Aldeia até o muro da base), com uma parede invisível e um soldado de guarda; um helicóptero cruza o céu e pousa no heliponto da base (e desliga, para o passo 10); dois soldados passam a patrulhar rente ao muro da base (x = -28, de z = -2 a 32).
 - Conversa "O cerco" (`Aldeia_OCerco`): estradas fechadas, a passagem dos Guardiões no Poço (atrás da parede com o barco de junco, na antecâmara) e o caminho pela base. Escolhas: "Você não vem comigo?" e, só se o Samir revelou que é Guardião no passo 8, "Os Guardiões sempre souberam desse caminho?" (campo "Requires" da escolha). Ele vai sozinho pelos canais secos do sul até o wadi, lembra do remédio do Yusuf na tenda médica e dá a dica de esperar a patrulha virar de costas. Evento `OuviuOPlanoDeFuga`.
-- Depois: o Samir vai embora para o sul e some (`WalkToPoint.LeaveTo`), um ponto de retorno é marcado na beira da aldeia (longe da visão da patrulha) e o objetivo vira "Passe pela patrulha da estrada e entre na base da Fundação, no pé do zigurate". Ele fecha ao entrar na base pela ponta sul do muro (`EntrouNaBaseDaFundacao`). O portão do muro continua fechado (abre por dentro, no passo 10).
+- Depois: o Samir vai embora para o sul, agachado por causa da patrulha, e some (`WalkToPoint.LeaveTo` + `NpcAnimator.Sneak`), um ponto de retorno é marcado na beira da aldeia (longe da visão da patrulha) e o objetivo vira "Passe pela patrulha da estrada e entre na base da Fundação, no pé do zigurate". Ele fecha ao entrar na base pela ponta sul do muro (`EntrouNaBaseDaFundacao`). O portão do muro continua fechado (abre por dentro, no passo 10).
 - Ao voltar de um checkpoint depois do plano, tudo fica direto no estado final (caminhão parado, barreira, guarda, patrulha, helicóptero pousado e quieto, Samir longe), sem repetir a cena: o `StoryEventListener` ganhou a opção "Only On Load" (só ao carregar a cena) para isso.
 - Enquanto o passo 10 não existe, a missão "Sobrevivente" aparece como concluída ao entrar na base.
 - Teste feito pela ponte: o Samir indo até a beira, a cena do cerco, as duas versões da conversa (com e sem a revelação), o Samir indo embora, o ponto de retorno, a volta de um checkpoint e a entrada na base andando com controle virtual. Testado e aprovado pelo dono no Play.
@@ -142,8 +143,9 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Cenas roteirizadas: sequência com tempo, mover por pontos, tiro de cena, escolha por evento, área de aviso, hélice, ponto à frente da Elena, personagem que anda até um ponto (ou vai embora e some), luz que acende ou apaga aos poucos | `Sequences/` (`TimedSequence`, `MoveAlongPath`, `ScriptedShot`, `StoryEventBranch`, `PlayerZone`, `Spinner`, `PlaceAtPointAhead`, `WalkToPoint`, `LightFade`) e `UI/NotificationPoster` | configurados no Inspector |
 | Memória jogável (versão simples do Grupo 2): passagem para a cena do passado e volta | `Memories/` (`MemoryDefinition`, `PlayableMemory`, `MemorySpawn`, `MemoryAvatar`) | `Data/Memories` |
 | Marca da transformação no pulso | `Tablets/TransformationMark` (no prefab da Elena) | material `Elena_MarcaKur` |
+| Animação de personagens que não são a Elena: andar e correr pela velocidade do NavMeshAgent, agachar, golpe de faca e gestos nas falas dele (continua animado com o jogo pausado no diálogo) | `AI/NpcAnimator` | configurado no prefab do personagem |
 
-Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/AI/Soldado`, `Prefabs/AI/Lullu`.
+Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em toda cena), `Prefabs/Personagens/Samir` (modelo + `NpcAnimator` + faca), `Prefabs/AI/Soldado`, `Prefabs/AI/Lullu`.
 
 ## Personagens 3D
 
@@ -154,7 +156,7 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | Personagem | Pasta | Altura | Situação |
 | --- | --- | --- | --- |
 | Elena Varga | `Elena` | 1,70 m | **No jogo** (prefab `Player/Elena`) |
-| Samir Haddad | `Samir` | 1,75 m | Pronto para importar |
+| Samir Haddad | `Samir` | 1,75 m | **No jogo** (prefab `Personagens/Samir`) |
 | Yusuf | `Yusuf` | 1,74 m | Pronto para importar |
 | Umm Karim | `Umm Karim` | 1,58 m | Pronto para importar |
 | Dra. Weiss | `Dra. Weiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (alguns dedos não dobram) |
@@ -171,7 +173,9 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 
 As alturas ficam também em `Scripts/Editor/Personagens/CharacterHeights.cs`: `CharacterHeights.FitImportScale(fbx, "Nome")` ajusta o "Scale Factor" da importação até o modelo medir a altura da tabela (use na montagem de cada personagem).
 
-A Elena e o Samir antigos (`Elena_Varga`, `Samir_Haddad`, 1,5 a 1,8 milhão de triângulos, sem esqueleto) e a Elena provisória do Meshy saíram do projeto. O Tom não entra agora.
+A Elena e o Samir antigos (`Elena_Varga`, `Samir_Haddad`, 1,5 a 1,8 milhão de triângulos, sem esqueleto) e a Elena provisória do Meshy saíram do projeto (os arquivos do `Samir_Haddad` que ainda estavam em `Art/Personagens/Samir` foram apagados com a entrada do Samir novo).
+
+**Kit comum para os próximos personagens:** `Scripts/Editor/Personagens/CharacterSetupKit.cs` (texturas e material URP de dois lados, importação Humanoid na altura da tabela, cortes do Mixamo com o avatar do X Bot e árvore de velocidades). Os cortes são acrescentados ao arquivo do Mixamo sem apagar os de outros personagens. O `SamirSetup` é o exemplo de uso. A Elena ainda usa o `ElenaSetup` próprio, com as mesmas regras. O Tom não entra agora.
 
 ### Animações do Mixamo
 
@@ -179,10 +183,11 @@ Em `ArteFonte/Animacoes/Mixamo` (baixadas "sem pele"; o `X Bot.fbx` é o boneco 
 
 | Animação | Situação |
 | --- | --- |
-| Idle, WalkForward, Fast Run, Sneak Walk, Stand To Roll, Pistol Aim, Reloading, Stabbing, Hit Reaction, Standing React Death Backward | Usadas na Elena (veja a tabela dela) |
+| Idle, WalkForward, Fast Run, Sneak Walk, Stand To Roll, Pistol Aim, Reloading, Stabbing, Hit Reaction, Standing React Death Backward | Usadas na Elena (veja a tabela dela). Parada, andar, correr, agachar e golpe de faca também no Samir (os mesmos cortes) |
+| Talking, Talking2, Talking3, Talking4 | Usadas no Samir (gestos de conversa); servem para os outros NPCs |
 | Female Walk | Andar de passarela, com o queixo erguido e o tronco para trás. Não serviu para a Elena; pode servir para outra personagem |
 | Run Forward | Ainda não conferida (candidata a corrida da Elena) |
-| Talking 1 a 4, Laying Idle, Laying Shaking Head, Look Around | Boas, para NPCs (conversas; Yusuf deitado na esteira) |
+| Laying Idle, Laying Shaking Head, Look Around | Boas, para NPCs (Yusuf deitado na esteira) |
 | Standing React Death Backward, walking to dying | Mortes |
 | Run Look Back, Unarmed Run Back, jump forward/backward | Corrida olhando para trás, corrida de costas e pulos; sem uso por enquanto |
 | Walking, firing rifle, rifle aiming idle, rifle run, strafe, walking backwards, start/stop walking, run backwards | **Pacote de fuzil** (o "Walking" anda segurando fuzil). Servem para os soldados |
@@ -237,6 +242,44 @@ Animações que faltam: corrida mais atlética (a Run Forward está na pasta par
 
 A base dos atalhos (`TestShortcuts.Go`) agora aceita a cena: atalhos de outras cenas além da região.
 
+### Samir
+
+O modelo do Meshy **não tem túnica**: jaqueta, calça cargo, botas, lenço, bolsa e uma adaga curva no cinto (igual à referência). Jaqueta, bolsa e calça deformam bem andando e correndo; os pesos do AccuRig ficaram como vieram.
+
+O menu **Nibiru > Personagens > Montar Samir animado** (`Scripts/Editor/Personagens/SamirSetup.cs`) refaz tudo (saia do Play antes; rode antes o menu da Elena, porque o Samir usa os cortes dela):
+- Modelo `Art/Personagens/Samir/Samir.fbx` (cópia de `ArteFonte/Samir/2_Rig/Samir.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,835 (1,75 m).
+- Texturas `Samir_BaseColor/Normal/Metallic/Roughness.png` (cópias das PNG de `1_Meshy`) e `Samir_MetalSmooth.png` (gerado só se não existir). Material URP Lit `Materiais/Samir.mat`, de dois lados.
+- Controlador `Samir.controller`: "Locomocao" (em pé e agachado pelo `Agachar`, cada um pela `Velocidade`), "Golpe_Faca" (pelo gatilho `Golpe`) e "Conversa_1" a "Conversa_4" (Talking 1 a 4).
+- Prefab `Prefabs/Personagens/Samir`: o modelo, o `NpcAnimator` e uma faca provisória (cabo e lâmina), que só aparece na mão direita durante o golpe.
+- O conteúdo da Aldeia (`VillageContent`) põe o prefab no Samir que anda pela malha de navegação, como filho "Visual" (`SamirSetup.AddVisual`), com um colisor de cápsula. Se o prefab mudar, rode o menu da Aldeia de novo.
+- No laboratório (`Teste_Personagem`), o menu troca a cápsula pelo modelo e mantém o colisor e a conversa de teste.
+
+`AI/NpcAnimator`:
+- Velocidade do NavMeshAgent para o Animator.
+- `Strike()`: golpe de faca.
+- `Sneak()` e `StandUp()`: agacha (e anda mais devagar, 1,9 m/s) ou levanta.
+- Nas falas cujo "Speaker" é o nome dele ("Samir"), toca um gesto de conversa diferente a cada fala. Nas falas dos outros, ele escuta parado.
+- Durante o diálogo, o Animator passa para o tempo real (o jogo pausa, mas ele continua respirando e gesticulando).
+
+O `WalkToPoint` também vira o personagem para a Elena no tempo real durante os diálogos (antes, o Samir falava de costas quando chegava junto com a fala do pátio).
+
+Pendências do Samir:
+- Na conversa depois da memória, o texto diz "de mão na faca", mas nenhuma animação põe a mão dele na faca (falta uma pose).
+- A adaga do cinto faz parte do modelo; no golpe aparecem as duas (a do cinto e a provisória na mão).
+- Em alguns gestos de conversa ele ergue um pouco a cabeça (é do gesto do Mixamo).
+
+**Como testar o Samir:** menu **Nibiru > Testes > Samir** (`Scripts/Editor/SamirShortcuts.cs`):
+
+| Atalho | O que mostra |
+| --- | --- |
+| 1. Encontro na Aldeia: a facada no soldado | Perto da Aldeia: ande para o oeste. O soldado encurrala a Elena e o Samir o derruba |
+| 2. Seguindo o Samir até o pátio (andar e correr) | Depois da conversa do guia. Corra à frente dele para vê-lo correr |
+| 3. Casa do altar: os sobreviventes (gestos de conversa) | No pátio: siga o Samir para dentro da casa |
+| 4. Volta da memória: o Samir de mão na faca | O mesmo do passo 8, atalho 4 |
+| 5. Depois do cerco: o Samir saindo agachado | Ao sul da beira da aldeia; ele passa agachado ao lado da Elena. Não ande para o norte (lá começa o cerco) |
+| 6. Laboratório: falar com o Samir | De frente para ele, com os inimigos parados |
+| 7. Vitrine: todas as animações lado a lado | Um chão vazio com uma cópia do Samir por animação, com o nome em cima; o golpe se repete |
+
 ### Ninsar
 
 Arte-fonte em `ArteFonte/Ninsar/`:
@@ -274,7 +317,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 - Repositório: `github.com/BarizonDesenvolvimento/Nibiru-Game`, branch `main`.
 - **Git LFS** ativo para modelos, imagens, áudio, vídeo e tipografia, e para todo binário em `ArteFonte/` (veja `.gitattributes`). O LFS guarda cerca de 800 MB (450 MB até a Aldeia, 260 MB da arte-fonte da Ninsar e 90 MB da prévia dela na Unity e das texturas do manto). Fora do LFS, o maior arquivo é a cena `Regiao1_SitioDeUr` (cerca de 1,2 MB); a `Memoria_Shuruppak` tem cerca de 0,9 MB. Cada nova versão de um arquivo grande ocupa espaço de novo na cota de LFS da conta.
-- Tudo enviado ao GitHub até a Elena definitiva, testada pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as animações do Mixamo em `ArteFonte/`. Commits em português, pequenos e frequentes.
+- Tudo enviado ao GitHub até o Samir definitivo, testado pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as animações do Mixamo em `ArteFonte/`. Commits em português, pequenos e frequentes.
 - Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
 ## Como testar sozinho pela ponte MCP
@@ -299,7 +342,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o corpo do soldado reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu. Corrigir quando entrarem os modelos (guardar a entrada escolhida no estado do mundo).
-5. Personagens 3D, um por conversa: Samir, soldados (Soldado, Líder, Atirador, Piloto), Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece. Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
+5. Personagens 3D, um por conversa: soldados (Soldado, Líder, Atirador, Piloto), Lullu, Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
