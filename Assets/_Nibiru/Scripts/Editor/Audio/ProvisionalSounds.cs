@@ -26,6 +26,8 @@ namespace Nibiru.EditorTools.Audio
         public const string ServantRoar = Folder + "/Servo_Urro.wav";
         public const string MaskCrack = Folder + "/Mascara_Racha.wav";
         public const string FloodlightCrash = Folder + "/Holofote_Queda.wav";
+        public const string WallOpening = Folder + "/Parede_Abrindo.wav";
+        public const string TunnelAmbience = Folder + "/Passagem_Ambiente_Loop.wav";
 
         const int Rate = 44100;
 
@@ -50,6 +52,8 @@ namespace Nibiru.EditorTools.Audio
             Write(ServantRoar, overwrite, MakeServantRoar);
             Write(MaskCrack, overwrite, MakeMaskCrack);
             Write(FloodlightCrash, overwrite, MakeFloodlightCrash);
+            Write(WallOpening, overwrite, MakeWallOpening);
+            Write(TunnelAmbience, overwrite, MakeTunnelAmbience);
             AssetDatabase.Refresh();
         }
 
@@ -287,6 +291,54 @@ namespace Nibiru.EditorTools.Audio
                 samples[i] = clang * 0.5f + thud + glass;
             }
             return Normalize(samples, 0.95f);
+        }
+
+        // Parede de pedra afundando no chão: ronco grave, raspar de pedra contra pedra e uma batida no fim.
+        static float[] MakeWallOpening()
+        {
+            var random = new System.Random(83);
+            const float length = 5f, slam = 4.5f;
+            var samples = new float[(int)(Rate * length)];
+            float rumble = 0f, grind = 0f, grindLow = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                rumble += (white - rumble) * 0.012f;
+                grind += (white - grind) * 0.25f;
+                grindLow += (white - grindLow) * 0.03f;
+                float envelope = Mathf.Clamp01(t / 0.4f) * Mathf.Clamp01((slam - t) / 0.3f + 0.2f);
+                float scrape = (grind - grindLow) * (0.5f + 0.5f * Mathf.Sin(2 * Mathf.PI * 6f * t));
+                float s = (rumble * 6f + scrape * 0.9f + Mathf.Sin(2 * Mathf.PI * 38f * t) * 0.25f) * (t < slam ? envelope : 0f);
+                float hit = t - slam;
+                if (hit >= 0f) s += (rumble * 10f + Mathf.Sin(2 * Mathf.PI * 46f * t) * 1.4f) * Mathf.Exp(-hit / 0.18f);
+                samples[i] = s;
+            }
+            return Normalize(samples, 0.9f);
+        }
+
+        // Túnel antigo: vento baixo que sobe e desce e, de vez em quando, um pingo. 4 s sem emenda.
+        static float[] MakeTunnelAmbience()
+        {
+            var random = new System.Random(89);
+            var samples = new float[Rate * 4];
+            float wind = 0f, windLow = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                wind += (white - wind) * 0.02f;
+                windLow += (white - windLow) * 0.004f;
+                float sway = 0.55f + 0.45f * Mathf.Sin(2 * Mathf.PI * t / 4f);
+                float s = (wind - windLow) * 5f * sway;
+                foreach (float at in new[] { 1.3f, 3.05f })
+                {
+                    float drop = t - at;
+                    if (drop >= 0f) s += Mathf.Sin(2 * Mathf.PI * (1900f - drop * 2500f) * drop) * Mathf.Exp(-drop / 0.04f) * 0.35f;
+                }
+                samples[i] = s;
+            }
+            return Normalize(FadeEdges(samples), 0.6f);
         }
 
         // Suaviza o começo e o fim para o loop não estalar na emenda.

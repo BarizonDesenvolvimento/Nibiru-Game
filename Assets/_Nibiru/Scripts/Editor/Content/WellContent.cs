@@ -99,6 +99,8 @@ namespace Nibiru.EditorTools.Content
             BuildFlash(Group(active, "Flash_Do_Selo"), lullu);
             // Passo 12: o Primeiro Servo acorda quando a Voz do flash acaba.
             FirstServantContent.Build(active, lullu);
+            // Passo 13: a passagem dos Guardiões atrás da parede do barco de junco.
+            GuardianPassageContent.Build(active);
 
             // Tudo do Poço só existe depois de a Elena sair da base pelo nordeste (fim do passo 10).
             active.gameObject.SetActive(false);

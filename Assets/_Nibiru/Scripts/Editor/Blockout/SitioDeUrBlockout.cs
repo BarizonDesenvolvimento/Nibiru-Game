@@ -289,13 +289,21 @@ namespace Nibiru.EditorTools.Blockout
             Box(g, "Ante_Parede_Oeste_Sul", new Vector3(35, -14, 80), new Vector3(36, -5, 94), rock);
             Box(g, "Ante_Parede_Oeste_Norte", new Vector3(35, -14, 98), new Vector3(36, -5, 102), rock);
             Box(g, "Ante_Parede_Oeste_Topo", new Vector3(35, -10, 94), new Vector3(36, -5, 98), rock);
-            // Parede do barco de junco: fecha o vão da passagem dos Guardiões (abre só no passo 13).
-            // Na face de dentro (x = 36), o barco sobre as ondas, entalhado em ouro, e a lamparina.
-            Box(g, "Parede_Barco_Junco", new Vector3(35, -14, 94), new Vector3(36, -10, 98), rock);
-            BoxC(g, "Barco_Casco", new Vector3(36.06f, -12.3f, 96f), new Vector3(0.12f, 0.35f, 1.7f), gold);
-            BoxC(g, "Barco_Mastro", new Vector3(36.06f, -11.6f, 96f), new Vector3(0.12f, 0.9f, 0.1f), gold);
+            // Parede do barco de junco: fecha o vão da passagem dos Guardiões (afunda no chão no passo 13).
+            // Na face de dentro (x = 36), o barco sobre as ondas, entalhado em ouro. Tudo fica no grupo
+            // "Parede_Movel", que a passagem (GuardianPassage) desce junto.
+            Transform movable = Group(g, "Parede_Movel");
+            Box(movable, "Parede_Barco_Junco", new Vector3(35, -14, 94), new Vector3(36, -10, 98), rock);
+            BoxC(movable, "Barco_Casco", new Vector3(36.06f, -12.3f, 96f), new Vector3(0.12f, 0.35f, 1.7f), gold);
+            BoxC(movable, "Barco_Mastro", new Vector3(36.06f, -11.6f, 96f), new Vector3(0.12f, 0.9f, 0.1f), gold);
             for (int i = 0; i < 3; i++)
-                BoxC(g, $"Barco_Onda_{i + 1}", new Vector3(36.06f, -13.1f + i * 0.0f, 95.2f + i * 0.8f), new Vector3(0.12f, 0.1f, 0.5f), gold);
+                BoxC(movable, $"Barco_Onda_{i + 1}", new Vector3(36.06f, -13.1f + i * 0.0f, 95.2f + i * 0.8f), new Vector3(0.12f, 0.1f, 0.5f), gold);
+            // Faixa da inscrição dos Guardiões, em glifos de ouro acima do barco (a Elena a lê no passo 13).
+            float[] glyphHeights = { 0.28f, 0.2f, 0.32f, 0.22f, 0.3f, 0.18f, 0.26f, 0.32f, 0.2f, 0.28f, 0.22f, 0.3f };
+            for (int i = 0; i < glyphHeights.Length; i++)
+                BoxC(movable, $"Glifo_{i + 1}", new Vector3(36.06f, -10.55f, 94.45f + i * 0.28f), new Vector3(0.1f, glyphHeights[i], 0.14f), gold);
+            // A parede se move: nada de "estático" (agrupamento e oclusão presumem peça parada).
+            foreach (Transform piece in movable) GameObjectUtility.SetStaticEditorFlags(piece.gameObject, 0);
             Light(g, "Luz_Barco_Junco", new Vector3(37.2f, -12f, 96f), new Color(1f, 0.75f, 0.45f), 1.5f, 5);
             Box(g, "Ante_Parede_Sul_Oeste", new Vector3(36, -14, 79), new Vector3(40, -5, 80), rock);
             Box(g, "Ante_Parede_Sul_Leste", new Vector3(50, -14, 79), new Vector3(54, -5, 80), rock);
@@ -348,7 +356,6 @@ namespace Nibiru.EditorTools.Blockout
             Box(g, "Tunel_Parede_Sul", new Vector3(29, -14, 93), new Vector3(35, -10, 94), rock);
             Box(g, "Tunel_Parede_Oeste", new Vector3(29, -14, 94), new Vector3(30, -10, 110), rock);
             Box(g, "Tunel_Parede_Leste", new Vector3(34, -14, 98), new Vector3(35, -10, 110), rock);
-            BoxC(g, "Inscricao_Guardioes", new Vector3(30.05f, -12, 104), new Vector3(0.1f, 1, 1.6f), gold);
             Marker(g, "Fita_Irena_1", new Vector3(31, -13.5f, 107), 0);
             Light(g, "Luz_Tunel", new Vector3(32, -10.5f, 102), new Color(1f, 0.75f, 0.45f), 2, 8);
 
