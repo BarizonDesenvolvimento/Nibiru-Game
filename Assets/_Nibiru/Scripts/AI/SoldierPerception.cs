@@ -25,11 +25,15 @@ namespace Nibiru.AI
         Health playerHealth;
         bool hasNoise;
         Vector3 noisePosition;
+        float lastSawPlayerTime = float.NegativeInfinity;
 
         /// <summary>De 0 (tranquilo) a 1 (percebeu a Elena).</summary>
         public float Awareness { get; private set; }
         public bool CanSeePlayer { get; private set; }
         public Vector3 LastKnownPlayerPosition { get; private set; }
+
+        /// <summary>Segundos desde a última vez que ele teve a Elena à vista (infinito se nunca).</summary>
+        public float SecondsSinceSawPlayer => Time.time - lastSawPlayerTime;
         public Transform Player => player;
         public bool PlayerAlive => playerHealth != null && !playerHealth.IsDead;
 
@@ -54,6 +58,7 @@ namespace Nibiru.AI
             CanSeePlayer = PlayerAlive && CheckVision(out visibility);
             if (CanSeePlayer)
             {
+                lastSawPlayerTime = Time.time;
                 LastKnownPlayerPosition = player.position;
                 Awareness = Mathf.Min(1f, Awareness + visibility * Time.deltaTime / settings.timeToSpot);
             }

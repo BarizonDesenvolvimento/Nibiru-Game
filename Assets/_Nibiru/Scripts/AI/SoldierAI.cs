@@ -11,9 +11,10 @@ namespace Nibiru.AI
     /// Soldado da Fundação. Patrulha entre pontos (ou fica de guarda), desconfia e investiga
     /// sons e vultos, entra em combate quando percebe a Elena, procura por ela quando a perde
     /// de vista e volta à patrulha. O líder chama reforços pelo rádio se o combate durar.
+    /// Distraído e de costas para a Elena, pode ser derrubado de uma vez com a faca.
     /// </summary>
     [RequireComponent(typeof(NavMeshAgent), typeof(Health), typeof(SoldierPerception))]
-    public class SoldierAI : MonoBehaviour
+    public class SoldierAI : MonoBehaviour, ISoldierBrain, ITakedownTarget
     {
         public enum State
         {
@@ -70,6 +71,11 @@ namespace Nibiru.AI
         public State CurrentState { get; private set; }
         public bool IsLeader => isLeader;
         public float Awareness => perception.Awareness;
+        public bool IsActive => enabled;
+
+        /// <summary>Ligado, fora do combate e sem ter visto a Elena nos últimos segundos.</summary>
+        public bool CanBeTakenDown => enabled && CurrentState != State.Morto && CurrentState != State.Combate
+            && perception.SecondsSinceSawPlayer >= settings.takedownLockout;
 
         /// <summary>Em combate, vendo a Elena e sem recarregar: o fuzil fica apontado para ela.</summary>
         public bool IsAiming => enabled && CurrentState == State.Combate && perception.CanSeePlayer && !IsReloading;
@@ -323,6 +329,18 @@ namespace Nibiru.AI
             if (CurrentState == State.Morto) return;
             perception.ForceAlert(playerPosition);
             if (CurrentState != State.Combate) EnterCombat();
+        }
+
+        /// <summary>Golpe pelas costas: cai de frente, morto, sem chamar ninguém.</summary>
+        public void TakeDown(GameObject attacker) => TakedownKill(health, attacker);
+
+        /// <summary>Derruba de frente (antes da morte, para o animador não tocar a queda para trás).</summary>
+        internal static void TakedownKill(Health health, GameObject attacker)
+        {
+            if (health.IsDead) return;
+            var animator = health.GetComponentInChildren<SoldierAnimator>();
+            if (animator != null) animator.DieForward();
+            health.TakeDamage(new DamageInfo(health.Max * 10f, health.transform.position + Vector3.up, attacker));
         }
 
         void OnDamaged(DamageInfo info)

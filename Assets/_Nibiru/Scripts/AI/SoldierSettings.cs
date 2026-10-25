@@ -79,6 +79,10 @@ namespace Nibiru.AI
         [Tooltip("Segundos procurando antes de voltar à patrulha.")]
         [Min(0f)] public float searchTime = 8f;
 
+        [Header("Golpe pelas costas")]
+        [Tooltip("Depois de ver a Elena, por quantos segundos ele não pode ser derrubado pelas costas.")]
+        [Min(0f)] public float takedownLockout = 5f;
+
         [Header("Líder")]
         [Tooltip("Segundos de combate até o líder chamar reforços pelo rádio. Matar o líder antes impede.")]
         [Min(0f)] public float reinforcementDelay = 3f;

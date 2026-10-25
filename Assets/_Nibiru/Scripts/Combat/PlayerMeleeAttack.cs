@@ -10,6 +10,8 @@ namespace Nibiru.Combat
     /// <summary>
     /// Ataque corpo a corpo da Elena. Ao apertar Atacar, ela para, vira para a direção
     /// do direcional (se houver) e golpeia à frente. Na recuperação, a esquiva cancela o golpe.
+    /// Atrás de um soldado distraído (que não a viu há pouco), o golpe vira o golpe pelas
+    /// costas: ela vira para ele e o derruba de uma vez, quase sem barulho.
     /// </summary>
     public class PlayerMeleeAttack : MonoBehaviour
     {
@@ -30,11 +32,26 @@ namespace Nibiru.Combat
         [Tooltip("Abertura do arco da faca, em graus.")]
         [SerializeField] float swingArc = 120f;
 
+        [Header("Golpe pelas costas")]
+        [Tooltip("Distância máxima até o soldado, medida no chão, em metros.")]
+        [SerializeField, Min(0f)] float takedownReach = 1.7f;
+
+        [Tooltip("Abertura das costas do soldado em que o golpe vale, em graus (180 = toda a metade de trás).")]
+        [SerializeField, Range(10f, 180f)] float takedownBackArc = 140f;
+
+        [Tooltip("Até onde o golpe pelas costas é ouvido, em metros.")]
+        [SerializeField, Min(0f)] float takedownNoiseRadius = 1f;
+
         readonly Collider[] overlaps = new Collider[16];
         readonly HashSet<Health> hitThisSwing = new HashSet<Health>();
         float elapsed = -1f;
+        ITakedownTarget takedown;
+        bool takedownSwing;
 
         public bool IsAttacking => elapsed >= 0f;
+
+        /// <summary>O soldado que o golpe derrubaria pelas costas agora (para o aviso na tela), ou null.</summary>
+        public ITakedownTarget TakedownTarget { get; private set; }
 
         /// <summary>Avisa quando o golpe acerta alguém (para som e efeitos, mais tarde).</summary>
         public event Action<Health> Hit;
@@ -61,8 +78,10 @@ namespace Nibiru.Combat
                 else Tick(Time.deltaTime);
             }
 
-            if (!IsAttacking && input.AttackPressed && CanStart())
-                StartAttack();
+            bool canStart = !IsAttacking && CanStart();
+            TakedownTarget = canStart && input.CombatEnabled ? FindTakedownTarget() : null;
+            if (canStart && input.AttackPressed)
+                StartAttack(TakedownTarget);
         }
 
         // Mirando, o clique é tiro, não faca.
@@ -71,9 +90,14 @@ namespace Nibiru.Combat
         // Sem item pedido, a faca vale sempre (como no laboratório de testes).
         bool HasKnife => requiredItem == null || (inventory != null && inventory.Has(requiredItem));
 
-        void StartAttack()
+        // Com um alvo pelas costas, vira para ele em vez de seguir o direcional.
+        void StartAttack(ITakedownTarget target)
         {
-            Vector3 direction = motor.DesiredMoveDirection;
+            takedown = target;
+            takedownSwing = target != null;
+            Vector3 direction = target != null
+                ? Vector3.ProjectOnPlane(target.transform.position - transform.position, Vector3.up)
+                : motor.DesiredMoveDirection;
             if (direction.sqrMagnitude > 0.01f)
                 transform.rotation = Quaternion.LookRotation(direction);
 
@@ -83,7 +107,7 @@ namespace Nibiru.Combat
             motor.DodgeBlocked = true;
             if (swingVisual != null) swingVisual.gameObject.SetActive(true);
             UpdateVisual();
-            Noise.Emit(transform.position, attack.noiseRadius, gameObject);
+            Noise.Emit(transform.position, target != null ? takedownNoiseRadius : attack.noiseRadius, gameObject);
         }
 
         void Tick(float dt)
@@ -91,7 +115,16 @@ namespace Nibiru.Combat
             elapsed += dt;
             float activeEnd = attack.windup + attack.activeTime;
 
-            if (elapsed >= attack.windup && elapsed <= activeEnd)
+            if (takedownSwing)
+            {
+                // Pelas costas: um golpe só, no alvo escolhido.
+                if (elapsed >= attack.windup && takedown != null)
+                {
+                    takedown.TakeDown(gameObject);
+                    takedown = null;
+                }
+            }
+            else if (elapsed >= attack.windup && elapsed <= activeEnd)
                 HitWhatIsInFront();
 
             // Na recuperação, a esquiva volta a valer e pode cancelar o golpe.
@@ -104,6 +137,7 @@ namespace Nibiru.Combat
         void EndAttack()
         {
             elapsed = -1f;
+            takedown = null;
             motor.MovementLocked = false;
             motor.DodgeBlocked = false;
             if (swingVisual != null) swingVisual.gameObject.SetActive(false);
@@ -122,6 +156,34 @@ namespace Nibiru.Combat
                 if (target.TakeDamage(new DamageInfo(attack.damage, point, gameObject)))
                     Hit?.Invoke(target);
             }
+        }
+
+        // O soldado mais perto, distraído, com a Elena atrás dele (dentro do arco das costas).
+        ITakedownTarget FindTakedownTarget()
+        {
+            Vector3 center = transform.position;
+            int count = Physics.OverlapSphereNonAlloc(center, takedownReach + 0.5f, overlaps, ~0, QueryTriggerInteraction.Ignore);
+            ITakedownTarget best = null;
+            float bestDistance = float.MaxValue;
+            for (int i = 0; i < count; i++)
+            {
+                var candidate = overlaps[i].GetComponentInParent<ITakedownTarget>();
+                if (candidate == null || !candidate.CanBeTakenDown) continue;
+
+                Transform target = candidate.transform;
+                Vector3 offset = center - target.position;
+                if (Mathf.Abs(offset.y) > 2f) continue;
+                offset.y = 0f;
+                float distance = offset.magnitude;
+                if (distance > takedownReach || distance >= bestDistance) continue;
+
+                Vector3 back = Vector3.ProjectOnPlane(-target.forward, Vector3.up);
+                if (Vector3.Angle(back, offset) > takedownBackArc * 0.5f) continue;
+
+                best = candidate;
+                bestDistance = distance;
+            }
+            return best;
         }
 
         // A faca varre da direita para a esquerda durante a preparação e o acerto.

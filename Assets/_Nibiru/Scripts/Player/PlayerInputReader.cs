@@ -126,6 +126,7 @@ namespace Nibiru.Player
 
         /// <summary>Nome do botão do inventário no aparelho em uso, por exemplo "Tab | I" ou "Select".</summary>
         public string InventoryButtonLabel => ButtonLabel(toggleInventory);
+        public string AttackButtonLabel => ButtonLabel(attack);
         public string ConfirmButtonLabel => ButtonLabel(confirm);
         public string PowerButtonLabel => ButtonLabel(power);
         public string BackButtonLabel => ButtonLabel(back);
