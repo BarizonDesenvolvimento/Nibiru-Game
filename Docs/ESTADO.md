@@ -16,14 +16,16 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **Aldeia** (área 3) começou: o encontro com o Samir (passo 6) e os sobreviventes com o nicho dos Guardiões como altar de salvamento (passo 7) estão prontos e testados pelo dono. O **passo 8** (a primeira tabuleta no nicho, a memória jogável como Ziusudra, o Eco do Abzu, a marca no pulso e a conversa com o Samir de mão na faca) está pronto e testado pelo dono. O **passo 9** (o plano de fuga: o cerco da Fundação, a conversa com o Samir e a passagem pela patrulha até a base) está pronto e testado pelo dono.
 - A **base do zigurate** (área 4) começou: o **passo 10** (atravessar a base, com a patrulha, o líder, o atirador de elite no alto do zigurate, o golpe de faca pelas costas, o e-mail do Kast e a foto de 1979, o portão para a Aldeia e a saída para o Poço) está pronto e testado pela ponte, esperando o teste do dono. Veja "Base do zigurate, passo 10".
 - A **Boca do Poço** (área 5) começou: o **passo 11** (descer o Poço ouvindo o Lullu lá embaixo, passar por ele, ponto de retorno e o flash a uns 12 m do Selo de Kur, com a Voz) está pronto e testado pela ponte, esperando o teste do dono. Veja "Boca do Poço, passo 11".
+- O **passo 12** (a luta com o Primeiro Servo na antecâmara, em três fases, com os holofotes que caem e atraem o chefe) está pronto em blockout, com o **modelo definitivo do Primeiro Servo**, e testado pela ponte, esperando o teste do dono. Veja "Antecâmara do Poço, passo 12".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
 - Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador de elite está no posto dele, no passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
-- O **Lullu definitivo** (Meshy + AccuRig, com dedos, 2,10 m em pé) substituiu a cápsula no prefab `Prefabs/AI/Lullu` (e, de carona, no Primeiro Servo do laboratório, que é o mesmo prefab em escala 1,25), sem mudar a `LulluAI`. Testado pela ponte; falta o teste do dono. Veja "Lullu" em Personagens 3D.
-- Os outros personagens (Yusuf, Umm Karim, Dra. Weiss, equipe morta e Primeiro Servo) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
+- O **Lullu definitivo** (Meshy + AccuRig, com dedos, 2,10 m em pé) substituiu a cápsula no prefab `Prefabs/AI/Lullu`. Testado pela ponte; falta o teste do dono. Veja "Lullu" em Personagens 3D.
+- O **Primeiro Servo definitivo** (Meshy + AccuRig, com dedos, 2,50 m em pé, máscara de ouro) está no prefab `Prefabs/AI/PrimeiroServo`, usado no passo 12 e no laboratório. Veja "Primeiro Servo" em Personagens 3D.
+- Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-A próxima prioridade é o teste do dono nos passos 10 e 11, depois o passo 12 (o Primeiro Servo, na mesma antecâmara), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+A próxima prioridade é o teste do dono nos passos 10, 11 e 12, depois o passo 13 (a passagem atrás da parede do barco), e importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
 
 ## Documentos
 
@@ -146,7 +148,31 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **Sem canto que prenda a Elena** (vale para o Lullu e para o Primeiro Servo do passo 12): o Lullu a encurralava num canto da antecâmara e golpeava sem parar. O blockout (`BuildWell`) mudou: as plataformas oeste e leste vão até a parede (acabaram as frestas de 1 m, becos sem saída); cada uma tem duas rampas (dá para dar a volta por cima); os cantos da antecâmara e do fundo do Poço são cortados em diagonal (`Ante_Canto_*`, `Poco_Canto_*`); a rampa da descida junto da parede sul ganhou uma guarda (`Lance_4_Guarda`) e o pé da 3ª rampa um pilar (`Patamar_3_Base`). **Ferramenta:** **Nibiru > Testes > Conferir cantos sem saída (Poço)** (`Scripts/Editor/RoomTrapCheck.cs`) põe um inimigo grande (raio 1,1 m, cobre o Servo) a 1,4 m da Elena em 8 direções, em cada ponto andável da malha, e vê se ela ainda chega a 5 m dele; escreve no Console um mapa de texto (número = em quantas direções fica presa). Passou de 429 pontos presos para 23: sobram só pontos de 1 direção em cantos côncavos junto às plataformas e rampas, e os cantos da própria descida de andaimes (o Lullu não sobe lá). Para outra arena, mude os limites no topo do script. Se mexer no blockout, rode **Construir Sítio de Ur na cena aberta** e salve a cena (isso refaz a malha de navegação).
 - **Blockout:** o vão da passagem dos Guardiões na parede oeste da antecâmara agora está fechado pela `Parede_Barco_Junco`, com o barco de junco sobre ondas em ouro e a lamparina quente. O passo 13 vai abri-la.
 - **Pendências do Poço:** o Lullu já tem modelo e animações (veja "Lullu" em Personagens 3D); sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a inscrição dos Guardiões do Poço (colecionável) e o segundo Lullu ficam para depois.
+- **Teste do flash com o Lullu vivo (corrigido):** ele falhava às vezes porque o atalho 6 punha a Elena em z = 89,4 e o colisor dela (0,5 m de raio) encostava exatamente na área do flash (z = 89,9): o flash podia começar sozinho no nascimento. O atalho agora a põe em 88,8 e dispara "passou pelo Lullu" logo depois de carregar (o Lullu continua vivo, como no jogo); o teste não teleporta mais para z = 84,6 (onde ela entrava numa rampa) e acusa se o flash começar antes da hora. Passou 3 vezes seguidas.
 - Teste feito pela ponte (teste automático, tudo OK): chegada à boca, descida caminhável pelos 4 lances, retorno em silêncio, Lullu preso ao chão (barulho do andaime: caça, não sobe, não golpeia), parede do barco, flash com o Lullu vivo (congela e solta) e sem ele.
+
+**Antecâmara do Poço, passo 12 (o Primeiro Servo):**
+- Montado pelo menu da Boca do Poço (`Scripts/Editor/Content/FirstServantContent.cs`, chamado pelo `WellContent`), em `Conteudo_Poco/Poco_Ativo/Primeiro_Servo`.
+- Objetivos (passos 25 e 26 da missão): "Sobreviva ao Primeiro Servo" (`VenceuOPrimeiroServo`) e "Procure a passagem atrás da parede do barco de junco" (`ChegouAParedeDoBarco`, numa área diante da parede). Enquanto o passo 13 não existe, a missão aparece como concluída na parede.
+- **Despertar** (quando a Voz do flash acaba, só ao vivo): o Selo estala (`PrimeiroServoAcordou`), o Servo aparece junto à porta, a uns 9 m da Elena, e **urra parado** 1,8 s; o Selo clareia e os holofotes piscam. O Lullu, se vivo, **foge** para o fundo do poço e some (`LulluAI.FleeTo`), e não volta à luta. Fala da Elena (`Poco_OPrimeiroServo`), dica da esquiva e do Eco, e o **ponto de retorno da luta** na boca da antecâmara (`Checkpoint_Luta`, z = 83, de frente para o Selo). Aparece a **barra de vida** do Servo no alto da tela, com marcas onde começam as fases 2 e 3.
+- **Voltando do checkpoint durante a luta:** o Servo já está acordado, vagando junto ao Selo, com a vida cheia; não há flash, fala nem urro, e o Lullu não está mais lá.
+- **Fases** (pela vida; cada troca tem sinal claro: ele **para e urra**, a **máscara racha** soltando lascas de ouro com um estalo, os **olhos de lápis-lazúli** acendem mais, o **Selo clareia** e os **holofotes piscam**):
+  - Fase 1 (100% a 60%): caça pelo som, golpe de perto e investida de 3,5 a 9 m (a esquiva atravessa). Preso ao chão, como o Lullu: das plataformas a Elena está a salvo.
+  - Fase 2 (60% a 25%): **sobe as rampas** atrás da Elena e faz **duas investidas seguidas**. Na troca aparece a dica dos holofotes.
+  - Fase 3 (abaixo de 25%): furioso, prepara mais rápido (x0,7), mas fica mais tempo parado depois de golpear ou investir (x1,6): é a hora de atacar.
+- **Armadura e Eco:** tiro e faca tiram só 25% do dano; atordoado pelo Eco (3 s), tiram 150%. O Eco continua com a recarga de 12 s que já tinha (`Data/Powers/EcoDoAbzu`), então a luta é esquivar e esperar o Eco, não repetir o Eco sem parar. A investida só sai no mesmo piso (de baixo de uma plataforma ou de cima de uma rampa, não), e ninguém golpeia através de uma plataforma (vale para o Lullu também). Preso ao chão, um som no alto vira o ponto do chão mais perto, procurado em volta e só no nível do chão: antes, debaixo da plataforma oeste (maciça), o ponto mais perto era o topo dela e ele subia pela rampa. O Lullu do passo 11 agora espera no chão em volta do andaime, a uns 4 m da Elena, em vez de exatamente embaixo.
+- **Holofotes** (`Combat/FallingFloodlight`): 4 postes com holofote branco e frio (um na plataforma oeste, dois na leste e um no canto noroeste), apontados para o meio da arena. Um tiro ou a faca derruba; a queda faz um **estrondo** (ruído de 40 m que não é da Elena): o Servo (e qualquer Lullu) vai até lá e, por 5 s, **não ouve os passos dela** e fica olhando para o holofote. Encostar nele ou feri-lo acaba com a distração. Caído, o holofote continua aceso no chão.
+- **Recursos na arena** (aparecem com o despertar): 8 balas na plataforma oeste e 2 curativos (plataforma leste e boca da antecâmara).
+- **Vitória:** ele tomba diante do Selo (animação de morte), a barra some, o azul do Selo enfraquece para 30% em 3 s, a Elena fala (`Poco_OServoCai`), um ponto de retorno é marcado de frente para a parede do barco (`Checkpoint_Depois_Do_Servo`) e o objetivo aponta a parede. Ao voltar de um checkpoint, ele continua caído.
+- **Para ajustar a luta jogando** (mudanças com o Play ligado continuam valendo depois):
+  - `Data/AI/PrimeiroServo_Luta`: **vida** (750), em que fração da vida começam as fases 2 e 3, e por fase: preparação, cansaço, velocidade, investidas seguidas e se sobe rampas; tempo do urro; as dicas na tela.
+  - `Data/AI/PrimeiroServo`: **dano** do golpe (25) e da investida (30), **tempos** (preparação do golpe 0,5 s e da investida 0,6 s, recuperação 0,8 e 1,2 s, intervalo entre investidas 4 s), tempo atordoado (3 s), armadura (0,25 e 1,5), sentidos e a distração (alcance mínimo do estrondo e quantos segundos).
+  - Os valores iniciais miram uma luta de 3 a 5 minutos, com um jogador mediano morrendo no máximo 2 ou 3 vezes: cada Eco bem usado tira uns 15% da vida dele.
+- **Blockout** (`BuildWell`): a marca `Chefe_Primeiro_Servo` foi para junto do Selo (z = 99); a rampa oeste ficou mais curta (37°, termina em z = 94, fora da frente da parede do barco); as luzes soltas de holofote saíram (os holofotes de verdade são do conteúdo). A ferramenta de cantos sem saída continua com 23 pontos, os mesmos de antes.
+- Sons provisórios novos: `Servo_Urro`, `Mascara_Racha` e `Holofote_Queda`.
+- Os olhos são um foco azul saindo do rosto para a frente (uma luz em volta da cabeça pintava o corpo curvado todo de azul).
+- Teste feito pela ponte (teste automático, 10 itens, tudo OK em três rodadas seguidas): despertar com urro, Lullu fugindo e retorno na boca; volta do checkpoint sem repetir nada; fase 1 presa ao chão; troca para a fase 2 com todos os sinais; subida da rampa na fase 2; distração do holofote; armadura e Eco; troca para a fase 3; vitória até a parede do barco; volta depois da vitória com o Servo caído. Os atalhos 3, 4, 5 e 8 foram conferidos à parte. O teste do passo 11 continua todo OK com a IA nova.
+- **Pendências:** o golpe e a investida usam a estocada de faca do Mixamo (falta um golpe de garra e uma animação de urro); a máscara rachando são lascas soltas (o modelo não muda); o Servo sai das rachaduras aparecendo de uma vez (falta uma animação de saída); sons sintetizados; os holofotes e a arena em formas simples.
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
 
@@ -172,6 +198,8 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Facções e reputação | `Factions/` | `Data/Factions` |
 | Tabuletas, transformação, Eco do Abzu | `Tablets/`, `Powers/` | `Data/Tablets`, `Data/Powers` |
 | Lullu e o chefe Primeiro Servo | `AI/LulluAI` | `Data/AI/Lullu`, `PrimeiroServo` |
+| Luta do Primeiro Servo: fases pela vida, urro e sinais de cada troca, barra de vida no alto da tela, vitória | `AI/FirstServantFight` | `Data/AI/PrimeiroServo_Luta` (`FirstServantSettings`) |
+| Holofote em poste que cai com um tiro e distrai com o estrondo | `Combat/FallingFloodlight` | configurado no Inspector |
 | HUD, telas e pausa | `UI/` | opções do jogador em `GameOptions` (salvas no computador) |
 | Helicóptero que avista a Elena, item largado ao morrer | `AI/HelicopterSpotter`, `Combat/DropOnDeath` | configurados no Inspector |
 | Atirador de elite (posto fixo, mira laser, tempo de aviso) | `AI/SniperAI` (o animador e o símbolo sobre a cabeça leem qualquer IA de soldado por `AI/ISoldierBrain`) | `Data/AI/AtiradorElite` (`SniperSettings`) |
@@ -208,7 +236,7 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Pronto (2 ossos de dedo sem peso) |
 | Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | Pronto para importar |
 | Lullu | `Lullu` | 2,10 m em pé | **No jogo** (prefab `AI/Lullu`); pose A (41°) e pernas longas de criatura. Curvado, a cabeça fica a uns 1,7 m |
-| Primeiro Servo | `PrimeiroServo` | 2,50 m | Pronto (5 ossos de dedo sem peso) |
+| Primeiro Servo | `PrimeiroServo` | 2,50 m | **No jogo** (prefab `AI/PrimeiroServo`); 4 ossos de dedo sem peso, corrigidos na importação |
 | Ninsar | `Ninsar` | 1,90 m | Prévia na Unity; manto pausado (Ato 2). Veja "Ninsar" abaixo |
 
 As alturas ficam também em `Scripts/Editor/Personagens/CharacterHeights.cs`: `CharacterHeights.FitImportScale(fbx, "Nome")` ajusta o "Scale Factor" da importação até o modelo medir a altura da tabela (use na montagem de cada personagem).
@@ -335,7 +363,16 @@ O menu **Nibiru > Personagens > Montar Lullu animado** (`Scripts/Editor/Personag
 - **Colisor:** cápsula de 0,4 m de raio e 1,8 m de altura, do chão para cima (antes 0,35 x 2 m). **Audição:** a `LulluAI` mede distância e altura a partir da raiz, a 1 m do chão (cintura dele); a cabeça curvada fica a uns 1,7 m, então o "ouvido" fica 0,7 m abaixo da cabeça, sem efeito prático nos alcances (6, 14, 1,8 m). O alcance vertical da Elena nos andaimes (2,4 m acima da raiz) não mudou.
 - O andar agachado (`Sneak Walk`) não serviu: nas pernas longas dele o corpo vira uma rampa quase deitada. Por isso o andar é o normal, encurvado pelo `LulluAnimator`.
 - Pendências: o golpe é a estocada de faca do Mixamo (falta um golpe de garra); o atordoado do Eco ainda é só o tremor do corpo da `LulluAI`; falta um andar de criatura de verdade (quatro apoios ou arrastado); a investida do Primeiro Servo usa o mesmo golpe.
-- **Como testar:** os atalhos do passo 11 (**Nibiru > Testes > Passo 11**, 4 e 6) levam ao Lullu; corra ou atire perto dele para vê-lo caçar e golpear (ou fique agachada para ele não ouvir). No laboratório (**Nibiru > Testes > Elena > 1**, sem o `StopEnemies`, ou abrindo `Teste_Personagem`) o Primeiro Servo é o mesmo modelo maior.
+- **Como testar:** os atalhos do passo 11 (**Nibiru > Testes > Passo 11**, 4 e 6) levam ao Lullu; corra ou atire perto dele para vê-lo caçar e golpear (ou fique agachada para ele não ouvir).
+
+### Primeiro Servo
+
+O menu **Nibiru > Personagens > Montar Primeiro Servo animado** (`Scripts/Editor/Personagens/PrimeiroServoSetup.cs`) refaz tudo (saia do Play antes; rode antes os menus da Elena e do Lullu):
+- Copia da `ArteFonte/PrimeiroServo` o FBX do AccuRig e as texturas do Meshy para `Art/Personagens/PrimeiroServo`. Humanoid com dedos, escala de importação 2,724 (2,50 m em pé); 4 ossos de dedo sem peso são corrigidos pelo `FingerWeightFix`. Na importação aparece um aviso amarelo "Rig Error / Avatar Rig Configuration mis-match": é do passo intermediário em que a escala ainda está sendo ajustada; o avatar final fica válido.
+- Controlador `PrimeiroServo.controller`: os mesmos estados e cortes do Lullu (montados pelo `LulluSetup`, agora reaproveitável), nas velocidades de `Data/AI/PrimeiroServo`.
+- Prefab `Prefabs/AI/PrimeiroServo`: na primeira vez, uma cópia do prefab do Lullu; depois, editado no lugar. Mesmo arranjo (`LulluAI`, `LulluAnimator`, `Corpo` > `Modelo`), com colisor de 0,55 x 2,2 m, os dados `PrimeiroServo` e a `FirstServantFight` (dados `PrimeiroServo_Luta`, sons do urro e da máscara, lascas de ouro). A postura encurvada é a mesma do Lullu.
+- No laboratório, o Primeiro Servo (antes o Lullu em escala 1,25) passa a ser este prefab, acordado desde o começo (campo "Awake On Start").
+- Pendências: golpe de garra, urro e saída das rachaduras como animações; a máscara não muda no modelo (as lascas são soltas).
 
 ### Soldados da Fundação
 
@@ -452,13 +489,30 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Teste do dono nos passos 10 e 11; depois o passo 12 (o Primeiro Servo na antecâmara, com os andaimes e holofotes da arena), o passo 13 (a passagem atrás da parede do barco), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Teste do dono nos passos 10, 11 e 12; depois o passo 13 (a passagem atrás da parede do barco), o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
 6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+
+### Como testar o passo 12
+
+Atalhos no menu **Nibiru > Testes > Passo 12** (`Scripts/Editor/Step12Shortcuts.cs`), com o mundo como se a Elena tivesse descido o Poço, passado pelo Lullu e visto o flash, e com pistola, 24 balas e faca:
+
+| Atalho | Onde começa |
+| --- | --- |
+| 1. Do flash ao Servo acordando (o Lullu foge) | Um passo antes do flash, com o Lullu vivo. Ande para o norte: a Voz, o Servo saindo do Selo e urrando, o Lullu fugindo |
+| 2. Ponto de retorno da luta (fase 1) | Na boca da antecâmara, com o Servo vagando junto ao Selo. Faça barulho para ele vir |
+| 3. Troca para a fase 2 | O Servo passa para a fase 2 logo ao carregar: olhe para ele (urro, lascas da máscara, holofotes piscando) |
+| 4. Troca para a fase 3 | O mesmo, da fase 2 para a 3 |
+| 5. Fim da luta: o Servo quase sem vida | Fase 3 com 6% da vida: use o Eco e ataque |
+| 6. Depois da vitória: rumo à parede do barco | O Servo caído; ande até a parede do barco, a oeste |
+| 7. Teste automático (resumo no Console) | Roda os testes sozinho e escreve OK ou FALHOU no Console (`Scripts/Editor/Step12Tests.cs`) |
+| 8. Ferir o Servo (10% da vida) | Com o Play ligado e o Servo acordado: tira 10% da vida dele na hora (para ver as trocas de fase) |
+
+Para jogar a luta inteira, use o atalho 2 e desligue **Nibiru > Testes > Elena invencível nos atalhos** (senão ela não morre). Dicas: a investida se atravessa com a esquiva (role na hora em que ele se encolhe); o Eco (Q ou LB) o atordoa por 3 s, a hora de atirar ou golpear; um tiro num holofote o manda para longe.
 
 ### Como testar o passo 11
 
