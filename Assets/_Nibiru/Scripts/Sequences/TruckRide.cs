@@ -168,7 +168,11 @@ namespace Nibiru.Sequences
         {
             player.enabled = false;
             var interactor = player.GetComponent<PlayerInteractor>();
-            if (interactor != null) interactor.enabled = false;
+            if (interactor != null)
+            {
+                interactor.enabled = false;
+                interactor.Clear();
+            }
             input.SetCombatEnabled(false);
             var health = player.GetComponent<Health>();
             if (health != null) health.Invincible = true;

@@ -29,6 +29,9 @@ namespace Nibiru.Interaction
         /// <summary>O objeto que será usado se o jogador apertar Interagir agora, ou null.</summary>
         public IInteractable Current { get; private set; }
 
+        /// <summary>Esquece o objeto em foco (o aviso na tela some), por exemplo ao desligar este componente.</summary>
+        public void Clear() => Current = null;
+
         void Awake()
         {
             if (input == null) input = GetComponent<PlayerInputReader>();

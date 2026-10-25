@@ -209,14 +209,13 @@ namespace Nibiru.EditorTools.Content
             {
                 foreach (float z in new[] { -0.05f, 1.15f })
                     Local(PrimitiveType.Cube, truckRoot, "Coluna", new Vector3(x, 1.95f, z), new Vector3(0.1f, 2f, 0.1f), "BO_Metal");
-                Local(PrimitiveType.Cube, truckRoot, "Grade_Lateral", new Vector3(x * 1.05f, 1.2f, -1.4f), new Vector3(0.1f, 0.6f, 2.5f), "BO_Madeira", ColliderMode.Solid);
+                Local(PrimitiveType.Cube, truckRoot, "Grade_Lateral", new Vector3(x * 1.05f, 1.075f, -1.4f), new Vector3(0.1f, 0.35f, 2.5f), "BO_Madeira", ColliderMode.Solid);
                 foreach (float z in new[] { -1.3f, 1.3f })
                 {
                     GameObject wheel = Local(PrimitiveType.Cylinder, truckRoot, "Roda", new Vector3(x * 1.1f, 0.45f, z), new Vector3(0.9f, 0.12f, 0.9f), "BO_TijoloBarroEscuro");
                     wheel.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
                 }
             }
-            Local(PrimitiveType.Cube, truckRoot, "Traseira", new Vector3(0f, 1.2f, -2.6f), new Vector3(2.2f, 0.6f, 0.1f), "BO_Madeira", ColliderMode.Solid);
             Headlight(truckRoot, -0.7f);
             Headlight(truckRoot, 0.7f);
 

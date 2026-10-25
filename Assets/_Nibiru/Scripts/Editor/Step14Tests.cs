@@ -477,7 +477,7 @@ namespace Nibiru.EditorTools
                 bool silent = !transformationEventFired;
                 bool saved = WorldState.IsCheckpointActivated(AutosaveId);
                 bool ok = onlyThis && dF == FoundationDelta[pick] && dG == GuardiansDelta[pick] && dT == TransformationDelta[pick]
-                    && silent && saved && Objective().StartsWith("nenhum") && player.GetComponent<PlayerInputReader>().GameplayEnabled;
+                    && silent && saved && Objective().StartsWith(pick == 1 ? "Leve a tabuleta" : "Entre na caminhonete") && player.GetComponent<PlayerInputReader>().GameplayEnabled;
                 detail = $"{ChoiceEvents[pick]}={Raised(ChoiceEvents[pick])}, só esta opção={onlyThis}, Fundação {dF:+0;-0;0}, Guardiões {dG:+0;-0;0}, transformação {dT:+0;-0;0} sem aviso={silent}, salvou={saved}";
                 if (!ok) { Result(false, detail); return true; }
 
@@ -508,7 +508,7 @@ namespace Nibiru.EditorTools
             GameObject radioGo = GameObject.Find("Radio_Caido");
             bool radioQuiet = radioGo != null && !radioGo.GetComponent<AudioSource>().enabled;
             bool reloaded = eventKept && fAfter == FoundationDelta[pick] && gAfter == GuardiansDelta[pick] && tAfter == TransformationDelta[pick]
-                && noRepeat && atSave && radioQuiet && Objective().StartsWith("nenhum");
+                && noRepeat && atSave && radioQuiet && Objective().StartsWith(pick == 1 ? "Leve a tabuleta" : "Entre na caminhonete");
             Result(reloaded, $"{detail}; depois de recarregar: evento mantido={eventKept}, Fundação {fAfter:+0;-0;0}, Guardiões {gAfter:+0;-0;0}, transformação {tAfter:+0;-0;0}, conversa repetida={!noRepeat}, de volta ao salvamento={atSave}, rádio calado={radioQuiet}");
             return true;
         }
