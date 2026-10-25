@@ -135,5 +135,17 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: 688118a1c3739f543a105d1956611935, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Siga o wadi at\xE9 o soldado ferido"
+    completeOn: {fileID: 11400000, guid: 55d74a99280e6274c9809b4e8bada667, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: "Ou\xE7a o r\xE1dio do soldado"
+    completeOn: {fileID: 11400000, guid: 6ba83f9b5b3e74f44a5b948c8a516bb0, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Decida o que fazer com a tabuleta
+    completeOn: {fileID: 11400000, guid: a0955fa8a6431084bb6f49216cb22589, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []
