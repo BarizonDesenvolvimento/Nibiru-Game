@@ -147,5 +147,17 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: a0955fa8a6431084bb6f49216cb22589, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
+  - objective: "Leve a tabuleta ao nicho dos Guardi\xF5es, no t\xFAnel"
+    completeOn: {fileID: 11400000, guid: db9fa14ab431fab4c84c0950e3baf9d9, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Entre na caminhonete do Samir
+    completeOn: {fileID: 11400000, guid: b3fe62d4517aa2142a2a2a5837a87cb7, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
+  - objective: Fuja para Tell Amar
+    completeOn: {fileID: 11400000, guid: 1c9e4e9686023c84a9813eccc172a431, type: 2}
+    requiredItem: {fileID: 0}
+    requiredCount: 1
   raiseOnComplete: {fileID: 0}
   reputationOnComplete: []

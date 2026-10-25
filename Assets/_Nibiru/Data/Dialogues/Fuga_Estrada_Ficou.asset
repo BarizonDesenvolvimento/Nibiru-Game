@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Fuga_Estrada_Ficou
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: f1
+    speaker: Elena
+    text: "(Samir dirige em sil\xEAncio. Pelo retrovisor, ela o v\xEA olhar para
+      a bolsa dela e desviar o rosto.)"
+    next: f2
+    raise: {fileID: 0}
+    choices: []
+  - id: f2
+    speaker: Samir
+    text: "Voc\xEA ficou com ela."
+    next: f3
+    raise: {fileID: 0}
+    choices: []
+  - id: f3
+    speaker: Elena
+    text: "Eu li aquilo. Eu n\xE3o ia deixar para ningu\xE9m."
+    next: f4
+    raise: {fileID: 0}
+    choices: []
+  - id: f4
+    speaker: Samir
+    text: "Os Guardi\xF5es fizeram um juramento sobre este caminho. Quem guarda,
+      guarda para os que v\xEAm depois. Eu o fiz."
+    next: f5
+    raise: {fileID: 0}
+    choices: []
+  - id: f5
+    speaker: Elena
+    text: "E voc\xEA acha que eu sou um perigo para o que voc\xEA guarda."
+    next: f6
+    raise: {fileID: 0}
+    choices: []
+  - id: f6
+    speaker: Samir
+    text: "Acho que a tabuleta est\xE1 quente demais para quem n\xE3o sabe o que
+      ela quer."
+    next: f7
+    raise: {fileID: 0}
+    choices: []
+  - id: f7
+    speaker: Elena
+    text: "(A tabuleta pulsa na bolsa, uma vez, devagar. Nenhum dos dois comenta.
+      A tempestade cobre a estrada atr\xE1s deles.)"
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 0}

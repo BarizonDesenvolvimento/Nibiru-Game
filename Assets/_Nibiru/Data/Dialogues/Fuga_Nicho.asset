@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Fuga_Nicho
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: n1
+    speaker: Samir
+    text: "Deixa aqui. Os Guardi\xF5es levam ao Po\xE7o."
+    next: n2
+    raise: {fileID: 0}
+    choices: []
+  - id: n2
+    speaker: Elena
+    text: "(Ela p\xF5e a tabuleta no nicho, entre a lamparina e o barco de junco.
+      A pedra esfria na m\xE3o dela. O que ficou dentro dela, n\xE3o.)"
+    next: n3
+    raise: {fileID: 0}
+    choices: []
+  - id: n3
+    speaker: Samir
+    text: "Pronto. Eu vou na frente, para ligar o motor. N\xE3o demore."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: a81ad22978837de4bb974d1ab52a25f6, type: 2}

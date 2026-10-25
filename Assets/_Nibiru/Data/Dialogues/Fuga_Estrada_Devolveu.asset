@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Fuga_Estrada_Devolveu
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: d1
+    speaker: Elena
+    text: "(Samir dirige com uma m\xE3o s\xF3, a outra no joelho. Pela primeira vez
+      desde a Aldeia, os ombros dele est\xE3o soltos.)"
+    next: d2
+    raise: {fileID: 0}
+    choices: []
+  - id: d2
+    speaker: Samir
+    text: "Obrigado, doutora. Deixar aquilo no nicho n\xE3o foi pouca coisa. Os Guardi\xF5es
+      v\xE3o saber."
+    next: d3
+    raise: {fileID: 0}
+    choices: []
+  - id: d3
+    speaker: Elena
+    text: "O Kast disse que era lament\xE1vel."
+    next: d4
+    raise: {fileID: 0}
+    choices: []
+  - id: d4
+    speaker: Samir
+    text: "Ele diz isso de tudo que n\xE3o consegue comprar."
+    next: d5
+    raise: {fileID: 0}
+    choices: []
+  - id: d5
+    speaker: Samir
+    text: "H\xE1 um juramento, doutora, mais velho que eu e que o meu pai. Quem guarda
+      o Po\xE7o, guarda para os que v\xEAm depois. Eu o fiz ainda menino."
+    next: d6
+    raise: {fileID: 0}
+    choices: []
+  - id: d6
+    speaker: Elena
+    text: E o que mais esse juramento diz?
+    next: d7
+    raise: {fileID: 0}
+    choices: []
+  - id: d7
+    speaker: Samir
+    text: "O resto fica para Tell Amar. L\xE1 h\xE1 quem explique melhor do que eu."
+    next: d8
+    raise: {fileID: 0}
+    choices: []
+  - id: d8
+    speaker: Elena
+    text: "(Ele sorri para a estrada. Ela repara que ele n\xE3o respondeu.)"
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 0}
