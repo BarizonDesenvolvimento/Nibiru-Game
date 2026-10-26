@@ -21,7 +21,7 @@ namespace Nibiru.Documents
             public string id;
 
             [Tooltip("Chave do texto na tabela de idiomas (tape.<nome>.<fala>).")]
-            public string textKey;
+            [LocKey] public string textKey;
 
             [Tooltip("Texto da fala. Depois da extração fica vazio.")]
             [TextArea(1, 4)] public string text;
@@ -30,8 +30,8 @@ namespace Nibiru.Documents
         }
 
         [Tooltip("Chaves do nome e da etiqueta na tabela de idiomas (tape.<nome>.name e .label).")]
-        public string displayNameKey;
-        public string speakerLabelKey;
+        [LocKey] public string displayNameKey;
+        [LocKey] public string speakerLabelKey;
 
         [Tooltip("Nome da fita, mostrado ao pegar e acima da legenda. Depois da extração fica vazio.")]
         public string displayName = "Fita";

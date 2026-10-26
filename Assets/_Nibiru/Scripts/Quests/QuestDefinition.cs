@@ -23,7 +23,7 @@ namespace Nibiru.Quests
         public string id;
 
         [Tooltip("Chave do texto do objetivo na tabela de idiomas (quest.<nome>.<passo>).")]
-        public string objectiveKey;
+        [LocKey] public string objectiveKey;
 
         [Tooltip("Texto do objetivo mostrado na tela. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         [TextArea(1, 3)] public string objective;
@@ -49,7 +49,7 @@ namespace Nibiru.Quests
     public class QuestDefinition : ScriptableObject
     {
         [Tooltip("Chave do nome da missão na tabela de idiomas (quest.<nome>.name).")]
-        public string nameKey;
+        [LocKey] public string nameKey;
 
         [Tooltip("Nome da missão mostrado na tela. Depois da extração fica vazio.")]
         public string displayName;

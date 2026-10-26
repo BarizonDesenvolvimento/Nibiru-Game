@@ -15,8 +15,8 @@ namespace Nibiru.Tablets
     public class TabletDefinition : ScriptableObject
     {
         [Tooltip("Chaves dos textos na tabela de idiomas (tablet.<nome>.name e .text).")]
-        public string nameKey;
-        public string textKey;
+        [LocKey] public string nameKey;
+        [LocKey] public string textKey;
 
         [Tooltip("Nome mostrado na tela. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         public string displayName;

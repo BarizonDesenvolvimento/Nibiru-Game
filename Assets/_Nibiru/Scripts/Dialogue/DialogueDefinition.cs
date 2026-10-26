@@ -14,7 +14,7 @@ namespace Nibiru.Dialogue
         public string id;
 
         [Tooltip("Chave do texto da resposta na tabela de idiomas (dlg.<conversa>.<fala>.<resposta>).")]
-        public string textKey;
+        [LocKey] public string textKey;
 
         [Tooltip("Texto da resposta. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         [TextArea(1, 2)] public string text;
@@ -46,10 +46,10 @@ namespace Nibiru.Dialogue
         public string speaker;
 
         [Tooltip("Chave do nome de quem fala na tabela de idiomas (spk.<nome>).")]
-        public string speakerKey;
+        [LocKey] public string speakerKey;
 
         [Tooltip("Chave do texto da fala na tabela de idiomas (dlg.<conversa>.<fala>).")]
-        public string textKey;
+        [LocKey] public string textKey;
 
         [Tooltip("Texto da fala. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         [TextArea(2, 5)] public string text;

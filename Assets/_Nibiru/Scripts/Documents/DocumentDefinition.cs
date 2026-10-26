@@ -13,9 +13,9 @@ namespace Nibiru.Documents
     public class DocumentDefinition : ScriptableObject
     {
         [Tooltip("Chaves dos textos na tabela de idiomas (doc.<nome>.title, .text, .footer).")]
-        public string titleKey;
-        public string textKey;
-        public string footerKey;
+        [LocKey] public string titleKey;
+        [LocKey] public string textKey;
+        [LocKey] public string footerKey;
 
         [Tooltip("Título na tela de leitura. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         public string displayName;

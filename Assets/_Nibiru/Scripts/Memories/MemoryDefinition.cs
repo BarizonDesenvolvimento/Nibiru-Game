@@ -16,8 +16,8 @@ namespace Nibiru.Memories
         public string sceneName;
 
         [Tooltip("Chaves dos textos na tabela de idiomas (memory.<nome>.character e .place).")]
-        public string characterNameKey;
-        public string placeTitleKey;
+        [LocKey] public string characterNameKey;
+        [LocKey] public string placeTitleKey;
 
         [Tooltip("Quem a Elena é na memória, mostrado na abertura (\"Você é Ziusudra\"). Depois da extração fica vazio.")]
         public string characterName;

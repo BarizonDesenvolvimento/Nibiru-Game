@@ -20,9 +20,9 @@ namespace Nibiru.Inventory
     public class ItemDefinition : ScriptableObject
     {
         [Tooltip("Chaves dos textos na tabela de idiomas (item.<nome>.name, .desc, .hint).")]
-        public string nameKey;
-        public string descriptionKey;
-        public string hintKey;
+        [LocKey] public string nameKey;
+        [LocKey] public string descriptionKey;
+        [LocKey] public string hintKey;
 
         [Tooltip("Nome mostrado na tela. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         public string displayName;
