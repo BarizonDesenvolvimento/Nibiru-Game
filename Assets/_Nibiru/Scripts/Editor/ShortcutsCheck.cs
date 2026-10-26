@@ -79,7 +79,7 @@ namespace Nibiru.EditorTools
         static string SkipReason(string id)
         {
             if (id.StartsWith("geral.")) return "é este teste";
-            if (id == "mouse.hittest") return "é um teste automático, não um lugar";
+            if (id == "mouse.hittest" || id == "mouse.hittest_h") return "é um teste automático, não um lugar";
             if (id == "mouse.menu_slots" || id == "mouse.pausa") return "abre o menu principal ou a pausa, sem a Elena andando (o teste do mouse cobre)";
             if (id.StartsWith("salvamento.")) return "carrega um slot do disco (o teste do salvamento cobre)";
             if (id.Contains(".teste")) return "é um teste automático, não um lugar";

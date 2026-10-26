@@ -36,7 +36,119 @@ namespace Nibiru.EditorTools.Mouse
 
         static string folder;
 
-        static HitTestCheck() => Register("mouse.hittest", Begin);
+        static HitTestCheck()
+        {
+            Register("mouse.hittest", Begin);
+            Register("mouse.hittest_h", BeginHorizontal);
+        }
+
+        [MenuItem("Nibiru/Testes/Mouse/Verificar o horizontal do texto da pausa (3 resoluções)", priority = 2)]
+        static void RunHorizontal() => Go("mouse.hittest_h");
+
+        // Compara, na pausa (página Opções), o trecho "‹ valor ›" calculado com a tinta desenhada, na horizontal.
+        static void BeginHorizontal()
+        {
+            var list = new List<(string, Func<IEnumerator>)>();
+            foreach ((int w, int h) in Sizes)
+            {
+                int width = w, height = h;
+                list.Add(($"Horizontal da pausa em {w}x{h}", () => PauseHorizontal(width, height)));
+            }
+            Start("Mouse, verificação horizontal", list);
+        }
+
+        static IEnumerator PauseHorizontal(int w, int h)
+        {
+            yield return Restart("arquivo.cheio");
+            int frame = Time.frameCount + 3;
+            yield return new Until(() => Time.frameCount >= frame, 10f, "3 quadros");
+            var pause = Object.FindFirstObjectByType<PauseMenuUI>();
+            typeof(PauseMenuUI).GetMethod("Open", Any).Invoke(pause, null);
+            frame = Time.frameCount + 3;
+            yield return new Until(() => Time.frameCount >= frame, 10f, "3 quadros");
+            pause.TryGetRowRect(1, out Rect optionsRow);
+            pause.PointerStep(new MenuPointer.State { position = optionsRow.center, leftClick = true });
+
+            var content = (Text)typeof(PauseMenuUI).GetField("content", Any).GetValue(pause);
+            Canvas canvas = content.canvas.rootCanvas;
+            var cam = new GameObject("HitTestCam").AddComponent<Camera>();
+            var rt = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32);
+            RenderMode mode = canvas.renderMode;
+            Camera oldCamera = canvas.worldCamera;
+            int oldLayer = canvas.gameObject.layer;
+            // Só o texto da pausa aparece: o resto da interface (barras, fundo escuro) é desligado durante a medição.
+            var hidden = canvas.GetComponentsInChildren<Graphic>(true).Where(g => g != content && g.enabled).ToList();
+            try
+            {
+                foreach (Graphic graphic in hidden) graphic.enabled = false;
+                cam.orthographic = true;
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = Color.black;
+                cam.cullingMask = 1 << SpareLayer;
+                cam.nearClipPlane = 0.1f;
+                cam.farClipPlane = 10f;
+                cam.targetTexture = rt;
+                canvas.gameObject.layer = SpareLayer;
+                content.gameObject.layer = SpareLayer;
+                canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                canvas.worldCamera = cam;
+                canvas.planeDistance = 1f;
+                float start = Time.realtimeSinceStartup;
+                yield return new Until(() => Time.realtimeSinceStartup - start > 0.4f, 5f, "meio segundo");
+                Canvas.ForceUpdateCanvases();
+                cam.Render();
+                var previous = RenderTexture.active;
+                RenderTexture.active = rt;
+                var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+                tex.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+                RenderTexture.active = previous;
+                Color32[] pixels = tex.GetPixels32();
+                Object.Destroy(tex);
+
+                string[] lines = content.text.Split((char)10);
+                for (int row = 0; row < 4; row++)
+                {
+                    bool bandOk = pause.TryGetRowRect(row, out Rect band);
+                    bool leftOk = pause.TryGetOptionHalf(row, -1, out Rect leftHalf);
+                    bool rightOk = pause.TryGetOptionHalf(row, 1, out Rect rightHalf);
+                    Check(bandOk && leftOk && rightOk, $"{w}x{h} opção {row}: faixas deveriam existir");
+                    if (!(bandOk && leftOk && rightOk)) continue;
+                    int inkMin = int.MaxValue, inkMax = -1;
+                    for (int y = Mathf.Max(0, Mathf.CeilToInt(band.yMin)); y < Mathf.Min(h, Mathf.FloorToInt(band.yMax)); y++)
+                        for (int x = 0; x < w; x++)
+                        {
+                            Color32 c = pixels[y * w + x];
+                            if (Mathf.Max(c.r, Mathf.Max(c.g, c.b)) <= 60) continue;
+                            inkMin = Mathf.Min(inkMin, x);
+                            inkMax = Mathf.Max(inkMax, x);
+                        }
+                    int line = -1;
+                    for (int i = 0; i < lines.Length; i++) if (lines[i].Contains("‹") && line < 0 && TextLines.TryGetBand(content, i, out Rect b) && Mathf.Abs(b.center.y - band.center.y) < 2f) line = i;
+                    bool whole = line >= 0 && TextLines.TryGetSpan(content, line, "", lines[line], out Rect lineSpan);
+                    TextLines.TryGetSpan(content, line, "", line >= 0 ? lines[line] : "", out Rect span);
+                    float groupMin = leftHalf.xMin, groupMax = rightHalf.xMax, center = leftHalf.xMax;
+                    Debug.Log($"Horizontal {w}x{h} opção {row}: tinta {inkMin}-{inkMax}; linha calculada {span.xMin:0}-{span.xMax:0}; \"‹ valor ›\" {groupMin:0}-{groupMax:0}, divisão em {center:0}");
+                    float tolerance = Mathf.Max(8f, w * 0.006f);
+                    // O começo da linha tem espaços sem tinta: a tinta só pode começar depois do começo calculado.
+                    Check(inkMax >= 0 && span.xMin <= inkMin + tolerance && Mathf.Abs(span.xMax - inkMax) <= tolerance,
+                        $"{w}x{h} opção {row}: a linha calculada ({span.xMin:0}-{span.xMax:0}) deveria conter a tinta ({inkMin}-{inkMax}) e terminar junto");
+                    Check(Mathf.Abs(groupMax - inkMax) <= tolerance, $"{w}x{h} opção {row}: o fim do ‹ valor › ({groupMax:0}) deveria bater com o fim da tinta ({inkMax})");
+                    Check(groupMin > inkMin && groupMin < inkMax && center > groupMin && center < groupMax, $"{w}x{h} opção {row}: o ‹ valor › deveria ficar dentro da linha");
+                }
+            }
+            finally
+            {
+                foreach (Graphic graphic in hidden) graphic.enabled = true;
+                content.gameObject.layer = oldLayer;
+                canvas.gameObject.layer = oldLayer;
+                canvas.renderMode = mode;
+                canvas.worldCamera = oldCamera;
+                cam.targetTexture = null;
+                rt.Release();
+                Object.Destroy(rt);
+                Object.Destroy(cam.gameObject);
+            }
+        }
 
         [MenuItem("Nibiru/Testes/Mouse/Verificar o hit-test do texto (3 resoluções)", priority = 1)]
         static void Run() => Go("mouse.hittest", MenuScenePath);
@@ -199,6 +311,27 @@ namespace Nibiru.EditorTools.Mouse
                         ok = false;
                         report.Append($"\n  FALHOU linha {bands[i].line}: tinta {ink[i].min}-{ink[i].max}, faixa {band.yMin:0}-{band.yMax:0}");
                     }
+                }
+            }
+            if (label.Contains("novo jogo") || label.Contains("carregar"))
+            {
+                for (int slot = 0; slot < SaveSlots.SlotCount; slot++)
+                {
+                    if (!menu.TryGetDeleteRect(slot, out Rect delete) || !menu.TryGetRowRect(slot, out Rect rowBand)) continue;
+                    int inkMinX = int.MaxValue, inkMaxX = -1;
+                    for (int y = Mathf.Max(0, Mathf.CeilToInt(rowBand.yMin)); y < Mathf.Min(h, Mathf.FloorToInt(rowBand.yMax)); y++)
+                        for (int x = 0; x < w; x++)
+                        {
+                            Color32 c = pixels[y * w + x];
+                            if (Mathf.Max(c.r, Mathf.Max(c.g, c.b)) <= 60) continue;
+                            inkMinX = Mathf.Min(inkMinX, x);
+                            inkMaxX = Mathf.Max(inkMaxX, x);
+                        }
+                    float tolerance = Mathf.Max(8f, w * 0.006f);
+                    // O botão [Apagar] é o último trecho da linha: termina onde a tinta termina e fica dentro dela.
+                    bool good = inkMaxX >= 0 && Mathf.Abs(delete.xMax - inkMaxX) <= tolerance && delete.xMin > inkMinX && delete.width > 20f && delete.width < (inkMaxX - inkMinX) / 2f;
+                    report.Append($"\n  [Apagar] do slot {slot + 1}: calculado {delete.xMin:0}-{delete.xMax:0}, tinta da linha {inkMinX}-{inkMaxX}{(good ? "" : "  FALHOU")}");
+                    ok &= good;
                 }
             }
             report.Append(ok ? "  → OK" : "");

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -109,8 +111,26 @@ namespace Nibiru.UI
             TextGenerationSettings settings = text.GetGenerationSettings(Vector2.zero);
             var generator = new TextGenerator();
             float bar = generator.GetPreferredWidth("|", settings);
-            float with = generator.GetPreferredWidth(content + "|", settings);
+            // Uma marcação aberta sem fechar (um trecho cortado no meio da cor) seria medida como texto: fecha antes.
+            float with = generator.GetPreferredWidth(CloseOpenTags(content) + "|", settings);
             return (with - bar) / Mathf.Max(0.0001f, text.pixelsPerUnit);
+        }
+
+        static readonly Regex Tag = new Regex("<(/?)(color|size|b|i)(=[^>]*)?>", RegexOptions.IgnoreCase);
+
+        // Fecha, no fim do trecho, as marcações que ele abriu e não fechou.
+        static string CloseOpenTags(string content)
+        {
+            var open = new List<string>();
+            foreach (Match match in Tag.Matches(content))
+            {
+                string name = match.Groups[2].Value.ToLowerInvariant();
+                if (match.Groups[1].Value.Length > 0) open.Remove(name);
+                else open.Add(name);
+            }
+            var text = new StringBuilder(content);
+            for (int i = open.Count - 1; i >= 0; i--) text.Append("</").Append(open[i]).Append('>');
+            return text.ToString();
         }
 
         static Vector2 Project(RectTransform rect, Camera camera, Vector2 local)
