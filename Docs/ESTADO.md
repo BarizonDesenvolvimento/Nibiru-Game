@@ -376,6 +376,7 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 | Resumo de todos os slots (Console) | Área, data e hora, tempo jogado e "demo concluída" de cada slot, o último usado e o slot da partida |
 | Abrir a pasta dos slots | Abre a pasta no Explorer |
 | Fechar e continuar | Grava no slot da partida (ou no 1), sai do Play, liga o Play no **menu principal** e escolhe "Continuar". Depois disso a cena aberta no editor fica sendo a `MenuPrincipal` |
+| Situações (1 a 10) | O roteiro de teste do dono, abaixo |
 | Teste automático | O teste abaixo (uns 40 s) |
 | Teste de códigos | O teste de códigos (sem Play) |
 
@@ -383,7 +384,22 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 
 **O que voltou diferente do esperado:** nada no salvamento. Uma observação do comportamento de hoje, que já acontece ao morrer: no checkpoint **`poco.checkpoint_pe_da_descida`** a Elena reaparece uns **0,6 m ao lado** do ponto de retorno (algo do andaime a empurra). O teste aceita até 1 m e escreve uma observação no Console. Ficou nas pendências da etapa B.
 
-**Para o dono testar no Play:** menu principal > Novo jogo > ande até o primeiro ponto de retorno > pare o Play > Play no menu principal > "Continuar". Ou use **Fechar e continuar** de qualquer atalho de passo. O resumo dos slots mostra o que ficou gravado.
+**Como testar o salvamento (roteiro do dono):** **Nibiru > Testes > Salvamento > Situações** (`Scripts/Editor/Save/SaveSituations.cs`). Cada situação liga o Play, prepara os slots **de verdade** (apaga ou sobrescreve o que estiver lá) e escreve no Console o que fazer. Use **Salvamento > Resumo de todos os slots** para conferir. Rode a 3 antes da 4 e da 5.
+
+| Situação | O que fazer | O que deve acontecer |
+| --- | --- | --- |
+| 1. Menu sem nenhum slot | "Novo jogo"; ainda na barraca, saia do Play; Situação 2; "Continuar"; saia da barraca | Sem "Continuar" no começo. Depois do Novo jogo, "Continuar" aparece e abre o começo. Saindo da barraca, "Ponto de retorno marcado" e o Resumo mostra o slot 1 no Acampamento |
+| 2. Menu principal como está | Só abre o menu | "Continuar" só aparece se o slot mais recente carrega |
+| 3. Três slots em lugares diferentes | "Continuar"; depois Carregar o slot 1 e o 2 | Slot 1 nas Trincheiras (começo, sem pistola), slot 2 no nicho da Aldeia (pistola, 6 balas, curativo), slot 3 no pé da descida do Poço. "Continuar" abre o 3 (o último gravado); cada slot volta no seu lugar com o seu inventário |
+| 4. Carregar o slot 1 e avançar | Pegue a pistola no corpo do chefe de segurança (centro-leste) | Depois da fala, "Ponto de retorno marcado": o slot 1 passa a ter a pistola e outra hora; os slots 2 e 3 não mudam |
+| 5. Carregar o slot 3 e morrer | Olhe vida, balas e inventário; ela morre em 4 s; na tela de morte, tente de novo | Volta ao mesmo ponto, com o mesmo inventário e balas; o slot não muda |
+| 6. Dentro da memória de Shuruppak | Na memória: Salvamento > Gravar aqui no slot 1; depois Fechar e continuar | O Console diz que dentro da memória não grava; ao continuar, a Elena volta ao nicho, antes da memória |
+| 7. Fim da demo | Espere a última fala, feche o diário, confirme a tela de fim | O slot 1 fica "DEMO CONCLUÍDA" no Resumo; o menu fica sem "Continuar"; Carregar o slot 1 recusa, com aviso no Console |
+| 8. Slot 3 corrompido | Olhe o menu; Carregar o slot 3 | Não trava: sem "Continuar", aviso no Console, o slot 3 aparece vazio no Resumo e carregar não faz nada |
+| 9. Slot 3 de versão antiga | Igual à 8 | Igual à 8, com o aviso "é da versão 0 do formato" |
+| 10. Tempo jogado e pausa | Situações > Mostrar o tempo jogado agora; pause uns 30 s (abra o Arquivo); mostre de novo | O tempo não anda na pausa; descansando no nicho, o Resumo mostra o tempo gravado no slot 2; Fechar e continuar segue de onde parou |
+
+Mais dois itens no mesmo menu: **Mostrar o tempo jogado agora** e **Matar a Elena agora**. **Fechar e continuar** (no menu Salvamento) funciona a partir de qualquer atalho de passo. Conferidas pela ponte: a 3 (os três slots certos, cada um com o seu lugar, inventário e mundo), o "Continuar" abrindo o slot 3 e a 4 (a pistola gravou o slot 1 e não mexeu no 2 nem no 3). As outras situações ficaram para o teste do dono; os mesmos casos passaram no teste automático.
 
 ## Sistemas prontos
 
