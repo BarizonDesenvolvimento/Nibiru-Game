@@ -2,7 +2,7 @@
 
 Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem precisar reler o histórico. Atualize este arquivo ao fim de cada etapa grande.
 
-Última atualização: 25 de outubro de 2026.
+Última atualização: 26 de outubro de 2026.
 
 ## Onde estamos
 
@@ -163,7 +163,12 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **Flash** (`Flash_Do_Selo`): a uns 12 m do Selo (z = 90,5), a Elena para de ser perseguida: o Lullu, se vivo, congela (`LulluAI.Pause`), a tela clareia (`UI/ScreenFlash`, atrás das conversas) e vem `Poco_Flash`: a tabuleta pulsa, "só luz e mãos" e a Voz, só legenda: "Você já esteve aqui." / "Não tem problema não lembrar. Eu lembro por você." Quando a Voz acaba (`FlashDoPoco`), a luz volta e o Lullu solta. O passo 12 começa daí.
 - **Sem canto que prenda a Elena** (vale para o Lullu e para o Primeiro Servo do passo 12): o Lullu a encurralava num canto da antecâmara e golpeava sem parar. O blockout (`BuildWell`) mudou: as plataformas oeste e leste vão até a parede (acabaram as frestas de 1 m, becos sem saída); cada uma tem duas rampas (dá para dar a volta por cima); os cantos da antecâmara e do fundo do Poço são cortados em diagonal (`Ante_Canto_*`, `Poco_Canto_*`); a rampa da descida junto da parede sul ganhou uma guarda (`Lance_4_Guarda`) e o pé da 3ª rampa um pilar (`Patamar_3_Base`). **Ferramenta:** **Nibiru > Testes > Conferir cantos sem saída (Poço)** (`Scripts/Editor/RoomTrapCheck.cs`) põe um inimigo grande (raio 1,1 m, cobre o Servo) a 1,4 m da Elena em 8 direções, em cada ponto andável da malha, e vê se ela ainda chega a 5 m dele; escreve no Console um mapa de texto (número = em quantas direções fica presa). Passou de 429 pontos presos para 23: sobram só pontos de 1 direção em cantos côncavos junto às plataformas e rampas, e os cantos da própria descida de andaimes (o Lullu não sobe lá). Para outra arena, mude os limites no topo do script. Se mexer no blockout, rode **Construir Sítio de Ur na cena aberta** e salve a cena (isso refaz a malha de navegação).
 - **Blockout:** o vão da passagem dos Guardiões na parede oeste da antecâmara agora está fechado pela `Parede_Barco_Junco`, com o barco de junco sobre ondas em ouro e a lamparina quente. O passo 13 a abre (a parede e o barco ficam no grupo `Parede_Movel`, que afunda no chão).
-- **Pendências do Poço:** o Lullu já tem modelo e animações (veja "Lullu" em Personagens 3D); sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a inscrição dos Guardiões do Poço (colecionável) e o segundo Lullu ficam para depois.
+- **Inscrição dos Guardiões do Poço e 2º Lullu (etapa A2, esperando o teste do dono no Play):**
+  - **Inscrição** (`Conteudo_Poco/Poco_Ativo/Inscricao_Do_Poco`): na parede leste da antecâmara (x = 54, z = 83,9), com o barco de junco e a faixa de glifos em ouro e a lamparina de barro com luz quente (marca dos Guardiões, sem azul). Diante dela, "Ler a inscrição" abre o documento `Data/Documents/Poco_Inscricao` na tela de leitura e dispara `LeuAInscricaoDoPoco` (a futura tela de documentos lê daí). Opcional e repetível; não tem recompensa. **O texto é provisório** (`doc.Poco_Inscricao.title/.text/.footer` no `pt-BR.json`) e será escrito na governança (A3). O `InteractableEvent` ganhou o campo `promptKey` (aviso com chave); o aviso é `ui.interact.poco_ler_inscricao`.
+  - **2º Lullu, a sentinela** (`Lullu_Sentinela`, ID estável `poco.lullu_sentinela`): na antecâmara, a leste (52, -14, 87), entre o ponto de retorno (x = 45, a 7,5 m) e a inscrição (a uns 4 m). Mesmo prefab e preso ao chão (`Max Climb` 2 m), mas com os dados `Data/AI/Lullu_Sentinela`: vagueia só 1,5 m (o do fundo, 4 m) e ouve 40% mais longe (x1,7 contra x1,2): andando ele ouve a uns 8 m, agachada a uns 2,5 m. Então a antecâmara pede agachar (ou dar a volta pelo oeste) até o flash, e ler a inscrição é arriscado. O Lullu do fundo continua como era (some ao passar pela boca da antecâmara, só ao carregar). A sentinela congela no flash, solta com a Voz e foge com o Lullu do fundo quando o Servo acorda (`FirstServantContent.Build` agora recebe vários Lullu); ao voltar de um ponto de retorno depois do despertar, nenhum dos dois está lá.
+  - **Atalhos:** **Nibiru > Testes > Passo 11** > **8** (diante da inscrição, agachada, com a sentinela perto) e **9** (a uns 6 m da sentinela). Os testes do passo 11 ganharam 2 itens (sentinela e inscrição) e passaram a achar o Lullu do fundo pelo nome (`Lullu_Poco`); o flash agora confere também que a sentinela congela e solta.
+  - **Pendências de equilíbrio (etapa B):** se 1,5 m de ronda e x1,7 de audição deixam a antecâmara justa; se a sentinela perto da inscrição atrapalha demais; o Lullu do fundo e a sentinela se ouvem entre si? (não: cada um reage ao barulho da Elena e a estrondos).
+- **Pendências do Poço:** o Lullu já tem modelo e animações (veja "Lullu" em Personagens 3D); sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a terceira inscrição (Aldeia) ainda é só a marca revelada pelo Eco.
 - **Teste do flash com o Lullu vivo (corrigido):** ele falhava às vezes porque o atalho 6 punha a Elena em z = 89,4 e o colisor dela (0,5 m de raio) encostava exatamente na área do flash (z = 89,9): o flash podia começar sozinho no nascimento. O atalho agora a põe em 88,8 e dispara "passou pelo Lullu" logo depois de carregar (o Lullu continua vivo, como no jogo); o teste não teleporta mais para z = 84,6 (onde ela entrava numa rampa) e acusa se o flash começar antes da hora. Passou 3 vezes seguidas.
 - Teste feito pela ponte (teste automático, tudo OK): chegada à boca, descida caminhável pelos 4 lances, retorno em silêncio, Lullu preso ao chão (barulho do andaime: caça, não sobe, não golpeia), parede do barco, flash com o Lullu vivo (congela e solta) e sem ele.
 
@@ -586,6 +591,12 @@ Pendências vistas na prévia (ainda não corrigidas):
 - Tudo enviado ao GitHub até os soldados da Fundação, testados pelo dono (25 de outubro de 2026), inclusive a arte-fonte nova dos personagens (`Referencias/` e `2_Rig/`) e as primeiras animações do Mixamo (a biblioteca de animações agora está fora do Git; a cópia no LFS fica só no histórico). Os 4 soldados somaram cerca de 250 MB ao LFS (modelos e texturas em `Art/Personagens`). Commits em português, pequenos e frequentes.
 - Nome da empresa no projeto (Project Settings): "Barizon Desenvolvimento".
 
+## Teste geral dos atalhos (Elena na malha)
+
+Menu **Nibiru > Testes > Teste geral dos atalhos (Elena na malha)** (`Scripts/Editor/ShortcutsCheck.cs`, uns 6 minutos). Roda **todos** os atalhos registrados em `TestShortcuts` (os novos entram sozinhos, sem mexer no teste), espera 2 s o mundo se arrumar (fechando conversas e telas de leitura) e observa 1,5 s: a Elena tem de estar com o pé a menos de 0,8 m da malha de navegação, apoiada no chão (`isGrounded`), viva, sem perder mais de 1 m de altura e acima de y = -30. Os atalhos da região rodam numa partida; os do laboratório (`elena.`, `soldados.` e `samir.laboratorio`), numa segunda, e no fim a região é reaberta. Resumo no Console: OK, FALHOU ou PULADO em cada atalho. Pulados, com o motivo: testes automáticos (`.teste`), vitrines e animações (chão sem malha), a viagem na caçamba (`passo15.meio_*`, `passo15.chegada`, `remedio.viagem_*`: trilho sem malha) e a memória de Shuruppak (`passo8.memoria`, `passo8.cabana`). Para pular outro, mude `SkipReason` no script.
+
+Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 e 9 do passo 11). Na primeira rodada achou um defeito real: o atalho `soldados.trincheiras` punha a Elena em (0, 0, -75), dentro do talude `Talude_H1_B`, e ela caía 119 m; agora nasce em (0, 0, -77,5).
+
 ## Como testar sozinho pela ponte MCP
 
 - A ponte é o `unity-editor-mcp` (porta 7800). Se cair, a Unity provavelmente está reabrindo o projeto; espere ela terminar.
@@ -726,7 +737,9 @@ Atalhos no menu **Nibiru > Testes > Passo 11** (`Scripts/Editor/Step11Shortcuts.
 | 4. Ponto de retorno do pé da descida (o Lullu no fundo) | No último patamar, em silêncio; agachada, passe por ele |
 | 5. Depois do Lullu: rumo ao flash | Na antecâmara, sem o Lullu; ande para o norte |
 | 6. Flash com o Lullu ainda vivo (ele congela) | Um passo antes do flash, com o Lullu no fundo |
-| 7. Teste automático (resumo no Console) | Roda os testes sozinho e escreve OK ou FALHOU no Console (`Scripts/Editor/Step11Tests.cs`) |
+| 7. Teste automático (resumo no Console) | Roda os testes sozinho e escreve OK ou FALHOU no Console (`Scripts/Editor/Step11Tests.cs`; 9 itens, com a sentinela e a inscrição) |
+| 8. Diante da inscrição dos Guardiões | Agachada, na parede leste da antecâmara, a uns 4 m da sentinela: "Ler a inscrição" |
+| 9. Antecâmara, a uns 6 m da sentinela (2º Lullu) | Agachada: ele ouve mais que o do fundo; ande normal e ele vem |
 
 Para ver o Lullu perseguir, corra ou atire perto dele; para ele não ouvir, agache. Do andaime ele não alcança a Elena.
 

@@ -35,6 +35,9 @@ namespace Nibiru.EditorTools
 
         public static void Register(string id, Action begin) => moments[id] = begin;
 
+        /// <summary>Os ids de todos os atalhos registrados (para o teste geral dos atalhos).</summary>
+        public static IReadOnlyList<string> MomentIds => new List<string>(moments.Keys);
+
         /// <summary>
         /// Roda o momento: na hora, se o Play já está ligado na cena pedida; senão, abre a cena
         /// (a região, se nenhuma for dada) e liga o Play.

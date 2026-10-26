@@ -37,8 +37,9 @@ namespace Nibiru.EditorTools
         // Na frente e à direita do helicóptero pousado no heliponto, olhando o piloto pelo vidro.
         static readonly Vector3 BesideHelicopterSpot = new Vector3(28.2f, 0.1f, -78f);
         const float BesideHelicopterYaw = 158f;
-        // Na entrada das trincheiras, olhando para o norte.
-        static readonly Vector3 TrenchEntranceSpot = new Vector3(0f, 0f, -75f);
+        // Na entrada das trincheiras, olhando para o norte. Em z = -75 ficava dentro do talude Talude_H1_B
+        // (z de -75,75 a -74,25): a Elena caía pelo chão. O teste geral dos atalhos achou.
+        static readonly Vector3 TrenchEntranceSpot = new Vector3(0f, 0f, -77.5f);
         // Na Aldeia, de onde se vê a barreira do norte com o líder de guarda (fora do alcance da visão dele).
         static readonly Vector3 BarrierViewSpot = new Vector3(-50f, 0f, 22f);
 

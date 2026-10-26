@@ -57,7 +57,26 @@ namespace Nibiru.EditorTools
             Register("passo11.flash_vivo", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco" }, PassLulluStep, NearFlashSpot, 0f,
                 "Passo 11: na antecâmara, um passo antes do flash, com o Lullu ainda vivo no fundo. Ande para o norte: ele congela até a Voz falar.",
                 raiseLive: new[] { "PassouPeloLullu" }));
+            RegisterA2();
         }
+
+        // A inscrição dos Guardiões (parede leste da antecâmara) e a sentinela (o 2º Lullu), depois do Lullu do fundo.
+        static readonly Vector3 InscriptionSpot = new Vector3(52.6f, -14f, 83.9f);
+        static readonly Vector3 SentinelViewSpot = new Vector3(46f, -14f, 85.5f);
+
+        static void RegisterA2()
+        {
+            Register("passo11.inscricao", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco", "PassouPeloLullu" }, SealStep, InscriptionSpot, 90f,
+                "Passo 11: diante da inscrição dos Guardiões, na parede leste da antecâmara (a sentinela vigia a uns 4 m, ao sul: ande agachada). Use \"Ler a inscrição\".", crouch: true));
+            Register("passo11.sentinela", () => Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco", "PassouPeloLullu" }, SealStep, SentinelViewSpot, 90f,
+                "Passo 11: na antecâmara, a uns 6 m da sentinela (o 2º Lullu, a leste). Ele ouve mais que o do fundo: agachada passa, andando ele vem. O flash começa ao norte (z = 90,5).", crouch: true));
+        }
+
+        [MenuItem(MenuRoot + "8. Diante da inscrição dos Guardiões (a sentinela perto)")]
+        static void Inscription() => Go("passo11.inscricao");
+
+        [MenuItem(MenuRoot + "9. Antecâmara, a uns 6 m da sentinela (2º Lullu)")]
+        static void Sentinel() => Go("passo11.sentinela");
 
         [MenuItem(MenuRoot + "1. Saindo da base, a caminho do Poço")]
         static void Corridor() => Go("passo11.corredor");
