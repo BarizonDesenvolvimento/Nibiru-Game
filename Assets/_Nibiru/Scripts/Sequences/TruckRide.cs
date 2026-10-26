@@ -46,6 +46,17 @@ namespace Nibiru.Sequences
 
         [SerializeField] Variant[] variants = new Variant[0];
 
+        [Serializable]
+        public class Followup
+        {
+            [Tooltip("Esta conversa extra só acontece se este evento já aconteceu.")]
+            public StoryEvent when;
+            public DialogueDefinition dialogue;
+        }
+
+        [Tooltip("Conversas extras, uma depois da outra, depois da conversa da viagem (por exemplo, a pergunta do Samir sobre a Dra. Weiss).")]
+        [SerializeField] Followup[] followups = new Followup[0];
+
         [Tooltip("A estrada e o que a enfeita; liga quando a viagem começa.")]
         [SerializeField] GameObject roadGroup;
 
@@ -112,6 +123,10 @@ namespace Nibiru.Sequences
             state = State.Riding;
             DialogueDefinition talk = ChooseDialogue();
             bool talkStarted = talk == null;
+            var extraTalks = new System.Collections.Generic.Queue<DialogueDefinition>();
+            foreach (Followup followup in followups)
+                if (followup.dialogue != null && (followup.when == null || StoryEvents.HasBeenRaised(followup.when)))
+                    extraTalks.Enqueue(followup.dialogue);
             float sinceStart = 0f;
             float startedLimit = dialogueDelay + 15f;
 
@@ -127,7 +142,9 @@ namespace Nibiru.Sequences
                     Place(Progress);
                     if (!talkStarted && sinceStart >= dialogueDelay)
                         talkStarted = runner.Play(talk) || sinceStart > startedLimit;
-                    if (elapsed >= minSeconds && talkStarted && !runner.IsRunning) break;
+                    else if (talkStarted && !runner.IsRunning && extraTalks.Count > 0 && runner.Play(extraTalks.Peek()))
+                        extraTalks.Dequeue();
+                    if (elapsed >= minSeconds && talkStarted && !runner.IsRunning && extraTalks.Count == 0) break;
                 }
                 yield return null;
             }

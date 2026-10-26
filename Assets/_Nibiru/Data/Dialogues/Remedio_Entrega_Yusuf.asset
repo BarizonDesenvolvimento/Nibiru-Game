@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Remedio_Entrega_Yusuf
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: "(Ela se ajoelha junto da esteira e mostra a caixa \xE0 Umm Karim.) Antibi\xF3ticos.
+      Ele tem que tomar tudo, mesmo quando a febre baixar."
+    next: u1
+    raise: {fileID: 0}
+    choices: []
+  - id: u1
+    speaker: Umm Karim
+    text: "(Ela pega a caixa com as duas m\xE3os.) Que Deus a guarde, doutora. Esta
+      casa vai lembrar."
+    next: y1
+    raise: {fileID: 0}
+    choices: []
+  - id: y1
+    speaker: Yusuf
+    text: (Ele abre os olhos, devagar.) A senhora... voltou.
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "Descanse. Eu volto para ver como voc\xEA est\xE1."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 0}

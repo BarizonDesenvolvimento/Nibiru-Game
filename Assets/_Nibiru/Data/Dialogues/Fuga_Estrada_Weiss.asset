@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Fuga_Estrada_Weiss
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: s1
+    speaker: Samir
+    text: "Antes de Tell Amar, doutora, uma pergunta. Nas trincheiras, antes da Aldeia...
+      a senhora viu algu\xE9m? Algu\xE9m da Funda\xE7\xE3o, ferido, escondido?"
+    next: 
+    raise: {fileID: 0}
+    choices:
+    - text: "N\xE3o vi ningu\xE9m. S\xF3 os mortos."
+      next: cobriu
+      requires: {fileID: 0}
+      raise: {fileID: 11400000, guid: 0d7baef96fff2824a80db76884c8cb33, type: 2}
+      reputation:
+      - faction: {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
+        amount: 5
+      - faction: {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
+        amount: -5
+    - text: "Vi. Uma m\xE9dica, Hannah Weiss, numa vala junto da tenda m\xE9dica."
+      next: contou
+      requires: {fileID: 0}
+      raise: {fileID: 11400000, guid: ecaf92d7f4cf84e409c62fd850948201, type: 2}
+      reputation:
+      - faction: {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
+        amount: 5
+      - faction: {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
+        amount: -5
+  - id: cobriu
+    speaker: Samir
+    text: "Se a senhora diz que n\xE3o... ent\xE3o n\xE3o viu."
+    next: cobriu2
+    raise: {fileID: 0}
+    choices: []
+  - id: cobriu2
+    speaker: Elena
+    text: "(Ela olha a tempestade e pensa nas m\xE3os da m\xE9dica, refazendo a bandagem.)"
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  - id: contou
+    speaker: Samir
+    text: "Uma m\xE9dica da Funda\xE7\xE3o. Ela sabe coisas que precisamos saber."
+    next: contou2
+    raise: {fileID: 0}
+    choices: []
+  - id: contou2
+    speaker: Elena
+    text: "(Ele aperta o volante. Ela n\xE3o pergunta o que ele vai fazer com isso.)"
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 0}

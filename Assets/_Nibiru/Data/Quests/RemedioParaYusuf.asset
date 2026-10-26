@@ -24,5 +24,6 @@ MonoBehaviour:
     completeOn: {fileID: 11400000, guid: e178ddc3a91894b4da44928608d75614, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  raiseOnComplete: {fileID: 0}
+  raiseOnComplete: {fileID: 11400000, guid: a0cee971f9eab704b82113bf91fb5b70, type: 2}
+  failOn: {fileID: 11400000, guid: f64bd24934445734eb2f7d092b025539, type: 2}
   reputationOnComplete: []

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Remedio_Troca_Weiss
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: (Ela estende os curativos.) Achei estes.
+    next: w1
+    raise: {fileID: 0}
+    choices: []
+  - id: w1
+    speaker: Dra. Weiss
+    text: Obrigada. Meu Deus, obrigada.
+    next: w2
+    raise: {fileID: 0}
+    choices: []
+  - id: w2
+    speaker: Dra. Weiss
+    text: "(Ela refaz a bandagem da perna com m\xE3os treinadas, depois tira da mochila
+      uma caixa de antibi\xF3ticos e uma pasta.)"
+    next: w3
+    raise: {fileID: 0}
+    choices: []
+  - id: w3
+    speaker: Dra. Weiss
+    text: "Os antibi\xF3ticos s\xE3o para o seu rapaz. E isto \xE9 o que consegui
+      tirar do briefing. N\xE3o entendo metade. Talvez a senhora entenda."
+    next: w4
+    raise: {fileID: 0}
+    choices: []
+  - id: w4
+    speaker: Dra. Weiss
+    text: "Uma coisa, doutora. Se algu\xE9m perguntar por mim... n\xE3o me viu. Preciso
+      de tempo para pensar no que vou fazer."
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: Descanse a perna.
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 11400000, guid: 8747a4d3c71eeec4fbb4479d39d30a3e, type: 2}

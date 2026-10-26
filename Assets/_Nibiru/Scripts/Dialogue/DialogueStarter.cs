@@ -36,6 +36,9 @@ namespace Nibiru.Dialogue
 
         public void Interact(PlayerInteractor interactor) => StartDialogue();
 
+        /// <summary>Troca a conversa (a fala de um personagem muda conforme a história avança).</summary>
+        public void SetDialogue(DialogueDefinition newDialogue) => dialogue = newDialogue;
+
         public void StartDialogue()
         {
             if (CanPlay) runner.Play(dialogue);

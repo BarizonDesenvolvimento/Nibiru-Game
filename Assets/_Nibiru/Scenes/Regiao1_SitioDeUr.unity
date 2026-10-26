@@ -2051,7 +2051,7 @@ GameObject:
   m_Component:
   - component: {fileID: 45776987}
   - component: {fileID: 45776989}
-  - component: {fileID: 45776988}
+  - component: {fileID: 45776990}
   m_Layer: 0
   m_Name: Falar_DraWeiss_Depois
   m_TagString: Untagged
@@ -2074,23 +2074,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 614727721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &45776988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45776986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb73b7ce4c23e14789c0c3c82bf0004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueStarter
-  dialogue: {fileID: 11400000, guid: 96d7b50c417295c4cb7a085d4d67e0ff, type: 2}
-  runner: {fileID: 0}
-  interactable: 1
-  prompt: Falar com a Dra. Weiss
-  onlyOnce: 0
 --- !u!65 &45776989
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2112,6 +2095,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4, y: 1.6, z: 1.4}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &45776990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45776986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c637bbf64f943438d050881151c2f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemTrade
+  tradePrompt: "Dar os curativos \xE0 Dra. Weiss"
+  takeItem: {fileID: 11400000, guid: 9475fb7564f1f254ebf818ea15ebb417, type: 2}
+  takeCount: 1
+  giveItem: {fileID: 11400000, guid: 92bf7d5708c911d4ca74bc3d26a2b357, type: 2}
+  giveCount: 1
+  skipGiveIfRaised: {fileID: 11400000, guid: e178ddc3a91894b4da44928608d75614, type: 2}
+  raiseOnTrade: {fileID: 11400000, guid: 70809d2edc515b349aa171a82502ae88, type: 2}
+  raiseOnGift: {fileID: 11400000, guid: 9d1864405059bf54ebebac1590e78213, type: 2}
+  blockedIfRaised: {fileID: 0}
+  dialogueWithGift: {fileID: 11400000, guid: 79a7fd497936c6d4fb7acaecc2dcd5d9, type: 2}
+  dialogueWithoutGift: {fileID: 11400000, guid: cc57de78ab8cca847a6af210221e95f2, type: 2}
+  waitingDialogue: {fileID: 11400000, guid: 96d7b50c417295c4cb7a085d4d67e0ff, type: 2}
+  talkPrompt: Falar com a Dra. Weiss
+  afterDialogue: {fileID: 11400000, guid: 9136a725c36b2b6469c4f1a98df228d6, type: 2}
+  runner: {fileID: 0}
 --- !u!1 &47777944
 GameObject:
   m_ObjectHideFlags: 0
@@ -4649,7 +4659,7 @@ GameObject:
   m_Component:
   - component: {fileID: 116053735}
   - component: {fileID: 116053734}
-  - component: {fileID: 116053733}
+  - component: {fileID: 116053736}
   m_Layer: 0
   m_Name: Falar_Yusuf
   m_TagString: Untagged
@@ -4657,23 +4667,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &116053733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 116053732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb73b7ce4c23e14789c0c3c82bf0004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueStarter
-  dialogue: {fileID: 11400000, guid: e3d3b8576d39d8d48845d71467e066f3, type: 2}
-  runner: {fileID: 0}
-  interactable: 1
-  prompt: Falar com Yusuf
-  onlyOnce: 0
 --- !u!65 &116053734
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4710,6 +4703,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1917303393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &116053736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116053732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c637bbf64f943438d050881151c2f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemTrade
+  tradePrompt: "Dar os antibi\xF3ticos ao Yusuf"
+  takeItem: {fileID: 11400000, guid: 92bf7d5708c911d4ca74bc3d26a2b357, type: 2}
+  takeCount: 1
+  giveItem: {fileID: 0}
+  giveCount: 1
+  skipGiveIfRaised: {fileID: 0}
+  raiseOnTrade: {fileID: 11400000, guid: e178ddc3a91894b4da44928608d75614, type: 2}
+  raiseOnGift: {fileID: 0}
+  blockedIfRaised: {fileID: 11400000, guid: f64bd24934445734eb2f7d092b025539, type: 2}
+  dialogueWithGift: {fileID: 0}
+  dialogueWithoutGift: {fileID: 11400000, guid: e9a57f0124af3c1468c7cf618d305321, type: 2}
+  waitingDialogue: {fileID: 11400000, guid: e3d3b8576d39d8d48845d71467e066f3, type: 2}
+  talkPrompt: Falar com Yusuf
+  afterDialogue: {fileID: 11400000, guid: e7c82428149d7b84bada88d099ce0d9d, type: 2}
+  runner: {fileID: 0}
 --- !u!1 &117112898
 GameObject:
   m_ObjectHideFlags: 0
@@ -21506,6 +21526,9 @@ MonoBehaviour:
     dialogue: {fileID: 11400000, guid: f4a38bd65bc91754bb6905aaa9602b7f, type: 2}
   - when: {fileID: 11400000, guid: b28a546c5c60c3643840a730d79839f0, type: 2}
     dialogue: {fileID: 11400000, guid: fdc79b3c1231fb147a2b1c56c416c674, type: 2}
+  followups:
+  - when: {fileID: 11400000, guid: 70809d2edc515b349aa171a82502ae88, type: 2}
+    dialogue: {fileID: 11400000, guid: 02f42066f457a9044b9677d752aabd31, type: 2}
   roadGroup: {fileID: 80173270}
   diary: {fileID: 494876277}
   raiseOnBoard: {fileID: 11400000, guid: b3fe62d4517aa2142a2a2a5837a87cb7, type: 2}
@@ -22476,6 +22499,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516428464}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &516708505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 516708506}
+  - component: {fileID: 516708507}
+  m_Layer: 0
+  m_Name: Dialogo_Lembrete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &516708506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516708505}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1510498189}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &516708507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516708505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb73b7ce4c23e14789c0c3c82bf0004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueStarter
+  dialogue: {fileID: 11400000, guid: 66911b672efbcc04aae13404c578cf47, type: 2}
+  runner: {fileID: 0}
+  interactable: 0
+  prompt: 
+  onlyOnce: 1
 --- !u!1 &518589854
 GameObject:
   m_ObjectHideFlags: 0
@@ -24615,6 +24687,117 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557046185}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &563098082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 563098083}
+  - component: {fileID: 563098086}
+  - component: {fileID: 563098085}
+  - component: {fileID: 563098084}
+  m_Layer: 0
+  m_Name: Documento_Da_Weiss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &563098083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563098082}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1453193846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &563098084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563098082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ca235efe0955e47bd6f80d96bbcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventListener
+  storyEvent: {fileID: 11400000, guid: 8747a4d3c71eeec4fbb4479d39d30a3e, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 563098085}
+        m_TargetAssemblyTypeName: Nibiru.Sequences.TimedSequence, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  replayOnLoad: 0
+  onlyOnLoad: 0
+--- !u!114 &563098085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563098082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c41fa399515970489deec7c1890b091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Sequences.TimedSequence
+  playOnStart: 0
+  skipIfRaised: {fileID: 0}
+  steps:
+  - note: o documento da Weiss
+    wait: 0.4
+    orUntil: {fileID: 0}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 563098086}
+          m_TargetAssemblyTypeName: Nibiru.Documents.DocumentView, Assembly-CSharp
+          m_MethodName: Show
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &563098086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563098082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd3a47889cec2a4db1fec4d09281da9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentView
+  document: {fileID: 11400000, guid: 06a7ba24531aecf409374c0635d6bb1e, type: 2}
+  readingScreen: {fileID: 0}
 --- !u!1 &563675829
 GameObject:
   m_ObjectHideFlags: 0
@@ -65574,7 +65757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemPickup
   item: {fileID: 11400000, guid: 92bf7d5708c911d4ca74bc3d26a2b357, type: 2}
   amount: 1
-  raiseOnPickup: {fileID: 0}
+  raiseOnPickup: {fileID: 11400000, guid: 4957489a6ad49744a91630defafc8768, type: 2}
 --- !u!114 &1448946581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65864,6 +66047,164 @@ NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 7028061284632466789, guid: 25e179e8288bfaf4db43363088fb66d7, type: 3}
   m_PrefabInstance: {fileID: 1452296690}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1453193840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1453193846}
+  - component: {fileID: 1453193845}
+  - component: {fileID: 1453193844}
+  - component: {fileID: 1453193843}
+  - component: {fileID: 1453193842}
+  - component: {fileID: 1453193841}
+  m_Layer: 0
+  m_Name: Conteudo_RemedioYusuf
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1453193841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453193840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ca235efe0955e47bd6f80d96bbcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventListener
+  storyEvent: {fileID: 11400000, guid: e35dc48311c3a4d4fb046d1156edbbe1, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1263196798}
+        m_TargetAssemblyTypeName: Nibiru.Dialogue.DialogueStarter, Assembly-CSharp
+        m_MethodName: SetDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: ec6c3fa73f8370544af2f5573b3073b3, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Nibiru.Dialogue.DialogueDefinition, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  replayOnLoad: 1
+  onlyOnLoad: 0
+--- !u!114 &1453193842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453193840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ca235efe0955e47bd6f80d96bbcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventListener
+  storyEvent: {fileID: 11400000, guid: e178ddc3a91894b4da44928608d75614, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1263196798}
+        m_TargetAssemblyTypeName: Nibiru.Dialogue.DialogueStarter, Assembly-CSharp
+        m_MethodName: SetDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 6cb5f0fc9336d3541be91f0191519a67, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Nibiru.Dialogue.DialogueDefinition, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  replayOnLoad: 1
+  onlyOnLoad: 0
+--- !u!114 &1453193843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453193840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ca235efe0955e47bd6f80d96bbcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventListener
+  storyEvent: {fileID: 11400000, guid: f64bd24934445734eb2f7d092b025539, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1453193844}
+        m_TargetAssemblyTypeName: Nibiru.Quests.StoryEventRaiser, Assembly-CSharp
+        m_MethodName: Raise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  replayOnLoad: 0
+  onlyOnLoad: 0
+--- !u!114 &1453193844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453193840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3975b9f97d313154299100c412effa8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventRaiser
+  storyEvent: {fileID: 11400000, guid: e35dc48311c3a4d4fb046d1156edbbe1, type: 2}
+  raiseOnDeath: 0
+--- !u!114 &1453193845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453193840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352c0b63aa535054fba8ad02e94e9a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.DeadlineWatcher
+  deadline: {fileID: 11400000, guid: a0955fa8a6431084bb6f49216cb22589, type: 2}
+  unlessRaised: {fileID: 11400000, guid: e178ddc3a91894b4da44928608d75614, type: 2}
+  onlyIfRaised: {fileID: 11400000, guid: 3562051f0257e2e468315130bc3fe77b, type: 2}
+  raise: {fileID: 11400000, guid: f64bd24934445734eb2f7d092b025539, type: 2}
+--- !u!4 &1453193846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453193840}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 563098083}
+  - {fileID: 1510498189}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1454233558
 GameObject:
   m_ObjectHideFlags: 0
@@ -67845,6 +68186,101 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7184529314168705908, guid: 8ac0f807b52799c47afdb8b08475200f, type: 3}
   m_PrefabInstance: {fileID: 1508782075}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1510498188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1510498189}
+  - component: {fileID: 1510498191}
+  - component: {fileID: 1510498190}
+  m_Layer: 0
+  m_Name: Lembrete_Do_Yusuf
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1510498189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510498188}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 516708506}
+  m_Father: {fileID: 1453193846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1510498190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510498188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ca235efe0955e47bd6f80d96bbcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.StoryEventListener
+  storyEvent: {fileID: 11400000, guid: 688118a1c3739f543a105d1956611935, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1510498191}
+        m_TargetAssemblyTypeName: Nibiru.Inventory.ItemBranch, Assembly-CSharp
+        m_MethodName: Run
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  replayOnLoad: 0
+  onlyOnLoad: 0
+--- !u!114 &1510498191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510498188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a49d5dd4f019443be453690e4782cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemBranch
+  item: {fileID: 11400000, guid: 92bf7d5708c911d4ca74bc3d26a2b357, type: 2}
+  ifHas:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 516708507}
+        m_TargetAssemblyTypeName: Nibiru.Dialogue.DialogueStarter, Assembly-CSharp
+        m_MethodName: StartDialogue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  ifNot:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1510730839
 GameObject:
   m_ObjectHideFlags: 0
@@ -97519,3 +97955,4 @@ SceneRoots:
   - {fileID: 205981994}
   - {fileID: 1082771492}
   - {fileID: 393070186}
+  - {fileID: 1453193846}

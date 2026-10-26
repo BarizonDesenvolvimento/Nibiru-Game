@@ -17,12 +17,14 @@ namespace Nibiru.Save
             internal readonly HashSet<string> activatedCheckpoints;
             internal readonly HashSet<string> storyEvents;
             internal readonly Dictionary<string, int> questSteps;
+            internal readonly HashSet<string> failedQuests;
             internal readonly Dictionary<string, int> reputation;
             internal readonly int transformation;
 
             internal Snapshot()
             {
                 transformation = WorldState.Transformation;
+                failedQuests = new HashSet<string>(WorldState.failedQuests);
                 pickupsRemaining = new Dictionary<string, int>(WorldState.pickupsRemaining);
                 activatedCheckpoints = new HashSet<string>(WorldState.activatedCheckpoints);
                 storyEvents = new HashSet<string>(WorldState.storyEvents);
@@ -35,6 +37,7 @@ namespace Nibiru.Save
         static readonly HashSet<string> activatedCheckpoints = new HashSet<string>();
         static readonly HashSet<string> storyEvents = new HashSet<string>();
         static readonly Dictionary<string, int> questSteps = new Dictionary<string, int>();
+        static readonly HashSet<string> failedQuests = new HashSet<string>();
         static readonly Dictionary<string, int> reputation = new Dictionary<string, int>();
 
         /// <summary>Transformação da Elena, de 0 (humana) a 100 (divina).</summary>
@@ -48,6 +51,7 @@ namespace Nibiru.Save
             activatedCheckpoints.Clear();
             storyEvents.Clear();
             questSteps.Clear();
+            failedQuests.Clear();
             reputation.Clear();
             Transformation = 0;
         }
@@ -71,6 +75,11 @@ namespace Nibiru.Save
 
         public static void SetQuestStep(string questId, int step) => questSteps[questId] = step;
 
+        /// <summary>True se a missão falhou (um prazo venceu, por exemplo).</summary>
+        public static bool IsQuestFailed(string questId) => failedQuests.Contains(questId);
+
+        public static void MarkQuestFailed(string questId) => failedQuests.Add(questId);
+
         /// <summary>Reputação com uma facção. False se ela nunca mudou.</summary>
         public static bool TryGetReputation(string factionId, out int value) => reputation.TryGetValue(factionId, out value);
 
@@ -85,6 +94,7 @@ namespace Nibiru.Save
             activatedCheckpoints.UnionWith(snapshot.activatedCheckpoints);
             storyEvents.UnionWith(snapshot.storyEvents);
             foreach (KeyValuePair<string, int> pair in snapshot.questSteps) questSteps[pair.Key] = pair.Value;
+            failedQuests.UnionWith(snapshot.failedQuests);
             foreach (KeyValuePair<string, int> pair in snapshot.reputation) reputation[pair.Key] = pair.Value;
             Transformation = snapshot.transformation;
         }

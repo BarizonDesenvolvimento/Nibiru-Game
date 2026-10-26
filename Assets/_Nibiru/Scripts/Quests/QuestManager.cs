@@ -57,6 +57,9 @@ namespace Nibiru.Quests
                 bool startsNow = quest.startOn == null || StoryEvents.HasBeenRaised(quest.startOn);
                 if (startsNow && StepOf(quest) == NotStarted) StartQuest(quest, announce: quest.startOn != null);
             }
+            // Um evento de falha que aconteceu antes de este gerente existir (jogo carregado de depois) também vale.
+            foreach (QuestDefinition quest in quests)
+                if (quest.failOn != null && StoryEvents.HasBeenRaised(quest.failOn)) FailQuest(quest);
             CheckAllQuests();
             Changed?.Invoke();
         }
@@ -68,14 +71,29 @@ namespace Nibiru.Quests
             {
                 foreach (QuestDefinition quest in quests)
                 {
-                    if (quest.kind != kind) continue;
+                    if (quest.kind != kind || IsFailed(quest)) continue;
                     int step = StepOf(quest);
                     if (step >= 0 && step < quest.steps.Length) yield return (quest, quest.steps[step]);
                 }
             }
         }
 
-        public bool IsCompleted(QuestDefinition quest) => StepOf(quest) >= quest.steps.Length;
+        public bool IsCompleted(QuestDefinition quest) => !IsFailed(quest) && StepOf(quest) >= quest.steps.Length;
+
+        public bool IsFailed(QuestDefinition quest) => WorldState.IsQuestFailed(quest.Id);
+
+        /// <summary>
+        /// Faz a missão falhar, se ela já começou e ainda não terminou. Uma missão que falhou sai dos
+        /// objetivos e não avança mais. Fica no WorldState, então volta certo de um checkpoint.
+        /// </summary>
+        public void FailQuest(QuestDefinition quest)
+        {
+            int step = StepOf(quest);
+            if (IsFailed(quest) || step == NotStarted || step >= quest.steps.Length) return;
+            WorldState.MarkQuestFailed(quest.Id);
+            Notifications.PostImportant($"Missão falhou: {quest.displayName}");
+            Changed?.Invoke();
+        }
 
         public void StartQuest(QuestDefinition quest, bool announce = true)
         {
@@ -90,7 +108,8 @@ namespace Nibiru.Quests
         {
             foreach (QuestDefinition quest in quests)
             {
-                if (quest.startOn == storyEvent) StartQuest(quest);
+                if (quest.failOn != null && quest.failOn == storyEvent) FailQuest(quest);
+                else if (quest.startOn == storyEvent) StartQuest(quest);
                 else CheckQuest(quest);
             }
         }
@@ -103,6 +122,7 @@ namespace Nibiru.Quests
         // Avança enquanto o passo atual já estiver cumprido (vários passos podem se completar de uma vez).
         void CheckQuest(QuestDefinition quest)
         {
+            if (IsFailed(quest)) return;
             int step = StepOf(quest);
             bool advanced = false;
             while (step >= 0 && step < quest.steps.Length && IsDone(quest.steps[step]))

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Remedio_Lembrete_Yusuf
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: e1
+    speaker: Elena
+    text: "(A caixa de antibi\xF3ticos pesa na bolsa.)"
+    next: e2
+    raise: {fileID: 0}
+    choices: []
+  - id: e2
+    speaker: Elena
+    text: "O Yusuf ainda est\xE1 l\xE1, queimando de febre. Voltar pelo Po\xE7o e
+      pela base ainda d\xE1 tempo... mas o Kast est\xE1 atr\xE1s de mim, e o Samir
+      me espera."
+    next: e3
+    raise: {fileID: 0}
+    choices: []
+  - id: e3
+    speaker: Elena
+    text: "Depois que eu seguir pelo wadi, n\xE3o d\xE1 mais."
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 0}

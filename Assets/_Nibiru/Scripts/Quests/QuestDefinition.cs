@@ -52,6 +52,9 @@ namespace Nibiru.Quests
         [Tooltip("Evento disparado quando a missão termina (opcional). Serve para ligar a próxima coisa.")]
         public StoryEvent raiseOnComplete;
 
+        [Tooltip("Evento que faz a missão falhar, se ela já começou e ainda não terminou (opcional). Uma missão que falhou sai da lista de objetivos.")]
+        public StoryEvent failOn;
+
         [Tooltip("Mudanças de reputação quando a missão termina (opcional).")]
         public Factions.ReputationChange[] reputationOnComplete = new Factions.ReputationChange[0];
 
