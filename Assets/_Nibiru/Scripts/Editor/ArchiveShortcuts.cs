@@ -22,7 +22,7 @@ namespace Nibiru.EditorTools
         internal static readonly string[] EverythingCollected =
         {
             "LeuOEmailDoKast", "ViuAFotoDe1979", "LeuACartaDoSoldado", "LeuAInscricaoDaAldeia", "LeuAInscricaoDoPoco",
-            "LeuAInscricaoDaPassagem", "LeuODocumentoDaWeiss", "LeuAsFotosDoTom", "ColetouAFitaDeIrena1", "FitaDeIrena1Terminou", "AvisouDoArquivo",
+            "LeuAInscricaoDaPassagem", "LeuODocumentoDaWeiss", "LeuAsFotosDoTom", "ColetouAFitaDeIrena1", "FitaDeIrena1Terminou", "LeuORegistroDoGuincho", "LeuANotaDoSelo", "AvisouDoArquivo",
         };
 
         // A carta fica no canto sudeste das trincheiras (23,5; -72,5): a Elena chega do lado de dentro, olhando para ela.
@@ -31,6 +31,14 @@ namespace Nibiru.EditorTools
 
         // Diante da parede do fundo da casa do altar, onde o Eco acende a inscrição da Aldeia (x = -45,6; z = -31,5).
         internal static readonly Vector3 VillageWallSpot = new Vector3(-45.5f, 0f, -30.3f);
+
+        // Achados da base (etapa A3, parte 2). O registro fica na mochila ao pé SUL do contêiner 5, a Elena de frente para o norte
+        // (o contêiner a protege do atirador); a nota fica na ponta leste da mesa da tenda de provas, a Elena ao sul da mesa.
+        internal static readonly Vector3 RegisterSpot = new Vector3(22.5f, 0f, 14.3f);
+        internal static readonly Vector3 NoteSpot = new Vector3(32.35f, 0f, 22.6f);
+
+        // Mundo de quem entrou na base (fim do passo 9) e ainda não passou pela tenda de comando.
+        static readonly string[] BaseEntered = { "ChegouABeiraDaAldeia", "OuviuOPlanoDeFuga", "EntrouNaBaseDaFundacao" };
 
         static ArchiveShortcuts()
         {
@@ -55,6 +63,10 @@ namespace Nibiru.EditorTools
                 RemedyShortcuts.Ready = false;
                 Step9Shortcuts.Start(revealed: true, extra: null, Step9Shortcuts.CrossRoadStep, LetterApproach, LetterYaw, () => RemedyShortcuts.Ready = true);
             });
+            Register("arquivo.registro", () => BaseFind(RegisterSpot, 0f,
+                "Arquivo: ao pé do contêiner junto do heliponto, de frente para a mochila. O contêiner esconde a Elena do atirador. \"Ler o registro\"."));
+            Register("arquivo.nota", () => BaseFind(NoteSpot, 0f,
+                "Arquivo: na tenda de provas, ao sul da mesa, de frente para a nota (o 3º rolo do Tom está na outra ponta). \"Ler a nota\"."));
             Register("arquivo.aldeia_antes", () => VillageWall(false));
             Register("arquivo.aldeia_revelada", () => VillageWall(true));
             // Diante da inscrição do Poço (a mesma do passo 11, atalho 8), com a sentinela perto: a Elena já nasce agachada.
@@ -64,6 +76,19 @@ namespace Nibiru.EditorTools
                 Step11Shortcuts.Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco", "PassouPeloLullu" }, 24, new Vector3(52.6f, -14f, 83.9f), 90f,
                     "Arquivo: diante da inscrição do Poço. Leia e abra o Arquivo na pausa.", crouch: true, thenAlso: () => RemedyShortcuts.Ready = true);
             });
+        }
+
+        [MenuItem(MenuRoot + "8. Base: diante do registro do guincho")]
+        static void Register_() => Go("arquivo.registro");
+
+        [MenuItem(MenuRoot + "9. Base: diante da nota do selo")]
+        static void Note() => Go("arquivo.nota");
+
+        static void BaseFind(Vector3 spot, float yaw, string message)
+        {
+            RemedyShortcuts.Ready = false;
+            Step9Shortcuts.Start(revealed: true, BaseEntered, 17, spot, yaw, () => RemedyShortcuts.Ready = true);
+            Debug.Log(message);
         }
 
         [MenuItem(MenuRoot + "1. Jogo novo: Arquivo vazio")]

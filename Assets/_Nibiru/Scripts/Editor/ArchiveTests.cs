@@ -40,6 +40,7 @@ namespace Nibiru.EditorTools
             ("Tudo coletado: rever cada entrada pela pausa, sem evento nem recompensa repetidos, e voltar do checkpoint", ReviewAll),
             ("Inscrição da Aldeia: só se lê depois do Eco", VillageInscription),
             ("Carta do soldado nas Trincheiras e inscrição do Poço entram no Arquivo", LetterAndWell),
+            ("Achados da base: registro do guincho (protegido do atirador) e nota do selo (sem atrapalhar o 3º rolo)", BaseFinds),
         });
 
         // ---------- Ajudas ----------
@@ -64,6 +65,18 @@ namespace Nibiru.EditorTools
 
         static string PauseText() => PauseField<UnityEngine.UI.Text>("content").text;
 
+        static int Selected() => PauseField<int>("selected");
+
+        static void SetSelected(int value) => typeof(PauseMenuUI).GetField("selected", Any).SetValue(Pause(), value);
+
+        static int ArchiveTop() => PauseField<int>("archiveTop");
+
+        static int Window() => (int)typeof(PauseMenuUI).GetField("ArchiveWindow", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+
+        static int LineCount() => PauseField<System.Collections.IList>("archiveLines").Count;
+
+        static int LineOfRowIndex(int row) => (int)typeof(PauseMenuUI).GetMethod("LineOfRow", Any).Invoke(Pause(), new object[] { row });
+
         static void ClosePause()
         {
             if (Pause().IsOpen) PauseCall("Close");
@@ -78,7 +91,7 @@ namespace Nibiru.EditorTools
             if (catalog == null) yield break;
 
             ArchiveCatalog.Entry[] entries = catalog.AllEntries().ToArray();
-            Check(entries.Length == 9, $"o catálogo deveria ter 9 entradas (8 documentos e 1 fita), tem {entries.Length}");
+            Check(entries.Length == 11, $"o catálogo deveria ter 11 entradas (10 documentos e 1 fita), tem {entries.Length}");
 
             foreach (var duplicate in entries.GroupBy(e => e.Id).Where(g => g.Count() > 1))
                 Check(false, $"código repetido no catálogo: {duplicate.Key}");
@@ -183,7 +196,7 @@ namespace Nibiru.EditorTools
         {
             yield return Restart("arquivo.cheio");
             ArchiveCatalog catalog = ArchiveCatalog.Current;
-            Check(catalog.UnlockedCount() == 9, $"com tudo coletado o Arquivo deveria ter 9 entradas (tem {catalog.UnlockedCount()})");
+            Check(catalog.UnlockedCount() == 11, $"com tudo coletado o Arquivo deveria ter 11 entradas (tem {catalog.UnlockedCount()})");
             int fundacao = Rep("FundacaoEnlil");
             int guardioes = Rep("Guardioes");
             int transformation = Save.WorldState.Transformation;
@@ -191,16 +204,17 @@ namespace Nibiru.EditorTools
 
             OpenArchive();
             List<ArchiveCatalog.Entry> rows = Rows();
-            Check(rows.Count == 9, $"a lista deveria ter 9 linhas (tem {rows.Count})");
+            Check(rows.Count == 11, $"a lista deveria ter 11 linhas (tem {rows.Count})");
             Check(Time.timeScale == 0f && !Input().GameplayEnabled, "com a pausa aberta o jogo deveria estar parado e a Elena sem controle");
-            string text = PauseText();
-            foreach (ArchiveCatalog.Group group in catalog.groups)
-                Check(text.Contains(group.LocalizedTitle), $"falta o título do grupo {group.titleKey}");
+            yield return Scrolling(rows);
 
             for (int i = 0; i < rows.Count; i++)
             {
                 Posted.Clear();
-                typeof(PauseMenuUI).GetField("selected", Any).SetValue(Pause(), i);
+                SetSelected(i);
+                PauseCall("KeepArchiveSelectionVisible");
+                PauseCall("Refresh");
+                int topBefore = ArchiveTop();
                 PauseCall("OpenArchiveEntry");
                 yield return new Delay(0.15f);
                 ArchiveCatalog.Entry entry = rows[i];
@@ -220,6 +234,9 @@ namespace Nibiru.EditorTools
                 Check(Time.timeScale == 0f, $"{entry.Id}: o jogo deveria continuar parado");
                 Check(!Input().GameplayEnabled, $"{entry.Id}: a Elena não pode ser solta com a pausa aberta");
                 Check(PauseField<UnityEngine.UI.Text>("content").gameObject.activeInHierarchy, $"{entry.Id}: a lista deveria voltar");
+                Check(Selected() == i, $"{entry.Id}: ao voltar da leitura a seleção deveria continuar em {i} (está em {Selected()})");
+                Check(ArchiveTop() == topBefore, $"{entry.Id}: ao voltar da leitura a rolagem deveria continuar em {topBefore} (está em {ArchiveTop()})");
+                Check(PauseText().Contains(entry.Title), $"{entry.Id}: o item escolhido deveria continuar visível depois de voltar da leitura");
             }
 
             ClosePause();
@@ -231,7 +248,74 @@ namespace Nibiru.EditorTools
 
             // Tudo volta do checkpoint (o código estável é o que o salvamento do A4 vai gravar).
             yield return SaveAndReload();
-            Check(ArchiveCatalog.Current.UnlockedCount() == 9, $"depois do checkpoint o Arquivo deveria ter 9 entradas (tem {ArchiveCatalog.Current.UnlockedCount()})");
+            Check(ArchiveCatalog.Current.UnlockedCount() == 11, $"depois do checkpoint o Arquivo deveria ter 11 entradas (tem {ArchiveCatalog.Current.UnlockedCount()})");
+        }
+
+        // ---------- Rolagem ----------
+
+        // A lista rola: a seleção (setas, direcional) mantém o item visível, a roda do mouse rola e leva a seleção, e a
+        // letra dos itens é a normal.
+        static IEnumerator Scrolling(List<ArchiveCatalog.Entry> rows)
+        {
+            int window = Window();
+            int lines = LineCount();
+            Check(lines > window, $"o teste precisa de mais linhas ({lines}) que a janela ({window})");
+            string text = PauseText();
+            Check(ArchiveTop() == 0 && Selected() == 0, "a página deveria abrir no topo, com o primeiro item escolhido");
+            Check(!text.Contains("\u25B2") && text.Contains("\u25BC"), "no topo só deveria haver o marcador de mais abaixo");
+            Check(!text.Contains(rows[rows.Count - 1].Title), "a última entrada não deveria caber na primeira tela");
+            Check(!text.Contains(rows[0].Title + "</size>"), "a letra dos itens deveria ser a normal, sem tamanho reduzido");
+            Font font = PauseField<UnityEngine.UI.Text>("content").font;
+            Check(font != null && font.HasCharacter('\u25B2') && font.HasCharacter('\u25BC'), "a fonte da interface deveria ter os glifos de seta");
+
+            // Descer um a um pelo teclado: o escolhido nunca sai da janela.
+            for (int i = 1; i < rows.Count; i++)
+            {
+                SetSelected(i);
+                PauseCall("KeepArchiveSelectionVisible");
+                PauseCall("Refresh");
+                Check(PauseText().Contains(rows[i].Title), $"o item {i} deveria estar visível ao escolher ({rows[i].Id})");
+            }
+            text = PauseText();
+            Check(ArchiveTop() == lines - window, $"na última entrada a janela deveria estar no fim ({lines - window}), está em {ArchiveTop()}");
+            Check(text.Contains("\u25B2") && !text.Contains("\u25BC"), "no fim só deveria haver o marcador de mais acima");
+            Check(text.Contains(rows[rows.Count - 1].Title), "a última entrada deveria aparecer");
+
+            // Subir até a primeira: o título do primeiro grupo volta a aparecer.
+            for (int i = rows.Count - 2; i >= 0; i--)
+            {
+                SetSelected(i);
+                PauseCall("KeepArchiveSelectionVisible");
+                PauseCall("Refresh");
+                Check(PauseText().Contains(rows[i].Title), $"subindo, o item {i} deveria estar visível ({rows[i].Id})");
+            }
+            Check(ArchiveTop() == 0 && PauseText().Contains(ArchiveCatalog.Current.groups[0].LocalizedTitle), "voltando ao primeiro, a janela deveria estar no topo, com o título do grupo");
+
+            // Roda do mouse: rola e leva a seleção para dentro da janela.
+            PauseCall("ScrollArchive", 3);
+            Check(ArchiveTop() == 3, $"3 linhas da roda deveriam levar a janela a 3 (está em {ArchiveTop()})");
+            int selectedLine = LineOfRowIndex(Selected());
+            Check(selectedLine >= 3 && selectedLine <= 3 + window - 1, $"a seleção deveria seguir para dentro da janela (linha {selectedLine})");
+            PauseCall("ScrollArchive", 99);
+            Check(ArchiveTop() == lines - window, "rolar além do fim deveria parar no fim");
+            PauseCall("ScrollArchive", -99);
+            Check(ArchiveTop() == 0, "rolar além do topo deveria parar no topo");
+
+            // Rolar até a última entrada, abrir e fechar: a lista volta na mesma posição e com o mesmo item.
+            SetSelected(rows.Count - 1);
+            PauseCall("KeepArchiveSelectionVisible");
+            PauseCall("Refresh");
+            int top = ArchiveTop();
+            PauseCall("OpenArchiveEntry");
+            yield return new Delay(0.15f);
+            Check(Reading().IsOpen && ReadingText("titleLabel") == rows[rows.Count - 1].Title, "a última entrada deveria abrir");
+            CloseReading();
+            yield return new Delay(0.15f);
+            Check(Selected() == rows.Count - 1 && ArchiveTop() == top, $"depois de fechar, seleção {Selected()} (era {rows.Count - 1}) e rolagem {ArchiveTop()} (era {top})");
+            Check(PauseText().Contains(rows[rows.Count - 1].Title), "depois de fechar, a última entrada deveria continuar à vista");
+            SetSelected(0);
+            PauseCall("KeepArchiveSelectionVisible");
+            PauseCall("Refresh");
         }
 
         // ---------- Aldeia ----------
@@ -315,6 +399,68 @@ namespace Nibiru.EditorTools
             OpenArchive();
             Check(Rows().Any(e => e.IsTape), "a fita pega deveria aparecer na lista");
             ClosePause();
+        }
+
+        // ---------- Achados da base ----------
+
+        static IEnumerator BaseFinds()
+        {
+            // Registro do guincho: mochila ao pé sul do contêiner 5, fora da linha de tiro do atirador do zigurate.
+            yield return Restart("arquivo.registro");
+            yield return Face(ArchiveShortcuts.RegisterSpot, 0f);
+            Posted.Clear();
+            var sniper = UnityEngine.Object.FindFirstObjectByType<AI.SniperAI>();
+            Vector3 eye = sniper.transform.position + Vector3.up * 1.6f;
+            foreach (float height in new[] { 0.4f, 1.0f, 1.7f })
+            {
+                Vector3 target = ArchiveShortcuts.RegisterSpot + Vector3.up * height;
+                bool blocked = Physics.Raycast(eye, (target - eye).normalized, out RaycastHit hit, (target - eye).magnitude - 0.05f, ~0, QueryTriggerInteraction.Ignore);
+                Check(blocked, $"o atirador não deveria ver a Elena lendo o registro (altura {height:0.0} m, nada no caminho)");
+            }
+            yield return Interact("Ler o registro");
+            Check(Reading().IsOpen, "ler o registro deveria abrir a tela de leitura");
+            Check(ReadingText("titleLabel") == Load<DocumentDefinition>("Documents/Base_RegistroDoGuincho").LocalizedTitle, "título do registro");
+            Check(Raised("LeuORegistroDoGuincho"), "ler deveria disparar LeuORegistroDoGuincho");
+            Check(Posted.Contains(Loc.Get(ArchiveNotifier.NoticeKey)), "a primeira entrada no Arquivo deveria avisar");
+            CloseReading();
+            yield return new Delay(0.3f);
+            Check(ArchiveCatalog.Current.AllEntries().Any(e => e.Id == "doc.base_registro_guincho" && e.IsUnlocked), "o registro deveria estar no Arquivo");
+            Check(!sniper.IsLockedOn, "o atirador não deveria ter travado a mira na Elena durante a leitura");
+            yield return Face(ArchiveShortcuts.RegisterSpot, 0f);
+            Check(Prompt() == "Ler o registro", "a leitura é repetível");
+            yield return SaveAndReload();
+            Check(Raised("LeuORegistroDoGuincho"), "o evento deveria voltar do checkpoint");
+
+            // Nota do selo: na ponta leste da mesa da tenda de provas, sem pegar nem esconder o 3º rolo do Tom.
+            yield return Restart("arquivo.nota");
+            GameObject roll = Obj("Rolo_De_Filme_3");
+            GameObject note = Obj("Nota_Do_Selo_1927");
+            Check(roll != null && roll.activeInHierarchy, "o 3º rolo do Tom deveria continuar na mesa");
+            Check(note != null && roll != null && Vector3.Distance(roll.transform.position, note.transform.position) > 0.5f, "a nota não pode ficar em cima do rolo");
+            yield return Face(ArchiveShortcuts.NoteSpot, 0f);
+            Posted.Clear();
+            yield return Interact("Ler a nota");
+            Check(Reading().IsOpen, "ler a nota deveria abrir a tela de leitura");
+            Check(ReadingText("titleLabel") == Load<DocumentDefinition>("Documents/Base_NotaDoSelo1927").LocalizedTitle, "título da nota");
+            Check(Raised("LeuANotaDoSelo"), "ler deveria disparar LeuANotaDoSelo");
+            CloseReading();
+            yield return new Delay(0.3f);
+            Check(ArchiveCatalog.Current.AllEntries().Any(e => e.Id == "doc.base_nota_selo_1927" && e.IsUnlocked), "a nota deveria estar no Arquivo");
+            Check(roll.activeInHierarchy && Inv("RoloDeFilmeDoTom") == 0, "ler a nota não pode pegar o rolo");
+
+            // Do lado do rolo (oeste da mesa) o aviso não é o da nota.
+            yield return Face(new Vector3(31.2f, 0f, 22.6f), 0f);
+            Check(Prompt() != "Ler a nota", $"junto do rolo o aviso não deveria ser o da nota (é \"{Prompt()}\")");
+
+            // Nenhum dos dois fecha passo de missão: não estão no caminho principal.
+            foreach (string name in new[] { "LeuORegistroDoGuincho", "LeuANotaDoSelo" })
+            {
+                var asset = Load<StoryEvent>("Events/" + name);
+                bool used = AssetDatabase.FindAssets("t:QuestDefinition", new[] { "Assets/_Nibiru/Data" })
+                    .Select(g => AssetDatabase.LoadAssetAtPath<QuestDefinition>(AssetDatabase.GUIDToAssetPath(g)))
+                    .Any(q => q.steps != null && q.steps.Any(st => st.completeOn == asset));
+                Check(!used, $"{name} não pode fechar passo de missão");
+            }
         }
     }
 }
