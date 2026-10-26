@@ -63,7 +63,7 @@ namespace Nibiru.Tablets
                 StoryEvents.Raise(tablet.raiseOnDecipher);
             }
 
-            readingScreen.Show(tablet.displayName, tablet.text, footer.ToString());
+            readingScreen.Show(tablet.LocalizedName, tablet.LocalizedText, footer.ToString());
         }
     }
 }

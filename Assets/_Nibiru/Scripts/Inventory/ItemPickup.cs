@@ -35,7 +35,7 @@ namespace Nibiru.Inventory
             get
             {
                 if (item == null) return "Pegar";
-                return amount > 1 ? $"Pegar {item.displayName} ({amount})" : $"Pegar {item.displayName}";
+                return amount > 1 ? $"Pegar {item.LocalizedName} ({amount})" : $"Pegar {item.LocalizedName}";
             }
         }
 
@@ -55,8 +55,8 @@ namespace Nibiru.Inventory
 
             amount -= added;
             WorldState.SetPickupRemaining(persistentId.Id, amount);
-            Notifications.Post(added > 1 ? $"{item.displayName} x{added}" : item.displayName);
-            if (!string.IsNullOrEmpty(item.pickupHint)) Notifications.Post(item.pickupHint);
+            Notifications.Post(added > 1 ? $"{item.LocalizedName} x{added}" : item.LocalizedName);
+            if (!string.IsNullOrEmpty(item.LocalizedHint)) Notifications.Post(item.LocalizedHint);
 
             if (amount == 0)
             {

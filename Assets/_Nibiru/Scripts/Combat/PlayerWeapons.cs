@@ -124,7 +124,7 @@ namespace Nibiru.Combat
             Equipped = firearm;
             // Arma encontrada vem carregada.
             if (!loaded.ContainsKey(firearm)) loaded[firearm] = firearm.magazineSize;
-            Notifications.Post($"{firearm.weaponItem.displayName} equipada");
+            Notifications.Post($"{firearm.weaponItem.LocalizedName} equipada");
             return true;
         }
 

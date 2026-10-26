@@ -132,8 +132,8 @@ namespace Nibiru.UI
             AppendFactions();
 
             builder.AppendLine();
-            if (selected < entries.Count && !string.IsNullOrEmpty(entries[selected].item.description))
-                builder.Append("<color=").Append(Muted).Append('>').Append(entries[selected].item.description).AppendLine("</color>");
+            if (selected < entries.Count && !string.IsNullOrEmpty(entries[selected].item.LocalizedDescription))
+                builder.Append("<color=").Append(Muted).Append('>').Append(entries[selected].item.LocalizedDescription).AppendLine("</color>");
 
             builder.Append("<size=24><color=").Append(Muted).Append(">[").Append(input.ConfirmButtonLabel).Append("] Usar     [")
                 .Append(input.BackButtonLabel).Append("] Fechar</color></size>");
@@ -163,7 +163,7 @@ namespace Nibiru.UI
         {
             bool isSelected = index == selected;
             builder.Append(isSelected ? "<color=" + Gold + ">  > " : "    ");
-            builder.Append(stack.item.displayName);
+            builder.Append(stack.item.LocalizedName);
             if (stack.count > 1) builder.Append("  x").Append(stack.count);
             if (weapons != null && stack.item.firearm != null && stack.item.firearm == weapons.Equipped)
                 builder.Append("  (equipada, ").Append(weapons.LoadedRounds).Append('/').Append(stack.item.firearm.magazineSize).Append(')');

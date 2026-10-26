@@ -45,7 +45,7 @@ namespace Nibiru.Inventory
                 }
                 health.Heal(item.healAmount);
                 inventory.Remove(item, 1);
-                message = $"{item.displayName} usado";
+                message = $"{item.LocalizedName} usado";
                 return true;
             }
 
@@ -59,7 +59,7 @@ namespace Nibiru.Inventory
             {
                 if (weapons.Equipped == item.firearm)
                 {
-                    message = $"{item.displayName} já está equipada";
+                    message = $"{item.LocalizedName} já está equipada";
                     return false;
                 }
                 // Equip já mostra o aviso "equipada".

@@ -1,5 +1,6 @@
 using System;
 using Nibiru.Factions;
+using Nibiru.Localization;
 using Nibiru.Quests;
 using UnityEngine;
 
@@ -9,8 +10,17 @@ namespace Nibiru.Dialogue
     [Serializable]
     public class DialogueChoice
     {
-        [Tooltip("Texto da resposta.")]
+        [Tooltip("Código permanente da resposta dentro da fala (c1, c2...). Nunca muda nem se repete: a chave de tradução sai dele, então inserir ou tirar respostas não mexe nas outras.")]
+        public string id;
+
+        [Tooltip("Chave do texto da resposta na tabela de idiomas (dlg.<conversa>.<fala>.<resposta>).")]
+        public string textKey;
+
+        [Tooltip("Texto da resposta. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         [TextArea(1, 2)] public string text;
+
+        /// <summary>O texto da resposta no idioma atual.</summary>
+        public string LocalizedText => Loc.Get(textKey, text);
 
         [Tooltip("Código da fala que vem depois. Vazio = encerra a conversa.")]
         public string next;
@@ -29,13 +39,26 @@ namespace Nibiru.Dialogue
     [Serializable]
     public class DialogueNode
     {
-        [Tooltip("Código curto desta fala, usado pelas outras para apontar para ela (ex.: inicio, samir2).")]
+        [Tooltip("Código permanente desta fala, usado pelas outras para apontar para ela (ex.: inicio, samir2) e pela chave de tradução. Nunca muda nem se repete dentro da conversa.")]
         public string id;
 
-        [Tooltip("Quem fala (Samir, Elena, Kast pelo rádio, Voz...).")]
+        [Tooltip("Quem fala (Samir, Elena, Kast pelo rádio, Voz...). Também identifica o personagem para os gestos de conversa.")]
         public string speaker;
 
+        [Tooltip("Chave do nome de quem fala na tabela de idiomas (spk.<nome>).")]
+        public string speakerKey;
+
+        [Tooltip("Chave do texto da fala na tabela de idiomas (dlg.<conversa>.<fala>).")]
+        public string textKey;
+
+        [Tooltip("Texto da fala. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         [TextArea(2, 5)] public string text;
+
+        /// <summary>O texto da fala no idioma atual.</summary>
+        public string LocalizedText => Loc.Get(textKey, text);
+
+        /// <summary>O nome de quem fala, no idioma atual.</summary>
+        public string LocalizedSpeaker => Loc.Get(speakerKey, speaker);
 
         [Tooltip("Código da próxima fala, se não houver respostas. Vazio = encerra a conversa.")]
         public string next;

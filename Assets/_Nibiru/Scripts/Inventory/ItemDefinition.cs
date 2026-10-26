@@ -1,3 +1,4 @@
+using Nibiru.Localization;
 using UnityEngine;
 
 namespace Nibiru.Inventory
@@ -18,14 +19,25 @@ namespace Nibiru.Inventory
     [CreateAssetMenu(menuName = "Nibiru/Itens/Item", fileName = "NovoItem")]
     public class ItemDefinition : ScriptableObject
     {
-        [Tooltip("Nome mostrado na tela.")]
+        [Tooltip("Chaves dos textos na tabela de idiomas (item.<nome>.name, .desc, .hint).")]
+        public string nameKey;
+        public string descriptionKey;
+        public string hintKey;
+
+        [Tooltip("Nome mostrado na tela. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         public string displayName;
 
-        [Tooltip("Texto curto mostrado no inventário.")]
+        [Tooltip("Texto curto mostrado no inventário. Depois da extração fica vazio.")]
         [TextArea(2, 4)] public string description;
 
-        [Tooltip("Aviso extra mostrado na tela quando o item é pego (opcional), por exemplo como usá-lo.")]
+        [Tooltip("Aviso extra mostrado na tela quando o item é pego (opcional), por exemplo como usá-lo. Depois da extração fica vazio.")]
         [TextArea(1, 2)] public string pickupHint;
+
+        public string LocalizedName => Loc.Get(nameKey, displayName);
+
+        public string LocalizedDescription => Loc.Get(descriptionKey, description);
+
+        public string LocalizedHint => Loc.Get(hintKey, pickupHint);
 
         [Tooltip("Ícone para o inventário (opcional por enquanto).")]
         public Sprite icon;

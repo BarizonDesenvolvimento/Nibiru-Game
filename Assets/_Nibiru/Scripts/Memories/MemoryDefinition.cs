@@ -1,3 +1,4 @@
+using Nibiru.Localization;
 using Nibiru.Quests;
 using UnityEngine;
 
@@ -14,11 +15,19 @@ namespace Nibiru.Memories
         [Tooltip("Nome da cena do passado (precisa estar na lista de cenas do Build).")]
         public string sceneName;
 
-        [Tooltip("Quem a Elena é na memória, mostrado na abertura (\"Você é Ziusudra\").")]
+        [Tooltip("Chaves dos textos na tabela de idiomas (memory.<nome>.character e .place).")]
+        public string characterNameKey;
+        public string placeTitleKey;
+
+        [Tooltip("Quem a Elena é na memória, mostrado na abertura (\"Você é Ziusudra\"). Depois da extração fica vazio.")]
         public string characterName;
 
-        [Tooltip("Lugar e época, mostrados na abertura.")]
+        [Tooltip("Lugar e época, mostrados na abertura. Depois da extração fica vazio.")]
         public string placeTitle;
+
+        public string LocalizedCharacterName => Loc.Get(characterNameKey, characterName);
+
+        public string LocalizedPlaceTitle => Loc.Get(placeTitleKey, placeTitle);
 
         [Tooltip("Evento disparado ao entrar na memória (opcional).")]
         public StoryEvent raiseOnEnter;

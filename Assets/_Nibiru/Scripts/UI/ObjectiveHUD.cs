@@ -53,13 +53,13 @@ namespace Nibiru.UI
             {
                 if (quest.kind == QuestKind.Principal)
                 {
-                    builder.Append("<size=22><color=").Append(Gold).Append('>').Append(quest.displayName.ToUpperInvariant()).AppendLine("</color></size>");
-                    builder.Append(step.objective).Append(Progress(step)).AppendLine().AppendLine();
+                    builder.Append("<size=22><color=").Append(Gold).Append('>').Append(quest.LocalizedName.ToUpperInvariant()).AppendLine("</color></size>");
+                    builder.Append(step.LocalizedObjective).Append(Progress(step)).AppendLine().AppendLine();
                 }
                 else
                 {
-                    builder.Append("<size=22><color=").Append(Muted).Append(">• ").Append(quest.displayName).Append(": ")
-                        .Append(step.objective).Append(Progress(step)).AppendLine("</color></size>");
+                    builder.Append("<size=22><color=").Append(Muted).Append(">• ").Append(quest.LocalizedName).Append(": ")
+                        .Append(step.LocalizedObjective).Append(Progress(step)).AppendLine("</color></size>");
                 }
             }
             label.text = builder.ToString();

@@ -1,3 +1,4 @@
+using Nibiru.Localization;
 using Nibiru.Quests;
 using UnityEngine;
 
@@ -11,14 +12,25 @@ namespace Nibiru.Documents
     [CreateAssetMenu(menuName = "Nibiru/Documento", fileName = "NovoDocumento")]
     public class DocumentDefinition : ScriptableObject
     {
-        [Tooltip("Título na tela de leitura.")]
+        [Tooltip("Chaves dos textos na tabela de idiomas (doc.<nome>.title, .text, .footer).")]
+        public string titleKey;
+        public string textKey;
+        public string footerKey;
+
+        [Tooltip("Título na tela de leitura. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         public string displayName;
 
-        [Tooltip("O texto do documento.")]
+        [Tooltip("O texto do documento. Depois da extração fica vazio.")]
         [TextArea(6, 20)] public string text;
 
-        [Tooltip("Linha de baixo, menor (de onde veio, um comentário da Elena...). Opcional.")]
+        [Tooltip("Linha de baixo, menor (de onde veio, um comentário da Elena...). Opcional. Depois da extração fica vazia.")]
         [TextArea(1, 4)] public string footer;
+
+        public string LocalizedTitle => Loc.Get(titleKey, displayName);
+
+        public string LocalizedText => Loc.Get(textKey, text);
+
+        public string LocalizedFooter => Loc.Get(footerKey, footer);
 
         [Tooltip("Evento disparado ao ler pela primeira vez (opcional).")]
         public StoryEvent raiseOnRead;

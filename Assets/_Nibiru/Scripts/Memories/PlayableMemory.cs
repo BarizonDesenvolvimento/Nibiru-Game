@@ -259,8 +259,8 @@ namespace Nibiru.Memories
 
         void SetTitle(float alpha)
         {
-            placeLabel.text = memory.placeTitle;
-            characterLabel.text = string.IsNullOrEmpty(memory.characterName) ? "" : $"Você é {memory.characterName}";
+            placeLabel.text = memory.LocalizedPlaceTitle;
+            characterLabel.text = string.IsNullOrEmpty(memory.LocalizedCharacterName) ? "" : $"Você é {memory.LocalizedCharacterName}";
             placeLabel.color = new Color(1f, 0.93f, 0.8f, alpha);
             characterLabel.color = new Color(1f, 0.93f, 0.8f, alpha * 0.85f);
         }

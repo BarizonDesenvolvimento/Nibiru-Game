@@ -56,8 +56,8 @@ namespace Nibiru.UI
         void OnNodeShown(DialogueNode node, IReadOnlyList<DialogueChoice> available)
         {
             panel.SetActive(true);
-            speakerLabel.text = node.speaker;
-            fullText = node.text ?? string.Empty;
+            speakerLabel.text = node.LocalizedSpeaker;
+            fullText = node.LocalizedText ?? string.Empty;
             typedCharacters = 0f;
             choices.Clear();
             choices.AddRange(available);
@@ -112,8 +112,8 @@ namespace Nibiru.UI
             {
                 for (int i = 0; i < choices.Count; i++)
                 {
-                    if (i == selected) builder.Append("<color=").Append(Gold).Append(">> ").Append(choices[i].text).AppendLine("</color>");
-                    else builder.Append("<color=").Append(Muted).Append(">   ").Append(choices[i].text).AppendLine("</color>");
+                    if (i == selected) builder.Append("<color=").Append(Gold).Append(">> ").Append(choices[i].LocalizedText).AppendLine("</color>");
+                    else builder.Append("<color=").Append(Muted).Append(">   ").Append(choices[i].LocalizedText).AppendLine("</color>");
                 }
             }
             choicesLabel.text = builder.ToString();

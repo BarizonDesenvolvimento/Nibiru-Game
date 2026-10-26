@@ -24,7 +24,7 @@ namespace Nibiru.Documents
                 Debug.LogWarning("DocumentView: tela de leitura não encontrada.", this);
                 return;
             }
-            readingScreen.Show(document.displayName, document.text, document.footer);
+            readingScreen.Show(document.LocalizedTitle, document.LocalizedText, document.LocalizedFooter);
             StoryEvents.Raise(document.raiseOnRead);
         }
     }

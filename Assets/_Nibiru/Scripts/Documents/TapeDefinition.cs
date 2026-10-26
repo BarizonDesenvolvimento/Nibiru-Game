@@ -1,4 +1,5 @@
 using System;
+using Nibiru.Localization;
 using Nibiru.Quests;
 using UnityEngine;
 
@@ -16,14 +17,31 @@ namespace Nibiru.Documents
         [Serializable]
         public class Line
         {
+            [Tooltip("Código permanente da fala (l1, l2...). Nunca muda nem se repete na fita: a chave de tradução sai dele.")]
+            public string id;
+
+            [Tooltip("Chave do texto na tabela de idiomas (tape.<nome>.<fala>).")]
+            public string textKey;
+
+            [Tooltip("Texto da fala. Depois da extração fica vazio.")]
             [TextArea(1, 4)] public string text;
+
+            public string LocalizedText => Loc.Get(textKey, text);
         }
 
-        [Tooltip("Nome da fita, mostrado ao pegar e acima da legenda.")]
+        [Tooltip("Chaves do nome e da etiqueta na tabela de idiomas (tape.<nome>.name e .label).")]
+        public string displayNameKey;
+        public string speakerLabelKey;
+
+        [Tooltip("Nome da fita, mostrado ao pegar e acima da legenda. Depois da extração fica vazio.")]
         public string displayName = "Fita";
 
-        [Tooltip("Quem fala e quando, mostrado antes da legenda (por exemplo \"Irena, 1979\").")]
+        [Tooltip("Quem fala e quando, mostrado antes da legenda (por exemplo \"Irena, 1979\"). Depois da extração fica vazio.")]
         public string speakerLabel = "";
+
+        public string LocalizedName => Loc.Get(displayNameKey, displayName);
+
+        public string LocalizedSpeakerLabel => Loc.Get(speakerLabelKey, speakerLabel);
 
         [Tooltip("As falas, em ordem. Cada uma fica na tela pelo tempo calculado abaixo.")]
         public Line[] lines = new Line[0];
@@ -53,7 +71,7 @@ namespace Nibiru.Documents
         public bool IsFinished => StoryEvents.HasBeenRaised(raiseOnFinished);
 
         public float SecondsFor(Line line) =>
-            Mathf.Max(minSecondsPerLine, (line.text?.Length ?? 0) * secondsPerCharacter);
+            Mathf.Max(minSecondsPerLine, (line.LocalizedText?.Length ?? 0) * secondsPerCharacter);
 
         /// <summary>
         /// Quanto a fita dura de verdade: o clipe de voz, quando há, ou o tempo das legendas (mais a

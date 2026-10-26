@@ -1,4 +1,5 @@
 using Nibiru.Inventory;
+using Nibiru.Localization;
 using Nibiru.Powers;
 using Nibiru.Quests;
 using Nibiru.Save;
@@ -13,13 +14,21 @@ namespace Nibiru.Tablets
     [CreateAssetMenu(menuName = "Nibiru/Tabuletas/Tabuleta", fileName = "NovaTabuleta")]
     public class TabletDefinition : ScriptableObject
     {
-        [Tooltip("Nome mostrado na tela.")]
+        [Tooltip("Chaves dos textos na tabela de idiomas (tablet.<nome>.name e .text).")]
+        public string nameKey;
+        public string textKey;
+
+        [Tooltip("Nome mostrado na tela. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         public string displayName;
+
+        public string LocalizedName => Loc.Get(nameKey, displayName);
+
+        public string LocalizedText => Loc.Get(textKey, text);
 
         [Tooltip("Item da tabuleta no inventário. Usar o item decifra a tabuleta.")]
         public ItemDefinition item;
 
-        [Tooltip("Texto da tabuleta, como os deuses contaram.")]
+        [Tooltip("Texto da tabuleta, como os deuses contaram. Depois da extração fica vazio.")]
         [TextArea(6, 16)] public string text;
 
         [Tooltip("Poder ganho ao decifrar (opcional).")]

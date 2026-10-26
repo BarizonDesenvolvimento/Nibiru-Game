@@ -26,7 +26,7 @@ namespace Nibiru.UI
                 ? $"<color={Danger}>0</color>"
                 : weapons.LoadedRounds.ToString();
             string status = weapons.IsReloading ? "   <size=22>RECARREGANDO</size>" : string.Empty;
-            label.text = $"<size=22>{firearm.weaponItem.displayName.ToUpperInvariant()}</size>{status}\n" +
+            label.text = $"<size=22>{firearm.weaponItem.LocalizedName.ToUpperInvariant()}</size>{status}\n" +
                          $"<b>{loaded}</b> <color={Gold}>/ {weapons.ReserveRounds}</color>";
         }
     }

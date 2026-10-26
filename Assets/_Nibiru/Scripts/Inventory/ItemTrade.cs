@@ -109,7 +109,7 @@ namespace Nibiru.Inventory
             }
 
             tradedLocally = true;
-            if (gift) Notifications.Post(giveItem.displayName);
+            if (gift) Notifications.Post(giveItem.LocalizedName);
             StoryEvents.Raise(raiseOnTrade);
             if (gift) StoryEvents.Raise(raiseOnGift);
             runner.Play(gift ? dialogueWithGift : dialogueWithoutGift != null ? dialogueWithoutGift : dialogueWithGift);

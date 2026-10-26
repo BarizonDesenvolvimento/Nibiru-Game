@@ -589,7 +589,7 @@ namespace Nibiru.EditorTools
         {
             var quests = Object.FindFirstObjectByType<QuestManager>();
             foreach (var (quest, step) in quests.ActiveObjectives())
-                if (quest.kind == QuestKind.Principal) return step.objective;
+                if (quest.kind == QuestKind.Principal) return step.LocalizedObjective;
             return "nenhum (missão principal concluída)";
         }
     }

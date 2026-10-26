@@ -73,7 +73,7 @@ namespace Nibiru.Documents
             yield return new WaitForSeconds(startDelay);
             foreach (TapeDefinition.Line line in tape.lines)
             {
-                subtitles.Show(tape.speakerLabel, line.text);
+                subtitles.Show(tape.LocalizedSpeakerLabel, line.LocalizedText);
                 yield return new WaitForSeconds(tape.SecondsFor(line));
                 subtitles.Hide();
                 yield return new WaitForSeconds(tape.pauseBetweenLines);

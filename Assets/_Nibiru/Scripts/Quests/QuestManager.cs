@@ -91,7 +91,7 @@ namespace Nibiru.Quests
             int step = StepOf(quest);
             if (IsFailed(quest) || step == NotStarted || step >= quest.steps.Length) return;
             WorldState.MarkQuestFailed(quest.Id);
-            Notifications.PostImportant($"Missão falhou: {quest.displayName}");
+            Notifications.PostImportant($"Missão falhou: {quest.LocalizedName}");
             Changed?.Invoke();
         }
 
@@ -99,7 +99,7 @@ namespace Nibiru.Quests
         {
             if (StepOf(quest) != NotStarted) return;
             WorldState.SetQuestStep(quest.Id, 0);
-            if (announce) Notifications.Post($"Nova missão: {quest.displayName}");
+            if (announce) Notifications.Post($"Nova missão: {quest.LocalizedName}");
             CheckQuest(quest);
             Changed?.Invoke();
         }
@@ -135,13 +135,13 @@ namespace Nibiru.Quests
 
             if (step >= quest.steps.Length)
             {
-                Notifications.Post($"Missão concluída: {quest.displayName}");
+                Notifications.Post($"Missão concluída: {quest.LocalizedName}");
                 StoryEvents.Raise(quest.raiseOnComplete);
                 Factions.Reputation.Apply(quest.reputationOnComplete);
             }
             else
             {
-                Notifications.Post($"Objetivo: {quest.steps[step].objective}");
+                Notifications.Post($"Objetivo: {quest.steps[step].LocalizedObjective}");
             }
             Changed?.Invoke();
         }

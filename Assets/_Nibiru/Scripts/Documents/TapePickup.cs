@@ -32,7 +32,7 @@ namespace Nibiru.Documents
         {
             if (!CanInteract) return;
             if (player == null) player = FindFirstObjectByType<TapePlayer>();
-            Notifications.Post(tape.displayName);
+            Notifications.Post(tape.LocalizedName);
             StoryEvents.Raise(tape.raiseOnCollected);
             gameObject.SetActive(false);
             if (player != null) player.Play(tape);

@@ -1,5 +1,6 @@
 using System;
 using Nibiru.Inventory;
+using Nibiru.Localization;
 using UnityEngine;
 
 namespace Nibiru.Quests
@@ -18,8 +19,17 @@ namespace Nibiru.Quests
     [Serializable]
     public class QuestStep
     {
-        [Tooltip("Texto do objetivo mostrado na tela.")]
+        [Tooltip("Código permanente do passo (s1, s2...). Nunca muda nem se repete na missão: a chave de tradução sai dele, então acrescentar ou tirar passos não mexe nos outros.")]
+        public string id;
+
+        [Tooltip("Chave do texto do objetivo na tabela de idiomas (quest.<nome>.<passo>).")]
+        public string objectiveKey;
+
+        [Tooltip("Texto do objetivo mostrado na tela. Depois da extração fica vazio: o texto mora na tabela de idiomas.")]
         [TextArea(1, 3)] public string objective;
+
+        /// <summary>O objetivo no idioma atual.</summary>
+        public string LocalizedObjective => Loc.Get(objectiveKey, objective);
 
         [Tooltip("Evento que completa este passo (opcional).")]
         public StoryEvent completeOn;
@@ -38,8 +48,13 @@ namespace Nibiru.Quests
     [CreateAssetMenu(menuName = "Nibiru/Missões/Missão", fileName = "NovaMissao")]
     public class QuestDefinition : ScriptableObject
     {
-        [Tooltip("Nome da missão mostrado na tela.")]
+        [Tooltip("Chave do nome da missão na tabela de idiomas (quest.<nome>.name).")]
+        public string nameKey;
+
+        [Tooltip("Nome da missão mostrado na tela. Depois da extração fica vazio.")]
         public string displayName;
+
+        public string LocalizedName => Loc.Get(nameKey, displayName);
 
         public QuestKind kind = QuestKind.Principal;
 
