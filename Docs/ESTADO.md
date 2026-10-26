@@ -858,6 +858,28 @@ Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 
 - Qual o peso da consequência na Aldeia ao devolver a tabuleta ao Poço?
 - Nome definitivo do jogo, dublagem da Elena e idiomas de lançamento (do GDD).
 
+## Decisões da governança de 26/out/2026 (cronograma e salvamento)
+
+**Cronograma adiantado em 26 dias (metas internas):** etapa B até **17/nov**, C até **9/fev**, D até **23/mar**, demo pronta (E) em **21/abr**. **Datas externas mantidas:** estúdio e Steamworks em novembro; página "Em breve" até **1º/fev**; inscrição na Next Fest até **11/abr**; Next Fest de **14 a 21/jun**. **Regra:** quando uma etapa termina antes da meta, as seguintes andam junto. A folga fica no fim, como reserva para playtest e polimento.
+
+**Calibração:** 1 "dia de trabalho com o Claude" ≈ 3 a 4 h do dono; 25 h por semana ≈ 6 a 8 dias.
+
+**Etapa B, tarefas em ordem:**
+
+| # | Tarefa |
+| --- | --- |
+| B1 | Pendências de checkpoint (fita de Irena, soldado caído, Elena no Poço) |
+| B2a | Munição |
+| B2b | Curativos e kits |
+| B3a | Primeiro Servo: arena, fases e IA em blockout (decide o Animation Rigging) |
+| B3b | Primeiro Servo: feedback, morte, checkpoint e ajuste |
+| B4 | Rádio de campanha |
+| B5 | Equilíbrio (helicóptero, 2º líder, sentinela, letalidade da avenida, passada completa cronometrada) |
+| B6 | Espingarda (a primeira da ordem de corte) |
+| B7 | Textos da abertura e do fundo do menu (depende de decidir quem subiu a escada às 03h10) |
+
+**Regra de versão do salvamento (nova):** dados novos que **só acrescentam** entram como **campos opcionais na mesma versão**, com valor inicial quando faltam. **Versão igual** carrega; **versão mais antiga migra e carrega**; **versão mais nova ou desconhecida é ilegível**. Isso **substitui a regra "outra versão = ilegível"** descrita no A4a e no A4b (seções "Salvamento em disco, 3 slots" e "Tela de slots e menu principal"). **Só está registrada: o código continua com a regra antiga** (hoje qualquer versão diferente de 1 é ilegível); a implementação entra na **B2**.
+
 ## Decisões de 25/out/2026 (depois da auditoria)
 
 Veja `Docs/Auditoria-2026-10-25.md` (tabela do que está pronto, provisório e falta, com esforço).
