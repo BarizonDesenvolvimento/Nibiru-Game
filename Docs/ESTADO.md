@@ -925,7 +925,7 @@ Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fo
 
 - **Mouse nas telas que ainda não têm (etapa D):** mouse nas escolhas de diálogo, no inventário e na tela de morte (hoje só teclado e controle, com o cursor preso). A tela de Opções com mais itens também entra na etapa D.
 
-## Pendências de checkpoint resolvidas (etapa B1, testadas pela ponte; falta o teste do dono no Play)
+## Pendências de checkpoint resolvidas (etapa B1, testadas pela ponte e **aprovadas pelo dono no Play em 26/out/2026**)
 
 Os três problemas eram: a fita de Irena recomeçava do início ao voltar de um checkpoint, o soldado caído da Aldeia reaparecia sempre na entrada leste e a Elena reaparecia 0,6 m ao lado do ponto de retorno do pé da descida do Poço. Os dois primeiros tinham a mesma raiz (estado de execução que a cena produz e o `WorldState` não guardava); o terceiro era um colisor.
 
@@ -954,7 +954,7 @@ Na volta, o listener de `ChegouAAldeia` chama `PlaceAtPointAhead.PlaceSaved` ant
 - Passo 13 (automático): fita guardada na 3ª linha continua dela; fita terminada não toca de novo nem deixa linha guardada.
 - Teste geral dos atalhos: conferências próprias dos três atalhos novos (fita tocando a partir da 3ª linha; soldado na entrada certa). Resultado: **94 OK, 0 FALHOU, 46 pulados**.
 
-**Roteiro curto para o teste do dono no Play:**
+**Roteiro do teste do dono no Play (feito e aprovado):**
 1. **Fita:** Passo 13 > 8 (rampa, fita na 3ª linha). Veja que ela continua da 3ª linha. Morra (ou Esc e carregue o slot) no meio de uma fala: ela volta no começo dessa fala, não da primeira. Deixe a fita terminar, morra de novo: ela não toca outra vez.
 2. **Soldado:** Passo 8 > 6 (entrada sul) e 7 (entrada norte): o soldado caído e a cena do encontro estão lá, e não na entrada leste. Para o caminho real: entre na Aldeia por um lado que não seja o leste, vá até o pátio (ponto de retorno), morra e volte.
 3. **Poço:** Passo 11 > 4 (ponto de retorno do pé da descida). A Elena nasce no patamar sem ser empurrada; morra de novo e confira.
