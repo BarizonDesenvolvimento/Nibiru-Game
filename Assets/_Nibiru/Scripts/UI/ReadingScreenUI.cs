@@ -77,7 +77,7 @@ namespace Nibiru.UI
             if (input.ConfirmPressed || input.BackPressed)
             {
                 MenuPointer.NoteKeyboardOrPad();
-                Close(false);
+                CloseScreen(false);
                 return;
             }
             PointerStep(MenuPointer.Read());
@@ -87,10 +87,12 @@ namespace Nibiru.UI
         public void PointerStep(MenuPointer.State pointer)
         {
             if (!IsOpen || Time.frameCount == shownFrame) return;
-            if (pointer.leftClick || pointer.rightClick) Close(true);
+            if (pointer.leftClick || pointer.rightClick) CloseScreen(true);
         }
 
-        void Close(bool byPointer)
+        void Close() => CloseScreen(false);
+
+        void CloseScreen(bool byPointer)
         {
             CursorPolicy.Release(this);
             panel.SetActive(false);

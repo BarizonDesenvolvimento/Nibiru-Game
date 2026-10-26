@@ -176,7 +176,7 @@ namespace Nibiru.UI
         {
             if (page == Page.Opcoes) ShowPage(Page.Principal, 1);
             else if (page == Page.Arquivo) ShowPage(Page.Principal, ArchiveItem);
-            else Close(byPointer);
+            else CloseMenu(byPointer);
         }
 
         /// <summary>
@@ -308,10 +308,10 @@ namespace Nibiru.UI
             ShowPage(Page.Principal, 0);
         }
 
-        void Close() => Close(pointerAction);
+        void Close() => CloseMenu(pointerAction);
 
         // byPointer: fechou com o clique do mouse; o jogo só volta a ouvir o controle no quadro seguinte.
-        void Close(bool byPointer)
+        void CloseMenu(bool byPointer)
         {
             dialog.Cancel();
             GameOptions.Save();
