@@ -29,6 +29,9 @@ namespace Nibiru.Documents
             public string LocalizedText => Loc.Get(textKey, text);
         }
 
+        [Tooltip("Código estável no Arquivo (por exemplo tape.irena_1). Nunca muda: o salvamento registra o que foi coletado por ele, não pelo nome do arquivo.")]
+        public string id;
+
         [Tooltip("Chaves do nome e da etiqueta na tabela de idiomas (tape.<nome>.name e .label).")]
         [LocKey] public string displayNameKey;
         [LocKey] public string speakerLabelKey;
@@ -65,6 +68,24 @@ namespace Nibiru.Documents
 
         [Tooltip("Disparado quando a fita termina de tocar. O que não pode cortar a fita (como o rádio do Kast no wadi) espera por este evento.")]
         public StoryEvent raiseOnFinished;
+
+        /// <summary>Código estável do Arquivo. Se o campo estiver vazio, cai no nome do arquivo.</summary>
+        public string Id => string.IsNullOrEmpty(id) ? name : id;
+
+        /// <summary>A fita inteira em texto (as falas, uma por parágrafo), para rever na tela de leitura.</summary>
+        public string TranscriptText
+        {
+            get
+            {
+                var builder = new System.Text.StringBuilder();
+                foreach (Line line in lines)
+                {
+                    if (builder.Length > 0) builder.Append("\n\n");
+                    builder.Append(line.LocalizedText);
+                }
+                return builder.ToString();
+            }
+        }
 
         public bool IsCollected => StoryEvents.HasBeenRaised(raiseOnCollected);
 

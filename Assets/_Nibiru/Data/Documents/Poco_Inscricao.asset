@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Poco_Inscricao
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
+  id: doc.poco_inscricao
   titleKey: doc.Poco_Inscricao.title
   textKey: doc.Poco_Inscricao.text
   footerKey: doc.Poco_Inscricao.footer

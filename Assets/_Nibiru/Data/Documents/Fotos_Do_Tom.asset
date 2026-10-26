@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Fotos_Do_Tom
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
+  id: doc.fotos_do_tom
   titleKey: doc.Fotos_Do_Tom.title
   textKey: doc.Fotos_Do_Tom.text
   footerKey: doc.Fotos_Do_Tom.footer

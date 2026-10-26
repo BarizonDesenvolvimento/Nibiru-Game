@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9937db15414450f408bdfac24f970473, type: 3}
   m_Name: Fita_Irena_1
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.TapeDefinition
+  id: tape.irena_1
   displayNameKey: tape.Fita_Irena_1.name
   speakerLabelKey: tape.Fita_Irena_1.label
   displayName: 

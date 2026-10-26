@@ -12,6 +12,9 @@ namespace Nibiru.Documents
     [CreateAssetMenu(menuName = "Nibiru/Documento", fileName = "NovoDocumento")]
     public class DocumentDefinition : ScriptableObject
     {
+        [Tooltip("Código estável no Arquivo (por exemplo doc.base_email_kast). Nunca muda: o salvamento registra o que foi lido por ele, não pelo nome do arquivo.")]
+        public string id;
+
         [Tooltip("Chaves dos textos na tabela de idiomas (doc.<nome>.title, .text, .footer).")]
         [LocKey] public string titleKey;
         [LocKey] public string textKey;
@@ -34,5 +37,11 @@ namespace Nibiru.Documents
 
         [Tooltip("Evento disparado ao ler pela primeira vez (opcional).")]
         public StoryEvent raiseOnRead;
+
+        /// <summary>Código estável do Arquivo. Se o campo estiver vazio, cai no nome do arquivo.</summary>
+        public string Id => string.IsNullOrEmpty(id) ? name : id;
+
+        /// <summary>Já foi lido nesta partida (o evento de leitura foi disparado).</summary>
+        public bool IsRead => StoryEvents.HasBeenRaised(raiseOnRead);
     }
 }

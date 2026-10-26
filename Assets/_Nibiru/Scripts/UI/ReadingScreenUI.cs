@@ -36,7 +36,13 @@ namespace Nibiru.UI
             panel.SetActive(false);
         }
 
-        public void Show(string title, string body, string footer)
+        // Quando a leitura foi aberta por dentro de outro menu (o Arquivo, no menu de pausa): ao fechar, devolve a
+        // vez a ele em vez de soltar o controle da Elena e o tempo do jogo.
+        System.Action onClosed;
+
+        public void Show(string title, string body, string footer) => Show(title, body, footer, null);
+
+        public void Show(string title, string body, string footer, System.Action closedCallback)
         {
             if (!IsOpen)
             {
@@ -45,6 +51,7 @@ namespace Nibiru.UI
                 input.SetGameplayEnabled(false);
                 panel.SetActive(true);
             }
+            onClosed = closedCallback;
             shownFrame = Time.frameCount;
             titleLabel.text = title;
             bodyLabel.text = body;
@@ -62,6 +69,14 @@ namespace Nibiru.UI
         void Close()
         {
             panel.SetActive(false);
+            System.Action callback = onClosed;
+            onClosed = null;
+            if (callback != null)
+            {
+                // Quem abriu continua com o jogo parado e o controle da Elena desligado.
+                callback();
+                return;
+            }
             Time.timeScale = timeScaleBefore;
             input.SetGameplayEnabled(true);
         }

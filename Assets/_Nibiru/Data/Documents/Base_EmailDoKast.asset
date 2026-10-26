@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Base_EmailDoKast
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
+  id: doc.base_email_kast
   titleKey: doc.Base_EmailDoKast.title
   textKey: doc.Base_EmailDoKast.text
   footerKey: doc.Base_EmailDoKast.footer

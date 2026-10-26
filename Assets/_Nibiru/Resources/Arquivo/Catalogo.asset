@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831b96b2bbaaa754da8f18f9e2c25ce6, type: 3}
+  m_Name: Catalogo
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.ArchiveCatalog
+  groups:
+  - titleKey: ui.arquivo.grupo_fundacao
+    entries:
+    - document: {fileID: 11400000, guid: ed28e162bdc9eab4587d4bbc80da8abc, type: 2}
+      tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: ae9a55c90fdffa34fa02295442b266ee, type: 2}
+      tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: 69560a0c94a8a8141ae13b3eed71963f, type: 2}
+      tape: {fileID: 0}
+  - titleKey: ui.arquivo.grupo_guardioes
+    entries:
+    - document: {fileID: 11400000, guid: fed21b82a2a612f459d076cedf025c20, type: 2}
+      tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: 91792f3075f56c745906707222612717, type: 2}
+      tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: a2c9086ee40866a46a3f8cf40f30d933, type: 2}
+      tape: {fileID: 0}
+  - titleKey: ui.arquivo.grupo_pessoal
+    entries:
+    - document: {fileID: 11400000, guid: 06a7ba24531aecf409374c0635d6bb1e, type: 2}
+      tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: 33e15d6337acb7c4c8374db7fc113f2f, type: 2}
+      tape: {fileID: 0}
+  - titleKey: ui.arquivo.grupo_fitas
+    entries:
+    - document: {fileID: 0}
+      tape: {fileID: 11400000, guid: 3a85d84aa138bdf4b93a8e478584890c, type: 2}
+  noticeEvent: {fileID: 11400000, guid: 8dbe9157169013443b5d4579b2705195, type: 2}
