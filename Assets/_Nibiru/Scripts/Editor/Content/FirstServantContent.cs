@@ -86,18 +86,18 @@ namespace Nibiru.EditorTools.Content
             };
 
             wakeTalk = Dialogue("Poco_OPrimeiroServo", null,
-                N("e1", "Elena", "(As rachaduras do Selo se apagam de uma vez. Um estalo de pedra, e uma coisa enorme se desdobra para fora da porta: curvada, magra, com uma máscara de ouro no lugar do rosto e dois olhos de pedra azul.)", "e2"),
-                N("e2", "Elena", "Foi isso que saiu daqui naquela noite."));
+                N("e1", "Elena", "e2"),
+                N("e2", "Elena"));
 
             fallTalk = Dialogue("Poco_OServoCai", null,
-                N("e1", "Elena", "(O Primeiro Servo cai de joelhos diante do Selo e tomba. O azul das rachaduras enfraquece, como brasa esfriando.)", "e2"),
-                N("e2", "Elena", "A parede com o barco de junco. O Samir disse que a passagem fica atrás dela."));
+                N("e1", "Elena", "e2"),
+                N("e2", "Elena"));
 
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
             if (mainQuest != null)
                 AppendSteps(mainQuest,
-                    Step("Sobreviva ao Primeiro Servo", ev.venceu),
-                    Step("Procure a passagem atrás da parede do barco de junco", ev.paredeDoBarco));
+                    Step("s26", ev.venceu),
+                    Step("s27", ev.paredeDoBarco));
 
             AssetDatabase.SaveAssets();
         }

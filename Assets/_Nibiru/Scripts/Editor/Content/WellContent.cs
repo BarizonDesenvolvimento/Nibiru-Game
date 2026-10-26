@@ -126,15 +126,15 @@ namespace Nibiru.EditorTools.Content
             dlg = new Dialogues
             {
                 boca = Dialogue("Poco_Boca", null,
-                    N("e1", "Elena", "(O poço abre no chão como uma boca: andaimes de ferro, um guincho parado, um holofote da Fundação apontado para baixo. Do fundo sobe um ar frio e, de vez em quando, um raspar de pedra contra pedra.)", "e2"),
-                    N("e2", "Elena", "Tem alguma coisa lá embaixo. E não é gente.", "e3"),
-                    N("e3", "Elena", "O Samir disse que a passagem sai da antecâmara. Não existe outro caminho.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 flash = Dialogue("Poco_Flash", ev.flashDoPoco,
-                    N("e1", "Elena", "(A tabuleta pulsa dentro da bolsa, quente como uma mão. No fundo da antecâmara, o azul nas rachaduras do Selo bate no mesmo ritmo.)", "e2"),
-                    N("e2", "Elena", "(O ar clareia. O chão, as paredes e os andaimes somem, e só sobram luz e mãos. Muitas mãos, de todos os lados, segurando os braços dela.)", "v1"),
-                    N("v1", "Voz", "Você já esteve aqui.", "v2"),
-                    N("v2", "Voz", "Não tem problema não lembrar. Eu lembro por você.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "v1"),
+                    N("v1", "Voz", "v2"),
+                    N("v2", "Voz")),
             };
 
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
@@ -142,10 +142,10 @@ namespace Nibiru.EditorTools.Content
                 Debug.LogWarning("Missão Sobrevivente não encontrada: rode antes o menu do Acampamento.");
             else
                 AppendSteps(mainQuest,
-                    Step("Siga o corredor nordeste até a boca do Poço", ev.chegouABoca),
-                    Step("Desça o Poço pelos andaimes", ev.desceuOPoco),
-                    Step("Atravesse o fundo do Poço sem acordar o Lullu, ou livre-se dele", ev.passouPeloLullu),
-                    Step("Avance pela antecâmara até o Selo de Kur", ev.flashDoPoco));
+                    Step("s22", ev.chegouABoca),
+                    Step("s23", ev.desceuOPoco),
+                    Step("s24", ev.passouPeloLullu),
+                    Step("s25", ev.flashDoPoco));
 
             AssetDatabase.SaveAssets();
         }

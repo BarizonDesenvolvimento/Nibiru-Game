@@ -138,53 +138,50 @@ namespace Nibiru.EditorTools.Content
             };
 
             nicheTalk = Dialogue("Fuga_Nicho", ev.buried,
-                N("n1", "Samir", "Deixa aqui. Os Guardiões levam ao Poço.", "n2"),
-                N("n2", "Elena", "(Ela põe a tabuleta no nicho, entre a lamparina e o barco de junco. A pedra esfria na mão dela. O que ficou dentro dela, não.)", "n3"),
-                N("n3", "Samir", "Pronto. Eu vou na frente, para ligar o motor. Não demore.", null));
+                N("n1", "Samir", "n2"),
+                N("n2", "Elena", "n3"),
+                N("n3", "Samir", null));
 
             roadEntregou = Dialogue("Fuga_Estrada_Entregou", null,
-                N("e1", "Elena", "(Samir dirige sem olhar para ela. As mãos apertam o volante até os nós dos dedos clarearem. Fora, a tempestade é uma parede laranja.)", "e2"),
-                N("e2", "Samir", "Uma chave, doutora. Você entregou uma chave a quem a procura há décadas.", "e3"),
-                N("e3", "Elena", "Eles iam machucar a Aldeia. Eu não tinha mais nada para trocar.", "e4"),
-                N("e4", "Samir", "Talvez eu tivesse feito o mesmo. Isso não ajuda ninguém agora.", "e5"),
-                N("e5", "Samir", "Os Guardiões fizeram um juramento sobre este caminho. Quem guarda, guarda para os que vêm depois. Eu fiz esse juramento.", "e6"),
-                N("e6", "Elena", "Para os que vêm depois? Quem?", "e7"),
-                N("e7", "Samir", "Olhe para a frente. Tell Amar fica a algumas horas, e a tempestade só piora.", "e8"),
-                N("e8", "Elena", "(Ele não diz mais nada. A estrada some na areia, e o motor é o único som.)"));
+                N("e1", "Elena", "e2"),
+                N("e2", "Samir", "e3"),
+                N("e3", "Elena", "e4"),
+                N("e4", "Samir", "e5"),
+                N("e5", "Samir", "e6"),
+                N("e6", "Elena", "e7"),
+                N("e7", "Samir", "e8"),
+                N("e8", "Elena"));
 
             roadDevolveu = Dialogue("Fuga_Estrada_Devolveu", null,
-                N("d1", "Elena", "(Samir dirige com uma mão só, a outra no joelho. Pela primeira vez desde a Aldeia, os ombros dele estão soltos.)", "d2"),
-                N("d2", "Samir", "Obrigado, doutora. Deixar aquilo no nicho não foi pouca coisa. Os Guardiões vão saber.", "d3"),
-                N("d3", "Elena", "O Kast disse que era lamentável.", "d4"),
-                N("d4", "Samir", "Ele diz isso de tudo que não consegue comprar.", "d5"),
-                N("d5", "Samir", "Há um juramento, doutora, mais velho que eu e que o meu pai. Quem guarda o Poço, guarda para os que vêm depois. Eu o fiz ainda menino.", "d6"),
-                N("d6", "Elena", "E o que mais esse juramento diz?", "d7"),
-                N("d7", "Samir", "O resto fica para Tell Amar. Lá há quem explique melhor do que eu.", "d8"),
-                N("d8", "Elena", "(Ele sorri para a estrada. Ela repara que ele não respondeu.)"));
+                N("d1", "Elena", "d2"),
+                N("d2", "Samir", "d3"),
+                N("d3", "Elena", "d4"),
+                N("d4", "Samir", "d5"),
+                N("d5", "Samir", "d6"),
+                N("d6", "Elena", "d7"),
+                N("d7", "Samir", "d8"),
+                N("d8", "Elena"));
 
             roadFicou = Dialogue("Fuga_Estrada_Ficou", null,
-                N("f1", "Elena", "(Samir dirige em silêncio. Pelo retrovisor, ela o vê olhar para a bolsa dela e desviar o rosto.)", "f2"),
-                N("f2", "Samir", "Você ficou com ela.", "f3"),
-                N("f3", "Elena", "Eu li aquilo. Eu não ia deixar para ninguém.", "f4"),
-                N("f4", "Samir", "Os Guardiões fizeram um juramento sobre este caminho. Quem guarda, guarda para os que vêm depois. Eu o fiz.", "f5"),
-                N("f5", "Elena", "E você acha que eu sou um perigo para o que você guarda.", "f6"),
-                N("f6", "Samir", "Acho que a tabuleta está quente demais para quem não sabe o que ela quer.", "f7"),
-                N("f7", "Elena", "(A tabuleta pulsa na bolsa, uma vez, devagar. Nenhum dos dois comenta. A tempestade cobre a estrada atrás deles.)"));
+                N("f1", "Elena", "f2"),
+                N("f2", "Samir", "f3"),
+                N("f3", "Elena", "f4"),
+                N("f4", "Samir", "f5"),
+                N("f5", "Elena", "f6"),
+                N("f6", "Samir", "f7"),
+                N("f7", "Elena"));
 
             diary = Asset<DocumentDefinition>("Documents/Diario_Entrada_1", d =>
             {
-                d.displayName = "Diário de Elena Varga: entrada 1";
-                d.text = "Iraque, sul do deserto. Tell Amar fica a algumas horas.\n\nEm três dias vi minha equipe morta, uma voz me chamar pelo nome que minha mãe me deu e uma tabuleta acender na minha mão. Um homem que diz ser meu amigo me levou por um túnel que ele jura que ninguém mais conhece.\n\nNão sei em quem confiar. Sei que a Fundação sabia que eu estaria aqui, e que minha mãe esteve neste lugar muito antes de mim. Preciso descobrir por quê.";
-                d.footer = "Anotado na caçamba de uma caminhonete, no meio de uma tempestade de areia.";
                 d.raiseOnRead = ev.readDiary;
             });
 
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
             if (mainQuest != null)
                 AppendSteps(mainQuest,
-                    Step("Leve a tabuleta ao nicho dos Guardiões, no túnel", ev.resolved),
-                    Step("Entre na caminhonete do Samir", ev.boarded),
-                    Step("Fuja para Tell Amar", ev.arrived));
+                    Step("s33", ev.resolved),
+                    Step("s34", ev.boarded),
+                    Step("s35", ev.arrived));
 
             AssetDatabase.SaveAssets();
             return true;

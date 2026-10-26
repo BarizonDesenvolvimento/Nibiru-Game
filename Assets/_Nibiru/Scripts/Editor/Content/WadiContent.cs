@@ -116,39 +116,39 @@ namespace Nibiru.EditorTools.Content
             FactionDefinition guardians = Load<FactionDefinition>("Factions/Guardioes");
             StoryEvent kastDistrusted = Load<StoryEvent>("Events/KastDesconfiou");
 
-            radioKast = RadioDialogue("Wadi_RadioKast", "Doutora Varga. Sabia que a senhora atravessaria. Sua mãe também atravessava.", foundation, guardians);
-            radioKastDesconfia = RadioDialogue("Wadi_RadioKast_Desconfia", "Doutora Varga. Eu disse que torcíamos pela senhora, e torcíamos. Agora a senhora está aí, e eu preciso ser franco.", foundation, guardians);
+            radioKast = RadioDialogue("Wadi_RadioKast", foundation, guardians);
+            radioKastDesconfia = RadioDialogue("Wadi_RadioKast_Desconfia", foundation, guardians);
             if (kastDistrusted == null) Debug.LogWarning("Wadi: falta o evento KastDesconfiou. Rode o menu do Acampamento.");
 
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
             if (mainQuest != null)
                 AppendSteps(mainQuest,
-                    Step("Siga o wadi até o soldado ferido", ev.chegouAoSoldado),
-                    Step("Ouça o rádio do soldado", ev.radioComecou),
-                    Step("Decida o que fazer com a tabuleta", ev.escolheu));
+                    Step("s30", ev.chegouAoSoldado),
+                    Step("s31", ev.radioComecou),
+                    Step("s32", ev.escolheu));
 
             AssetDatabase.SaveAssets();
         }
 
         // O Kast fala pelo rádio do soldado; o Samir entra na mesma frequência (rádio de campo da caminhonete,
         // provisório) e a Voz sussurra. Ao fim, as três opções. Texto provisório.
-        static DialogueDefinition RadioDialogue(string name, string opening, FactionDefinition foundation, FactionDefinition guardians) =>
+        static DialogueDefinition RadioDialogue(string name, FactionDefinition foundation, FactionDefinition guardians) =>
             Dialogue(name, ev.escolheu,
-                N("k1", "Kast (rádio)", opening, "k2"),
-                N("k2", "Kast (rádio)", "Os moradores da Aldeia estão cercados. Todos: o rapaz doente, a senhora idosa, quem mais estiver nas casas. Meus homens esperam uma palavra minha.", "k3"),
-                N("k3", "Kast (rádio)", "Deixe a tabuleta no chão do wadi, onde está, e siga seu caminho. Meus homens a buscam, soltam todos e saem da Aldeia. Ninguém mais se machuca.", "s1"),
-                N("s1", "Samir (rádio)", "Doutora, não ouça. A tabuleta tem de voltar para o Poço, enterrada no nicho. Se ele a levar, não sobra ninguém para impedi-lo.", "v1"),
-                N("v1", "Voz", "(baixinho, só para ela) Não abra mão de nada.", "escolha"),
-                N("escolha", "Elena", "(O rádio chia. A tabuleta está morna na bolsa. O que fazer com ela?)", null,
-                    Choice("Deixar a tabuleta no chão para o Kast.", "entrega", ev.entregou, (foundation, 15), (guardians, -15)),
-                    Choice("Levar a tabuleta de volta ao Poço, com o Samir.", "devolve", ev.devolveu, (guardians, 15), (foundation, -15)),
-                    Choice("Ficar com a tabuleta e não dizer nada.", "fica", ev.ficou, (foundation, -5), (guardians, -5))),
-                N("entrega", "Kast (rádio)", "Sensata, doutora. Meus homens a buscam. Os soldados deixam a Aldeia ao amanhecer.", "entrega2"),
-                N("entrega2", "Samir (rádio)", "Você deu uma chave para eles, doutora. Uma chave.", "fim"),
-                N("devolve", "Kast (rádio)", "Lamentável.", "devolve2"),
-                N("devolve2", "Samir (rádio)", "Venha. Eu espero na caminhonete.", "fim"),
-                N("fica", "Voz", "Sábia.", "fim"),
-                N("fim", "Elena", "(Ela desliga o rádio. O vento cobre o chiado.)"));
+                N("k1", "Kast (rádio)", "k2"),
+                N("k2", "Kast (rádio)", "k3"),
+                N("k3", "Kast (rádio)", "s1"),
+                N("s1", "Samir (rádio)", "v1"),
+                N("v1", "Voz", "escolha"),
+                N("escolha", "Elena", null,
+                    Choice("c1", "entrega", ev.entregou, (foundation, 15), (guardians, -15)),
+                    Choice("c2", "devolve", ev.devolveu, (guardians, 15), (foundation, -15)),
+                    Choice("c3", "fica", ev.ficou, (foundation, -5), (guardians, -5))),
+                N("entrega", "Kast (rádio)", "entrega2"),
+                N("entrega2", "Samir (rádio)", "fim"),
+                N("devolve", "Kast (rádio)", "devolve2"),
+                N("devolve2", "Samir (rádio)", "fim"),
+                N("fica", "Voz", "fim"),
+                N("fim", "Elena"));
 
         // ---------- A tempestade ----------
 
@@ -304,9 +304,9 @@ namespace Nibiru.EditorTools.Content
             SetField(g.GetComponents<StoryEventListener>()[0], "replayOnLoad", false);
         }
 
-        static DialogueChoice Choice(string text, string next, StoryEvent raise, params (FactionDefinition faction, int amount)[] changes)
+        static DialogueChoice Choice(string id, string next, StoryEvent raise, params (FactionDefinition faction, int amount)[] changes)
         {
-            var choice = C(text, next, raise);
+            var choice = C(id, next, raise);
             choice.reputation = System.Array.ConvertAll(changes, c => new ReputationChange { faction = c.faction, amount = c.amount });
             return choice;
         }

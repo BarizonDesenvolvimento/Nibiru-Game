@@ -118,51 +118,48 @@ namespace Nibiru.EditorTools.Content
 
             weissDocument = Asset<DocumentDefinition>("Documents/Weiss_Documento", d =>
             {
-                d.displayName = "Documento da Dra. Weiss (a definir)";
-                d.text = "[Texto provisório. O conteúdo deste documento, tirado do briefing da equipe pela Dra. Weiss, ainda será escrito.]";
-                d.footer = "Entregue pela Dra. Weiss, nas trincheiras.";
                 d.raiseOnRead = ev.leuDocumento;
             });
 
             dlg = new Dialogues
             {
                 tradeWithGift = Dialogue("Remedio_Troca_Weiss", ev.documentoEntregue,
-                    N("e1", "Elena", "(Ela estende os curativos.) Achei estes.", "w1"),
-                    N("w1", "Dra. Weiss", "Obrigada. Meu Deus, obrigada.", "w2"),
-                    N("w2", "Dra. Weiss", "(Ela refaz a bandagem da perna com mãos treinadas, depois tira da mochila uma caixa de antibióticos e uma pasta.)", "w3"),
-                    N("w3", "Dra. Weiss", "Os antibióticos são para o seu rapaz. E isto é o que consegui tirar do briefing. Não entendo metade. Talvez a senhora entenda.", "w4"),
-                    N("w4", "Dra. Weiss", "Uma coisa, doutora. Se alguém perguntar por mim... não me viu. Preciso de tempo para pensar no que vou fazer.", "e2"),
-                    N("e2", "Elena", "Descanse a perna.")),
+                    N("e1", "Elena", "w1"),
+                    N("w1", "Dra. Weiss", "w2"),
+                    N("w2", "Dra. Weiss", "w3"),
+                    N("w3", "Dra. Weiss", "w4"),
+                    N("w4", "Dra. Weiss", "e2"),
+                    N("e2", "Elena")),
 
                 tradeDocumentOnly = Dialogue("Remedio_Troca_Weiss_SoDocumento", ev.documentoEntregue,
-                    N("e1", "Elena", "(Ela estende os curativos.) Achei estes.", "w1"),
-                    N("w1", "Dra. Weiss", "Obrigada. Meu Deus, obrigada.", "w2"),
-                    N("w2", "Dra. Weiss", "(Ela refaz a bandagem da perna e tira uma pasta da mochila.) A senhora já tem o remédio de que precisava. Então fique com isto: é o que consegui tirar do briefing.", "w3"),
-                    N("w3", "Dra. Weiss", "Uma coisa, doutora. Se alguém perguntar por mim... não me viu. Preciso de tempo para pensar no que vou fazer.", "e2"),
-                    N("e2", "Elena", "Descanse a perna.")),
+                    N("e1", "Elena", "w1"),
+                    N("w1", "Dra. Weiss", "w2"),
+                    N("w2", "Dra. Weiss", "w3"),
+                    N("w3", "Dra. Weiss", "e2"),
+                    N("e2", "Elena")),
 
                 weissAfter = Dialogue("Trincheiras_DraWeissDepois", null,
-                    N("w1", "Dra. Weiss", "Ainda estou aqui. Se alguém perguntar por mim, a senhora não me viu.")),
+                    N("w1", "Dra. Weiss")),
 
                 delivery = Dialogue("Remedio_Entrega_Yusuf", null,
-                    N("e1", "Elena", "(Ela se ajoelha junto da esteira e mostra a caixa à Umm Karim.) Antibióticos. Ele tem que tomar tudo, mesmo quando a febre baixar.", "u1"),
-                    N("u1", "Umm Karim", "(Ela pega a caixa com as duas mãos.) Que Deus a guarde, doutora. Esta casa vai lembrar.", "y1"),
-                    N("y1", "Yusuf", "(Ele abre os olhos, devagar.) A senhora... voltou.", "e2"),
-                    N("e2", "Elena", "Descanse. Eu volto para ver como você está.")),
+                    N("e1", "Elena", "u1"),
+                    N("u1", "Umm Karim", "y1"),
+                    N("y1", "Yusuf", "e2"),
+                    N("e2", "Elena")),
 
                 yusufBetter = Dialogue("Aldeia_YusufMelhor", null,
-                    N("y1", "Yusuf", "A febre baixou, doutora. Mas aquela respiração debaixo das pedras... eu ainda ouço.")),
+                    N("y1", "Yusuf")),
 
                 ummGrateful = Dialogue("Aldeia_UmmKarimGrata", null,
-                    N("u1", "Umm Karim", "Ele dorme sem tremer. Que Deus a guarde, doutora. A casa é sua.")),
+                    N("u1", "Umm Karim")),
 
                 ummCold = Dialogue("Aldeia_UmmKarimFria", null,
-                    N("u1", "Umm Karim", "(Ela não levanta o rosto.) A senhora prometeu. Eu esperei. Não tenho mais nada para dizer.")),
+                    N("u1", "Umm Karim")),
 
                 reminder = Dialogue("Remedio_Lembrete_Yusuf", null,
-                    N("e1", "Elena", "(A caixa de antibióticos pesa na bolsa.)", "e2"),
-                    N("e2", "Elena", "O Yusuf ainda está lá, queimando de febre. Voltar pelo Poço e pela base ainda dá tempo... mas o Kast está atrás de mim, e o Samir me espera.", "e3"),
-                    N("e3", "Elena", "Depois que eu seguir pelo wadi, não dá mais.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 roadWeiss = BuildRoadWeiss(),
             };
@@ -180,20 +177,20 @@ namespace Nibiru.EditorTools.Content
             var guardians = Load<FactionDefinition>("Factions/Guardioes");
             var cover = new DialogueChoice
             {
-                text = "Não vi ninguém. Só os mortos.", next = "cobriu", raise = ev.cobriu,
+                id = "c1", next = "cobriu", raise = ev.cobriu,
                 reputation = new[] { new ReputationChange { faction = foundation, amount = 5 }, new ReputationChange { faction = guardians, amount = -5 } },
             };
             var tell = new DialogueChoice
             {
-                text = "Vi. Uma médica, Hannah Weiss, numa vala junto da tenda médica.", next = "contou", raise = ev.denunciou,
+                id = "c2", next = "contou", raise = ev.denunciou,
                 reputation = new[] { new ReputationChange { faction = guardians, amount = 5 }, new ReputationChange { faction = foundation, amount = -5 } },
             };
             return Dialogue("Fuga_Estrada_Weiss", null,
-                N("s1", "Samir", "Antes de Tell Amar, doutora, uma pergunta. Nas trincheiras, antes da Aldeia... a senhora viu alguém? Alguém da Fundação, ferido, escondido?", null, cover, tell),
-                N("cobriu", "Samir", "Se a senhora diz que não... então não viu.", "cobriu2"),
-                N("cobriu2", "Elena", "(Ela olha a tempestade e pensa nas mãos da médica, refazendo a bandagem.)"),
-                N("contou", "Samir", "Uma médica da Fundação. Ela sabe coisas que precisamos saber.", "contou2"),
-                N("contou2", "Elena", "(Ele aperta o volante. Ela não pergunta o que ele vai fazer com isso.)"));
+                N("s1", "Samir", null, cover, tell),
+                N("cobriu", "Samir", "cobriu2"),
+                N("cobriu2", "Elena"),
+                N("contou", "Samir", "contou2"),
+                N("contou2", "Elena"));
         }
 
         // ---------- Cena ----------

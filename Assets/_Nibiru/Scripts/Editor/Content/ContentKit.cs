@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Reflection;
 using Nibiru.AI;
@@ -388,7 +389,17 @@ namespace Nibiru.EditorTools.Content
             asset = ScriptableObject.CreateInstance<T>();
             fill(asset);
             AssetDatabase.CreateAsset(asset, path);
+            LinkKeys(asset);
             return asset;
+        }
+
+        // Arquivo novo com texto traduzível: liga os campos às chaves padrão. O texto não vem do script: precisa
+        // estar em Resources/Localization/pt-BR.json (os scripts só dizem os códigos das falas, respostas e passos).
+        static void LinkKeys(ScriptableObject asset)
+        {
+            foreach (string missing in Localization.LocKeys.AssignDefaults(asset))
+                Debug.LogWarning($"Falta o texto no pt-BR.json: {missing}");
+            EditorUtility.SetDirty(asset);
         }
 
         public static T Load<T>(string relativePath) where T : Object =>
@@ -404,18 +415,22 @@ namespace Nibiru.EditorTools.Content
                 d.raiseOnEnd = raiseOnEnd;
             });
 
-        public static DialogueNode N(string id, string speaker, string text, string next = null, params DialogueChoice[] choices) =>
-            new DialogueNode { id = id, speaker = speaker, text = text, next = next ?? "", choices = choices };
+        // Os textos não ficam nos scripts: a fala "id" da conversa "Nome" tem o texto na chave dlg.Nome.id do
+        // Resources/Localization/pt-BR.json. Escreva o texto lá antes de criar a conversa.
+        public static DialogueNode N(string id, string speaker, string next = null, params DialogueChoice[] choices) =>
+            new DialogueNode { id = id, speaker = speaker, next = next ?? "", choices = choices };
 
-        public static DialogueChoice C(string text, string next, StoryEvent raise) =>
-            new DialogueChoice { text = text, next = next, raise = raise };
+        // Resposta com código permanente (c1, c2...); o texto está em dlg.Nome.fala.c1 no pt-BR.json.
+        public static DialogueChoice C(string id, string next, StoryEvent raise) =>
+            new DialogueChoice { id = id, next = next, raise = raise };
 
-        public static QuestStep Step(string objective, StoryEvent completeOn = null, ItemDefinition item = null, int count = 1) =>
-            new QuestStep { objective = objective, completeOn = completeOn, requiredItem = item, requiredCount = count };
+        // Passo de missão com código permanente (s1, s2...); o texto está em quest.Nome.s1 no pt-BR.json.
+        public static QuestStep Step(string id, StoryEvent completeOn = null, ItemDefinition item = null, int count = 1) =>
+            new QuestStep { id = id, completeOn = completeOn, requiredItem = item, requiredCount = count };
 
         /// <summary>
         /// Acrescenta passos no fim de uma missão que já existe, cada um só se ainda não houver
-        /// um passo com o mesmo evento e o mesmo item (textos mudados no Inspector ficam).
+        /// um passo com o mesmo evento e o mesmo item. Os passos novos recebem as chaves de texto padrão.
         /// </summary>
         public static void AppendSteps(QuestDefinition quest, params QuestStep[] newSteps)
         {
@@ -428,7 +443,9 @@ namespace Nibiru.EditorTools.Content
 
             Undo.RecordObject(quest, "Acrescentar passos à missão");
             quest.steps = steps.ToArray();
-            EditorUtility.SetDirty(quest);
+            foreach (var duplicate in quest.steps.Where(s => !string.IsNullOrEmpty(s.id)).GroupBy(s => s.id).Where(g => g.Count() > 1))
+                Debug.LogError($"Missão {quest.name}: o código de passo \"{duplicate.Key}\" está repetido.");
+            LinkKeys(quest);
         }
     }
 }

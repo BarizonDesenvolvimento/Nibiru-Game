@@ -143,51 +143,30 @@ namespace Nibiru.EditorTools.Content
             if (!AssetDatabase.IsValidFolder(DataFolder + "/Documents")) AssetDatabase.CreateFolder(DataFolder, "Documents");
             email = Asset<DocumentDefinition>("Documents/Base_EmailDoKast", d =>
             {
-                d.displayName = "E-mail impresso";
-                d.text =
-                    "De: A. Kast\n" +
-                    "Para: Equipe de Contenção, Ur\n" +
-                    "Enviado: 14 de abril de 2003, 06:12\n" +
-                    "Assunto: A doutora Varga\n\n" +
-                    "Repito o que disse pelo telefone, porque alguns de vocês parecem não ter entendido.\n\n" +
-                    "A filha de Irena não é uma testemunha. Não é uma funcionária. Ela é a razão de estarmos aqui. " +
-                    "Ninguém toca nela, ninguém a assusta além do necessário e ninguém dispara na direção dela.\n\n" +
-                    "Quanto aos outros, sigam o protocolo.\n\n" +
-                    "A abertura não acontece sem ela. A herança precisa estar presente.\n\n" +
-                    "A. K.";
-                d.footer = "Impresso e esquecido sobre a mesa, com uma mancha de café no canto.";
                 d.raiseOnRead = ev.leuOEmail;
             });
 
             photo = Asset<DocumentDefinition>("Documents/Base_Foto1979", d =>
             {
-                d.displayName = "Fotografia, 1979";
-                d.text =
-                    "Uma foto colorida, desbotada pelo sol. Uma mulher de cabelo curto e camisa de campo, coberta de poeira, " +
-                    "ri para a câmera na beira de uma vala de escavação. É Irena. É a sua mãe.\n\n" +
-                    "Ao lado dela, um rapaz alto e magro, de óculos redondos, segura uma prancheta. Ele olha para ela, não para a câmera.\n\n" +
-                    "Atrás dos dois, o zigurate. O mesmo de hoje.\n\n" +
-                    "No verso, a lápis: \"Ur, março de 1979. A última boa semana.\"";
-                d.footer = "Estava presa ao e-mail com um clipe.";
                 d.raiseOnRead = ev.viuAFoto;
             });
 
             dlg = new Dialogues
             {
                 chegada = Dialogue("Base_Chegada", null,
-                    N("e1", "Elena", "(Tendas brancas ao pé do zigurate, bandeiras turquesa, contêineres. No alto da escadaria, um ponto vermelho passeia devagar pelo chão do pátio.)", "e2"),
-                    N("e2", "Elena", "Um atirador lá em cima. Onde aquele laser passar, ele vê.", "e3"),
-                    N("e3", "Elena", "A tenda de comando fica do outro lado do pátio. Se o Kast deixou alguma coisa escrita, é lá.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 aFoto = Dialogue("Base_AFoto", ev.leuOsDocumentos,
-                    N("e1", "Elena", "(Ela fica um tempo olhando a foto. Tinha três anos quando a mãe sumiu. Conhece aquele riso das fotos lá de casa, e de mais nenhum lugar.)", "e2"),
-                    N("e2", "Elena", "Março de 1979. Ela desapareceu em abril.", "e3"),
-                    N("e3", "Elena", "E você, quem é? Por que o Kast guarda isso numa mesa, ao lado de um e-mail sobre mim?", "e4"),
-                    N("e4", "Elena", "(Ela guarda a foto na bolsa, junto da tabuleta. Perto da porta da tenda, um painel da Fundação tem um botão com uma etiqueta: PORTÃO OESTE.)")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena", "e4"),
+                    N("e4", "Elena")),
 
                 oPortao = Dialogue("Base_OPortao", null,
-                    N("e1", "Elena", "(Do outro lado do pátio, o portão do muro oeste corre no trilho, rangendo.)", "e2"),
-                    N("e2", "Elena", "Pronto. Se eu precisar voltar à aldeia, não passo de novo pela patrulha.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena")),
             };
 
             sniperSettings = Asset<SniperSettings>("AI/AtiradorElite", s =>
@@ -218,10 +197,10 @@ namespace Nibiru.EditorTools.Content
                 Debug.LogWarning("Missão Sobrevivente não encontrada: rode antes o menu do Acampamento.");
             else
                 AppendSteps(mainQuest,
-                    Step("Atravesse o pátio até a tenda de comando, do outro lado da base", ev.chegouATenda),
-                    Step("Procure na mesa da tenda de comando", ev.leuOsDocumentos),
-                    Step("Abra o portão para a aldeia pelo painel da tenda", ev.abriuOPortao),
-                    Step("Saia da base pelo nordeste, rumo à boca do Poço", ev.saiuDaBase));
+                    Step("s18", ev.chegouATenda),
+                    Step("s19", ev.leuOsDocumentos),
+                    Step("s20", ev.abriuOPortao),
+                    Step("s21", ev.saiuDaBase));
 
             AssetDatabase.SaveAssets();
         }

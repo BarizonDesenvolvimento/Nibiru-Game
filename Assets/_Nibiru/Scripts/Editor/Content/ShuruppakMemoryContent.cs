@@ -73,8 +73,6 @@ namespace Nibiru.EditorTools.Content
             return Asset<MemoryDefinition>("Memories/Memoria_Ziusudra", m =>
             {
                 m.sceneName = SceneName;
-                m.characterName = "Ziusudra";
-                m.placeTitle = "Shuruppak, antes do Dilúvio";
                 m.raiseOnEnter = ev.entrouNaMemoria;
                 m.endOn = ev.ouviuAParede;
                 m.endDelay = 2.5f;
@@ -113,29 +111,29 @@ namespace Nibiru.EditorTools.Content
             dlg = new Dialogues
             {
                 chamado = Dialogue("Memoria_Chamado", null,
-                    N("z1", "Ziusudra", "(O sol se põe sobre Shuruppak. O rio subiu de novo esta semana, e ninguém sabe dizer por quê.)", "v1"),
-                    N("v1", "Voz", "Ziusudra...", "z2"),
-                    N("z2", "Ziusudra", "(A voz vem da beira do rio, da cabana de junco. Ninguém mais na rua parece ouvir.)")),
+                    N("z1", "Ziusudra", "v1"),
+                    N("v1", "Voz", "z2"),
+                    N("z2", "Ziusudra")),
 
                 pescador = Dialogue("Memoria_Pescador", null,
-                    N("p1", "Pescador", "O rio subiu dois palmos desde a última lua, Ziusudra. E nem choveu lá no norte.", "p2"),
-                    N("p2", "Pescador", "Os velhos dizem que é sinal. Que os deuses estão cansados de nós.")),
+                    N("p1", "Pescador", "p2"),
+                    N("p2", "Pescador")),
 
                 menina = Dialogue("Memoria_Menina", null,
-                    N("m1", "Menina", "Ziusudra! Meu pai disse que os deuses lá de cima não conseguem dormir por causa do nosso barulho.", "m2"),
-                    N("m2", "Menina", "Se eu ficar bem quietinha, eles param de ficar bravos?")),
+                    N("m1", "Menina", "m2"),
+                    N("m2", "Menina")),
 
                 paredeDeJunco = Dialogue("Memoria_ParedeDeJunco", ev.ouviuAParede,
-                    NR("v1", "Voz", "Parede de junco, escuta. Parede de barro, presta atenção.", "z1", ev.paredeFalou),
-                    N("z1", "Ziusudra", "Senhor das águas profundas? Por que fala com a parede, e não comigo?", "v2"),
-                    N("v2", "Voz", "Porque jurei aos outros deuses que não contaria nada a homem nenhum. Então falo à parede. A parede não é homem.", "v3"),
-                    N("v3", "Voz", "O conselho decidiu afogar a terra. As águas virão por sete dias e sete noites, e nada que respira vai sobrar.", "v4"),
-                    N("v4", "Voz", "Derruba tua casa e constrói um barco. Abandona os bens e salva a vida. Leva contigo a semente de todo ser que respira.", "z2"),
-                    N("z2", "Ziusudra", "Os outros deuses querem a nossa morte. Por que o senhor nos salva?", "v5"),
-                    N("v5", "Voz", "(Um silêncio longo demais, como se a parede pensasse.) Porque vocês são meus.", "v6"),
-                    N("v6", "Voz", "E guarda bem o teu sangue, Ziusudra. Passa de filho para filho, sem deixar que se perca.", "z3"),
-                    N("z3", "Ziusudra", "Farei como o senhor diz.", "v7"),
-                    N("v7", "Voz", "Tila. Viva.")),
+                    NR("v1", "Voz", "z1", ev.paredeFalou),
+                    N("z1", "Ziusudra", "v2"),
+                    N("v2", "Voz", "v3"),
+                    N("v3", "Voz", "v4"),
+                    N("v4", "Voz", "z2"),
+                    N("z2", "Ziusudra", "v5"),
+                    N("v5", "Voz", "v6"),
+                    N("v6", "Voz", "z3"),
+                    N("z3", "Ziusudra", "v7"),
+                    N("v7", "Voz")),
             };
 
             MemoryData();
@@ -143,9 +141,9 @@ namespace Nibiru.EditorTools.Content
         }
 
         // Fala que dispara um evento ao aparecer.
-        static DialogueNode NR(string id, string speaker, string text, string next, StoryEvent raise)
+        static DialogueNode NR(string id, string speaker, string next, StoryEvent raise)
         {
-            DialogueNode node = N(id, speaker, text, next);
+            DialogueNode node = N(id, speaker, next);
             node.raise = raise;
             return node;
         }

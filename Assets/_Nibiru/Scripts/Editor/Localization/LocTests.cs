@@ -77,6 +77,8 @@ namespace Nibiru.EditorTools.Localization
             Result(report, "Troca de idioma: o inglês vazio cai no pt-BR, o texto antigo e a chave sem texto aparecem",
                 LanguageFallback(pt));
 
+            Result(report, "Scripts de conteúdo: um arquivo novo recebe as chaves padrão e o aviso diz que texto falta", ContentKitKeys());
+
             int used = fields.Select(f => f.getKey()).Where(k => !string.IsNullOrEmpty(k)).Distinct().Count();
             int unused = pt.Keys.Count(k => !fields.Any(f => f.getKey() == k));
             int translated = en.Count(p => !string.IsNullOrEmpty(p.Value) && pt.ContainsKey(p.Key));
@@ -123,6 +125,42 @@ namespace Nibiru.EditorTools.Localization
         static string Signature(string text) =>
             string.Join(",", Tag.Matches(text).Cast<Match>().Select(m => Regex.Match(m.Value, @"</?[a-zA-Z]+").Value.ToLowerInvariant()).OrderBy(s => s, StringComparer.Ordinal))
             + "|" + string.Join(",", Placeholder.Matches(text).Cast<Match>().Select(m => m.Value).OrderBy(s => s, StringComparer.Ordinal));
+
+        // Cria arquivos só na memória, com as ferramentas dos scripts de conteúdo, e confere as chaves ligadas.
+        static IEnumerable<string> ContentKitKeys()
+        {
+            var table = new Dictionary<string, string>
+            {
+                ["dlg.Teste_Loc.a"] = "fala a", ["dlg.Teste_Loc.a.c1"] = "resposta 1", ["spk.elena"] = "Elena", ["spk.samir"] = "Samir",
+                ["quest.Teste_Loc.s1"] = "passo 1", ["quest.Teste_Loc.name"] = "Missão",
+            };
+
+            var dialogue = ScriptableObject.CreateInstance<DialogueDefinition>();
+            dialogue.name = "Teste_Loc";
+            dialogue.nodes = new[]
+            {
+                Content.ContentKit.N("a", "Elena", "b", Content.ContentKit.C("c1", "b", null), Content.ContentKit.C("c2", "b", null)),
+                Content.ContentKit.N("b", "Samir"),
+            };
+            List<string> missing = LocKeys.AssignDefaults(dialogue, table);
+            if (dialogue.nodes[0].textKey != "dlg.Teste_Loc.a") yield return "a fala não recebeu dlg.Teste_Loc.a";
+            if (dialogue.nodes[0].speakerKey != "spk.elena") yield return "quem fala não recebeu spk.elena";
+            if (dialogue.nodes[0].choices[0].textKey != "dlg.Teste_Loc.a.c1") yield return "a resposta não recebeu dlg.Teste_Loc.a.c1";
+            if (missing.Count != 2 || !missing.Any(m => m.StartsWith("dlg.Teste_Loc.b ")) || !missing.Any(m => m.StartsWith("dlg.Teste_Loc.a.c2 ")))
+                yield return "o aviso de texto faltando deveria citar dlg.Teste_Loc.b e dlg.Teste_Loc.a.c2: " + string.Join("; ", missing);
+
+            var quest = ScriptableObject.CreateInstance<QuestDefinition>();
+            quest.name = "Teste_Loc";
+            quest.steps = new[] { Content.ContentKit.Step("s1"), Content.ContentKit.Step("s2") };
+            missing = LocKeys.AssignDefaults(quest, table);
+            if (quest.steps[0].objectiveKey != "quest.Teste_Loc.s1") yield return "o passo não recebeu quest.Teste_Loc.s1";
+            if (missing.Count != 1 || !missing[0].StartsWith("quest.Teste_Loc.s2 ")) yield return "o aviso deveria citar só quest.Teste_Loc.s2: " + string.Join("; ", missing);
+
+            var document = ScriptableObject.CreateInstance<DocumentDefinition>();
+            document.name = "Teste_Loc";
+            missing = LocKeys.AssignDefaults(document, new Dictionary<string, string> { ["doc.Teste_Loc.title"] = "t", ["doc.Teste_Loc.text"] = "x" });
+            if (missing.Count != 0 || !string.IsNullOrEmpty(document.footerKey)) yield return "o rodapé opcional sem texto deveria ficar sem chave e sem aviso";
+        }
 
         static IEnumerable<string> LanguageFallback(SortedDictionary<string, string> pt)
         {

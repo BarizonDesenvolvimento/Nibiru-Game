@@ -92,32 +92,20 @@ namespace Nibiru.EditorTools.Content
             };
 
             inscriptionTalk = Dialogue("Passagem_Inscricao", ev.leuInscricao,
-                N("e1", "Elena", "(Sob o barco de junco, uma faixa de escrita em ouro corre pela pedra. Ela lê em voz alta, devagar, e as palavras saem sem esforço.)", "e2"),
-                N("e2", "Elena", "“Quem vem da água e traz o barco, passe. Quem vem para ferir, volte. Nós guardamos o caminho para quem precisa sair.”", "e3"),
-                N("e3", "Elena", "(A tabuleta pulsa na bolsa, quente como uma mão. A pedra à frente dela responde.)"));
+                N("e1", "Elena", "e2"),
+                N("e2", "Elena", "e3"),
+                N("e3", "Elena"));
 
             openTalk = Dialogue("Passagem_Aberta", null,
-                N("e1", "Elena", "(A parede desce para dentro do chão, sem pressa. Do outro lado, o túnel é estreito e antigo, e há chamas pequenas nas paredes.)", "e2"),
-                N("e2", "Elena", "Lamparinas acesas. Alguém ainda cuida deste caminho."));
+                N("e1", "Elena", "e2"),
+                N("e2", "Elena"));
 
             EnsureFolder("Passagem");
             EnsureFolder("Tapes");
             settings = Asset<GuardianPassageSettings>("Passagem/PassagemDosGuardioes", s => { });
             tape = Asset<TapeDefinition>("Tapes/Fita_Irena_1", t =>
             {
-                t.displayName = "Fita de Irena nº 1";
-                t.speakerLabel = "Irena, 1979";
-                t.lines = new[]
-                {
-                    "Elena, filha. Estou gravando isto num túnel que não está em nenhum mapa, com uma lamparina que não é minha.",
-                    "Passei por esta passagem hoje. É estreita e antiga, e alguém a cavou há muito tempo para que ninguém precisasse sair pela porta.",
-                    "Os Guardiões me deixaram passar, mas eles não confiam em ninguém. Nem em mim. Nem em quem vem comigo.",
-                    "Os patrocinadores querem o que está lá embaixo. Pagam bem, falam baixo e sorriem demais. Não acredite em quem sorri demais.",
-                    "Se um dia você descer aqui, faça o que eu não consegui: pergunte antes de abrir qualquer porta.",
-                    "Estou com medo, e você não vai contar a ninguém que eu disse isso.",
-                    "Enquanto isso, coma direito, estude, e tire essa música do volume máximo. Eu volto assim que puder.",
-                    "Eu volto. Eu prometo, Elena.",
-                }.Select(text => new TapeDefinition.Line { text = text }).ToArray();
+                t.lines = new[] { "l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8" }.Select(id => new TapeDefinition.Line { id = id }).ToArray();
                 t.raiseOnCollected = ev.coletouFita;
                 t.raiseOnFinished = ev.fitaTerminou;
             });
@@ -125,8 +113,8 @@ namespace Nibiru.EditorTools.Content
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
             if (mainQuest != null)
                 AppendSteps(mainQuest,
-                    Step("Leia a inscrição na parede do barco de junco e abra a passagem", ev.abriu),
-                    Step("Siga a passagem dos Guardiões até o wadi", ev.saiu));
+                    Step("s28", ev.abriu),
+                    Step("s29", ev.saiu));
 
             AssetDatabase.SaveAssets();
         }

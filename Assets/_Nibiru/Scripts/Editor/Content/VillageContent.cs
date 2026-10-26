@@ -206,116 +206,113 @@ namespace Nibiru.EditorTools.Content
             dlg = new Dialogues
             {
                 encurralada = Dialogue("Aldeia_Encurralada", null,
-                    N("s1", "Soldado", "Parada! Mãos onde eu possa ver.", "s2"),
-                    N("s2", "Soldado", "Comando, Equipe Dois. Achei a doutora, na beira da aldeia. Viva.", "e1"),
-                    N("e1", "Elena", "Eu vi o que vocês fizeram com o Hassan.", "s3"),
-                    N("s3", "Soldado", "Ninguém perguntou, doutora. De joelhos. Devagar.")),
+                    N("s1", "Soldado", "s2"),
+                    N("s2", "Soldado", "e1"),
+                    N("e1", "Elena", "s3"),
+                    N("s3", "Soldado")),
 
                 oGuia = Dialogue("Aldeia_OGuia", ev.chegouAAldeia,
-                    N("e1", "Elena", "Samir?! Você está vivo...", "s1"),
-                    N("s1", "Samir", "Fale baixo. Daqui a pouco o rádio dele chama e ninguém responde.", "s2"),
-                    N("s2", "Samir", "(Ele olha a luz azul que escapa da bolsa dela. Uma pausa.) Esconda isso. E não mostre a ninguém.", "e2"),
-                    N("e2", "Elena", "Você sabe o que é isso?", "s3"),
-                    N("s3", "Samir", "Sei que gente morre por menos.", "e3"),
-                    N("e3", "Elena", "O Kast disse que era um resgate...", "s4"),
-                    N("s4", "Samir", "Ninguém veio resgatar ninguém. Vieram apagar quem viu.", null,
-                        C("Quem é você, Samir? Guia nenhum mata assim.", "s5", null),
-                        C("Para onde vamos?", "s6", null)),
-                    N("s5", "Samir", "Sou quem conhece o caminho. Por hoje, basta.", "s6"),
-                    N("s6", "Samir", "Ainda tem gente escondida na aldeia. Venha atrás de mim, e longe da estrada.")),
+                    N("e1", "Elena", "s1"),
+                    N("s1", "Samir", "s2"),
+                    N("s2", "Samir", "e2"),
+                    N("e2", "Elena", "s3"),
+                    N("s3", "Samir", "e3"),
+                    N("e3", "Elena", "s4"),
+                    N("s4", "Samir", null,
+                        C("c1", "s5", null),
+                        C("c2", "s6", null)),
+                    N("s5", "Samir", "s6"),
+                    N("s6", "Samir")),
 
                 chegadaPatio = Dialogue("Aldeia_ChegadaPatio", null,
-                    N("s1", "Samir", "Aqui. Os soldados ainda não entraram nas casas. Ainda.")),
+                    N("s1", "Samir")),
 
                 sobreviventes = Dialogue("Aldeia_Sobreviventes", ev.conheceuSobreviventes,
-                    N("u1", "Mulher", "Quem está aí? Fora! Não temos mais nada!", "s1"),
-                    N("s1", "Samir", "Calma, Umm Karim. Sou eu. Ela é da equipe dos estrangeiros. Está sozinha.", "u2"),
-                    N("u2", "Umm Karim", "Da equipe... Então foi a sua gente que abriu aquele buraco no chão.", "e1"),
-                    N("e1", "Elena", "Nós escavamos onde a Fundação mandou. Quem é ele?", "u3"),
-                    N("u3", "Umm Karim", "Yusuf. Cavava com vocês. Voltou do poço com o braço aberto, e agora a ferida cheira mal. A febre não baixa.", "y1"),
-                    N("y1", "Yusuf", "(Ele fala de olhos fechados.) Doutora... lá embaixo... eu ouvi alguém respirando. Debaixo das pedras.", "u4"),
-                    N("u4", "Umm Karim", "Esta aldeia tinha medo daquele lugar muito antes da Fundação chegar. Meu avô dizia que lá embaixo alguém dorme. E que não se acorda quem dorme ali.", "e2"),
-                    N("e2", "Elena", "A ferida infeccionou. Ele precisa de antibióticos, senão a infecção se espalha.", "u5"),
-                    N("u5", "Umm Karim", "Os soldados levaram tudo. Se quer ajudar, ache o remédio. Lá fora, onde nós não podemos ir.", "s2"),
-                    N("s2", "Samir", "A Fundação tem uma tenda médica no pé do zigurate. Tem remédio lá. E tem guardas.")),
+                    N("u1", "Mulher", "s1"),
+                    N("s1", "Samir", "u2"),
+                    N("u2", "Umm Karim", "e1"),
+                    N("e1", "Elena", "u3"),
+                    N("u3", "Umm Karim", "y1"),
+                    N("y1", "Yusuf", "u4"),
+                    N("u4", "Umm Karim", "e2"),
+                    N("e2", "Elena", "u5"),
+                    N("u5", "Umm Karim", "s2"),
+                    N("s2", "Samir")),
 
                 oNicho = Dialogue("Aldeia_ONicho", ev.samirMostrouONicho,
-                    N("s1", "Samir", "Venha ver uma coisa. (Ele se ajoelha diante de um nicho na parede do fundo: tijolo cozido, muito mais antigo que a casa. Na pedra, um barco de junco sobre ondas.)", "e1"),
-                    N("e1", "Elena", "Isso é muito mais velho que a casa. Construíram a casa em volta dele?", "s2"),
-                    N("s2", "Samir", "Gente que sabia guardar segredo. A Fundação revirou a aldeia inteira e passou por aqui sem ver.", "s3"),
-                    N("s3", "Samir", "(Ele acende uma lamparina de barro e a deixa sobre o nicho.) Aqui você pode descansar. Se der errado lá fora, é para cá que você volta.", "e2"),
-                    N("e2", "Elena", "(A tabuleta fica morna dentro da bolsa, como no acampamento.)", "s4"),
-                    N("s4", "Samir", "Descanse. Depois a gente fala sobre o que você carrega nessa bolsa.")),
+                    N("s1", "Samir", "e1"),
+                    N("e1", "Elena", "s2"),
+                    N("s2", "Samir", "s3"),
+                    N("s3", "Samir", "e2"),
+                    N("e2", "Elena", "s4"),
+                    N("s4", "Samir")),
 
                 ummKarimEspera = Dialogue("Aldeia_UmmKarimEspera", null,
-                    N("u1", "Umm Karim", "Ache o remédio, doutora. O menino não tem muitos dias.")),
+                    N("u1", "Umm Karim")),
 
                 yusufEspera = Dialogue("Aldeia_YusufEspera", null,
-                    N("y1", "Yusuf", "(Ele treme de febre.) Está tão quente... ou tão frio. Não sei mais.")),
+                    N("y1", "Yusuf")),
 
                 tabuletaDesperta = Dialogue("Aldeia_ATabuletaDesperta", null,
-                    N("e1", "Elena", "(Ela pousa a tabuleta no nicho, ao lado da lamparina. Sob os dedos dela, as linhas de ouro acendem uma a uma, e a pedra se enche de uma luz azul que não é deste mundo.)", "s1"),
-                    N("s1", "Samir", "(Ele dá um passo para trás. A chama da lamparina encolhe.) Doutora... não.", "v1"),
-                    N("v1", "Voz", "Tila. Você está viva, e está segura. Não tenha medo.", "v2"),
-                    N("v2", "Voz", "Agora, olhe.")),
+                    N("e1", "Elena", "s1"),
+                    N("s1", "Samir", "v1"),
+                    N("v1", "Voz", "v2"),
+                    N("v2", "Voz")),
 
                 aMarca = Dialogue("Aldeia_AMarca", null,
-                    N("e1", "Elena", "(Ela pisca. A casa, a lamparina, o Samir. Passou só um minuto. No pulso esquerdo, uma marca azul, fina como tinta debaixo da pele. Não sai quando ela esfrega.)", "v1"),
-                    N("v1", "Voz", "Não tenha medo da marca. Ela só quer dizer que eu estou com você.")),
+                    N("e1", "Elena", "v1"),
+                    N("v1", "Voz")),
 
                 depoisDaTabuleta = Dialogue("Aldeia_DepoisDaTabuleta", ev.conversouSobreATabuleta,
-                    N("s1", "Samir", "(Ele está de pé ao lado do nicho, perto demais, olhando para você. A mão direita está no cabo da faca.)", "s2"),
-                    N("s2", "Samir", "Você ficou um minuto inteiro de olhos abertos, falando uma língua que ninguém fala há quatro mil anos. O que você ouviu?", null,
+                    N("s1", "Samir", "s2"),
+                    N("s2", "Samir", null,
                         new DialogueChoice
                         {
-                            text = "Uma voz. Ela salvou um homem do dilúvio... e falou comigo como se me conhecesse.",
+                            id = "c1",
                             next = "verdade",
                             raise = ev.contouAVerdadeAoSamir,
                             reputation = new[] { new ReputationChange { faction = Load<FactionDefinition>("Factions/Guardioes"), amount = 5 } },
                         },
-                        C("Nada. Só li o texto. É um mito do dilúvio.", "mentira", ev.mentiuAoSamir),
-                        C("Por que você está com a mão na faca?", "faca", ev.samirRevelouGuardiao)),
-                    N("verdade", "Samir", "(A mão dele afrouxa no cabo, mas não sai dele.) Obrigado por não mentir. Pouca gente consegue, depois de ouvir essa voz.", "fim"),
-                    N("mentira", "Samir", "(Ele olha a marca azul no seu pulso, depois os seus olhos. Demora a responder.) Se você diz.", "fim"),
-                    N("faca", "Samir", "Porque eu sou um Guardião. Minha família vigia este lugar desde antes de Ur ter nome. Juramos que nada do que dorme lá embaixo volta a andar por aqui.", "faca2"),
-                    N("faca2", "Samir", "Quem ouve essa voz muda, doutora. Devagar. Se um dia ela falar mais alto que você, eu vou perceber.", "faca3"),
-                    N("faca3", "Samir", "(Ele tira a mão da faca.) Hoje você ainda é você.", "fim"),
-                    N("fim", "Samir", "Guarde essa pedra onde ninguém veja. A Fundação está fechando as estradas, e nós dois precisamos sair desta aldeia.")),
+                        C("c2", "mentira", ev.mentiuAoSamir),
+                        C("c3", "faca", ev.samirRevelouGuardiao)),
+                    N("verdade", "Samir", "fim"),
+                    N("mentira", "Samir", "fim"),
+                    N("faca", "Samir", "faca2"),
+                    N("faca2", "Samir", "faca3"),
+                    N("faca3", "Samir", "fim"),
+                    N("fim", "Samir")),
 
                 oCercoChega = Dialogue("Aldeia_OCercoChega", null,
-                    N("s1", "Samir", "(Ele se encosta na parede da última casa e aponta para o norte, para a estrada.) Abaixe-se. Olhe.")),
+                    N("s1", "Samir")),
 
                 oCerco = Dialogue("Aldeia_OCerco", ev.ouviuOPlanoDeFuga,
-                    N("s1", "Samir", "Fecharam a estrada do norte. A do rio também: ouvi os caminhões de madrugada. E olhe o helicóptero descendo na base.", "e1"),
-                    N("e1", "Elena", "Então estamos presos.", "s2"),
-                    N("s2", "Samir", "A aldeia está. Nós, não. Existe um caminho mais velho que qualquer estrada. Começa lá embaixo, no Poço, e sai no leito seco do wadi, longe do cerco. Minha caminhonete está lá.", "e2"),
-                    N("e2", "Elena", "No Poço? Onde a minha equipe morreu?", "s3"),
-                    N("s3", "Samir", "Na antecâmara tem uma parede com o barco de junco, igual ao do nicho. A passagem fica atrás dela.", "s4"),
-                    N("s4", "Samir", "Mas para chegar ao Poço, você vai ter que atravessar a base deles, no pé do zigurate.", null,
-                        C("Você não vem comigo?", "s5", null),
-                        new DialogueChoice { text = "Os Guardiões sempre souberam desse caminho?", next = "g1", requires = ev.samirRevelouGuardiao }),
-                    N("g1", "Samir", "Nós cavamos esse caminho, doutora. Há muito tempo. Para sair lá de baixo... ou para levar alguma coisa de volta.", "s5"),
-                    N("s5", "Samir", "Sozinho, eu passo pelos canais secos do sul até o wadi. Com você e essa pedra acendendo a cada passo, não. Eu espero você na caminhonete.", "s6"),
-                    N("s6", "Samir", "A tenda médica também fica na base. Se ainda quer salvar o Yusuf, o remédio está lá.", "s7"),
-                    N("s7", "Samir", "A patrulha anda rente ao muro. Espere os dois virarem de costas e contorne a ponta sul do muro.")),
+                    N("s1", "Samir", "e1"),
+                    N("e1", "Elena", "s2"),
+                    N("s2", "Samir", "e2"),
+                    N("e2", "Elena", "s3"),
+                    N("s3", "Samir", "s4"),
+                    N("s4", "Samir", null,
+                        C("c1", "s5", null),
+                        new DialogueChoice { id = "c2", next = "g1", requires = ev.samirRevelouGuardiao }),
+                    N("g1", "Samir", "s5"),
+                    N("s5", "Samir", "s6"),
+                    N("s6", "Samir", "s7"),
+                    N("s7", "Samir")),
             };
 
             var antibiotics = Asset<ItemDefinition>("Items/Antibioticos", item =>
             {
-                item.displayName = "Antibióticos";
-                item.description = "Uma caixa de amoxicilina com o selo da Fundação. Para a infecção do Yusuf.";
                 item.category = ItemCategory.Chave;
             });
 
             yusufQuest = Asset<QuestDefinition>("Quests/RemedioParaYusuf", quest =>
             {
-                quest.displayName = "Remédio para Yusuf";
                 quest.kind = QuestKind.Secundaria;
                 quest.startOn = ev.conheceuSobreviventes;
                 quest.steps = new[]
                 {
-                    Step("Consiga antibióticos para o Yusuf", item: antibiotics),
-                    Step("Leve os antibióticos ao Yusuf", ev.entregouAntibioticos),
+                    Step("s1", item: antibiotics),
+                    Step("s2", ev.entregouAntibioticos),
                 };
             });
 
@@ -324,14 +321,14 @@ namespace Nibiru.EditorTools.Content
                 Debug.LogWarning("Missão Sobrevivente não encontrada: rode antes o menu do Acampamento.");
             else
                 AppendSteps(mainQuest,
-                    Step("Siga o Samir até a Aldeia", ev.chegouAoPatioComSamir),
-                    Step("Siga o Samir até a casa", ev.conheceuSobreviventes),
-                    Step("Descanse junto ao nicho antigo (E ou A)", ev.descansouNoNicho),
-                    Step("Leia a tabuleta no nicho", ShuruppakMemoryContent.EnteredMemory()),
-                    Step("Vá até a cabana de junco, à beira do rio", ShuruppakMemoryContent.HeardTheReedWall()),
-                    Step("Responda ao Samir", ev.conversouSobreATabuleta),
-                    Step("Siga o Samir até a beira da aldeia", ev.chegouABeiraDaAldeia),
-                    Step("Passe pela patrulha da estrada e entre na base da Fundação, no pé do zigurate", ev.entrouNaBaseDaFundacao));
+                    Step("s10", ev.chegouAoPatioComSamir),
+                    Step("s11", ev.conheceuSobreviventes),
+                    Step("s12", ev.descansouNoNicho),
+                    Step("s13", ShuruppakMemoryContent.EnteredMemory()),
+                    Step("s14", ShuruppakMemoryContent.HeardTheReedWall()),
+                    Step("s15", ev.conversouSobreATabuleta),
+                    Step("s16", ev.chegouABeiraDaAldeia),
+                    Step("s17", ev.entrouNaBaseDaFundacao));
 
             AssetDatabase.SaveAssets();
         }

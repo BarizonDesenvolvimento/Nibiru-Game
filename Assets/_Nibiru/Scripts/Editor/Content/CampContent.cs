@@ -100,10 +100,7 @@ namespace Nibiru.EditorTools.Content
 
             knife = Asset<ItemDefinition>("Items/FacaDeCampo", item =>
             {
-                item.displayName = "Faca de campo";
-                item.description = "Faca de campo da expedição. Silenciosa.";
                 item.category = ItemCategory.Chave;
-                item.pickupHint = "Ataque com a faca: clique esquerdo ou F (RB no controle)";
             });
             filmRoll = Load<ItemDefinition>("Items/RoloDeFilmeDoTom");
             tablet = Load<ItemDefinition>("Items/TabuletaDoJunco");
@@ -111,74 +108,72 @@ namespace Nibiru.EditorTools.Content
             dlg = new Dialogues
             {
                 sussurro = Dialogue("Acampamento_Sussurro", null,
-                    N("voz", "Voz", "Tila.", "e1"),
-                    N("e1", "Elena", "\"Viva.\" Isso é sumério. E eu entendi sem pensar.", "e2"),
-                    N("e2", "Elena", "De onde veio essa tabuleta? Eu não peguei isso ontem.", "e3"),
-                    N("e3", "Elena", "Ainda está morna... como se alguém tivesse acabado de soltar.")),
+                    N("voz", "Voz", "e1"),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 corpos = Dialogue("Acampamento_Corpos", ev.examinouOsCorpos,
-                    N("e1", "Elena", "Não... Não, não. Todos eles.", "e2"),
-                    N("e2", "Elena", "Nenhum tiro. Nenhum sangue. Só essas queimaduras...", "e3"),
-                    N("e3", "Elena", "Não são queimaduras comuns. São linhas e ângulos, como cunhas. Parece escrita.", "e4"),
-                    N("e4", "Elena", "E estão todos virados para a minha barraca.", "e5"),
-                    N("e5", "Elena", "Sete. Falta um. Cadê o Tom?")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena", "e4"),
+                    N("e4", "Elena", "e5"),
+                    N("e5", "Elena")),
 
                 bolsaDoTom = Dialogue("Acampamento_BolsaDoTom", ev.achouBolsaDoTom,
-                    N("e1", "Elena", "A bolsa da câmera do Tom. Vazia.", "e2"),
-                    N("e2", "Elena", "Ele não largava essa câmera nem para dormir. Se ela sumiu, talvez ele tenha saído daqui andando.", "e3"),
-                    N("e3", "Elena", "E os filmes? Ele trocava de rolo toda noite. Devem estar por aí.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 radioKast = Dialogue("Acampamento_RadioKast", ev.falouComKast,
-                    N("k1", "Kast (rádio)", "Acampamento de Ur, aqui é o Dr. Aurelian Kast, da Fundação Enlil. Doutora Varga, está me ouvindo? Câmbio.", "e1"),
-                    N("e1", "Elena", "Estou ouvindo. Aqui é Elena Varga. A minha equipe... estão todos mortos.", "k2"),
-                    N("k2", "Kast (rádio)", "Graças a Deus a senhora está bem. Sinto muito pela sua equipe. Sinto de verdade.", "k3"),
-                    N("k3", "Kast (rádio)", "Uma equipe de resgate já está a caminho. Vinte minutos. Fique onde está e não toque em nada, por favor.", "k4"),
-                    N("k4", "Kast (rádio)", "Sua mãe também tinha esse talento: estar no lugar errado na hora certa. Aguente firme, doutora.", null,
-                        C("Estou esperando.", "confia", ev.kastConfiou),
-                        C("Como vocês sabem que eu estou viva?", "desconfia", ev.kastDesconfiou)),
-                    N("confia", "Kast (rádio)", "Ótimo. Vinte minutos, doutora. Câmbio, desligo.", "e2"),
-                    N("desconfia", "Kast (rádio)", "...Não sabíamos, doutora. Torcíamos. Monitoramos a frequência da expedição desde a invasão, e o seu nome estava na lista. Vinte minutos. Câmbio, desligo.", "e2"),
-                    N("e2", "Elena", "Ele conhecia a minha mãe?")),
+                    N("k1", "Kast (rádio)", "e1"),
+                    N("e1", "Elena", "k2"),
+                    N("k2", "Kast (rádio)", "k3"),
+                    N("k3", "Kast (rádio)", "k4"),
+                    N("k4", "Kast (rádio)", null,
+                        C("c1", "confia", ev.kastConfiou),
+                        C("c2", "desconfia", ev.kastDesconfiou)),
+                    N("confia", "Kast (rádio)", "e2"),
+                    N("desconfia", "Kast (rádio)", "e2"),
+                    N("e2", "Elena")),
 
                 helicoptero = Dialogue("Acampamento_Helicoptero", null,
-                    N("e1", "Elena", "Um helicóptero? Já? Ele disse vinte minutos.", "e2"),
-                    N("e2", "Elena", "Da beira da elevação dá para ver o heliponto.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena")),
 
                 execucaoVista = Dialogue("Acampamento_ExecucaoVista", null,
-                    N("e1", "Elena", "Não... Eles atiraram nele. O Hassan só estava pedindo ajuda.", "e2"),
-                    N("e2", "Elena", "Nem hesitaram. Isso não é um resgate.", "e3"),
-                    N("e3", "Elena", "Eles vão subir. Preciso sair daqui, para as trincheiras.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 execucaoOuvida = Dialogue("Acampamento_ExecucaoOuvida", null,
-                    N("e1", "Elena", "Um tiro. Lá embaixo, perto do helicóptero.", "e2"),
-                    N("e2", "Elena", "Resgate não chega atirando. Preciso sair daqui, para as trincheiras.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena")),
             };
 
             mainQuest = Asset<QuestDefinition>("Quests/Sobrevivente", quest =>
             {
-                quest.displayName = "Sobrevivente";
                 quest.kind = QuestKind.Principal;
                 quest.steps = new[]
                 {
-                    Step("Pegue a faca de campo (E ou A para interagir)", item: knife),
-                    Step("Saia da barraca (WASD ou analógico para andar; Shift para correr)", ev.saiuDaBarraca),
-                    Step("Procure a equipe", ev.examinouOsCorpos),
-                    Step("Procure o Tom", ev.achouBolsaDoTom),
-                    Step("Atenda o rádio do acampamento", ev.falouComKast),
-                    Step("Espere o resgate", ev.viuExecucao),
-                    Step("Fuja para as trincheiras, ao norte", ev.chegouAsTrincheiras),
+                    Step("s1", item: knife),
+                    Step("s2", ev.saiuDaBarraca),
+                    Step("s3", ev.examinouOsCorpos),
+                    Step("s4", ev.achouBolsaDoTom),
+                    Step("s5", ev.falouComKast),
+                    Step("s6", ev.viuExecucao),
+                    Step("s7", ev.chegouAsTrincheiras),
                 };
             });
 
             tomQuest = Asset<QuestDefinition>("Quests/OQueOTomViu", quest =>
             {
-                quest.displayName = "O que o Tom viu";
                 quest.kind = QuestKind.Secundaria;
                 quest.startOn = ev.achouBolsaDoTom;
                 quest.steps = new[]
                 {
-                    Step("Encontre os rolos de filme do Tom", item: filmRoll, count: 3),
-                    Step("Leve os filmes a alguém que saiba revelá-los", ev.revelouFilmesDoTom),
+                    Step("s1", item: filmRoll, count: 3),
+                    Step("s2", ev.revelouFilmesDoTom),
                 };
             });
 

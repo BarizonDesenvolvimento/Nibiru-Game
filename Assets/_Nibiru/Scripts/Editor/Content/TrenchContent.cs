@@ -91,50 +91,40 @@ namespace Nibiru.EditorTools.Content
             bandage = Load<ItemDefinition>("Items/Curativo");
             filmRoll = Load<ItemDefinition>("Items/RoloDeFilmeDoTom");
 
-            // A pistola já existia sem dica: a dica de combate entra só se o campo estiver vazio.
-            if (pistol != null && string.IsNullOrEmpty(pistol.pickupHint))
-            {
-                pistol.pickupHint = "Mirar: botão direito (LT). Atirar: botão esquerdo (RT). Recarregar: R (X). Tiro faz muito barulho";
-                EditorUtility.SetDirty(pistol);
-            }
-
             fieldRadio = Asset<ItemDefinition>("Items/RadioDeCampanha", item =>
             {
-                item.displayName = "Rádio de campanha";
-                item.description = "Rádio de um soldado da Fundação, sintonizado na frequência deles.";
                 item.category = ItemCategory.Chave;
-                item.pickupHint = "Com o rádio, dá para ouvir a Fundação";
             });
 
             dlg = new Dialogues
             {
                 ordemRadio = Dialogue("Trincheiras_OrdemRadio", ev.ouviuOrdemNoRadio,
-                    N("r1", "Rádio dos soldados", "Equipe Dois, aqui é o Comando. Repetindo a ordem do Dr. Kast para todas as equipes.", "r2"),
-                    N("r2", "Rádio dos soldados", "A doutora, viva. O resto, não.", "r3"),
-                    N("r3", "Soldado (rádio)", "Entendido, Comando. Varrendo as trincheiras. Câmbio.", "e1"),
-                    N("e1", "Elena", "\"O resto, não.\" O Hassan. A minha equipe. Para eles, todo mundo aqui é \"o resto\".", "e2"),
-                    N("e2", "Elena", "Me querem viva. Isso não me consola nada.", "e3"),
-                    N("e3", "Elena", "O chefe de segurança dormia nas trincheiras, de guarda. Ele tinha uma pistola.")),
+                    N("r1", "Rádio dos soldados", "r2"),
+                    N("r2", "Rádio dos soldados", "r3"),
+                    N("r3", "Soldado (rádio)", "e1"),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 pistola = Dialogue("Trincheiras_Pistola", null,
-                    N("e1", "Elena", "Ele nem chegou a sacar a arma.", "e2"),
-                    N("e2", "Elena", "Desculpa. Vou precisar dela.", "e3"),
-                    N("e3", "Elena", "Quase sem munição, e cada tiro vai trazer todos eles para cá. Só se não tiver outro jeito.")),
+                    N("e1", "Elena", "e2"),
+                    N("e2", "Elena", "e3"),
+                    N("e3", "Elena")),
 
                 draWeiss = Dialogue("Trincheiras_DraWeiss", ev.conheceuDraWeiss,
-                    N("w1", "Mulher ferida", "Não! Não atire... Por favor. Eu sou médica. Hannah Weiss.", "e1"),
-                    N("e1", "Elena", "Esse uniforme... Você é da Fundação.", "w2"),
-                    N("w2", "Dra. Weiss", "Eu me perdi da equipe quando o helicóptero desceu. Caí numa dessas valas e abri a perna. Ninguém voltou para me buscar.", "w3"),
-                    N("w3", "Dra. Weiss", "Você é a doutora Varga, não é? Estão procurando você. Vieram para te tirar daqui.", null,
-                        C("Eles executaram um trabalhador ferido.", "contou", null),
-                        C("Me tirar daqui. Sei.", "calou", null)),
-                    N("contou", "Dra. Weiss", "Não. Não pode ser. Eu estava no briefing, o Dr. Kast disse \"resgate\". Ele disse resgate...", "w4"),
-                    N("calou", "Dra. Weiss", "Você não confia em mim. No seu lugar, eu também não confiaria.", "w4"),
-                    N("w4", "Dra. Weiss", "Escuta: assim eu não consigo andar. Se você achar curativos, volte aqui. Tenho antibióticos na mochila, posso retribuir.", "e2"),
-                    N("e2", "Elena", "Fique abaixada. Se eu achar, eu volto.")),
+                    N("w1", "Mulher ferida", "e1"),
+                    N("e1", "Elena", "w2"),
+                    N("w2", "Dra. Weiss", "w3"),
+                    N("w3", "Dra. Weiss", null,
+                        C("c1", "contou", null),
+                        C("c2", "calou", null)),
+                    N("contou", "Dra. Weiss", "w4"),
+                    N("calou", "Dra. Weiss", "w4"),
+                    N("w4", "Dra. Weiss", "e2"),
+                    N("e2", "Elena")),
 
                 draWeissEspera = Dialogue("Trincheiras_DraWeissEspera", null,
-                    N("w1", "Dra. Weiss", "Curativos, doutora. Se achar, volte. Eu ainda tenho os antibióticos.")),
+                    N("w1", "Dra. Weiss")),
             };
 
             var mainQuest = Load<QuestDefinition>("Quests/Sobrevivente");
@@ -142,8 +132,8 @@ namespace Nibiru.EditorTools.Content
                 Debug.LogWarning("Missão Sobrevivente não encontrada: rode antes o menu do Acampamento.");
             else
                 AppendSteps(mainQuest,
-                    Step("Pegue a pistola do chefe de segurança, no meio das trincheiras (C ou Ctrl para agachar)", item: pistol),
-                    Step("Atravesse as trincheiras e siga para a Aldeia, a oeste", ev.chegouAAldeia));
+                    Step("s8", item: pistol),
+                    Step("s9", ev.chegouAAldeia));
 
             AssetDatabase.SaveAssets();
         }
