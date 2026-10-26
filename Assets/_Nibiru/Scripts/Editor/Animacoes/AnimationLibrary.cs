@@ -72,9 +72,11 @@ namespace Nibiru.EditorTools
             new("Elena_Virar_Esquerda", "Elena", Female + "left turn", false),
             new("Elena_Virar_Direita", "Elena", Female + "right turn", false),
             new("Elena_Pegar", "Elena", "Avulsas/X Bot@Picking Up Object", false),
+            new("Elena_Agachada_Parada", "Elena", "Avulsas/X Bot@Crouching Idle", true, feet: true),
             new("Elena_Abrir", "Elena", "Avulsas/X Bot@Open Door Outwards", false),
 
-            // Caminhonete: o Samir dirigindo. O sentado da Elena não vem destes pacotes (veja o catálogo).
+            // Caminhonete: o Samir dirigindo e a Elena sentada no chão da caçamba (o "Sitting Idle2": quadril ao nível dos pés).
+            new("Elena_Sentada", "Caminhonete", "Avulsas/X Bot@Sitting Idle2", true, feet: true),
             new("Samir_Dirigindo", "Caminhonete", "Avulsas/X Bot@Driving", true),
         };
 

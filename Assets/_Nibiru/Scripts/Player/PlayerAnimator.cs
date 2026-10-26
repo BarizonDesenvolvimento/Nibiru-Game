@@ -19,6 +19,7 @@ namespace Nibiru.Player
         public const string MeleeParam = "Golpe";
         public const string HurtParam = "Dano";
         public const string DieParam = "Morrer";
+        public const string SeatedParam = "Sentada";
         public const string AimLayer = "Mira";
         public const string ReloadLayer = "Recarregar";
 
@@ -229,6 +230,12 @@ namespace Nibiru.Player
             var mode = hidden ? UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly : UnityEngine.Rendering.ShadowCastingMode.On;
             foreach (Renderer r in bodyRenderers)
                 if (r != null) r.shadowCastingMode = mode;
+        }
+
+        /// <summary>Senta no chão (a viagem na caçamba) ou levanta. Precisa do estado Sentada no controlador.</summary>
+        public void SetSeated(bool seated)
+        {
+            if (animator != null && HasParameter(Animator.StringToHash(SeatedParam))) animator.SetBool(SeatedParam, seated);
         }
 
         bool HasParameter(int id)

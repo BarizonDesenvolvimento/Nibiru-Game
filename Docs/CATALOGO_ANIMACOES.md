@@ -13,7 +13,7 @@ Biblioteca bruta em `ArteFonte/Animacoes/` (fora de `Assets`, fora do Git, a Uni
 - **[SENTADO]** sentado na caminhonete (Elena na caçamba)
 - **[DIRIGIR]** dirigir (Samir na cabine)
 
-Lacuna importante: **não há "sitting idle" em nenhum pacote do Mixamo, nem na pasta `Avulsas`** (busca por sit, seat, ground, floor, sentad, crouch, squat, kneel, crawl e agach). O que existe:
+Lacuna resolvida: o dono baixou na `Avulsas` `X Bot@Sitting Idle`, `X Bot@Sitting Idle2` e `X Bot@Crouching Idle`. Medido no modelo da Elena, o `Sitting Idle` é de **cadeira** (quadril a 0,49 m do chão) e o **`Sitting Idle2` é sentado no chão** (quadril ao nível dos pés, cabeça a 0,52 m): é o usado. Antes disso, o que havia era:
 - `UAL1_Standard.fbx` (Universal Animation Library 1, `Unity/`) tem `Sitting_Idle_Loop`, `Sitting_Talking_Loop`, `Sitting_Enter`, `Sitting_Exit`, `Driving_Loop` e `Crouch_Idle_Loop`. Importa como Humanoid sem problema, mas o sentado é de **cadeira ou banco**: medido no modelo da Elena, o quadril fica a 0,45 m e o joelho a 0,45 m do chão, com os pés no chão. **Não é sentado no chão.**
 - `X Bot@Driving` e `X Bot@Entering Car` são sentados de banco de carro.
 - Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1.
@@ -45,6 +45,8 @@ Tabela única: `Scripts/Editor/Animacoes/AnimationLibrary.cs`. Os FBX vão para 
 | Elena_Virar_Esquerda / _Direita | Female Basic Locomotion Pack/left turn, right turn | uma vez | não | importados, sem uso (o jogo gira o corpo por código) |
 | Elena_Pegar | Avulsas/X Bot@Picking Up Object | uma vez | não | importado, sem uso (veja abaixo) |
 | Elena_Abrir | Avulsas/X Bot@Open Door Outwards | uma vez | sim (0,5 m/s) | importado, sem uso (veja abaixo) |
+| Elena_Sentada | Avulsas/X Bot@Sitting Idle2 | loop | não | Elena sentada no chão da caçamba (estado `Sentada` do `Elena.controller`, ligado pelo `TruckRide`) |
+| Elena_Agachada_Parada | Avulsas/X Bot@Crouching Idle | loop | não | agachada parada da Elena (no lugar do quadro congelado do `Sneak Walk`) |
 | Samir_Dirigindo | Avulsas/X Bot@Driving | loop | não | Samir ao volante na caminhonete (estado `Dirigindo` do `Samir.controller`) |
 
 **Importados e sem ligação, porque nenhum evento ou estado do jogo serve:** `Lullu_Saida_Rachaduras` (nada no jogo faz criatura surgir das rachaduras: o Servo acorda no lugar, urrando); `Elena_Pegar` e `Elena_Abrir` (o `PlayerInteractor` não tem evento de interação a que ligar); as viradas da Elena. Estão na vitrine **Nibiru > Testes > Animações**.
@@ -297,6 +299,6 @@ Pacotes de outra fonte (Standard, fora do Mixamo), em `Universal Animation Libra
 | Urro | Creature Pack: `mutant roaring`; alternativa `mutant flexing muscles` |
 | Saída das rachaduras | Zombie Pack: `zombie stand up` (1, 2, 3), `zombie transition`; Creature: `mutant jumping` |
 | Locomoção da Elena | Female Basic Locomotion Pack já importado só para comparação (veja a vitrine); a atual (aprovada) continua; Action Adventure (cobertura, rolar, cair), Pistol Handgun (armada) |
-| Sentado (Elena na caçamba) | **pendente**: nada no Mixamo; `UAL1 Sitting_Idle_Loop` é de cadeira, não de chão. Decisão do dono (baixar "Sitting Idle" de chão no Mixamo) |
+| Sentado (Elena na caçamba) | **feito**: `Elena_Sentada` (`X Bot@Sitting Idle2`, de chão) |
 | Dirigindo (Samir) | **feito**: `Samir_Dirigindo` (`X Bot@Driving`) |
 | Garra, urro, saída (criaturas) | **feitos**, menos a saída das rachaduras (importada, sem evento) |

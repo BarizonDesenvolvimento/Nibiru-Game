@@ -327,6 +327,14 @@ namespace Nibiru.EditorTools
             Speeds(crouched,
                 (CrouchIdle, 0f),
                 (CrouchWalk, settings.crouchSpeed));
+            // A agachada parada de verdade (Crouching Idle), no lugar do quadro congelado do andar furtivo.
+            var crouchIdleClip = AnimationLibrary.Clip("Elena_Agachada_Parada");
+            if (crouchIdleClip != null)
+            {
+                var crouchChildren = crouched.children;
+                crouchChildren[0].motion = crouchIdleClip;
+                crouched.children = crouchChildren;
+            }
 
             // Esquiva e golpe de faca: cada trecho toca no tempo exato da ação no jogo.
             OneShot(machine, locomotion, Dodge, PlayerAnimator.DodgeParam, settings.dodgeDuration, new Vector3(300f, 60f), 0.05f);
@@ -340,6 +348,24 @@ namespace Nibiru.EditorTools
             toDeath.hasExitTime = false;
             toDeath.duration = 0.1f;
             toDeath.canTransitionToSelf = false;
+
+            // Sentada no chão (a viagem na caçamba): entra e sai pelo parâmetro Sentada, ligado pelo TruckRide.
+            var seated = AnimationLibrary.Clip("Elena_Sentada");
+            if (seated != null)
+            {
+                controller.AddParameter(PlayerAnimator.SeatedParam, AnimatorControllerParameterType.Bool);
+                var sit = machine.AddState("Sentada", new Vector3(300f, 280f));
+                sit.motion = seated;
+                var toSit = machine.AddAnyStateTransition(sit);
+                toSit.AddCondition(AnimatorConditionMode.If, 0f, PlayerAnimator.SeatedParam);
+                toSit.hasExitTime = false;
+                toSit.duration = 0.25f;
+                toSit.canTransitionToSelf = false;
+                var stand = sit.AddTransition(locomotion);
+                stand.AddCondition(AnimatorConditionMode.IfNot, 0f, PlayerAnimator.SeatedParam);
+                stand.hasExitTime = false;
+                stand.duration = 0.25f;
+            }
 
             // Mira e recarregar: só o tronco, braços, dedos e cabeça; o peso vem do PlayerAnimator.
             var mask = BuildUpperBodyMask();

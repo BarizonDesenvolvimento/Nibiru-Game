@@ -177,6 +177,8 @@ namespace Nibiru.Sequences
                 interactor.Clear();
             }
             input.SetCombatEnabled(false);
+            var animator = player.GetComponentInChildren<PlayerAnimator>(true);
+            if (animator != null) animator.SetSeated(true);
             var health = player.GetComponent<Health>();
             if (health != null) health.Invincible = true;
         }
@@ -191,7 +193,11 @@ namespace Nibiru.Sequences
             var controller = player.GetComponent<CharacterController>();
             if (controller != null) controller.enabled = false;
             player.transform.SetParent(elenaSeat, false);
-            player.transform.localPosition = Vector3.zero;
+            // O ponto do banco é o chão da caçamba: a raiz da Elena fica acima dele o quanto o modelo
+            // desce até os pés (antes ela ficava 1 m enterrada no chão da caçamba).
+            var animator = player.GetComponentInChildren<Animator>();
+            float feetBelowRoot = animator != null ? -animator.transform.localPosition.y : 0f;
+            player.transform.localPosition = new Vector3(0f, Mathf.Max(0f, feetBelowRoot), 0f);
             player.transform.localRotation = Quaternion.identity;
 
             var cameraController = FindFirstObjectByType<PlayerCameraController>();

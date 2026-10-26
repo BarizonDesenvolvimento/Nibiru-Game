@@ -141,7 +141,11 @@ namespace Nibiru.EditorTools
             var c = Controller("Elena");
             Check(c != null, "Elena: controlador não encontrado");
             if (c == null) return;
-            CheckParams(c, "Elena", "Velocidade", "Agachar", "Esquivar", "Golpe", "Dano", "Morrer");
+            CheckParams(c, "Elena", "Velocidade", "Agachar", "Esquivar", "Golpe", "Dano", "Morrer", "Sentada");
+            Check(State(c, "Base Layer", "Sentada")?.motion?.name == "Elena_Sentada", "Elena: o estado Sentada deveria tocar Elena_Sentada");
+            var crouch = (State(c, "Base Layer", "Locomocao")?.motion as BlendTree)?.children
+                .Select(ch => ch.motion).OfType<BlendTree>().FirstOrDefault(t => t.name == "Agachada");
+            Check(crouch != null && crouch.children.Any(ch => ch.motion != null && ch.motion.name == "Elena_Agachada_Parada"), "Elena: a agachada parada deveria usar Elena_Agachada_Parada");
             foreach (string name in new[] { "Locomocao", "Esquiva", "Golpe_Faca", "Morte" })
                 Check(State(c, "Base Layer", name) != null, $"Elena: falta o estado {name}");
         }
