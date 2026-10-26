@@ -28,7 +28,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Primeiro Servo definitivo** (Meshy + AccuRig, com dedos, 2,50 m em pé, máscara de ouro) está no prefab `Prefabs/AI/PrimeiroServo`, usado no passo 12 e no laboratório. Veja "Primeiro Servo" em Personagens 3D.
 - Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte`, com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-**Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. A próxima prioridade são as animações da biblioteca (`Docs/CATALOGO_ANIMACOES.md`): garra, urro e saída das rachaduras da criatura, locomoção da Elena, e sentado e dirigindo na caminhonete (falta baixar um sentado da Elena); depois importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena").
+**Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. As **animações da biblioteca** (`Docs/CATALOGO_ANIMACOES.md`) foram importadas para as criaturas (garra, investida, urro, golpe recebido e morte do Lullu e do Primeiro Servo) e para o Samir dirigindo (veja "Animações da biblioteca" abaixo), testadas pela ponte e esperando o teste do dono. **Faltam:** o sentado da Elena na caçamba (decisão do dono: nada de sentado no chão na biblioteca) e a agachada parada. Depois, importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena"): a Female Basic Locomotion está na vitrine para comparar.
 
 ## Documentos
 
@@ -235,7 +235,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **A Elena na viagem:** presa na caçamba (movimento, interação, combate e dano desligados); a câmera gira livre. Pausar (Esc) congela o trilho e continuar o retoma; "Voltar ao último checkpoint" na pausa recomeça do embarque.
 - **Fim:** ao chegar, o diário (`Data/Documents/Diario_Entrada_1`, texto provisório, na tela de leitura dos documentos) dispara `LeuODiario`; ao fechá-lo dispara `FimDaFatia`, que abre a **tela provisória de fim da demo** (`UI/DemoEndScreen`). Confirmar zera a partida e os pontos de retorno e volta ao **menu principal** (`UI/MainMenuUI`, cena `Scenes/MenuPrincipal`, primeira da lista do Build: "Novo jogo" e "Sair do jogo", setas ou direcional e Enter ou A). "Novo jogo" abre a região do começo.
 - **Para ajustar jogando:** as falas estão em `Data/Dialogues/Fuga_*`; o diário em `Data/Documents/Diario_Entrada_1`; a duração mínima (60 s), o atraso da conversa (2 s) e o trilho no `TruckRide` da `Conteudo_Fuga/Caminhonete/Caminhonete_Do_Samir`.
-- **Provisório e pendências:** **faltam as animações de sentado (Elena) e de dirigir (Samir)**: a Elena fica em pé na caçamba e o Samir em pé na cabine (a cabine é uma caixa atrás, então ele não aparece); falta voz nas falas; a estrada, a caminhonete e a tempestade são formas simples; o diário é só uma tela de texto; a tabuleta de quem **entrega** continua no inventário (só os eventos mudam); o menu principal não tem opções nem save; o segundo líder de esquadra e a passagem do helicóptero sobre a base continuam como pendência da base do zigurate.
+- **Provisório e pendências:** o **Samir já dirige** (sentado ao volante, num banco e volante provisórios; o fundo da cabine ganhou uma janela traseira de 1,9 a 2,75 m para ele aparecer), mas **falta o sentado da Elena**: ela segue em pé na caçamba (veja "Animações da biblioteca"); falta voz nas falas; a estrada, a caminhonete e a tempestade são formas simples; o diário é só uma tela de texto; a tabuleta de quem **entrega** continua no inventário (só os eventos mudam); o menu principal não tem opções nem save; o segundo líder de esquadra e a passagem do helicóptero sobre a base continuam como pendência da base do zigurate.
 - Teste feito pela ponte (teste automático, 3 itens): veja "Como testar o passo 15".
 
 **Marca visual dos altares dos Guardiões (vale para o jogo inteiro):** uma lamparina de barro com luz quente (amarela e alaranjada) e o símbolo do **barco de junco sobre ondas** entalhado no nicho ou na pedra. Os altares nunca usam luz azul: o azul é a cor de Kur e dos deuses (veja `Docs/Arte/Regiao1_SitioDeUr_Arte.md`) e só aparece quando algo deles reage, como a tabuleta no passo 8. Na Aldeia, a marca é montada em formas simples por `NicheMark` em `VillageContent.cs` (cor da luz em `LampLight`; chama com o material `Art/Materials/Blockout/BO_Chama`).
@@ -337,6 +337,28 @@ A biblioteca inteira (pacotes do Mixamo e Universal Animation Library) fica em `
 - **Exceção, animações de fuzil:** giro "Original" em todas. Pela direção do corpo, o corpo fica de frente e o fuzil atravessado (cano 70° para a esquerda); no giro original elas andam reto e o fuzil fica só 27° à esquerda (postura de lado), compensado girando o tronco na mira.
 - No editor, sem câmera olhando, um Animator só mexe nos ossos em "Always Animate" (senão fica em pose T): ao medir poses por script, ligue isso antes.
 
+### Animações da biblioteca
+
+Clipes importados da `ArteFonte/Animacoes` (fora do Git) para `Art/Animacoes/<Criatura|Elena|Caminhonete>/`, **só os usados**, com nome `Personagem_Movimento`. A tabela (de qual arquivo vem cada um, loop, cortes) e o `AssetPostprocessor` que os importa sempre igual (Humanoid, avatar do X Bot, Loop Time, raiz travada) ficam em `Scripts/Editor/Animacoes/AnimationLibrary.cs`; o mapeamento arquivo original → clipe está no `Docs/CATALOGO_ANIMACOES.md`. Menus **Nibiru > Animações**: "Importar clipes da biblioteca" e "Reimportar clipes (depois de mudar a tabela)".
+
+- **Lullu** (pacote do zumbi): parado, andar, correr, ataque, e dano e morte compartilhados com o Servo. **Primeiro Servo** (pacote do mutante): parado, andar, correr, ataque, investida e urro. Os controladores (`Lullu.controller`, `PrimeiroServo.controller`) são montados pelos mesmos menus de antes (**Montar Lullu animado** e **Montar Primeiro Servo animado**), com blend tree de locomoção pela velocidade real; o golpe toca mais rápido que o clipe (2x o do zumbi, 1,7x o do mutante) para o gesto cair na preparação de 0,5 s da IA.
+- **Ligações a coisas que já existiam (sem lógica nova):** o golpe entra pelo estado `Golpe` da `LulluAI`; a investida do Servo, pelo estado `Investida` (o Lullu, que não tem esse estado no controlador, usa o golpe); o urro, pelo `FirstServantFight.IsRoaring` (ao acordar e a cada troca de fase); dano e morte, pelos eventos do `Health`. O `LulluAnimator` só ganhou os dois gatilhos novos (`Investida` e `Urro`), que ignora se o controlador não os tiver.
+- **Samir dirigindo:** estado `Dirigindo` no `Samir.controller` (parâmetro `Dirigindo`; o `NpcAnimator` tem o campo "driving" e `SetDriving`). O menu da Fuga põe o Samir sentado na cabine com banco e volante provisórios. **Rode de novo "Montar Samir animado" e "Povoar Fuga na cena aberta" se mexer nisso.**
+- **Importados e sem ligação** (nenhum evento do jogo serve): saída das rachaduras (`Lullu_Saida_Rachaduras`), pegar e abrir da Elena (o `PlayerInteractor` não tem evento de interação) e as viradas. Estão na vitrine.
+- **Elena:** o controlador aprovado **não mudou**. A parada, o andar e a corrida da Female Basic Locomotion estão só na vitrine, ao lado da atual, para comparar antes de trocar (a nova corrida é mais lenta: 3,6 m/s contra 5,4 do pique atual).
+- **Pendente, depende do dono:** (1) **sentado da Elena na caçamba**: não há sentado de chão em nenhum pacote; o `Sitting_Idle_Loop` da Universal Animation Library 1 é de cadeira (quadril a 0,45 m), e o `X Bot@Entering Car` só entraria como provisório com autorização; (2) **agachada parada**: nada na pasta `Avulsas`; o "Crouch Idle" existe no Pro Magic Pack e no Pro Melee Axe Pack, mas a origem do Pro Magic Pack (que não estava na lista de pacotes) precisa ser confirmada.
+
+**Como testar:** menu **Nibiru > Testes > Animações** (`Scripts/Editor/Animacoes/AnimationShortcuts.cs`):
+
+| Atalho | O que mostra |
+| --- | --- |
+| 1. Criaturas: Lullu e Primeiro Servo | Laboratório, num chão vazio: cada um repete parado, vagando, investigando, caçando, golpe, dano e morte (o Servo também a investida e o urro), com o controlador de verdade; mais a saída das rachaduras solta |
+| 2. Elena: controlador atual ao lado dos clipes novos | À esquerda a Elena atual (parada, andar, correr em ciclo); depois parada, andar e correr novos, viradas, pegar e abrir |
+| 3. Caminhonete: meio da viagem | O atalho 5 do passo 15: a Elena na caçamba e o Samir sentado ao volante, visto pela janela traseira |
+| 4. Teste automático | 234 verificações no Console: clipes (existem, Humanoid, avatar do X Bot, Loop Time, tamanho do corte, raiz travada) e controladores (estados e parâmetros da criatura, do Servo, do Samir e da Elena) |
+
+Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas em captura de tela; o Servo acordando na luta (passo 12) tocou o urro e depois o golpe, ligado à IA.
+
 ### Elena
 
 O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
@@ -427,7 +449,7 @@ O menu **Nibiru > Personagens > Montar Lullu animado** (`Scripts/Editor/Personag
 - `AI/LulluAnimator` (novo, a IA não mudou): lê o estado da `LulluAI` e a vida; passa a velocidade (pelo deslocamento), o golpe (entrando em Golpe ou Investida), o dano e a morte ao Animator. **Postura de criatura:** o modelo é em pé, então o tronco, o pescoço e a cabeça são dobrados para a frente por cima da animação (22°, 22°, -18°, -12°; mais fraco andando e correndo, `movingWeight`). **Pés no chão:** a estocada baixava o corpo e a sola entrava no chão; o `LulluAnimator` mede o tornozelo mais baixo a cada quadro e ergue o modelo o que faltar até a altura de repouso (no máximo 25 cm), sem mexer na animação. O golpe tem corte próprio (`Lullu_Golpe`, altura pelos pés). Morto, ele segura o `Corpo` de pé onde estava, porque a `LulluAI` tomba a raiz e a animação de morte já o deita.
 - **Colisor:** cápsula de 0,4 m de raio e 1,8 m de altura, do chão para cima (antes 0,35 x 2 m). **Audição:** a `LulluAI` mede distância e altura a partir da raiz, a 1 m do chão (cintura dele); a cabeça curvada fica a uns 1,7 m, então o "ouvido" fica 0,7 m abaixo da cabeça, sem efeito prático nos alcances (6, 14, 1,8 m). O alcance vertical da Elena nos andaimes (2,4 m acima da raiz) não mudou.
 - O andar agachado (`Sneak Walk`) não serviu: nas pernas longas dele o corpo vira uma rampa quase deitada. Por isso o andar é o normal, encurvado pelo `LulluAnimator`.
-- Pendências: o golpe é a estocada de faca do Mixamo (falta um golpe de garra); o atordoado do Eco ainda é só o tremor do corpo da `LulluAI`; falta um andar de criatura de verdade (quatro apoios ou arrastado); a investida do Primeiro Servo usa o mesmo golpe.
+- Pendências: o golpe, o dano e a morte agora vêm do pacote do zumbi (veja "Animações da biblioteca"); o atordoado do Eco ainda é só o tremor do corpo da `LulluAI`; o andar do zumbi é cambaleante, falta ver se serve ou se vale um andar de quatro apoios.
 - **Como testar:** os atalhos do passo 11 (**Nibiru > Testes > Passo 11**, 4 e 6) levam ao Lullu; corra ou atire perto dele para vê-lo caçar e golpear (ou fique agachada para ele não ouvir).
 
 ### Primeiro Servo
@@ -437,7 +459,7 @@ O menu **Nibiru > Personagens > Montar Primeiro Servo animado** (`Scripts/Editor
 - Controlador `PrimeiroServo.controller`: os mesmos estados e cortes do Lullu (montados pelo `LulluSetup`, agora reaproveitável), nas velocidades de `Data/AI/PrimeiroServo`.
 - Prefab `Prefabs/AI/PrimeiroServo`: na primeira vez, uma cópia do prefab do Lullu; depois, editado no lugar. Mesmo arranjo (`LulluAI`, `LulluAnimator`, `Corpo` > `Modelo`), com colisor de 0,55 x 2,2 m, os dados `PrimeiroServo` e a `FirstServantFight` (dados `PrimeiroServo_Luta`, sons do urro e da máscara, lascas de ouro). A postura encurvada é a mesma do Lullu.
 - No laboratório, o Primeiro Servo (antes o Lullu em escala 1,25) passa a ser este prefab, acordado desde o começo (campo "Awake On Start").
-- Pendências: golpe de garra, urro e saída das rachaduras como animações; a máscara não muda no modelo (as lascas são soltas).
+- Animações novas (pacote do mutante): parado, andar, correr, golpe, investida e urro. Pendências: saída das rachaduras (clipe importado, sem evento que o use); a máscara não muda no modelo (as lascas são soltas).
 
 ### Soldados da Fundação
 
@@ -558,7 +580,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 ## Próximos passos
 
-1. Importar as animações do catálogo (criatura, Elena, caminhonete); os passos 10 a 15 já foram aprovados pelo dono. Depois, o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
+1. Fechar as animações do catálogo: teste do dono nas vitrines, sentado da Elena na caçamba e agachada parada (veja "Animações da biblioteca"); os passos 1 a 15 já foram aprovados pelo dono. Depois, o segundo líder e a passagem do helicóptero na base, o resto de "Remédio para Yusuf" (curativos à Dra. Weiss, antibióticos, entrega ao Yusuf e a escolha com o Samir) e a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).

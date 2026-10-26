@@ -13,7 +13,43 @@ Biblioteca bruta em `ArteFonte/Animacoes/` (fora de `Assets`, fora do Git, a Uni
 - **[SENTADO]** sentado na caminhonete (Elena na caçamba)
 - **[DIRIGIR]** dirigir (Samir na cabine)
 
-Lacuna importante: **não há "sitting idle" em nenhum pacote**. Para sentado, o mais próximo é `X Bot@Driving` (Samir) e `X Bot@Entering Car` (entrar). Para a Elena na caçamba, é preciso baixar um "Sitting Idle" no Mixamo.
+Lacuna importante: **não há "sitting idle" em nenhum pacote do Mixamo, nem na pasta `Avulsas`** (busca por sit, seat, ground, floor, sentad, crouch, squat, kneel, crawl e agach). O que existe:
+- `UAL1_Standard.fbx` (Universal Animation Library 1, `Unity/`) tem `Sitting_Idle_Loop`, `Sitting_Talking_Loop`, `Sitting_Enter`, `Sitting_Exit`, `Driving_Loop` e `Crouch_Idle_Loop`. Importa como Humanoid sem problema, mas o sentado é de **cadeira ou banco**: medido no modelo da Elena, o quadril fica a 0,45 m e o joelho a 0,45 m do chão, com os pés no chão. **Não é sentado no chão.**
+- `X Bot@Driving` e `X Bot@Entering Car` são sentados de banco de carro.
+- Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1.
+
+**Origem dos pacotes:** as pastas `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` estão em `ArteFonte/Animacoes/Mixamo`, mas não constavam da lista de pacotes do projeto; a origem delas não foi confirmada, e **nada delas foi usado**.
+
+## Clipes em uso no jogo (importados)
+
+Tabela única: `Scripts/Editor/Animacoes/AnimationLibrary.cs`. Os FBX vão para `Assets/_Nibiru/Art/Animacoes/<Criatura|Elena|Caminhonete>/` (nome do arquivo = nome do clipe) e o `MixamoClipPostprocessor` os importa sempre igual: Humanoid com o avatar do X Bot, Loop Time pela tabela, giro e altura da raiz travados. O avanço da raiz é descartado em todos (quem anda é o jogo); "raiz anda" abaixo diz só se o arquivo original vem com deslocamento (medido pela velocidade média do clipe), que é lido para sincronizar os pés. Menus: **Nibiru > Animações > Importar clipes da biblioteca** (copia da `ArteFonte`) e **Reimportar clipes** (depois de mudar a tabela).
+
+| Clipe | Arquivo original (`Mixamo/…`) | Tipo | Raiz anda | Uso |
+| --- | --- | --- | --- | --- |
+| Lullu_Parado | Not So Scary Zombie Pack/zombie idle | loop | não | Lullu parado |
+| Lullu_Andar | Not So Scary Zombie Pack/walking | loop | sim (0,5 m/s) | Lullu vagando e investigando |
+| Lullu_Correr | Not So Scary Zombie Pack/zombie running | loop | sim (3 m/s) | Lullu caçando |
+| Lullu_Ataque | Not So Scary Zombie Pack/zombie attack, quadros 18 a 62 | uma vez | não | golpe do Lullu (toca a 2x) |
+| Lullu_Saida_Rachaduras | Not So Scary Zombie Pack/zombie stand up | uma vez | não | **importado, sem uso** (veja abaixo) |
+| Servo_Parado | Creature Pack/mutant breathing idle | loop | não | Servo parado |
+| Servo_Andar | Creature Pack/mutant walking | loop | sim (1,3 m/s) | Servo vagando e investigando |
+| Servo_Correr | Creature Pack/mutant run | loop | sim (2,3 m/s) | Servo caçando |
+| Servo_Ataque | Creature Pack/mutant swiping, quadros 14 a 56 | uma vez | não | golpe do Servo (toca a 1,7x) |
+| Servo_Investida | Creature Pack/mutant jump attack, quadros 1 a 75 | uma vez | sim | preparação e salto da investida (estado `Investida` da IA) |
+| Servo_Urro | Creature Pack/mutant roaring, quadros 10 a 70 | uma vez | não | urro da luta (`FirstServantFight.IsRoaring`: ao acordar e a cada troca de fase) |
+| Criatura_Golpe_Recebido | Not So Scary Zombie Pack/zombie reaction hit, quadros 8 a 40 | uma vez | não | dano dos dois (camada aditiva) |
+| Criatura_Morte | Creature Pack/mutant dying | uma vez | não | morte dos dois |
+| Elena_Parada_Basic | Female Basic Locomotion Pack/idle | loop | não | **só vitrine**: comparar com a `Parada` atual |
+| Elena_Andar_Basic | Female Basic Locomotion Pack/walking | loop | sim (1,6 m/s) | só vitrine (compara com `Andar`) |
+| Elena_Correr_Basic | Female Basic Locomotion Pack/running | loop | sim (3,6 m/s) | só vitrine (compara com `Correr`; mais lenta que o pique atual de 5,4 m/s) |
+| Elena_Virar_Esquerda / _Direita | Female Basic Locomotion Pack/left turn, right turn | uma vez | não | importados, sem uso (o jogo gira o corpo por código) |
+| Elena_Pegar | Avulsas/X Bot@Picking Up Object | uma vez | não | importado, sem uso (veja abaixo) |
+| Elena_Abrir | Avulsas/X Bot@Open Door Outwards | uma vez | sim (0,5 m/s) | importado, sem uso (veja abaixo) |
+| Samir_Dirigindo | Avulsas/X Bot@Driving | loop | não | Samir ao volante na caminhonete (estado `Dirigindo` do `Samir.controller`) |
+
+**Importados e sem ligação, porque nenhum evento ou estado do jogo serve:** `Lullu_Saida_Rachaduras` (nada no jogo faz criatura surgir das rachaduras: o Servo acorda no lugar, urrando); `Elena_Pegar` e `Elena_Abrir` (o `PlayerInteractor` não tem evento de interação a que ligar); as viradas da Elena. Estão na vitrine **Nibiru > Testes > Animações**.
+
+
 
 ---
 
@@ -260,6 +296,7 @@ Pacotes de outra fonte (Standard, fora do Mixamo), em `Universal Animation Libra
 | Golpe de garra (Lullu, Servo) | Creature Pack: `mutant swiping`, `mutant punch`, `mutant jump attack` (investida); Zombie Pack: `zombie attack` (Lullu) |
 | Urro | Creature Pack: `mutant roaring`; alternativa `mutant flexing muscles` |
 | Saída das rachaduras | Zombie Pack: `zombie stand up` (1, 2, 3), `zombie transition`; Creature: `mutant jumping` |
-| Locomoção da Elena | Female Basic Locomotion Pack (`running` para a corrida definitiva), Action Adventure (cobertura, rolar, cair), Pistol Handgun (armada) |
-| Sentado (Elena na caçamba) | **nada pronto**; baixar "Sitting Idle" no Mixamo. `X Bot@Entering Car` serve só de embarque |
-| Dirigindo (Samir) | `X Bot@Driving`, mais `Entering Car` / `Exiting Car` |
+| Locomoção da Elena | Female Basic Locomotion Pack já importado só para comparação (veja a vitrine); a atual (aprovada) continua; Action Adventure (cobertura, rolar, cair), Pistol Handgun (armada) |
+| Sentado (Elena na caçamba) | **pendente**: nada no Mixamo; `UAL1 Sitting_Idle_Loop` é de cadeira, não de chão. Decisão do dono (baixar "Sitting Idle" de chão no Mixamo) |
+| Dirigindo (Samir) | **feito**: `Samir_Dirigindo` (`X Bot@Driving`) |
+| Garra, urro, saída (criaturas) | **feitos**, menos a saída das rachaduras (importada, sem evento) |
