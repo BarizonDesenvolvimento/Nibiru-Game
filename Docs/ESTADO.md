@@ -601,7 +601,7 @@ Veja `Docs/Auditoria-2026-10-25.md` (tabela do que está pronto, provisório e f
 - **O diário fica fora da demo.** A recompensa de "O que o Tom viu" é o item "Fotos do Tom", aberto na tela de leitura (sem entrada de diário).
 - **Etapa de equilíbrio (B):** munição (20 balas no mapa, o roteiro pede cerca de 30), curativos (4), kits médicos (3, falta colocar), espingarda e cartuchos (falta a casa trancada) e rádio de campanha (não faz nada) ficam juntos com o equilíbrio do passo 12.
 
-## Localização, parte 1 (feita; falta o teste do dono da etapa 6)
+## Localização, parte 1 (feita, testada pela ponte e aprovada pelo dono no Play)
 
 Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fonte central estão no `CLAUDE.md` ("Textos e idiomas").
 
