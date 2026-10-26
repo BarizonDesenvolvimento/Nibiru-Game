@@ -77,6 +77,15 @@ namespace Nibiru.EditorTools
             Check(ReadingText("bodyLabel").Contains("Foto 6 — O círculo visto de cima"), "a leitura deveria ter a Foto 6");
             Check(ReadingText("footerLabel").StartsWith("Quem tirou esta foto ainda estava vivo depois de todos."), "a nota da Elena deveria estar no pé");
             Check(Raised("LeuAsFotosDoTom"), "ler deveria disparar LeuAsFotosDoTom");
+            // O texto das seis fotos é longo: precisa caber na área do texto, sem passar por cima do rodapé.
+            var body = (UnityEngine.UI.Text)typeof(Nibiru.UI.ReadingScreenUI).GetField("bodyLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Reading());
+            var generator = new TextGenerator();
+            TextGenerationSettings settings = body.GetGenerationSettings(new Vector2(body.rectTransform.rect.width, 0f));
+            settings.resizeTextForBestFit = false;
+            settings.fontSize = body.cachedTextGenerator.fontSizeUsedForBestFit;
+            float needed = generator.GetPreferredHeight(body.text, settings) / body.pixelsPerUnit;
+            Check(settings.fontSize > 0 && needed <= body.rectTransform.rect.height + 1f,
+                $"o texto das fotos passa da área (precisa de {needed:0} px, a área tem {body.rectTransform.rect.height:0}, letra {settings.fontSize})");
             CloseReading();
             yield return new Delay(0.3f);
 

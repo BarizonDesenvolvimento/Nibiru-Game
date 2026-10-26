@@ -23,7 +23,18 @@ namespace Nibiru.UI
 
         public bool IsOpen => panel.activeSelf;
 
-        void Awake() => panel.SetActive(false);
+        // Textos longos (as seis fotos do Tom, as tabuletas) diminuem a letra até caber na área do texto, sem passar por
+        // cima do rodapé; textos curtos continuam no tamanho de sempre.
+        const int MinBodySize = 18;
+
+        void Awake()
+        {
+            bodyLabel.resizeTextForBestFit = true;
+            bodyLabel.resizeTextMaxSize = bodyLabel.fontSize;
+            bodyLabel.resizeTextMinSize = MinBodySize;
+            bodyLabel.verticalOverflow = VerticalWrapMode.Truncate;
+            panel.SetActive(false);
+        }
 
         public void Show(string title, string body, string footer)
         {
