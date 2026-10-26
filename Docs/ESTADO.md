@@ -46,6 +46,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 | `Docs/Arte/Regiao1_SitioDeUr_Arte.md` | Direção de arte da região 1: paleta (o azul de lápis-lazúli só onde Kur vaza), luz e lista de peças por área |
 | `Docs/Guia-MCP-Unity.md` | Como a Unity conversa com o Claude Code |
 | `Docs/Auditoria-2026-10-25.md` | Auditoria da fatia vertical: o que está pronto, provisório e falta, com esforço, mais as decisões depois dela |
+| `Docs/Creditos-e-Licencas.md` | Origem e licença de cada asset de terceiros (todo asset novo entra nele no mesmo commit) |
 | `Docs/ESTADO.md` | Este arquivo |
 
 ## Cenas
