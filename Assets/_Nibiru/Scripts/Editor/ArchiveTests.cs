@@ -226,6 +226,17 @@ namespace Nibiru.EditorTools
                 else
                     Check(ReadingText("bodyLabel") == entry.document.LocalizedText, $"{entry.Id}: texto da leitura diferente do documento");
                 Check(Posted.Count == 0, $"{entry.Id}: rever não deveria avisar nada ({string.Join("; ", Posted)})");
+                // O texto tem de caber na área da leitura, com letra legível e sem cortar a última linha.
+                var body = (UnityEngine.UI.Text)typeof(ReadingScreenUI).GetField("bodyLabel", Any).GetValue(Reading());
+                var generator = new TextGenerator();
+                TextGenerationSettings fit = body.GetGenerationSettings(new Vector2(body.rectTransform.rect.width, 0f));
+                fit.resizeTextForBestFit = false;
+                fit.fontSize = body.cachedTextGenerator.fontSizeUsedForBestFit;
+                float needed = generator.GetPreferredHeight(body.text, fit) / body.pixelsPerUnit;
+                Check(fit.fontSize >= 18 && needed <= body.rectTransform.rect.height + 1f,
+                    $"{entry.Id}: o texto não cabe na leitura (precisa de {needed:0} px, a área tem {body.rectTransform.rect.height:0}, letra {fit.fontSize})");
+                Check(entry.Id != "doc.base_registro_guincho" || fit.fontSize >= 24,
+                    $"o registro do guincho (o texto mais longo) deveria ter letra de pelo menos 24 (está em {fit.fontSize})");
 
                 CloseReading();
                 yield return new Delay(0.15f);
