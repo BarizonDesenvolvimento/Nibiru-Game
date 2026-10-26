@@ -149,7 +149,7 @@ namespace Nibiru.EditorTools
         {
             var inventory = UnityEngine.Object.FindFirstObjectByType<PlayerInventory>();
             if (inventory == null) return;
-            foreach (var (item, count) in new[] { ("Curativo", bandages), ("Antibioticos", antibiotics) })
+            foreach (var (item, count) in new[] { ("Curativo", bandages), ("Antibioticos", antibiotics), ("RoloDeFilmeDoTom", 0), ("FotosDoTom", 0) })
             {
                 var definition = Load<ItemDefinition>("Items/" + item);
                 inventory.Remove(definition, inventory.CountOf(definition));
