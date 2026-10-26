@@ -16,6 +16,9 @@ namespace Nibiru.AI
         public const string StrikeParam = "Golpe";
         public const string HurtParam = "Dano";
         public const string DeathParam = "Morte";
+        // Só o controlador do Primeiro Servo tem estes dois; no Lullu, a investida usa o golpe.
+        public const string LungeParam = "Investida";
+        public const string RoarParam = "Urro";
 
         [SerializeField] Animator animator;
         [SerializeField] LulluAI brain;
@@ -42,6 +45,8 @@ namespace Nibiru.AI
         static readonly int StrikeId = Animator.StringToHash(StrikeParam);
         static readonly int HurtId = Animator.StringToHash(HurtParam);
         static readonly int DeathId = Animator.StringToHash(DeathParam);
+        static readonly int LungeId = Animator.StringToHash(LungeParam);
+        static readonly int RoarId = Animator.StringToHash(RoarParam);
 
         Transform spine, chest, neck, head, leftFoot, rightFoot, model;
         Vector3 modelBase;
@@ -52,6 +57,8 @@ namespace Nibiru.AI
         Vector3 aliveVisualPosition;
         Quaternion aliveVisualRotation;
         LulluAI.State lastState;
+        bool hasLunge, hasRoar, wasRoaring;
+        FirstServantFight fight;
 
         void Awake()
         {
@@ -59,6 +66,12 @@ namespace Nibiru.AI
             if (brain == null) brain = GetComponent<LulluAI>();
             if (health == null) health = GetComponent<Health>();
             animator.applyRootMotion = false;
+            fight = GetComponent<FirstServantFight>();
+            foreach (AnimatorControllerParameter parameter in animator.parameters)
+            {
+                if (parameter.nameHash == LungeId) hasLunge = true;
+                if (parameter.nameHash == RoarId) hasRoar = true;
+            }
             if (animator.isHuman)
             {
                 spine = animator.GetBoneTransform(HumanBodyBones.Spine);
@@ -102,11 +115,19 @@ namespace Nibiru.AI
             lastPosition = transform.position;
             animator.SetFloat(SpeedId, speed);
 
-            // Golpe e investida: a preparação é a animação do golpe.
+            // Golpe e investida: a preparação é a animação do golpe (a investida tem a dela, se o controlador tiver).
             var state = brain.CurrentState;
-            if (state != lastState && (state == LulluAI.State.Golpe || state == LulluAI.State.Investida))
-                animator.SetTrigger(StrikeId);
+            if (state != lastState)
+            {
+                if (state == LulluAI.State.Investida && hasLunge) animator.SetTrigger(LungeId);
+                else if (state == LulluAI.State.Golpe || state == LulluAI.State.Investida) animator.SetTrigger(StrikeId);
+            }
             lastState = state;
+
+            // Urro do Primeiro Servo: o mesmo da luta (ao acordar e a cada troca de fase).
+            bool roaring = fight != null && fight.IsRoaring;
+            if (roaring && !wasRoaring && hasRoar) animator.SetTrigger(RoarId);
+            wasRoaring = roaring;
         }
 
         void OnDamaged(DamageInfo info)

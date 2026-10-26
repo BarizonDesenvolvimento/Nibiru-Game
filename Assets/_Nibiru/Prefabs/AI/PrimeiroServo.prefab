@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1832847150820073334}
   - component: {fileID: 4152701128841890416}
   - component: {fileID: 3102799826899244546}
-  - component: {fileID: 8744983296558505305}
+  - component: {fileID: 8243010829247586276}
   m_Layer: 0
   m_Name: PrimeiroServo
   m_TagString: Untagged
@@ -36,8 +36,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 628181838636184801}
-  - {fileID: 402205448943524275}
-  - {fileID: 619680382473484362}
+  - {fileID: 8453697745745836533}
+  - {fileID: 478298718629474543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &2515979211820361999
@@ -129,14 +129,14 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 77f1318e39039934ab483fda3d04256c, type: 2}
   awakeOnStart: 0
   raiseOnDefeat: {fileID: 0}
-  roarSound: {fileID: 3676303691377260456}
-  crackSound: {fileID: 8494163789932600299}
+  roarSound: {fileID: 1515997180696667313}
+  crackSound: {fileID: 7973569562409776410}
   sealLights: []
   floodlights: []
   shardMaterial: {fileID: 2100000, guid: 3774368a1b1bfbf4abcdce819b3d53b8, type: 2}
   eyeColor: {r: 0.3, g: 0.5, b: 1, a: 1}
   defeatedSealBrightness: 0.3
---- !u!114 &8744983296558505305
+--- !u!114 &8243010829247586276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e2bf912b57ca64a9f547e7ef07701e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.AI.LulluAnimator
-  animator: {fileID: 6780885140156778911}
+  animator: {fileID: 8552578232464151487}
   brain: {fileID: 4152701128841890416}
   health: {fileID: 1832847150820073334}
   visual: {fileID: 628181838636184801}
@@ -158,7 +158,7 @@ MonoBehaviour:
   headBend: -12
   movingWeight: 0.7
   fullyMovingSpeed: 1.2
---- !u!1 &389345598332551531
+--- !u!1 &2470538215397504007
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,22 +166,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 402205448943524275}
-  - component: {fileID: 3676303691377260456}
+  - component: {fileID: 478298718629474543}
+  - component: {fileID: 7973569562409776410}
   m_Layer: 0
-  m_Name: Som_Urro
+  m_Name: Som_Mascara
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &402205448943524275
+--- !u!4 &478298718629474543
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389345598332551531}
+  m_GameObject: {fileID: 2470538215397504007}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -190,20 +190,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8592615905081354045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &3676303691377260456
+--- !u!82 &7973569562409776410
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389345598332551531}
+  m_GameObject: {fileID: 2470538215397504007}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: df8dfbf233a4e2045893f72bfe11f299, type: 3}
+  m_Resource: {fileID: 8300000, guid: 39c53d53aee584747967d01ef4dc7edc, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -287,7 +287,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &1735093588949029917
+--- !u!1 &4398249355619122458
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,22 +295,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 619680382473484362}
-  - component: {fileID: 8494163789932600299}
+  - component: {fileID: 8453697745745836533}
+  - component: {fileID: 1515997180696667313}
   m_Layer: 0
-  m_Name: Som_Mascara
+  m_Name: Som_Urro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &619680382473484362
+--- !u!4 &8453697745745836533
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1735093588949029917}
+  m_GameObject: {fileID: 4398249355619122458}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -319,20 +319,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8592615905081354045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &8494163789932600299
+--- !u!82 &1515997180696667313
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1735093588949029917}
+  m_GameObject: {fileID: 4398249355619122458}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 39c53d53aee584747967d01ef4dc7edc, type: 3}
+  m_Resource: {fileID: 8300000, guid: df8dfbf233a4e2045893f72bfe11f299, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.9
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -446,7 +446,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 647014004999902181}
+  - {fileID: 2328625174795930053}
   m_Father: {fileID: 8592615905081354045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7885736691135180161
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d7ff1346939df479ddf6d5e4c7a386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.EchoRevealable
---- !u!1001 &1112422858921194510
+--- !u!1001 &2871688248273612334
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -526,13 +526,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3d140f31cfd12e4d95ef04f2c717181, type: 3}
---- !u!4 &647014004999902181 stripped
+--- !u!4 &2328625174795930053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3d140f31cfd12e4d95ef04f2c717181, type: 3}
-  m_PrefabInstance: {fileID: 1112422858921194510}
+  m_PrefabInstance: {fileID: 2871688248273612334}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &6780885140156778911 stripped
+--- !u!95 &8552578232464151487 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b3d140f31cfd12e4d95ef04f2c717181, type: 3}
-  m_PrefabInstance: {fileID: 1112422858921194510}
+  m_PrefabInstance: {fileID: 2871688248273612334}
   m_PrefabAsset: {fileID: 0}

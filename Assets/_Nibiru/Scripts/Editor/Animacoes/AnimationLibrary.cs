@@ -20,18 +20,22 @@ namespace Nibiru.EditorTools
         /// name: nome do clipe e do arquivo em Assets. source: caminho do FBX dentro da biblioteca.
         /// loop: Loop Time. original: giro "Original" (golpes de corpo de lado) em vez de "Body Orientation".
         /// feet: altura pelos pés. moving: anda (a velocidade natural é lida do clipe). keepTravel: o
-        /// deslocamento fica na pose. Em todos o avanço da raiz é descartado: quem anda é o jogo.
+        /// deslocamento fica na pose. first e last: trecho do arquivo (quadros como no Mixamo, o primeiro é 1;
+        /// -1 = inteiro). Em todos o avanço da raiz é descartado: quem anda é o jogo.
         /// </summary>
         public readonly struct Entry
         {
             public readonly string name, group, source;
             public readonly bool loop, original, feet, moving, keepTravel;
+            public readonly int first, last;
 
             public Entry(string name, string group, string source, bool loop,
-                bool original = false, bool feet = false, bool moving = false, bool keepTravel = false)
+                bool original = false, bool feet = false, bool moving = false, bool keepTravel = false,
+                int first = -1, int last = -1)
             {
                 this.name = name; this.group = group; this.source = source; this.loop = loop;
                 this.original = original; this.feet = feet; this.moving = moving; this.keepTravel = keepTravel;
+                this.first = first; this.last = last;
             }
 
             public string AssetPath => Destination + group + "/" + name + ".fbx";
@@ -47,17 +51,17 @@ namespace Nibiru.EditorTools
             new("Lullu_Parado", "Criatura", Zombie + "zombie idle", true),
             new("Lullu_Andar", "Criatura", Zombie + "walking", true, moving: true),
             new("Lullu_Correr", "Criatura", Zombie + "zombie running", true, moving: true),
-            new("Lullu_Ataque", "Criatura", Zombie + "zombie attack", false, feet: true),
+            new("Lullu_Ataque", "Criatura", Zombie + "zombie attack", false, feet: true, first: 18, last: 62),
             new("Lullu_Saida_Rachaduras", "Criatura", Zombie + "zombie stand up", false),
             // Primeiro Servo: o pacote do mutante (forte, pesado).
             new("Servo_Parado", "Criatura", Creature + "mutant breathing idle", true),
             new("Servo_Andar", "Criatura", Creature + "mutant walking", true, moving: true),
             new("Servo_Correr", "Criatura", Creature + "mutant run", true, moving: true),
-            new("Servo_Ataque", "Criatura", Creature + "mutant swiping", false, feet: true),
-            new("Servo_Investida", "Criatura", Creature + "mutant jump attack", false),
-            new("Servo_Urro", "Criatura", Creature + "mutant roaring", false),
+            new("Servo_Ataque", "Criatura", Creature + "mutant swiping", false, feet: true, first: 14, last: 56),
+            new("Servo_Investida", "Criatura", Creature + "mutant jump attack", false, first: 1, last: 75),
+            new("Servo_Urro", "Criatura", Creature + "mutant roaring", false, first: 10, last: 70),
             // Os dois: o golpe recebido (zumbi, para a camada aditiva) e a morte (o zumbi não tem).
-            new("Criatura_Golpe_Recebido", "Criatura", Zombie + "zombie reaction hit", false),
+            new("Criatura_Golpe_Recebido", "Criatura", Zombie + "zombie reaction hit", false, first: 8, last: 40),
             new("Criatura_Morte", "Criatura", Creature + "mutant dying", false, keepTravel: true),
 
             // Elena: locomoção feminina para comparar com a atual (Idle, WalkForward e Fast Run), mais
@@ -153,6 +157,10 @@ namespace Nibiru.EditorTools
             var clip = importer.defaultClipAnimations.FirstOrDefault();
             if (clip == null) return;
             clip.name = entry.name;
+            // O Unity conta os quadros a partir do primeiro do take; nos cortes, o primeiro é 1.
+            float offset = clip.firstFrame - 1f;
+            if (entry.first >= 0) clip.firstFrame = entry.first + offset;
+            if (entry.last >= 0) clip.lastFrame = entry.last + offset;
             clip.loopTime = entry.loop;
             clip.lockRootRotation = true;
             clip.keepOriginalOrientation = entry.original;

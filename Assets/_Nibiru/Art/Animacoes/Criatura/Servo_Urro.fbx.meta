@@ -35,8 +35,8 @@ ModelImporter:
       name: Servo_Urro
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
-      lastFrame: 162
+      firstFrame: 9
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

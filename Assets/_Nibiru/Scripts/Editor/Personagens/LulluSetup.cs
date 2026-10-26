@@ -50,7 +50,7 @@ namespace Nibiru.EditorTools
             AssetDatabase.Refresh();
             SoldiersSetup.ImportCharacter(Character);
             ConfigureClips(Strike.file, new[] { Strike });
-            var controller = BuildController(ControllerPath, SettingsPath);
+            var controller = BuildController(ControllerPath, SettingsPath, "Lullu");
             if (controller == null) return;
             AssetDatabase.SaveAssets();
             BuildPrefab(PrefabPath, ModelPath, controller, ColliderRadius, ColliderHeight);
@@ -61,19 +61,37 @@ namespace Nibiru.EditorTools
         // ---------- Controlador ----------
 
         // Também usado pelo Primeiro Servo (PrimeiroServoSetup), com o controlador e os dados dele.
-        internal static AnimatorController BuildController(string controllerPath, string settingsPath)
+        // prefix: "Lullu" ou "Servo", os clipes da criatura (Art/Animacoes/Criatura, importados por
+        // Nibiru > Animações > Importar clipes da biblioteca). Se faltarem, usa os cortes da Elena.
+        internal static AnimatorController BuildController(string controllerPath, string settingsPath, string prefix)
         {
-            // Cortes da Elena (ElenaSetup), retargetados para o Lullu pelo Humanoid.
-            var idle = Clip("Idle", "Parada");
-            var walk = Clip("WalkForward", "Andar");
-            var run = Clip("Fast Run", "Correr");
-            var strike = Clip("Stabbing", Strike.name);
-            var hurt = Clip("Hit Reaction", "Dano");
-            var death = Clip("Standing React Death Backward", "Morte");
+            var idle = AnimationLibrary.Clip(prefix + "_Parado");
+            var walk = AnimationLibrary.Clip(prefix + "_Andar");
+            var run = AnimationLibrary.Clip(prefix + "_Correr");
+            var strike = AnimationLibrary.Clip(prefix + "_Ataque");
+            var hurt = AnimationLibrary.Clip("Criatura_Golpe_Recebido");
+            var death = AnimationLibrary.Clip("Criatura_Morte");
+            var lunge = AnimationLibrary.Clip(prefix + "_Investida");
+            var roar = AnimationLibrary.Clip(prefix + "_Urro");
+            float strikeSpeed = StrikeSpeed(prefix);
             if (new[] { idle, walk, run, strike, hurt, death }.Any(c => c == null))
             {
-                Debug.LogError("Lullu: faltam cortes do Mixamo da Elena. Rode antes Nibiru > Personagens > Montar Elena animada.");
-                return null;
+                Debug.LogWarning($"{prefix}: faltam clipes da criatura; usando os cortes da Elena. Rode Nibiru > Animações > Importar clipes da biblioteca.");
+                // Cortes da Elena (ElenaSetup), retargetados pelo Humanoid.
+                idle = Clip("Idle", "Parada");
+                walk = Clip("WalkForward", "Andar");
+                run = Clip("Fast Run", "Correr");
+                strike = Clip("Stabbing", Strike.name);
+                hurt = Clip("Hit Reaction", "Dano");
+                death = Clip("Standing React Death Backward", "Morte");
+                lunge = null;
+                roar = null;
+                strikeSpeed = 1f;
+                if (new[] { idle, walk, run, strike, hurt, death }.Any(c => c == null))
+                {
+                    Debug.LogError("Lullu: faltam cortes do Mixamo da Elena. Rode antes Nibiru > Personagens > Montar Elena animada.");
+                    return null;
+                }
             }
 
             var settings = AssetDatabase.LoadAssetAtPath<LulluSettings>(settingsPath);
@@ -101,6 +119,7 @@ namespace Nibiru.EditorTools
             // Golpe: entra pelo gatilho e volta sozinho para a locomoção.
             var strikeState = machine.AddState("Golpe", new Vector3(300f, 60f));
             strikeState.motion = strike;
+            strikeState.speed = strikeSpeed;
             var enter = machine.AddAnyStateTransition(strikeState);
             enter.AddCondition(AnimatorConditionMode.If, 0f, LulluAnimator.StrikeParam);
             enter.hasExitTime = false;
@@ -111,6 +130,10 @@ namespace Nibiru.EditorTools
             leave.exitTime = 1f;
             leave.hasFixedDuration = true;
             leave.duration = 0.2f;
+
+            // Investida e urro do chefe (só o Servo): entram pelos gatilhos do LulluAnimator e voltam sozinhos.
+            if (lunge != null) AddOneShot(controller, machine, locomotion, "Investida", lunge, LulluAnimator.LungeParam, LungeSpeed, new Vector3(300f, 180f));
+            if (roar != null) AddOneShot(controller, machine, locomotion, "Urro", roar, LulluAnimator.RoarParam, RoarSpeed, new Vector3(300f, 240f));
 
             // Morte: cai para trás e fica deitado.
             var deathState = machine.AddState("Morte", new Vector3(300f, 120f));
@@ -132,6 +155,7 @@ namespace Nibiru.EditorTools
             var empty = reactionMachine.AddState("Vazio", new Vector3(300f, 0f));
             var hurtState = reactionMachine.AddState("Dano", new Vector3(300f, 60f));
             hurtState.motion = hurt;
+            hurtState.speed = HurtSpeed;
             reactionMachine.defaultState = empty;
             var hit = reactionMachine.AddAnyStateTransition(hurtState);
             hit.AddCondition(AnimatorConditionMode.If, 0f, LulluAnimator.HurtParam);
@@ -146,6 +170,30 @@ namespace Nibiru.EditorTools
 
             EditorUtility.SetDirty(controller);
             return controller;
+        }
+
+        // Velocidade de cada golpe, para o gesto cair no tempo da IA (preparação 0,5 s e recuperação 0,8 s,
+        // com o pico do golpe depois do quadro 30 do corte): o zumbi é lento demais para 0,5 s sem acelerar.
+        static float StrikeSpeed(string prefix) => prefix == "Servo" ? 1.7f : 2f;
+        const float LungeSpeed = 1.15f, RoarSpeed = 1.1f, HurtSpeed = 1.3f;
+
+        static void AddOneShot(AnimatorController controller, AnimatorStateMachine machine, AnimatorState back,
+            string stateName, AnimationClip clip, string trigger, float speed, Vector3 position)
+        {
+            controller.AddParameter(trigger, AnimatorControllerParameterType.Trigger);
+            var state = machine.AddState(stateName, position);
+            state.motion = clip;
+            state.speed = speed;
+            var enter = machine.AddAnyStateTransition(state);
+            enter.AddCondition(AnimatorConditionMode.If, 0f, trigger);
+            enter.hasExitTime = false;
+            enter.duration = 0.1f;
+            enter.canTransitionToSelf = false;
+            var leave = state.AddTransition(back);
+            leave.hasExitTime = true;
+            leave.exitTime = 1f;
+            leave.hasFixedDuration = true;
+            leave.duration = 0.2f;
         }
 
         // ---------- Prefab ----------

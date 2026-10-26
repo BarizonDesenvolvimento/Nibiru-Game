@@ -47,7 +47,7 @@ namespace Nibiru.EditorTools
             SoldiersSetup.ImportCharacter(Character);
             if (AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath) == null) return;
             CharacterSetupKit.ConfigureClips(LulluSetup.Strike.file, new[] { LulluSetup.Strike });
-            var controller = LulluSetup.BuildController(ControllerPath, SettingsPath);
+            var controller = LulluSetup.BuildController(ControllerPath, SettingsPath, "Servo");
             if (controller == null) return;
 
             if (AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath) == null)

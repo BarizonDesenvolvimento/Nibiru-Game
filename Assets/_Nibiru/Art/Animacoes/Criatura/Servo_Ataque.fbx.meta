@@ -35,8 +35,8 @@ ModelImporter:
       name: Servo_Ataque
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
-      lastFrame: 80
+      firstFrame: 13
+      lastFrame: 55
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
