@@ -12,12 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244459d7824bdd946bb31acd435b7a38, type: 3}
   m_Name: Teste_OQueOTomViu
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestDefinition
-  displayName: O que o Tom viu
+  nameKey: quest.Teste_OQueOTomViu.name
+  displayName: 
   kind: 1
   startOn: {fileID: 0}
   steps:
-  - objective: Ache o rolo de filme do Tom
+  - id: s1
+    objectiveKey: quest.Teste_OQueOTomViu.s1
+    objective: 
     completeOn: {fileID: 0}
     requiredItem: {fileID: 11400000, guid: ce205903d0fa66e4b97fcebc1a94d39a, type: 2}
     requiredCount: 1
   raiseOnComplete: {fileID: 0}
+  failOn: {fileID: 0}
+  reputationOnComplete: []

@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: Curativo
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  displayName: Curativo
-  description: Gaze e esparadrapo. Cura um pouco.
+  nameKey: item.Curativo.name
+  descriptionKey: item.Curativo.desc
+  hintKey: 
+  displayName: 
+  description: 
+  pickupHint: 
   icon: {fileID: 0}
   category: 2
   maxStack: 3
   healAmount: 30
+  firearm: {fileID: 0}
+  tablet: {fileID: 0}

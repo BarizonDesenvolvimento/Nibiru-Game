@@ -15,14 +15,17 @@ MonoBehaviour:
   nodes:
   - id: m1
     speaker: Menina
-    text: "Ziusudra! Meu pai disse que os deuses l\xE1 de cima n\xE3o conseguem dormir
-      por causa do nosso barulho."
+    speakerKey: spk.menina
+    textKey: dlg.Memoria_Menina.m1
+    text: 
     next: m2
     raise: {fileID: 0}
     choices: []
   - id: m2
     speaker: Menina
-    text: Se eu ficar bem quietinha, eles param de ficar bravos?
+    speakerKey: spk.menina
+    textKey: dlg.Memoria_Menina.m2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

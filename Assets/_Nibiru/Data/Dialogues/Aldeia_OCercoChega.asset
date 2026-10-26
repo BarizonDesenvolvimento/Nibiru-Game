@@ -15,8 +15,9 @@ MonoBehaviour:
   nodes:
   - id: s1
     speaker: Samir
-    text: "(Ele se encosta na parede da \xFAltima casa e aponta para o norte, para
-      a estrada.) Abaixe-se. Olhe."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCercoChega.s1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

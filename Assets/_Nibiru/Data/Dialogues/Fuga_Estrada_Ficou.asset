@@ -15,47 +15,57 @@ MonoBehaviour:
   nodes:
   - id: f1
     speaker: Elena
-    text: "(Samir dirige em sil\xEAncio. Pelo retrovisor, ela o v\xEA olhar para
-      a bolsa dela e desviar o rosto.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Ficou.f1
+    text: 
     next: f2
     raise: {fileID: 0}
     choices: []
   - id: f2
     speaker: Samir
-    text: "Voc\xEA ficou com ela."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Ficou.f2
+    text: 
     next: f3
     raise: {fileID: 0}
     choices: []
   - id: f3
     speaker: Elena
-    text: "Eu li aquilo. Eu n\xE3o ia deixar para ningu\xE9m."
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Ficou.f3
+    text: 
     next: f4
     raise: {fileID: 0}
     choices: []
   - id: f4
     speaker: Samir
-    text: "Os Guardi\xF5es fizeram um juramento sobre este caminho. Quem guarda,
-      guarda para os que v\xEAm depois. Eu o fiz."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Ficou.f4
+    text: 
     next: f5
     raise: {fileID: 0}
     choices: []
   - id: f5
     speaker: Elena
-    text: "E voc\xEA acha que eu sou um perigo para o que voc\xEA guarda."
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Ficou.f5
+    text: 
     next: f6
     raise: {fileID: 0}
     choices: []
   - id: f6
     speaker: Samir
-    text: "Acho que a tabuleta est\xE1 quente demais para quem n\xE3o sabe o que
-      ela quer."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Ficou.f6
+    text: 
     next: f7
     raise: {fileID: 0}
     choices: []
   - id: f7
     speaker: Elena
-    text: "(A tabuleta pulsa na bolsa, uma vez, devagar. Nenhum dos dois comenta.
-      A tempestade cobre a estrada atr\xE1s deles.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Ficou.f7
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

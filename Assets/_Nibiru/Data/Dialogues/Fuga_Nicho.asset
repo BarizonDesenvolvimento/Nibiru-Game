@@ -15,20 +15,25 @@ MonoBehaviour:
   nodes:
   - id: n1
     speaker: Samir
-    text: "Deixa aqui. Os Guardi\xF5es levam ao Po\xE7o."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Nicho.n1
+    text: 
     next: n2
     raise: {fileID: 0}
     choices: []
   - id: n2
     speaker: Elena
-    text: "(Ela p\xF5e a tabuleta no nicho, entre a lamparina e o barco de junco.
-      A pedra esfria na m\xE3o dela. O que ficou dentro dela, n\xE3o.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Nicho.n2
+    text: 
     next: n3
     raise: {fileID: 0}
     choices: []
   - id: n3
     speaker: Samir
-    text: "Pronto. Eu vou na frente, para ligar o motor. N\xE3o demore."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Nicho.n3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -12,14 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Base_EmailDoKast
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
-  displayName: E-mail impresso
-  text: "De: A. Kast\nPara: Equipe de Conten\xE7\xE3o, Ur\nEnviado: 14 de abril de
-    2003, 06:12\nAssunto: A doutora Varga\n\nRepito o que disse pelo telefone, porque
-    alguns de voc\xEAs parecem n\xE3o ter entendido.\n\nA filha de Irena n\xE3o \xE9
-    uma testemunha. N\xE3o \xE9 uma funcion\xE1ria. Ela \xE9 a raz\xE3o de estarmos
-    aqui. Ningu\xE9m toca nela, ningu\xE9m a assusta al\xE9m do necess\xE1rio e ningu\xE9m
-    dispara na dire\xE7\xE3o dela.\n\nQuanto aos outros, sigam o protocolo.\n\nA
-    abertura n\xE3o acontece sem ela. A heran\xE7a precisa estar presente.\n\nA.
-    K."
-  footer: "Impresso e esquecido sobre a mesa, com uma mancha de caf\xE9 no canto."
+  titleKey: doc.Base_EmailDoKast.title
+  textKey: doc.Base_EmailDoKast.text
+  footerKey: doc.Base_EmailDoKast.footer
+  displayName: 
+  text: 
+  footer: 
   raiseOnRead: {fileID: 11400000, guid: f820d4fc58f1e1f4ba7e20aea5a3335a, type: 2}

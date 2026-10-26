@@ -15,7 +15,9 @@ MonoBehaviour:
   nodes:
   - id: w1
     speaker: Dra. Weiss
-    text: "Curativos, doutora. Se achar, volte. Eu ainda tenho os antibi\xF3ticos."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeissEspera.w1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

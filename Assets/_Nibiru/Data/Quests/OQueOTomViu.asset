@@ -12,17 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244459d7824bdd946bb31acd435b7a38, type: 3}
   m_Name: OQueOTomViu
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestDefinition
-  displayName: O que o Tom viu
+  nameKey: quest.OQueOTomViu.name
+  displayName: 
   kind: 1
   startOn: {fileID: 11400000, guid: 8d81992ee0b78d7478cd47105896346d, type: 2}
   steps:
-  - objective: Encontre os rolos de filme do Tom
+  - id: s1
+    objectiveKey: quest.OQueOTomViu.s1
+    objective: 
     completeOn: {fileID: 0}
     requiredItem: {fileID: 11400000, guid: ce205903d0fa66e4b97fcebc1a94d39a, type: 2}
     requiredCount: 3
-  - objective: "Leve os filmes a algu\xE9m que saiba revel\xE1-los"
+  - id: s2
+    objectiveKey: quest.OQueOTomViu.s2
+    objective: 
     completeOn: {fileID: 11400000, guid: aab20e398b80e8f429a2bd8923db1a5b, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
   raiseOnComplete: {fileID: 0}
+  failOn: {fileID: 0}
   reputationOnComplete: []

@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: TabuletaDoJunco
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  displayName: Tabuleta do Junco
-  description: "Pedra de l\xE1pis-laz\xFAli com escrita em ouro. Est\xE1 morna."
+  nameKey: item.TabuletaDoJunco.name
+  descriptionKey: item.TabuletaDoJunco.desc
+  hintKey: 
+  displayName: 
+  description: 
+  pickupHint: 
   icon: {fileID: 0}
   category: 4
   maxStack: 1

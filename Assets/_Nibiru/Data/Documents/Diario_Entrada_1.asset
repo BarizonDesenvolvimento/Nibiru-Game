@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Diario_Entrada_1
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
-  displayName: "Di\xE1rio de Elena Varga: entrada 1"
-  text: "Iraque, sul do deserto. Tell Amar fica a algumas horas.\n\nEm tr\xEAs dias
-    vi minha equipe morta, uma voz me chamar pelo nome que minha m\xE3e me deu e
-    uma tabuleta acender na minha m\xE3o. Um homem que diz ser meu amigo me levou
-    por um t\xFAnel que ele jura que ningu\xE9m mais conhece.\n\nN\xE3o sei em quem
-    confiar. Sei que a Funda\xE7\xE3o sabia que eu estaria aqui, e que minha m\xE3e
-    esteve neste lugar muito antes de mim. Preciso descobrir por qu\xEA."
-  footer: "Anotado na ca\xE7amba de uma caminhonete, no meio de uma tempestade de
-    areia."
+  titleKey: doc.Diario_Entrada_1.title
+  textKey: doc.Diario_Entrada_1.text
+  footerKey: doc.Diario_Entrada_1.footer
+  displayName: 
+  text: 
+  footer: 
   raiseOnRead: {fileID: 11400000, guid: 73bc8a14500f66d4c99908cf54289d0f, type: 2}

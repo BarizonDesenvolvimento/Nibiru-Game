@@ -15,25 +15,33 @@ MonoBehaviour:
   nodes:
   - id: voz
     speaker: Voz
-    text: Tila.
+    speakerKey: spk.voz
+    textKey: dlg.Acampamento_Sussurro.voz
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "\"Viva.\" Isso \xE9 sum\xE9rio. E eu entendi sem pensar."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Sussurro.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "De onde veio essa tabuleta? Eu n\xE3o peguei isso ontem."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Sussurro.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "Ainda est\xE1 morna... como se algu\xE9m tivesse acabado de soltar."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Sussurro.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

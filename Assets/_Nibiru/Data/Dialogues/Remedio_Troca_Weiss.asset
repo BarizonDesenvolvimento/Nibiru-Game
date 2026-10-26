@@ -15,40 +15,49 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: (Ela estende os curativos.) Achei estes.
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Troca_Weiss.e1
+    text: 
     next: w1
     raise: {fileID: 0}
     choices: []
   - id: w1
     speaker: Dra. Weiss
-    text: Obrigada. Meu Deus, obrigada.
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Remedio_Troca_Weiss.w1
+    text: 
     next: w2
     raise: {fileID: 0}
     choices: []
   - id: w2
     speaker: Dra. Weiss
-    text: "(Ela refaz a bandagem da perna com m\xE3os treinadas, depois tira da mochila
-      uma caixa de antibi\xF3ticos e uma pasta.)"
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Remedio_Troca_Weiss.w2
+    text: 
     next: w3
     raise: {fileID: 0}
     choices: []
   - id: w3
     speaker: Dra. Weiss
-    text: "Os antibi\xF3ticos s\xE3o para o seu rapaz. E isto \xE9 o que consegui
-      tirar do briefing. N\xE3o entendo metade. Talvez a senhora entenda."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Remedio_Troca_Weiss.w3
+    text: 
     next: w4
     raise: {fileID: 0}
     choices: []
   - id: w4
     speaker: Dra. Weiss
-    text: "Uma coisa, doutora. Se algu\xE9m perguntar por mim... n\xE3o me viu. Preciso
-      de tempo para pensar no que vou fazer."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Remedio_Troca_Weiss.w4
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: Descanse a perna.
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Troca_Weiss.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: RoloDeFilmeDoTom
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  displayName: Rolo de filme do Tom
-  description: "Filme fotogr\xE1fico ainda n\xE3o revelado."
+  nameKey: item.RoloDeFilmeDoTom.name
+  descriptionKey: item.RoloDeFilmeDoTom.desc
+  hintKey: 
+  displayName: 
+  description: 
+  pickupHint: 
   icon: {fileID: 0}
   category: 4
   maxStack: 3
+  healAmount: 0
+  firearm: {fileID: 0}
+  tablet: {fileID: 0}

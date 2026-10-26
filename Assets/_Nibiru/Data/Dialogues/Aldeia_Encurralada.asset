@@ -15,25 +15,33 @@ MonoBehaviour:
   nodes:
   - id: s1
     speaker: Soldado
-    text: "Parada! M\xE3os onde eu possa ver."
+    speakerKey: spk.soldado
+    textKey: dlg.Aldeia_Encurralada.s1
+    text: 
     next: s2
     raise: {fileID: 0}
     choices: []
   - id: s2
     speaker: Soldado
-    text: Comando, Equipe Dois. Achei a doutora, na beira da aldeia. Viva.
+    speakerKey: spk.soldado
+    textKey: dlg.Aldeia_Encurralada.s2
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "Eu vi o que voc\xEAs fizeram com o Hassan."
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_Encurralada.e1
+    text: 
     next: s3
     raise: {fileID: 0}
     choices: []
   - id: s3
     speaker: Soldado
-    text: "Ningu\xE9m perguntou, doutora. De joelhos. Devagar."
+    speakerKey: spk.soldado
+    textKey: dlg.Aldeia_Encurralada.s3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,27 +15,33 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Ela se ajoelha junto da esteira e mostra a caixa \xE0 Umm Karim.) Antibi\xF3ticos.
-      Ele tem que tomar tudo, mesmo quando a febre baixar."
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Entrega_Yusuf.e1
+    text: 
     next: u1
     raise: {fileID: 0}
     choices: []
   - id: u1
     speaker: Umm Karim
-    text: "(Ela pega a caixa com as duas m\xE3os.) Que Deus a guarde, doutora. Esta
-      casa vai lembrar."
+    speakerKey: spk.umm_karim
+    textKey: dlg.Remedio_Entrega_Yusuf.u1
+    text: 
     next: y1
     raise: {fileID: 0}
     choices: []
   - id: y1
     speaker: Yusuf
-    text: (Ele abre os olhos, devagar.) A senhora... voltou.
+    speakerKey: spk.yusuf
+    textKey: dlg.Remedio_Entrega_Yusuf.y1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Descanse. Eu volto para ver como voc\xEA est\xE1."
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Entrega_Yusuf.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

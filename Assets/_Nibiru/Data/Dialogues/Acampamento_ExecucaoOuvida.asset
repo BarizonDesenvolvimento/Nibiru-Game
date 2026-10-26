@@ -15,13 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "Um tiro. L\xE1 embaixo, perto do helic\xF3ptero."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_ExecucaoOuvida.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Resgate n\xE3o chega atirando. Preciso sair daqui, para as trincheiras."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_ExecucaoOuvida.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,45 +15,55 @@ MonoBehaviour:
   nodes:
   - id: k1
     speaker: "Kast (r\xE1dio)"
-    text: "Doutora Varga. Sabia que a senhora atravessaria. Sua m\xE3e tamb\xE9m
-      atravessava."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Wadi_RadioKast.k1
+    text: 
     next: k2
     raise: {fileID: 0}
     choices: []
   - id: k2
     speaker: "Kast (r\xE1dio)"
-    text: "Os moradores da Aldeia est\xE3o cercados. Todos: o rapaz doente, a senhora
-      idosa, quem mais estiver nas casas. Meus homens esperam uma palavra minha."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Wadi_RadioKast.k2
+    text: 
     next: k3
     raise: {fileID: 0}
     choices: []
   - id: k3
     speaker: "Kast (r\xE1dio)"
-    text: "Deixe a tabuleta no ch\xE3o do wadi, onde est\xE1, e siga seu caminho.
-      Meus homens a buscam, soltam todos e saem da Aldeia. Ningu\xE9m mais se machuca."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Wadi_RadioKast.k3
+    text: 
     next: s1
     raise: {fileID: 0}
     choices: []
   - id: s1
     speaker: "Samir (r\xE1dio)"
-    text: "Doutora, n\xE3o ou\xE7a. A tabuleta tem de voltar para o Po\xE7o, enterrada
-      no nicho. Se ele a levar, n\xE3o sobra ningu\xE9m para impedi-lo."
+    speakerKey: spk.samir_radio
+    textKey: dlg.Wadi_RadioKast.s1
+    text: 
     next: v1
     raise: {fileID: 0}
     choices: []
   - id: v1
     speaker: Voz
-    text: "(baixinho, s\xF3 para ela) N\xE3o abra m\xE3o de nada."
+    speakerKey: spk.voz
+    textKey: dlg.Wadi_RadioKast.v1
+    text: 
     next: escolha
     raise: {fileID: 0}
     choices: []
   - id: escolha
     speaker: Elena
-    text: "(O r\xE1dio chia. A tabuleta est\xE1 morna na bolsa. O que fazer com ela?)"
+    speakerKey: spk.elena
+    textKey: dlg.Wadi_RadioKast.escolha
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: "Deixar a tabuleta no ch\xE3o para o Kast."
+    - id: c1
+      textKey: dlg.Wadi_RadioKast.escolha.c1
+      text: 
       next: entrega
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: ddc282898265b5749bf08d79cd2654bc, type: 2}
@@ -62,7 +72,9 @@ MonoBehaviour:
         amount: 15
       - faction: {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
         amount: -15
-    - text: "Levar a tabuleta de volta ao Po\xE7o, com o Samir."
+    - id: c2
+      textKey: dlg.Wadi_RadioKast.escolha.c2
+      text: 
       next: devolve
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: 826bcad97c4419741bca61768932e3f5, type: 2}
@@ -71,7 +83,9 @@ MonoBehaviour:
         amount: 15
       - faction: {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
         amount: -15
-    - text: "Ficar com a tabuleta e n\xE3o dizer nada."
+    - id: c3
+      textKey: dlg.Wadi_RadioKast.escolha.c3
+      text: 
       next: fica
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: b28a546c5c60c3643840a730d79839f0, type: 2}
@@ -82,38 +96,49 @@ MonoBehaviour:
         amount: -5
   - id: entrega
     speaker: "Kast (r\xE1dio)"
-    text: Sensata, doutora. Meus homens a buscam. Os soldados deixam a Aldeia ao
-      amanhecer.
+    speakerKey: spk.kast_radio
+    textKey: dlg.Wadi_RadioKast.entrega
+    text: 
     next: entrega2
     raise: {fileID: 0}
     choices: []
   - id: entrega2
     speaker: "Samir (r\xE1dio)"
-    text: "Voc\xEA deu uma chave para eles, doutora. Uma chave."
+    speakerKey: spk.samir_radio
+    textKey: dlg.Wadi_RadioKast.entrega2
+    text: 
     next: fim
     raise: {fileID: 0}
     choices: []
   - id: devolve
     speaker: "Kast (r\xE1dio)"
-    text: "Lament\xE1vel."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Wadi_RadioKast.devolve
+    text: 
     next: devolve2
     raise: {fileID: 0}
     choices: []
   - id: devolve2
     speaker: "Samir (r\xE1dio)"
-    text: Venha. Eu espero na caminhonete.
+    speakerKey: spk.samir_radio
+    textKey: dlg.Wadi_RadioKast.devolve2
+    text: 
     next: fim
     raise: {fileID: 0}
     choices: []
   - id: fica
     speaker: Voz
-    text: "S\xE1bia."
+    speakerKey: spk.voz
+    textKey: dlg.Wadi_RadioKast.fica
+    text: 
     next: fim
     raise: {fileID: 0}
     choices: []
   - id: fim
     speaker: Elena
-    text: "(Ela desliga o r\xE1dio. O vento cobre o chiado.)"
+    speakerKey: spk.elena
+    textKey: dlg.Wadi_RadioKast.fim
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

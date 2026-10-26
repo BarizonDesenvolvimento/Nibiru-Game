@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: FacaDeCampo
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  displayName: Faca de campo
-  description: "Faca de campo da expedi\xE7\xE3o. Silenciosa."
-  pickupHint: 'Ataque com a faca: clique esquerdo ou F (RB no controle)'
+  nameKey: item.FacaDeCampo.name
+  descriptionKey: item.FacaDeCampo.desc
+  hintKey: item.FacaDeCampo.hint
+  displayName: 
+  description: 
+  pickupHint: 
   icon: {fileID: 0}
   category: 4
   maxStack: 1

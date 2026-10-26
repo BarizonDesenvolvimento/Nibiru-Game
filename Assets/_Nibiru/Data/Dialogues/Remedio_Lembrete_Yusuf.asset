@@ -15,21 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(A caixa de antibi\xF3ticos pesa na bolsa.)"
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Lembrete_Yusuf.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "O Yusuf ainda est\xE1 l\xE1, queimando de febre. Voltar pelo Po\xE7o e
-      pela base ainda d\xE1 tempo... mas o Kast est\xE1 atr\xE1s de mim, e o Samir
-      me espera."
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Lembrete_Yusuf.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "Depois que eu seguir pelo wadi, n\xE3o d\xE1 mais."
+    speakerKey: spk.elena
+    textKey: dlg.Remedio_Lembrete_Yusuf.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

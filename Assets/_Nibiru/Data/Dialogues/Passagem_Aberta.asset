@@ -15,14 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(A parede desce para dentro do ch\xE3o, sem pressa. Do outro lado, o t\xFAnel
-      \xE9 estreito e antigo, e h\xE1 chamas pequenas nas paredes.)"
+    speakerKey: spk.elena
+    textKey: dlg.Passagem_Aberta.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Lamparinas acesas. Algu\xE9m ainda cuida deste caminho."
+    speakerKey: spk.elena
+    textKey: dlg.Passagem_Aberta.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

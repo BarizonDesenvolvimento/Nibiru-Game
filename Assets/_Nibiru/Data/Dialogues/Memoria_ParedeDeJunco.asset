@@ -15,66 +15,81 @@ MonoBehaviour:
   nodes:
   - id: v1
     speaker: Voz
-    text: "Parede de junco, escuta. Parede de barro, presta aten\xE7\xE3o."
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v1
+    text: 
     next: z1
     raise: {fileID: 11400000, guid: 143a0f631c5252d48b53e3ac8d1c0af7, type: 2}
     choices: []
   - id: z1
     speaker: Ziusudra
-    text: "Senhor das \xE1guas profundas? Por que fala com a parede, e n\xE3o comigo?"
+    speakerKey: spk.ziusudra
+    textKey: dlg.Memoria_ParedeDeJunco.z1
+    text: 
     next: v2
     raise: {fileID: 0}
     choices: []
   - id: v2
     speaker: Voz
-    text: "Porque jurei aos outros deuses que n\xE3o contaria nada a homem nenhum.
-      Ent\xE3o falo \xE0 parede. A parede n\xE3o \xE9 homem."
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v2
+    text: 
     next: v3
     raise: {fileID: 0}
     choices: []
   - id: v3
     speaker: Voz
-    text: "O conselho decidiu afogar a terra. As \xE1guas vir\xE3o por sete dias
-      e sete noites, e nada que respira vai sobrar."
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v3
+    text: 
     next: v4
     raise: {fileID: 0}
     choices: []
   - id: v4
     speaker: Voz
-    text: "Derruba tua casa e constr\xF3i um barco. Abandona os bens e salva a vida.
-      Leva contigo a semente de todo ser que respira."
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v4
+    text: 
     next: z2
     raise: {fileID: 0}
     choices: []
   - id: z2
     speaker: Ziusudra
-    text: Os outros deuses querem a nossa morte. Por que o senhor nos salva?
+    speakerKey: spk.ziusudra
+    textKey: dlg.Memoria_ParedeDeJunco.z2
+    text: 
     next: v5
     raise: {fileID: 0}
     choices: []
   - id: v5
     speaker: Voz
-    text: "(Um sil\xEAncio longo demais, como se a parede pensasse.) Porque voc\xEAs
-      s\xE3o meus."
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v5
+    text: 
     next: v6
     raise: {fileID: 0}
     choices: []
   - id: v6
     speaker: Voz
-    text: E guarda bem o teu sangue, Ziusudra. Passa de filho para filho, sem deixar
-      que se perca.
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v6
+    text: 
     next: z3
     raise: {fileID: 0}
     choices: []
   - id: z3
     speaker: Ziusudra
-    text: Farei como o senhor diz.
+    speakerKey: spk.ziusudra
+    textKey: dlg.Memoria_ParedeDeJunco.z3
+    text: 
     next: v7
     raise: {fileID: 0}
     choices: []
   - id: v7
     speaker: Voz
-    text: Tila. Viva.
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_ParedeDeJunco.v7
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

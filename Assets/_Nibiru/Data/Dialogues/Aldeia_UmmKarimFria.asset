@@ -15,8 +15,9 @@ MonoBehaviour:
   nodes:
   - id: u1
     speaker: Umm Karim
-    text: "(Ela n\xE3o levanta o rosto.) A senhora prometeu. Eu esperei. N\xE3o tenho
-      mais nada para dizer."
+    speakerKey: spk.umm_karim
+    textKey: dlg.Aldeia_UmmKarimFria.u1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

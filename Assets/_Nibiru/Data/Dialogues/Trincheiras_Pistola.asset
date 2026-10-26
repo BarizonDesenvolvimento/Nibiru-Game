@@ -15,20 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: Ele nem chegou a sacar a arma.
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_Pistola.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: Desculpa. Vou precisar dela.
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_Pistola.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "Quase sem muni\xE7\xE3o, e cada tiro vai trazer todos eles para c\xE1.
-      S\xF3 se n\xE3o tiver outro jeito."
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_Pistola.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

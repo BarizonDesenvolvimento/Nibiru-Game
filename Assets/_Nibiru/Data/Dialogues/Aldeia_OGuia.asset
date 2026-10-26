@@ -15,67 +15,87 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "Samir?! Voc\xEA est\xE1 vivo..."
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_OGuia.e1
+    text: 
     next: s1
     raise: {fileID: 0}
     choices: []
   - id: s1
     speaker: Samir
-    text: "Fale baixo. Daqui a pouco o r\xE1dio dele chama e ningu\xE9m responde."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OGuia.s1
+    text: 
     next: s2
     raise: {fileID: 0}
     choices: []
   - id: s2
     speaker: Samir
-    text: "(Ele olha a luz azul que escapa da bolsa dela. Uma pausa.) Esconda isso.
-      E n\xE3o mostre a ningu\xE9m."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OGuia.s2
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Voc\xEA sabe o que \xE9 isso?"
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_OGuia.e2
+    text: 
     next: s3
     raise: {fileID: 0}
     choices: []
   - id: s3
     speaker: Samir
-    text: Sei que gente morre por menos.
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OGuia.s3
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: O Kast disse que era um resgate...
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_OGuia.e3
+    text: 
     next: s4
     raise: {fileID: 0}
     choices: []
   - id: s4
     speaker: Samir
-    text: "Ningu\xE9m veio resgatar ningu\xE9m. Vieram apagar quem viu."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OGuia.s4
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: "Quem \xE9 voc\xEA, Samir? Guia nenhum mata assim."
+    - id: c1
+      textKey: dlg.Aldeia_OGuia.s4.c1
+      text: 
       next: s5
       requires: {fileID: 0}
       raise: {fileID: 0}
       reputation: []
-    - text: Para onde vamos?
+    - id: c2
+      textKey: dlg.Aldeia_OGuia.s4.c2
+      text: 
       next: s6
       requires: {fileID: 0}
       raise: {fileID: 0}
       reputation: []
   - id: s5
     speaker: Samir
-    text: Sou quem conhece o caminho. Por hoje, basta.
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OGuia.s5
+    text: 
     next: s6
     raise: {fileID: 0}
     choices: []
   - id: s6
     speaker: Samir
-    text: "Ainda tem gente escondida na aldeia. Venha atr\xE1s de mim, e longe da
-      estrada."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OGuia.s6
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

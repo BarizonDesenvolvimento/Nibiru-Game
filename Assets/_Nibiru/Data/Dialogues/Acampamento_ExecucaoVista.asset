@@ -15,19 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "N\xE3o... Eles atiraram nele. O Hassan s\xF3 estava pedindo ajuda."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_ExecucaoVista.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Nem hesitaram. Isso n\xE3o \xE9 um resgate."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_ExecucaoVista.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "Eles v\xE3o subir. Preciso sair daqui, para as trincheiras."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_ExecucaoVista.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

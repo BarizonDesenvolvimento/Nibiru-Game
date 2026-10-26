@@ -15,40 +15,49 @@ MonoBehaviour:
   nodes:
   - id: r1
     speaker: "R\xE1dio dos soldados"
-    text: "Equipe Dois, aqui \xE9 o Comando. Repetindo a ordem do Dr. Kast para todas
-      as equipes."
+    speakerKey: spk.radio_dos_soldados
+    textKey: dlg.Trincheiras_OrdemRadio.r1
+    text: 
     next: r2
     raise: {fileID: 0}
     choices: []
   - id: r2
     speaker: "R\xE1dio dos soldados"
-    text: "A doutora, viva. O resto, n\xE3o."
+    speakerKey: spk.radio_dos_soldados
+    textKey: dlg.Trincheiras_OrdemRadio.r2
+    text: 
     next: r3
     raise: {fileID: 0}
     choices: []
   - id: r3
     speaker: "Soldado (r\xE1dio)"
-    text: "Entendido, Comando. Varrendo as trincheiras. C\xE2mbio."
+    speakerKey: spk.soldado_radio
+    textKey: dlg.Trincheiras_OrdemRadio.r3
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "\"O resto, n\xE3o.\" O Hassan. A minha equipe. Para eles, todo mundo aqui
-      \xE9 \"o resto\"."
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_OrdemRadio.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Me querem viva. Isso n\xE3o me consola nada."
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_OrdemRadio.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "O chefe de seguran\xE7a dormia nas trincheiras, de guarda. Ele tinha uma
-      pistola."
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_OrdemRadio.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

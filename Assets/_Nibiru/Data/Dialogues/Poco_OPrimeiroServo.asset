@@ -15,15 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(As rachaduras do Selo se apagam de uma vez. Um estalo de pedra, e uma
-      coisa enorme se desdobra para fora da porta: curvada, magra, com uma m\xE1scara
-      de ouro no lugar do rosto e dois olhos de pedra azul.)"
+    speakerKey: spk.elena
+    textKey: dlg.Poco_OPrimeiroServo.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: Foi isso que saiu daqui naquela noite.
+    speakerKey: spk.elena
+    textKey: dlg.Poco_OPrimeiroServo.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

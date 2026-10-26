@@ -15,7 +15,9 @@ MonoBehaviour:
   nodes:
   - id: u1
     speaker: Umm Karim
-    text: "Ele dorme sem tremer. Que Deus a guarde, doutora. A casa \xE9 sua."
+    speakerKey: spk.umm_karim
+    textKey: dlg.Aldeia_UmmKarimGrata.u1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

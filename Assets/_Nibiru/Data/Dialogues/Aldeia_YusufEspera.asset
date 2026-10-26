@@ -15,8 +15,9 @@ MonoBehaviour:
   nodes:
   - id: y1
     speaker: Yusuf
-    text: "(Ele treme de febre.) Est\xE1 t\xE3o quente... ou t\xE3o frio. N\xE3o
-      sei mais."
+    speakerKey: spk.yusuf
+    textKey: dlg.Aldeia_YusufEspera.y1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

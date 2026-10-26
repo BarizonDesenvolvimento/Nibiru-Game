@@ -12,27 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244459d7824bdd946bb31acd435b7a38, type: 3}
   m_Name: Teste_Treinamento
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestDefinition
-  displayName: Treinamento
+  nameKey: quest.Teste_Treinamento.name
+  displayName: 
   kind: 0
   startOn: {fileID: 0}
   steps:
-  - objective: Pegue a pistola
+  - id: s1
+    objectiveKey: quest.Teste_Treinamento.s1
+    objective: 
     completeOn: {fileID: 11400000, guid: a74b034f2c867b74592ae7b274a91675, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Atravesse a passagem baixa agachada
+  - id: s2
+    objectiveKey: quest.Teste_Treinamento.s2
+    objective: 
     completeOn: {fileID: 11400000, guid: 835c9fea51a276140894f578ec8f7817, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Junte curativos
+  - id: s3
+    objectiveKey: quest.Teste_Treinamento.s3
+    objective: 
     completeOn: {fileID: 0}
     requiredItem: {fileID: 11400000, guid: 9475fb7564f1f254ebf818ea15ebb417, type: 2}
     requiredCount: 2
-  - objective: "Elimine o l\xEDder da Funda\xE7\xE3o"
+  - id: s4
+    objectiveKey: quest.Teste_Treinamento.s4
+    objective: 
     completeOn: {fileID: 11400000, guid: 8eb5053188510ad4b8fef6ae1168926c, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
   raiseOnComplete: {fileID: 11400000, guid: 96122aba8ef62d941b009560a635dfc8, type: 2}
+  failOn: {fileID: 0}
   reputationOnComplete:
   - faction: {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
     amount: -10

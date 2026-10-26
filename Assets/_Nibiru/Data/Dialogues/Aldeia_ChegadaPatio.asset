@@ -15,7 +15,9 @@ MonoBehaviour:
   nodes:
   - id: s1
     speaker: Samir
-    text: "Aqui. Os soldados ainda n\xE3o entraram nas casas. Ainda."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_ChegadaPatio.s1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,14 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Do outro lado do p\xE1tio, o port\xE3o do muro oeste corre no trilho,
-      rangendo.)"
+    speakerKey: spk.elena
+    textKey: dlg.Base_OPortao.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Pronto. Se eu precisar voltar \xE0 aldeia, n\xE3o passo de novo pela patrulha."
+    speakerKey: spk.elena
+    textKey: dlg.Base_OPortao.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

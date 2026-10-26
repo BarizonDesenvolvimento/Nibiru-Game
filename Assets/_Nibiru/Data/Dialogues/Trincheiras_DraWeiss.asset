@@ -15,63 +15,79 @@ MonoBehaviour:
   nodes:
   - id: w1
     speaker: Mulher ferida
-    text: "N\xE3o! N\xE3o atire... Por favor. Eu sou m\xE9dica. Hannah Weiss."
+    speakerKey: spk.mulher_ferida
+    textKey: dlg.Trincheiras_DraWeiss.w1
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "Esse uniforme... Voc\xEA \xE9 da Funda\xE7\xE3o."
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_DraWeiss.e1
+    text: 
     next: w2
     raise: {fileID: 0}
     choices: []
   - id: w2
     speaker: Dra. Weiss
-    text: "Eu me perdi da equipe quando o helic\xF3ptero desceu. Ca\xED numa dessas
-      valas e abri a perna. Ningu\xE9m voltou para me buscar."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeiss.w2
+    text: 
     next: w3
     raise: {fileID: 0}
     choices: []
   - id: w3
     speaker: Dra. Weiss
-    text: "Voc\xEA \xE9 a doutora Varga, n\xE3o \xE9? Est\xE3o procurando voc\xEA.
-      Vieram para te tirar daqui."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeiss.w3
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: Eles executaram um trabalhador ferido.
+    - id: c1
+      textKey: dlg.Trincheiras_DraWeiss.w3.c1
+      text: 
       next: contou
       requires: {fileID: 0}
       raise: {fileID: 0}
       reputation: []
-    - text: Me tirar daqui. Sei.
+    - id: c2
+      textKey: dlg.Trincheiras_DraWeiss.w3.c2
+      text: 
       next: calou
       requires: {fileID: 0}
       raise: {fileID: 0}
       reputation: []
   - id: contou
     speaker: Dra. Weiss
-    text: "N\xE3o. N\xE3o pode ser. Eu estava no briefing, o Dr. Kast disse \"resgate\".
-      Ele disse resgate..."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeiss.contou
+    text: 
     next: w4
     raise: {fileID: 0}
     choices: []
   - id: calou
     speaker: Dra. Weiss
-    text: "Voc\xEA n\xE3o confia em mim. No seu lugar, eu tamb\xE9m n\xE3o confiaria."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeiss.calou
+    text: 
     next: w4
     raise: {fileID: 0}
     choices: []
   - id: w4
     speaker: Dra. Weiss
-    text: "Escuta: assim eu n\xE3o consigo andar. Se voc\xEA achar curativos, volte
-      aqui. Tenho antibi\xF3ticos na mochila, posso retribuir."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeiss.w4
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: Fique abaixada. Se eu achar, eu volto.
+    speakerKey: spk.elena
+    textKey: dlg.Trincheiras_DraWeiss.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,32 +15,41 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "N\xE3o... N\xE3o, n\xE3o. Todos eles."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Corpos.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Nenhum tiro. Nenhum sangue. S\xF3 essas queimaduras..."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Corpos.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "N\xE3o s\xE3o queimaduras comuns. S\xE3o linhas e \xE2ngulos, como cunhas.
-      Parece escrita."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Corpos.e3
+    text: 
     next: e4
     raise: {fileID: 0}
     choices: []
   - id: e4
     speaker: Elena
-    text: "E est\xE3o todos virados para a minha barraca."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Corpos.e4
+    text: 
     next: e5
     raise: {fileID: 0}
     choices: []
   - id: e5
     speaker: Elena
-    text: "Sete. Falta um. Cad\xEA o Tom?"
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Corpos.e5
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

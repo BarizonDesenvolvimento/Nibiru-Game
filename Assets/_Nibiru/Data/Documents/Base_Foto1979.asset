@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Base_Foto1979
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
-  displayName: Fotografia, 1979
-  text: "Uma foto colorida, desbotada pelo sol. Uma mulher de cabelo curto e camisa
-    de campo, coberta de poeira, ri para a c\xE2mera na beira de uma vala de escava\xE7\xE3o.
-    \xC9 Irena. \xC9 a sua m\xE3e.\n\nAo lado dela, um rapaz alto e magro, de \xF3culos
-    redondos, segura uma prancheta. Ele olha para ela, n\xE3o para a c\xE2mera.\n\nAtr\xE1s
-    dos dois, o zigurate. O mesmo de hoje.\n\nNo verso, a l\xE1pis: \"Ur, mar\xE7o
-    de 1979. A \xFAltima boa semana.\""
-  footer: Estava presa ao e-mail com um clipe.
+  titleKey: doc.Base_Foto1979.title
+  textKey: doc.Base_Foto1979.text
+  footerKey: doc.Base_Foto1979.footer
+  displayName: 
+  text: 
+  footer: 
   raiseOnRead: {fileID: 11400000, guid: d308f23dff4d5b945976fa790a3f52d8, type: 2}

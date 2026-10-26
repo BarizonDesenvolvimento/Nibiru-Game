@@ -15,7 +15,9 @@ MonoBehaviour:
   nodes:
   - id: u1
     speaker: Umm Karim
-    text: "Ache o rem\xE9dio, doutora. O menino n\xE3o tem muitos dias."
+    speakerKey: spk.umm_karim
+    textKey: dlg.Aldeia_UmmKarimEspera.u1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

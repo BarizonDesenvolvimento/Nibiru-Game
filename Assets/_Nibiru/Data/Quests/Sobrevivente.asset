@@ -12,152 +12,221 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244459d7824bdd946bb31acd435b7a38, type: 3}
   m_Name: Sobrevivente
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestDefinition
-  displayName: Sobrevivente
+  nameKey: quest.Sobrevivente.name
+  displayName: 
   kind: 0
   startOn: {fileID: 0}
   steps:
-  - objective: Pegue a faca de campo (E ou A para interagir)
+  - id: s1
+    objectiveKey: quest.Sobrevivente.s1
+    objective: 
     completeOn: {fileID: 0}
     requiredItem: {fileID: 11400000, guid: ec5eb5afb6a94e24e87ddb8a73a25000, type: 2}
     requiredCount: 1
-  - objective: "Saia da barraca (WASD ou anal\xF3gico para andar; Shift para correr)"
+  - id: s2
+    objectiveKey: quest.Sobrevivente.s2
+    objective: 
     completeOn: {fileID: 11400000, guid: 90f379cb480d4f644a50c6911dac9565, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Procure a equipe
+  - id: s3
+    objectiveKey: quest.Sobrevivente.s3
+    objective: 
     completeOn: {fileID: 11400000, guid: ea3f1832083b7aa479340be3daf4c9ff, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Procure o Tom
+  - id: s4
+    objectiveKey: quest.Sobrevivente.s4
+    objective: 
     completeOn: {fileID: 11400000, guid: 8d81992ee0b78d7478cd47105896346d, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Atenda o r\xE1dio do acampamento"
+  - id: s5
+    objectiveKey: quest.Sobrevivente.s5
+    objective: 
     completeOn: {fileID: 11400000, guid: a927ba5fc1fa8944eb2c49ca36fe12aa, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Espere o resgate
+  - id: s6
+    objectiveKey: quest.Sobrevivente.s6
+    objective: 
     completeOn: {fileID: 11400000, guid: 4ae86659d8a3dac47ac05d32007cac92, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Fuja para as trincheiras, ao norte
+  - id: s7
+    objectiveKey: quest.Sobrevivente.s7
+    objective: 
     completeOn: {fileID: 11400000, guid: 6f656e6762fa9084ca47863e90f9e4f7, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Pegue a pistola do chefe de seguran\xE7a, no meio das trincheiras
-      (C ou Ctrl para agachar)"
+  - id: s8
+    objectiveKey: quest.Sobrevivente.s8
+    objective: 
     completeOn: {fileID: 0}
     requiredItem: {fileID: 11400000, guid: b2c4d2c0d295b0940a9ec403b7b0ab60, type: 2}
     requiredCount: 1
-  - objective: Atravesse as trincheiras e siga para a Aldeia, a oeste
+  - id: s9
+    objectiveKey: quest.Sobrevivente.s9
+    objective: 
     completeOn: {fileID: 11400000, guid: 1cea8154e1108f146b13f46dd65da8cc, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Siga o Samir at\xE9 a Aldeia"
+  - id: s10
+    objectiveKey: quest.Sobrevivente.s10
+    objective: 
     completeOn: {fileID: 11400000, guid: 75aa26c605120e34cb455322e2312d75, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Siga o Samir at\xE9 a casa"
+  - id: s11
+    objectiveKey: quest.Sobrevivente.s11
+    objective: 
     completeOn: {fileID: 11400000, guid: 3562051f0257e2e468315130bc3fe77b, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Descanse junto ao nicho antigo (E ou A)
+  - id: s12
+    objectiveKey: quest.Sobrevivente.s12
+    objective: 
     completeOn: {fileID: 11400000, guid: 60021e366a330ff48b717ed02e410eaa, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Leia a tabuleta no nicho
+  - id: s13
+    objectiveKey: quest.Sobrevivente.s13
+    objective: 
     completeOn: {fileID: 11400000, guid: 5c639ec6a0b423a4cb9203d37b0754c8, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "V\xE1 at\xE9 a cabana de junco, \xE0 beira do rio"
+  - id: s14
+    objectiveKey: quest.Sobrevivente.s14
+    objective: 
     completeOn: {fileID: 11400000, guid: 48b8f684adfc6594b8db83f0b87b3493, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Responda ao Samir
+  - id: s15
+    objectiveKey: quest.Sobrevivente.s15
+    objective: 
     completeOn: {fileID: 11400000, guid: eb59999fd6b02974c804d24dc683c075, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Siga o Samir at\xE9 a beira da aldeia"
+  - id: s16
+    objectiveKey: quest.Sobrevivente.s16
+    objective: 
     completeOn: {fileID: 11400000, guid: 0816d66cd07099a44b8076d2774b725a, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Passe pela patrulha da estrada e entre na base da Funda\xE7\xE3o,
-      no p\xE9 do zigurate"
+  - id: s17
+    objectiveKey: quest.Sobrevivente.s17
+    objective: 
     completeOn: {fileID: 11400000, guid: f9cb6397e6920b740afeaa83dddf27e3, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Atravesse o p\xE1tio at\xE9 a tenda de comando, do outro lado da
-      base"
+  - id: s18
+    objectiveKey: quest.Sobrevivente.s18
+    objective: 
     completeOn: {fileID: 11400000, guid: d9865605a46b7994e92d146f580fd619, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Procure na mesa da tenda de comando
+  - id: s19
+    objectiveKey: quest.Sobrevivente.s19
+    objective: 
     completeOn: {fileID: 11400000, guid: 475e0bbf10c296546badd4dea0d54fc0, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Abra o port\xE3o para a aldeia pelo painel da tenda"
+  - id: s20
+    objectiveKey: quest.Sobrevivente.s20
+    objective: 
     completeOn: {fileID: 11400000, guid: 7adaecf4249b9af428f23487d579e9e8, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Saia da base pelo nordeste, rumo \xE0 boca do Po\xE7o"
+  - id: s21
+    objectiveKey: quest.Sobrevivente.s21
+    objective: 
     completeOn: {fileID: 11400000, guid: c35270b8e29ce0843a073c0ce4034a40, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Siga o corredor nordeste at\xE9 a boca do Po\xE7o"
+  - id: s22
+    objectiveKey: quest.Sobrevivente.s22
+    objective: 
     completeOn: {fileID: 11400000, guid: ae0935f3f46c2c146aeeeddc88e66a6c, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Des\xE7a o Po\xE7o pelos andaimes"
+  - id: s23
+    objectiveKey: quest.Sobrevivente.s23
+    objective: 
     completeOn: {fileID: 11400000, guid: dd4833752aa651d4b830deee8a7540b9, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Atravesse o fundo do Po\xE7o sem acordar o Lullu, ou livre-se dele"
+  - id: s24
+    objectiveKey: quest.Sobrevivente.s24
+    objective: 
     completeOn: {fileID: 11400000, guid: 9b585efd0eb8b3a4bb247b571bfee462, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Avance pela antec\xE2mara at\xE9 o Selo de Kur"
+  - id: s25
+    objectiveKey: quest.Sobrevivente.s25
+    objective: 
     completeOn: {fileID: 11400000, guid: e10912087bc5c784d8fe706255c08ba5, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Sobreviva ao Primeiro Servo
+  - id: s26
+    objectiveKey: quest.Sobrevivente.s26
+    objective: 
     completeOn: {fileID: 11400000, guid: c3217f7dc239abd4788345d7436af98f, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Procure a passagem atr\xE1s da parede do barco de junco"
+  - id: s27
+    objectiveKey: quest.Sobrevivente.s27
+    objective: 
     completeOn: {fileID: 11400000, guid: 6bb3ff3a8844b4142992e73b55e37b4f, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Leia a inscri\xE7\xE3o na parede do barco de junco e abra a passagem"
+  - id: s28
+    objectiveKey: quest.Sobrevivente.s28
+    objective: 
     completeOn: {fileID: 11400000, guid: a1b8655e42c204e4cbb5956fb647b9d4, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Siga a passagem dos Guardi\xF5es at\xE9 o wadi"
+  - id: s29
+    objectiveKey: quest.Sobrevivente.s29
+    objective: 
     completeOn: {fileID: 11400000, guid: 688118a1c3739f543a105d1956611935, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Siga o wadi at\xE9 o soldado ferido"
+  - id: s30
+    objectiveKey: quest.Sobrevivente.s30
+    objective: 
     completeOn: {fileID: 11400000, guid: 55d74a99280e6274c9809b4e8bada667, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Ou\xE7a o r\xE1dio do soldado"
+  - id: s31
+    objectiveKey: quest.Sobrevivente.s31
+    objective: 
     completeOn: {fileID: 11400000, guid: 6ba83f9b5b3e74f44a5b948c8a516bb0, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Decida o que fazer com a tabuleta
+  - id: s32
+    objectiveKey: quest.Sobrevivente.s32
+    objective: 
     completeOn: {fileID: 11400000, guid: a0955fa8a6431084bb6f49216cb22589, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: "Leve a tabuleta ao nicho dos Guardi\xF5es, no t\xFAnel"
+  - id: s33
+    objectiveKey: quest.Sobrevivente.s33
+    objective: 
     completeOn: {fileID: 11400000, guid: db9fa14ab431fab4c84c0950e3baf9d9, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Entre na caminhonete do Samir
+  - id: s34
+    objectiveKey: quest.Sobrevivente.s34
+    objective: 
     completeOn: {fileID: 11400000, guid: b3fe62d4517aa2142a2a2a5837a87cb7, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
-  - objective: Fuja para Tell Amar
+  - id: s35
+    objectiveKey: quest.Sobrevivente.s35
+    objective: 
     completeOn: {fileID: 11400000, guid: 1c9e4e9686023c84a9813eccc172a431, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1
   raiseOnComplete: {fileID: 0}
+  failOn: {fileID: 0}
   reputationOnComplete: []

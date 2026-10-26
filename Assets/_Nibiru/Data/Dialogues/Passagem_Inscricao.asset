@@ -15,22 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Sob o barco de junco, uma faixa de escrita em ouro corre pela pedra.
-      Ela l\xEA em voz alta, devagar, e as palavras saem sem esfor\xE7o.)"
+    speakerKey: spk.elena
+    textKey: dlg.Passagem_Inscricao.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "\u201CQuem vem da \xE1gua e traz o barco, passe. Quem vem para ferir,
-      volte. N\xF3s guardamos o caminho para quem precisa sair.\u201D"
+    speakerKey: spk.elena
+    textKey: dlg.Passagem_Inscricao.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "(A tabuleta pulsa na bolsa, quente como uma m\xE3o. A pedra \xE0 frente
-      dela responde.)"
+    speakerKey: spk.elena
+    textKey: dlg.Passagem_Inscricao.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,21 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Tendas brancas ao p\xE9 do zigurate, bandeiras turquesa, cont\xEAineres.
-      No alto da escadaria, um ponto vermelho passeia devagar pelo ch\xE3o do p\xE1tio.)"
+    speakerKey: spk.elena
+    textKey: dlg.Base_Chegada.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Um atirador l\xE1 em cima. Onde aquele laser passar, ele v\xEA."
+    speakerKey: spk.elena
+    textKey: dlg.Base_Chegada.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "A tenda de comando fica do outro lado do p\xE1tio. Se o Kast deixou alguma
-      coisa escrita, \xE9 l\xE1."
+    speakerKey: spk.elena
+    textKey: dlg.Base_Chegada.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

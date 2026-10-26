@@ -15,21 +15,25 @@ MonoBehaviour:
   nodes:
   - id: z1
     speaker: Ziusudra
-    text: "(O sol se p\xF5e sobre Shuruppak. O rio subiu de novo esta semana, e ningu\xE9m
-      sabe dizer por qu\xEA.)"
+    speakerKey: spk.ziusudra
+    textKey: dlg.Memoria_Chamado.z1
+    text: 
     next: v1
     raise: {fileID: 0}
     choices: []
   - id: v1
     speaker: Voz
-    text: Ziusudra...
+    speakerKey: spk.voz
+    textKey: dlg.Memoria_Chamado.v1
+    text: 
     next: z2
     raise: {fileID: 0}
     choices: []
   - id: z2
     speaker: Ziusudra
-    text: "(A voz vem da beira do rio, da cabana de junco. Ningu\xE9m mais na rua
-      parece ouvir.)"
+    speakerKey: spk.ziusudra
+    textKey: dlg.Memoria_Chamado.z2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,80 +15,95 @@ MonoBehaviour:
   nodes:
   - id: s1
     speaker: Samir
-    text: "Fecharam a estrada do norte. A do rio tamb\xE9m: ouvi os caminh\xF5es
-      de madrugada. E olhe o helic\xF3ptero descendo na base."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s1
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "Ent\xE3o estamos presos."
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_OCerco.e1
+    text: 
     next: s2
     raise: {fileID: 0}
     choices: []
   - id: s2
     speaker: Samir
-    text: "A aldeia est\xE1. N\xF3s, n\xE3o. Existe um caminho mais velho que qualquer
-      estrada. Come\xE7a l\xE1 embaixo, no Po\xE7o, e sai no leito seco do wadi,
-      longe do cerco. Minha caminhonete est\xE1 l\xE1."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s2
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "No Po\xE7o? Onde a minha equipe morreu?"
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_OCerco.e2
+    text: 
     next: s3
     raise: {fileID: 0}
     choices: []
   - id: s3
     speaker: Samir
-    text: "Na antec\xE2mara tem uma parede com o barco de junco, igual ao do nicho.
-      A passagem fica atr\xE1s dela."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s3
+    text: 
     next: s4
     raise: {fileID: 0}
     choices: []
   - id: s4
     speaker: Samir
-    text: "Mas para chegar ao Po\xE7o, voc\xEA vai ter que atravessar a base deles,
-      no p\xE9 do zigurate."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s4
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: "Voc\xEA n\xE3o vem comigo?"
+    - id: c1
+      textKey: dlg.Aldeia_OCerco.s4.c1
+      text: 
       next: s5
       requires: {fileID: 0}
       raise: {fileID: 0}
       reputation: []
-    - text: "Os Guardi\xF5es sempre souberam desse caminho?"
+    - id: c2
+      textKey: dlg.Aldeia_OCerco.s4.c2
+      text: 
       next: g1
       requires: {fileID: 11400000, guid: 7d730eba18fe2714aa3b15c5b0b13f2a, type: 2}
       raise: {fileID: 0}
       reputation: []
   - id: g1
     speaker: Samir
-    text: "N\xF3s cavamos esse caminho, doutora. H\xE1 muito tempo. Para sair l\xE1
-      de baixo... ou para levar alguma coisa de volta."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.g1
+    text: 
     next: s5
     raise: {fileID: 0}
     choices: []
   - id: s5
     speaker: Samir
-    text: "Sozinho, eu passo pelos canais secos do sul at\xE9 o wadi. Com voc\xEA
-      e essa pedra acendendo a cada passo, n\xE3o. Eu espero voc\xEA na caminhonete."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s5
+    text: 
     next: s6
     raise: {fileID: 0}
     choices: []
   - id: s6
     speaker: Samir
-    text: "A tenda m\xE9dica tamb\xE9m fica na base. Se ainda quer salvar o Yusuf,
-      o rem\xE9dio est\xE1 l\xE1."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s6
+    text: 
     next: s7
     raise: {fileID: 0}
     choices: []
   - id: s7
     speaker: Samir
-    text: A patrulha anda rente ao muro. Espere os dois virarem de costas e contorne
-      a ponta sul do muro.
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_OCerco.s7
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

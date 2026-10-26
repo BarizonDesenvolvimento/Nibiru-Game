@@ -15,14 +15,17 @@ MonoBehaviour:
   nodes:
   - id: p1
     speaker: Pescador
-    text: "O rio subiu dois palmos desde a \xFAltima lua, Ziusudra. E nem choveu
-      l\xE1 no norte."
+    speakerKey: spk.pescador
+    textKey: dlg.Memoria_Pescador.p1
+    text: 
     next: p2
     raise: {fileID: 0}
     choices: []
   - id: p2
     speaker: Pescador
-    text: "Os velhos dizem que \xE9 sinal. Que os deuses est\xE3o cansados de n\xF3s."
+    speakerKey: spk.pescador
+    textKey: dlg.Memoria_Pescador.p2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

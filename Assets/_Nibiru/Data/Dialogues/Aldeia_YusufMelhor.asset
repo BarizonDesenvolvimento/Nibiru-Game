@@ -15,8 +15,9 @@ MonoBehaviour:
   nodes:
   - id: y1
     speaker: Yusuf
-    text: "A febre baixou, doutora. Mas aquela respira\xE7\xE3o debaixo das pedras...
-      eu ainda ou\xE7o."
+    speakerKey: spk.yusuf
+    textKey: dlg.Aldeia_YusufMelhor.y1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

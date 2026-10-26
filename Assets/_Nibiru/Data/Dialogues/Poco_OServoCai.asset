@@ -15,15 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: (O Primeiro Servo cai de joelhos diante do Selo e tomba. O azul das rachaduras
-      enfraquece, como brasa esfriando.)
+    speakerKey: spk.elena
+    textKey: dlg.Poco_OServoCai.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "A parede com o barco de junco. O Samir disse que a passagem fica atr\xE1s
-      dela."
+    speakerKey: spk.elena
+    textKey: dlg.Poco_OServoCai.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

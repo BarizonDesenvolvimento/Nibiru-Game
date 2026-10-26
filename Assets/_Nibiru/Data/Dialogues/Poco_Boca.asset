@@ -15,22 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(O po\xE7o abre no ch\xE3o como uma boca: andaimes de ferro, um guincho
-      parado, um holofote da Funda\xE7\xE3o apontado para baixo. Do fundo sobe um
-      ar frio e, de vez em quando, um raspar de pedra contra pedra.)"
+    speakerKey: spk.elena
+    textKey: dlg.Poco_Boca.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Tem alguma coisa l\xE1 embaixo. E n\xE3o \xE9 gente."
+    speakerKey: spk.elena
+    textKey: dlg.Poco_Boca.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "O Samir disse que a passagem sai da antec\xE2mara. N\xE3o existe outro
-      caminho."
+    speakerKey: spk.elena
+    textKey: dlg.Poco_Boca.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

@@ -15,28 +15,33 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Ela fica um tempo olhando a foto. Tinha tr\xEAs anos quando a m\xE3e
-      sumiu. Conhece aquele riso das fotos l\xE1 de casa, e de mais nenhum lugar.)"
+    speakerKey: spk.elena
+    textKey: dlg.Base_AFoto.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Mar\xE7o de 1979. Ela desapareceu em abril."
+    speakerKey: spk.elena
+    textKey: dlg.Base_AFoto.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "E voc\xEA, quem \xE9? Por que o Kast guarda isso numa mesa, ao lado de
-      um e-mail sobre mim?"
+    speakerKey: spk.elena
+    textKey: dlg.Base_AFoto.e3
+    text: 
     next: e4
     raise: {fileID: 0}
     choices: []
   - id: e4
     speaker: Elena
-    text: "(Ela guarda a foto na bolsa, junto da tabuleta. Perto da porta da tenda,
-      um painel da Funda\xE7\xE3o tem um bot\xE3o com uma etiqueta: PORT\xC3O OESTE.)"
+    speakerKey: spk.elena
+    textKey: dlg.Base_AFoto.e4
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

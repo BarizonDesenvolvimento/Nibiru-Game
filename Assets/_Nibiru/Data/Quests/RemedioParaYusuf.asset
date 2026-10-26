@@ -12,15 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244459d7824bdd946bb31acd435b7a38, type: 3}
   m_Name: RemedioParaYusuf
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Quests.QuestDefinition
-  displayName: "Rem\xE9dio para Yusuf"
+  nameKey: quest.RemedioParaYusuf.name
+  displayName: 
   kind: 1
   startOn: {fileID: 11400000, guid: 3562051f0257e2e468315130bc3fe77b, type: 2}
   steps:
-  - objective: "Consiga antibi\xF3ticos para o Yusuf"
+  - id: s1
+    objectiveKey: quest.RemedioParaYusuf.s1
+    objective: 
     completeOn: {fileID: 0}
     requiredItem: {fileID: 11400000, guid: 92bf7d5708c911d4ca74bc3d26a2b357, type: 2}
     requiredCount: 1
-  - objective: "Leve os antibi\xF3ticos ao Yusuf"
+  - id: s2
+    objectiveKey: quest.RemedioParaYusuf.s2
+    objective: 
     completeOn: {fileID: 11400000, guid: e178ddc3a91894b4da44928608d75614, type: 2}
     requiredItem: {fileID: 0}
     requiredCount: 1

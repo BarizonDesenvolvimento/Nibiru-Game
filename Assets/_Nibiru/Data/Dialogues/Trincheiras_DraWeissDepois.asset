@@ -15,8 +15,9 @@ MonoBehaviour:
   nodes:
   - id: w1
     speaker: Dra. Weiss
-    text: "Ainda estou aqui. Se algu\xE9m perguntar por mim, a senhora n\xE3o me
-      viu."
+    speakerKey: spk.dra_weiss
+    textKey: dlg.Trincheiras_DraWeissDepois.w1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

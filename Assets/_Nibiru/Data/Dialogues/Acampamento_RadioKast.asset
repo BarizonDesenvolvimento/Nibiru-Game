@@ -15,66 +15,79 @@ MonoBehaviour:
   nodes:
   - id: k1
     speaker: "Kast (r\xE1dio)"
-    text: "Acampamento de Ur, aqui \xE9 o Dr. Aurelian Kast, da Funda\xE7\xE3o Enlil.
-      Doutora Varga, est\xE1 me ouvindo? C\xE2mbio."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Acampamento_RadioKast.k1
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "Estou ouvindo. Aqui \xE9 Elena Varga. A minha equipe... est\xE3o todos
-      mortos."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_RadioKast.e1
+    text: 
     next: k2
     raise: {fileID: 0}
     choices: []
   - id: k2
     speaker: "Kast (r\xE1dio)"
-    text: "Gra\xE7as a Deus a senhora est\xE1 bem. Sinto muito pela sua equipe. Sinto
-      de verdade."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Acampamento_RadioKast.k2
+    text: 
     next: k3
     raise: {fileID: 0}
     choices: []
   - id: k3
     speaker: "Kast (r\xE1dio)"
-    text: "Uma equipe de resgate j\xE1 est\xE1 a caminho. Vinte minutos. Fique onde
-      est\xE1 e n\xE3o toque em nada, por favor."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Acampamento_RadioKast.k3
+    text: 
     next: k4
     raise: {fileID: 0}
     choices: []
   - id: k4
     speaker: "Kast (r\xE1dio)"
-    text: "Sua m\xE3e tamb\xE9m tinha esse talento: estar no lugar errado na hora
-      certa. Aguente firme, doutora."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Acampamento_RadioKast.k4
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: Estou esperando.
+    - id: c1
+      textKey: dlg.Acampamento_RadioKast.k4.c1
+      text: 
       next: confia
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: 790bdcd712edfe84890b82cd25a10981, type: 2}
       reputation: []
-    - text: "Como voc\xEAs sabem que eu estou viva?"
+    - id: c2
+      textKey: dlg.Acampamento_RadioKast.k4.c2
+      text: 
       next: desconfia
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: 05cab8b4eec9cb1488d7d0507573592c, type: 2}
       reputation: []
   - id: confia
     speaker: "Kast (r\xE1dio)"
-    text: "\xD3timo. Vinte minutos, doutora. C\xE2mbio, desligo."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Acampamento_RadioKast.confia
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: desconfia
     speaker: "Kast (r\xE1dio)"
-    text: "...N\xE3o sab\xEDamos, doutora. Torc\xEDamos. Monitoramos a frequ\xEAncia
-      da expedi\xE7\xE3o desde a invas\xE3o, e o seu nome estava na lista. Vinte
-      minutos. C\xE2mbio, desligo."
+    speakerKey: spk.kast_radio
+    textKey: dlg.Acampamento_RadioKast.desconfia
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Ele conhecia a minha m\xE3e?"
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_RadioKast.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

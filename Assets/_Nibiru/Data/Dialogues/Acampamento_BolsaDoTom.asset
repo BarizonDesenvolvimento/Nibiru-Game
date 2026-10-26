@@ -15,20 +15,25 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "A bolsa da c\xE2mera do Tom. Vazia."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_BolsaDoTom.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Ele n\xE3o largava essa c\xE2mera nem para dormir. Se ela sumiu, talvez
-      ele tenha sa\xEDdo daqui andando."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_BolsaDoTom.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "E os filmes? Ele trocava de rolo toda noite. Devem estar por a\xED."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_BolsaDoTom.e3
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

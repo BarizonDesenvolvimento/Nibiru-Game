@@ -15,13 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "Um helic\xF3ptero? J\xE1? Ele disse vinte minutos."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Helicoptero.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "Da beira da eleva\xE7\xE3o d\xE1 para ver o heliponto."
+    speakerKey: spk.elena
+    textKey: dlg.Acampamento_Helicoptero.e2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

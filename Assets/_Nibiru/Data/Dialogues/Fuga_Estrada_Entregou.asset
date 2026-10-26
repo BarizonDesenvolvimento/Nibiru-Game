@@ -15,54 +15,65 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Samir dirige sem olhar para ela. As m\xE3os apertam o volante at\xE9
-      os n\xF3s dos dedos clarearem. Fora, a tempestade \xE9 uma parede laranja.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Entregou.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Samir
-    text: "Uma chave, doutora. Voc\xEA entregou uma chave a quem a procura h\xE1
-      d\xE9cadas."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Entregou.e2
+    text: 
     next: e3
     raise: {fileID: 0}
     choices: []
   - id: e3
     speaker: Elena
-    text: "Eles iam machucar a Aldeia. Eu n\xE3o tinha mais nada para trocar."
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Entregou.e3
+    text: 
     next: e4
     raise: {fileID: 0}
     choices: []
   - id: e4
     speaker: Samir
-    text: "Talvez eu tivesse feito o mesmo. Isso n\xE3o ajuda ningu\xE9m agora."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Entregou.e4
+    text: 
     next: e5
     raise: {fileID: 0}
     choices: []
   - id: e5
     speaker: Samir
-    text: "Os Guardi\xF5es fizeram um juramento sobre este caminho. Quem guarda,
-      guarda para os que v\xEAm depois. Eu fiz esse juramento."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Entregou.e5
+    text: 
     next: e6
     raise: {fileID: 0}
     choices: []
   - id: e6
     speaker: Elena
-    text: "Para os que v\xEAm depois? Quem?"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Entregou.e6
+    text: 
     next: e7
     raise: {fileID: 0}
     choices: []
   - id: e7
     speaker: Samir
-    text: "Olhe para a frente. Tell Amar fica a algumas horas, e a tempestade s\xF3
-      piora."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Entregou.e7
+    text: 
     next: e8
     raise: {fileID: 0}
     choices: []
   - id: e8
     speaker: Elena
-    text: "(Ele n\xE3o diz mais nada. A estrada some na areia, e o motor \xE9 o \xFAnico
-      som.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Entregou.e8
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

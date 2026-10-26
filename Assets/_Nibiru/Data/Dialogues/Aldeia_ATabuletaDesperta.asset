@@ -15,28 +15,33 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Ela pousa a tabuleta no nicho, ao lado da lamparina. Sob os dedos dela,
-      as linhas de ouro acendem uma a uma, e a pedra se enche de uma luz azul que
-      n\xE3o \xE9 deste mundo.)"
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_ATabuletaDesperta.e1
+    text: 
     next: s1
     raise: {fileID: 0}
     choices: []
   - id: s1
     speaker: Samir
-    text: "(Ele d\xE1 um passo para tr\xE1s. A chama da lamparina encolhe.) Doutora...
-      n\xE3o."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_ATabuletaDesperta.s1
+    text: 
     next: v1
     raise: {fileID: 0}
     choices: []
   - id: v1
     speaker: Voz
-    text: "Tila. Voc\xEA est\xE1 viva, e est\xE1 segura. N\xE3o tenha medo."
+    speakerKey: spk.voz
+    textKey: dlg.Aldeia_ATabuletaDesperta.v1
+    text: 
     next: v2
     raise: {fileID: 0}
     choices: []
   - id: v2
     speaker: Voz
-    text: Agora, olhe.
+    speakerKey: spk.voz
+    textKey: dlg.Aldeia_ATabuletaDesperta.v2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

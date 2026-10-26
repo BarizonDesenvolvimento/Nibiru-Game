@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: Municao9mm
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  displayName: "Muni\xE7\xE3o 9 mm"
-  description: Balas para a pistola.
+  nameKey: item.Municao9mm.name
+  descriptionKey: item.Municao9mm.desc
+  hintKey: 
+  displayName: 
+  description: 
+  pickupHint: 
   icon: {fileID: 0}
   category: 1
   maxStack: 15
+  healAmount: 0
+  firearm: {fileID: 0}
+  tablet: {fileID: 0}

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
   m_Name: Weiss_Documento
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
-  displayName: Documento da Dra. Weiss (a definir)
-  text: "[Texto provis\xF3rio. O conte\xFAdo deste documento, tirado do briefing
-    da equipe pela Dra. Weiss, ainda ser\xE1 escrito.]"
-  footer: Entregue pela Dra. Weiss, nas trincheiras.
+  titleKey: doc.Weiss_Documento.title
+  textKey: doc.Weiss_Documento.text
+  footerKey: doc.Weiss_Documento.footer
+  displayName: 
+  text: 
+  footer: 
   raiseOnRead: {fileID: 11400000, guid: 6de65e57f728f8b4384cf9be70f5f2dc, type: 2}

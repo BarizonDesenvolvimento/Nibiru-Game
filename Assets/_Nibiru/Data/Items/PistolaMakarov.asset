@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: PistolaMakarov
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  displayName: Pistola Makarov
-  description: "Pistola do chefe de seguran\xE7a da expedi\xE7\xE3o."
-  pickupHint: "Mirar: bot\xE3o direito (LT). Atirar: bot\xE3o esquerdo (RT). Recarregar:
-    R (X). Tiro faz muito barulho"
+  nameKey: item.PistolaMakarov.name
+  descriptionKey: item.PistolaMakarov.desc
+  hintKey: item.PistolaMakarov.hint
+  displayName: 
+  description: 
+  pickupHint: 
   icon: {fileID: 0}
   category: 0
   maxStack: 1

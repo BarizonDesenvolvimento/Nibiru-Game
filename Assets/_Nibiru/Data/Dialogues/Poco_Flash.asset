@@ -15,27 +15,33 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(A tabuleta pulsa dentro da bolsa, quente como uma m\xE3o. No fundo da
-      antec\xE2mara, o azul nas rachaduras do Selo bate no mesmo ritmo.)"
+    speakerKey: spk.elena
+    textKey: dlg.Poco_Flash.e1
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: "(O ar clareia. O ch\xE3o, as paredes e os andaimes somem, e s\xF3 sobram
-      luz e m\xE3os. Muitas m\xE3os, de todos os lados, segurando os bra\xE7os dela.)"
+    speakerKey: spk.elena
+    textKey: dlg.Poco_Flash.e2
+    text: 
     next: v1
     raise: {fileID: 0}
     choices: []
   - id: v1
     speaker: Voz
-    text: "Voc\xEA j\xE1 esteve aqui."
+    speakerKey: spk.voz
+    textKey: dlg.Poco_Flash.v1
+    text: 
     next: v2
     raise: {fileID: 0}
     choices: []
   - id: v2
     speaker: Voz
-    text: "N\xE3o tem problema n\xE3o lembrar. Eu lembro por voc\xEA."
+    speakerKey: spk.voz
+    textKey: dlg.Poco_Flash.v2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

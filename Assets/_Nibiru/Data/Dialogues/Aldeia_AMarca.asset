@@ -15,15 +15,17 @@ MonoBehaviour:
   nodes:
   - id: e1
     speaker: Elena
-    text: "(Ela pisca. A casa, a lamparina, o Samir. Passou s\xF3 um minuto. No pulso
-      esquerdo, uma marca azul, fina como tinta debaixo da pele. N\xE3o sai quando
-      ela esfrega.)"
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_AMarca.e1
+    text: 
     next: v1
     raise: {fileID: 0}
     choices: []
   - id: v1
     speaker: Voz
-    text: "N\xE3o tenha medo da marca. Ela s\xF3 quer dizer que eu estou com voc\xEA."
+    speakerKey: spk.voz
+    textKey: dlg.Aldeia_AMarca.v1
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

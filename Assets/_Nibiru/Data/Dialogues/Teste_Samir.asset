@@ -15,35 +15,47 @@ MonoBehaviour:
   nodes:
   - id: inicio
     speaker: Samir
-    text: "Eles n\xE3o vieram resgatar ningu\xE9m, doutora. Vieram apagar."
+    speakerKey: spk.samir
+    textKey: dlg.Teste_Samir.inicio
+    text: 
     next: elena1
     raise: {fileID: 0}
     choices: []
   - id: elena1
     speaker: Elena
-    text: "Como voc\xEA sabe disso?"
+    speakerKey: spk.elena
+    textKey: dlg.Teste_Samir.elena1
+    text: 
     next: samir2
     raise: {fileID: 0}
     choices: []
   - id: samir2
     speaker: Samir
-    text: "Porque eu sei o que dorme l\xE1 embaixo."
+    speakerKey: spk.samir
+    textKey: dlg.Teste_Samir.samir2
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: "Voc\xEA \xE9 um deles?"
+    - id: c1
+      textKey: dlg.Teste_Samir.samir2.c1
+      text: 
       next: guardiao
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: 87d27231e47a4fa48b8a020e36e73701, type: 2}
       reputation:
       - faction: {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
         amount: 5
-    - text: Me tire daqui.
+    - id: c2
+      textKey: dlg.Teste_Samir.samir2.c2
+      text: 
       next: fuga
       requires: {fileID: 0}
       raise: {fileID: 0}
       reputation: []
-    - text: "J\xE1 cuidei do l\xEDder deles."
+    - id: c3
+      textKey: dlg.Teste_Samir.samir2.c3
+      text: 
       next: lider
       requires: {fileID: 11400000, guid: 8eb5053188510ad4b8fef6ae1168926c, type: 2}
       raise: {fileID: 0}
@@ -54,20 +66,25 @@ MonoBehaviour:
         amount: -5
   - id: guardiao
     speaker: Samir
-    text: "Sou o \xFAltimo dos Guardi\xF5es desta terra. Por agora, \xE9 tudo que
-      voc\xEA precisa saber."
+    speakerKey: spk.samir
+    textKey: dlg.Teste_Samir.guardiao
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []
   - id: fuga
     speaker: Samir
-    text: "Ent\xE3o me siga. E n\xE3o corra."
+    speakerKey: spk.samir
+    textKey: dlg.Teste_Samir.fuga
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []
   - id: lider
     speaker: Samir
-    text: "Ent\xE3o eles v\xE3o mandar mais. R\xE1pido."
+    speakerKey: spk.samir
+    textKey: dlg.Teste_Samir.lider
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

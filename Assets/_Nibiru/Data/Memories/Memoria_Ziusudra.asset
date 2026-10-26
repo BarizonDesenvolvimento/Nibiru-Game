@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Memoria_Ziusudra
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Memories.MemoryDefinition
   sceneName: Memoria_Shuruppak
-  characterName: Ziusudra
-  placeTitle: "Shuruppak, antes do Dil\xFAvio"
+  characterNameKey: memory.Memoria_Ziusudra.character
+  placeTitleKey: memory.Memoria_Ziusudra.place
+  characterName: 
+  placeTitle: 
   raiseOnEnter: {fileID: 11400000, guid: 5c639ec6a0b423a4cb9203d37b0754c8, type: 2}
   endOn: {fileID: 11400000, guid: 48b8f684adfc6594b8db83f0b87b3493, type: 2}
   endDelay: 2.5

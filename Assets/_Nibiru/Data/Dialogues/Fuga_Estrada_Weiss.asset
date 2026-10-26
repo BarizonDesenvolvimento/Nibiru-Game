@@ -15,12 +15,15 @@ MonoBehaviour:
   nodes:
   - id: s1
     speaker: Samir
-    text: "Antes de Tell Amar, doutora, uma pergunta. Nas trincheiras, antes da Aldeia...
-      a senhora viu algu\xE9m? Algu\xE9m da Funda\xE7\xE3o, ferido, escondido?"
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Weiss.s1
+    text: 
     next: 
     raise: {fileID: 0}
     choices:
-    - text: "N\xE3o vi ningu\xE9m. S\xF3 os mortos."
+    - id: c1
+      textKey: dlg.Fuga_Estrada_Weiss.s1.c1
+      text: 
       next: cobriu
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: 0d7baef96fff2824a80db76884c8cb33, type: 2}
@@ -29,7 +32,9 @@ MonoBehaviour:
         amount: 5
       - faction: {fileID: 11400000, guid: 47c93f3fb05c9af4cb50cf23ccaf9716, type: 2}
         amount: -5
-    - text: "Vi. Uma m\xE9dica, Hannah Weiss, numa vala junto da tenda m\xE9dica."
+    - id: c2
+      textKey: dlg.Fuga_Estrada_Weiss.s1.c2
+      text: 
       next: contou
       requires: {fileID: 0}
       raise: {fileID: 11400000, guid: ecaf92d7f4cf84e409c62fd850948201, type: 2}
@@ -40,25 +45,33 @@ MonoBehaviour:
         amount: -5
   - id: cobriu
     speaker: Samir
-    text: "Se a senhora diz que n\xE3o... ent\xE3o n\xE3o viu."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Weiss.cobriu
+    text: 
     next: cobriu2
     raise: {fileID: 0}
     choices: []
   - id: cobriu2
     speaker: Elena
-    text: "(Ela olha a tempestade e pensa nas m\xE3os da m\xE9dica, refazendo a bandagem.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Weiss.cobriu2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []
   - id: contou
     speaker: Samir
-    text: "Uma m\xE9dica da Funda\xE7\xE3o. Ela sabe coisas que precisamos saber."
+    speakerKey: spk.samir
+    textKey: dlg.Fuga_Estrada_Weiss.contou
+    text: 
     next: contou2
     raise: {fileID: 0}
     choices: []
   - id: contou2
     speaker: Elena
-    text: "(Ele aperta o volante. Ela n\xE3o pergunta o que ele vai fazer com isso.)"
+    speakerKey: spk.elena
+    textKey: dlg.Fuga_Estrada_Weiss.contou2
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []

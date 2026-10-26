@@ -15,42 +15,49 @@ MonoBehaviour:
   nodes:
   - id: s1
     speaker: Samir
-    text: 'Venha ver uma coisa. (Ele se ajoelha diante de um nicho na parede do fundo:
-      tijolo cozido, muito mais antigo que a casa. Na pedra, um barco de junco sobre
-      ondas.)'
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_ONicho.s1
+    text: 
     next: e1
     raise: {fileID: 0}
     choices: []
   - id: e1
     speaker: Elena
-    text: "Isso \xE9 muito mais velho que a casa. Constru\xEDram a casa em volta
-      dele?"
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_ONicho.e1
+    text: 
     next: s2
     raise: {fileID: 0}
     choices: []
   - id: s2
     speaker: Samir
-    text: "Gente que sabia guardar segredo. A Funda\xE7\xE3o revirou a aldeia inteira
-      e passou por aqui sem ver."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_ONicho.s2
+    text: 
     next: s3
     raise: {fileID: 0}
     choices: []
   - id: s3
     speaker: Samir
-    text: "(Ele acende uma lamparina de barro e a deixa sobre o nicho.) Aqui voc\xEA
-      pode descansar. Se der errado l\xE1 fora, \xE9 para c\xE1 que voc\xEA volta."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_ONicho.s3
+    text: 
     next: e2
     raise: {fileID: 0}
     choices: []
   - id: e2
     speaker: Elena
-    text: (A tabuleta fica morna dentro da bolsa, como no acampamento.)
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_ONicho.e2
+    text: 
     next: s4
     raise: {fileID: 0}
     choices: []
   - id: s4
     speaker: Samir
-    text: "Descanse. Depois a gente fala sobre o que voc\xEA carrega nessa bolsa."
+    speakerKey: spk.samir
+    textKey: dlg.Aldeia_ONicho.s4
+    text: 
     next: 
     raise: {fileID: 0}
     choices: []
