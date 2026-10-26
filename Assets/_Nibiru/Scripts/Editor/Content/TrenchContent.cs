@@ -298,7 +298,8 @@ namespace Nibiru.EditorTools.Content
         {
             // No disco dourado do blockout, encostada na tenda médica, sentada e escondida.
             var spot = new Vector3(-20f, 0f, -51.3f);
-            Prim(PrimitiveType.Capsule, g, "Dra_Weiss", spot + Vector3.up * 0.6f, new Vector3(0.5f, 0.6f, 0.5f), "BO_BrancoFundacao", 180f);
+            GameObject weiss = Prim(PrimitiveType.Capsule, g, "Dra_Weiss", spot + Vector3.up * 0.6f, new Vector3(0.5f, 0.6f, 0.5f), "BO_BrancoFundacao", 180f);
+            UseModel(weiss, VillageTeamSetup.PrefabPath("DraWeiss"), spot.y);
             Prim(PrimitiveType.Cube, g, "Mochila_Medica", spot + new Vector3(0.7f, 0.2f, 0.2f), new Vector3(0.4f, 0.4f, 0.25f), "BO_TurquesaFundacao", 15f);
 
             GameObject talk = Zone(g, "Falar_DraWeiss", spot + Vector3.up * 0.8f, new Vector3(1.4f, 1.6f, 1.4f));

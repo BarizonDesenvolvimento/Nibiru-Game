@@ -102,6 +102,44 @@ namespace Nibiru.EditorTools.Content
             return body;
         }
 
+        /// <summary>
+        /// Troca a forma de uma cápsula provisória pelo modelo do personagem, sem mudar o nome, o lugar nem o
+        /// colisor: o modelo entra como filho "Visual", com os pés no chão (groundY, em metros do mundo) e a
+        /// escala anulada (o colisor segue o tamanho da cápsula). Com flatten, o objeto não tem colisor e é
+        /// a cápsula tombada (corpo deitado): ele volta a ficar reto, só com o giro (yaw), e o modelo entra no chão.
+        /// </summary>
+        public static GameObject UseModel(GameObject placeholder, string prefabPath, float groundY, bool flatten = false)
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"{placeholder.name}: prefab {prefabPath} não encontrado; fica a cápsula. Rode Nibiru > Personagens > Montar personagens da Aldeia e da equipe.");
+                return null;
+            }
+            Transform t = placeholder.transform;
+            Object.DestroyImmediate(placeholder.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(placeholder.GetComponent<MeshFilter>());
+            var old = t.Find("Visual");
+            if (old != null) Object.DestroyImmediate(old.gameObject);
+
+            float height = t.position.y - groundY;
+            if (flatten)
+            {
+                t.rotation = Quaternion.Euler(0f, t.eulerAngles.y, 0f);
+                t.localScale = Vector3.one;
+                t.position = new Vector3(t.position.x, groundY, t.position.z);
+                height = 0f;
+            }
+            Vector3 s = t.localScale;
+            var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab, placeholder.scene);
+            visual.name = "Visual";
+            visual.transform.SetParent(t, false);
+            visual.transform.localPosition = new Vector3(0f, -height / s.y, 0f);
+            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localScale = new Vector3(1f / s.x, 1f / s.y, 1f / s.z);
+            return visual;
+        }
+
         // Caixa invisível marcada como gatilho.
         public static GameObject Zone(Transform parent, string name, Vector3 center, Vector3 size, float yaw = 0f)
         {

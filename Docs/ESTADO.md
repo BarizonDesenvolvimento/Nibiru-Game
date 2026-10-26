@@ -982,9 +982,9 @@ Plano aprovado pelo dono em 26/out/2026, nesta ordem: Partes 0 + 1 → 4 → 2 (
 - Antes da Parte 2: se a soma prevista do LFS passar de 80% do limite, parar e avisar.
 
 **Pendente:**
-- **Parte 2, segunda etapa** (a importação e a vitrine já estão feitas, acima; esperam o teste do dono): trocar as cápsulas da Weiss, da Umm Karim e do Yusuf, mantendo o nome dos objetos e o tamanho dos colisores, e rodar de novo os menus: Trincheiras, Aldeia, O que o Tom viu, Boca do Poço, Wadi, Fuga, Remédio para Yusuf.
+- **Parte 2, segunda etapa (cápsulas trocadas; commit sem push, esperando o teste do dono no Play):** `ContentKit.UseModel` troca a forma da cápsula pelo prefab, como filho `Visual`, sem mudar nome, lugar nem colisor (escala anulada; os pés no chão). **Dra_Weiss** (Trincheiras, `TrenchContent`): sentada, na cápsula de colisor de antes, encostada na tenda médica, virada para o sul. **Umm_Karim** (Aldeia, `VillageContent`): em pé, com a cápsula como colisor; no final de "O que o Tom viu" ela anda pelo `Umm_Karim_Raiz` (o `NpcAnimator` lê a velocidade do agente dessa raiz). **Yusuf** (Aldeia): deitado na esteira, sem colisor (o corpo tombado voltou a ficar reto). Menus rodados na ordem do plano com a região aberta: Trincheiras, Aldeia, O que o Tom viu, Boca do Poço, Wadi, Fuga, Remédio para Yusuf (sem avisos). **O estado do Yusuf (morto ou salvo) não muda nada no visual:** `YusufMorreu` só dispara a missão falha e as falas (da Umm Karim e da Elena na viagem); o corpo da Aldeia é o mesmo. Teste geral dos atalhos: 94 OK, 0 FALHOU, 47 pulados. Teste do salvamento: 20 itens, todos OK.
 - **Parte 3:** o dono ainda escolhe o trecho da vitrine (A: casa do altar e frente do pátio da Aldeia, recomendado; B: Passagem dos Guardiões; C: tenda da Elena e pátio do Acampamento). O visual final fica para outra conversa.
-- **Respostas que faltam do dono:** a Weiss fica sentada no chão, encostada na tenda médica? (antes da troca das cápsulas). Nos créditos, **a confirmar**: o plano do Meshy quando os modelos foram gerados, a origem das imagens de referência e a das texturas do manto da Ninsar.
+- **Respostas que faltam do dono:** Nos créditos, **a confirmar**: o plano do Meshy quando os modelos foram gerados, a origem das imagens de referência e a das texturas do manto da Ninsar.
 
 ## Próximos passos
 

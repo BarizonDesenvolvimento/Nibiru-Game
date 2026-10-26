@@ -432,10 +432,12 @@ namespace Nibiru.EditorTools.Content
             Transform samirPoint = Point(g, "Samir_NaCasa", OnNavMesh(SamirInHouse, "Samir_NaCasa", 0.4f));
             samirPoint.rotation = Quaternion.Euler(0f, SamirInHouseYaw, 0f);
 
-            // Yusuf deitado numa esteira, Umm Karim em pé ao lado (cápsulas, por enquanto).
+            // Yusuf deitado numa esteira, Umm Karim em pé ao lado (modelos definitivos; a cápsula da Umm Karim fica só como colisor).
             Prim(PrimitiveType.Cube, g, "Esteira_Yusuf", YusufSpot + Vector3.up * 0.02f, new Vector3(1f, 0.04f, 2.1f), "BO_LonaLaranja", collider: ColliderMode.None);
             GameObject yusuf = Body(g, "Yusuf", YusufSpot + Vector3.up * 0.04f, 0f, "BO_Areia");
             GameObject ummKarim = Prim(PrimitiveType.Capsule, g, "Umm_Karim", UmmKarimSpot + Vector3.up * 0.8f, new Vector3(0.55f, 0.8f, 0.55f), "BO_Madeira", 40f);
+            UseModel(yusuf, VillageTeamSetup.PrefabPath("Yusuf"), YusufSpot.y + 0.04f, flatten: true);
+            UseModel(ummKarim, VillageTeamSetup.PrefabPath("UmmKarim"), UmmKarimSpot.y);
 
             // Conversas curtas depois do encontro, quantas vezes a Elena quiser.
             GameObject talkUmm = Zone(g, "Falar_UmmKarim", UmmKarimSpot + Vector3.up * 0.8f, new Vector3(1.2f, 1.6f, 1.2f));
