@@ -217,10 +217,42 @@ namespace Nibiru.EditorTools
             if (fell) problems.Add($"caiu {drop:0.0} m");
             if (!grounded) problems.Add("não está apoiada no chão");
             if (dead) problems.Add("está morta");
+            string extra = ExtraProblem(queue[index]);
+            if (extra != null) problems.Add(extra);
 
             string where = $"pé em ({feet.x:0.0}; {feet.y:0.0}; {feet.z:0.0})";
             if (problems.Count == 0) Result(true, $"{where}, a {meshDistance:0.00} m da malha");
             else Result(false, $"{where}: {string.Join(", ", problems)}");
+        }
+
+        // Conferências próprias de atalhos que guardam um valor da cena (null = nada a reclamar).
+        static string ExtraProblem(string id)
+        {
+            switch (id)
+            {
+                case "passo13.fita_linha3":
+                {
+                    var tapePlayer = Object.FindFirstObjectByType<Documents.TapePlayer>();
+                    bool has = Save.WorldState.TryGetSceneValue("tape." + Step13Shortcuts.TapeResumeId(), out int line);
+                    // A fita segue andando durante a espera: tem de estar tocando e nunca antes da 3ª linha.
+                    if (tapePlayer == null || !tapePlayer.IsPlaying) return "a fita deveria estar tocando";
+                    if (!has || line < Step13Shortcuts.TapeResumeLine) return $"a fita deveria continuar da linha {Step13Shortcuts.TapeResumeLine + 1} em diante, está em {(has ? (line + 1).ToString() : "nenhuma")}";
+                    return null;
+                }
+                case "passo8.encontro_sul": return EncounterProblem("Entrada_Sul");
+                case "passo8.encontro_norte": return EncounterProblem("Entrada_Norte");
+                default: return null;
+            }
+        }
+
+        static string EncounterProblem(string entrance)
+        {
+            Transform encounter = TestFlow.Obj("Encontro_Samir")?.transform;
+            Transform scene = encounter != null ? encounter.Find("Cena") : null;
+            Transform point = encounter != null ? encounter.Find("Pontos_Encontro/" + entrance) : null;
+            if (scene == null || point == null) return "não achei a cena do encontro ou o ponto " + entrance;
+            Vector3 flat = Vector3.ProjectOnPlane(scene.position - point.position, Vector3.up);
+            return flat.magnitude < 0.5f ? null : $"o soldado caído deveria estar em {entrance}, está a {flat.magnitude:0.0} m";
         }
 
         // Avança as conversas, como se o jogador apertasse Confirmar (e, se parar numa escolha, a primeira),

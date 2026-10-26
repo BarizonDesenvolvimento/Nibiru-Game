@@ -138,12 +138,9 @@ namespace Nibiru.EditorTools.Saving
                 Same($"{code}: mundo lido do disco x mundo do checkpoint", worldOnLoad, expectedWorld);
                 Same($"{code}: Elena carregada x Elena do checkpoint", ElenaNow(), expectedElena);
                 Same($"{code}: carregar x voltar depois de morrer", Full(), afterDeath);
-                // O que vale é voltar igual a depois de morrer (conferido abaixo). Se mesmo assim ela não fica no ponto
-                // (um colisor a empurra), é o comportamento de hoje: vai como observação no Console, não como falha.
+                // Um colisor em cima do ponto empurraria a Elena (foi assim no pé da descida do Poço): 0,15 m de tolerância.
                 Vector3 now = Motor().transform.position;
-                Check(Near(now, saved.position, 1f), $"{code}: a Elena deveria voltar ao ponto do checkpoint {saved.position}, está em {now}");
-                if (!Near(now, saved.position))
-                    Debug.Log($"Salvamento (teste), observação: ao voltar de {code} a Elena fica a {new Vector2(now.x - saved.position.x, now.z - saved.position.z).magnitude:0.00} m do ponto de retorno (igual a depois de morrer).");
+                Check(Near(now, saved.position, 0.15f), $"{code}: a Elena deveria voltar ao ponto do checkpoint {saved.position}, está em {now} ({new Vector2(now.x - saved.position.x, now.z - saved.position.z).magnitude:0.00} m do ponto)");
                 Check(Vector3.Distance(Motor().transform.position, deathPosition) < 0.05f, $"{code}: posição ao carregar x ao morrer: {Motor().transform.position} x {deathPosition}");
                 Check(SaveSlots.CurrentSlot == 1, $"{code}: o slot da partida deveria ser o 1");
                 Check(Mathf.Abs(PlayTime.Seconds - savedTime) < 1f, $"{code}: o tempo jogado deveria voltar com o slot");

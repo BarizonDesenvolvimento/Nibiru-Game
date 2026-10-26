@@ -61,7 +61,8 @@ namespace Nibiru.EditorTools.Content
         // Ponto de retorno do pé da descida: no último patamar de andaime, longe do Lullu e em silêncio.
         static readonly Vector3 FootCheckpointCenter = new Vector3(49f, -9f, 73.5f);
         static readonly Vector3 FootCheckpointSize = new Vector3(3f, 5f, 5f);
-        static readonly Vector3 FootCheckpointSpawn = new Vector3(49f, -10.5f, 71f);
+        // Medido: em (49, 71) o canto cortado Poco_Canto_SE empurrava a Elena 0,59 m; (48,4, 71,4) é livre de colisor.
+        static readonly Vector3 FootCheckpointSpawn = new Vector3(48.4f, -10.5f, 71.4f);
 
         // Passou do Lullu: já dentro da antecâmara (x 36–54), uns 5 m depois da boca.
         static readonly Vector3 PassedZoneCenter = new Vector3(45f, -12.5f, 84.5f);
