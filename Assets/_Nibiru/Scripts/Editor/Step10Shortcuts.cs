@@ -32,6 +32,8 @@ namespace Nibiru.EditorTools
         static readonly Vector3 AvenueSpot = new Vector3(2f, 0f, 8f);
         static readonly Vector3 HighRouteSpot = new Vector3(6f, 14f, 45f);
         static readonly Vector3 BehindLeaderSpot = new Vector3(21.4f, 0f, 6.7f);
+        static readonly Vector3 LastContainerSpot = new Vector3(14f, 0f, -2.5f);
+        static readonly Vector3 EastLeaderApproachSpot = new Vector3(42f, 0f, 14f);
         static readonly Vector3 InsideTentSpot = new Vector3(28.5f, 0f, 7f);
         static readonly Vector3 PanelSpot = new Vector3(23.8f, 0f, 9.3f);
         static readonly Vector3 NorthEastSpot = new Vector3(52f, 0f, 26f);
@@ -48,6 +50,10 @@ namespace Nibiru.EditorTools
                 "no 2º terraço do zigurate, atrás do atirador. Chegue perto agachada e use a faca (Golpe pelas costas).", crouch: true));
             Register("passo10.lider", () => Begin(null, CrossYardStep, BehindLeaderSpot, 214f,
                 "atrás do líder de esquadra, na porta da tenda de comando: \"Golpe pelas costas\" aparece na tela.", crouch: true));
+            Register("passo10.conteiner_gatilho", () => Begin(null, CrossYardStep, LastContainerSpot, 0f,
+                "no corredor atrás do último contêiner do sul. Um helicóptero entra de longe e cruza a avenida: espere coberta e ele passa; corra pela avenida e ele avista."));
+            Register("passo10.lider_leste", () => Begin(null, CrossYardStep, EastLeaderApproachSpot, 90f,
+                "a leste do heliponto, perto da ronda do 2º líder. Chegue ao nordeste (saída para o Poço) passando pelo lado oeste quando ele olhar para o sul, ou pelas costas dele com a faca.", crouch: true));
             Register("passo10.tenda", () => Begin(new[] { "ChegouATendaDeComando" }, SearchDeskStep, InsideTentSpot, 90f,
                 "dentro da tenda de comando, de frente para a mesa do Kast. Examine a mesa."));
             Register("passo10.painel", () => Begin(ReadDocuments, OpenGateStep, PanelSpot, 0f,
@@ -79,6 +85,12 @@ namespace Nibiru.EditorTools
 
         [MenuItem(MenuRoot + "8. Portão aberto: saindo para o Poço")]
         static void Leave() => Go("passo10.saida");
+
+        [MenuItem(MenuRoot + "8a. Último contêiner: o helicóptero cruza a avenida")]
+        static void LastContainer() => Go("passo10.conteiner_gatilho");
+
+        [MenuItem(MenuRoot + "8b. Perto da ronda do 2º líder, a leste")]
+        static void EastLeader() => Go("passo10.lider_leste");
 
         // Mundo do fim do passo 9 (a Elena já dentro da base), mais estes eventos, com as armas.
         static void Begin(string[] extra, int questStep, Vector3 spawn, float yaw, string message, bool crouch = false)

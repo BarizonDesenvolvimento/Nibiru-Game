@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using System.Text;
 using Nibiru.AI;
+using Nibiru.Save;
 using Nibiru.Combat;
 using Nibiru.Dialogue;
 using Nibiru.Interaction;
@@ -52,6 +54,9 @@ namespace Nibiru.EditorTools
             checks.Add(new Check { name = "Painel abre o portão e libera a saída", moment = "passo10.painel", step = Gate });
             checks.Add(new Check { name = "Golpe pelas costas no atirador (rota alta)", moment = "passo10.rota_alta", step = t => Takedown("Atirador_De_Elite", true) });
             checks.Add(new Check { name = "Saída nordeste fecha o passo 10", moment = "passo10.saida", step = Exit });
+            checks.Add(new Check { name = "2º líder: ID estável, na malha, ronda e rota livre com timing", moment = "passo10.lider_leste", step = EastLeader });
+            checks.Add(new Check { name = "Helicóptero: Elena coberta no gatilho não é avistada", moment = "passo10.conteiner_gatilho", step = HeliCovered });
+            checks.Add(new Check { name = "Helicóptero: Elena exposta na avenida é avistada e o atirador fica de fora", moment = "passo10.conteiner_gatilho", step = HeliExposed });
         }
 
         [MenuItem("Nibiru/Testes/Passo 10/9. Teste automático (resumo no Console)")]
@@ -275,6 +280,114 @@ namespace Nibiru.EditorTools
             }
             player.enabled = true;
             Result(stuck == null, stuck ?? $"chegou ao 2º terraço em {player.transform.position}");
+            return true;
+        }
+
+        // ---------- 2º líder e helicóptero ----------
+
+        static Vector3 leaderStart;
+
+        static bool EastLeader(float elapsed)
+        {
+            var leader = GameObject.Find("Lider_Leste_Heliponto");
+            if (leader == null) { Result(false, "2º líder não encontrado"); return true; }
+            if (phase == 1)
+            {
+                leaderStart = leader.transform.position;
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            if (Time.time < mark + 10f) return false;
+
+            var id = leader.GetComponent<PersistentId>();
+            bool stableId = id != null && id.Id == "base.lider_leste_heliponto";
+            var ai = leader.GetComponent<SoldierAI>();
+            bool moved = Vector3.Distance(leaderStart, leader.transform.position) > 1f;
+            var agent = leader.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            bool onMesh = agent != null && agent.enabled && agent.isOnNavMesh;
+
+            // A rota por baixo segue livre: há caminho da tenda de comando à saída, e com ele no ponto
+            // sul da ronda (olhando para o sul) o lado oeste do corredor fica às costas dele.
+            var path = new UnityEngine.AI.NavMeshPath();
+            bool route = UnityEngine.AI.NavMesh.CalculatePath(new Vector3(24f, 0f, 7f), new Vector3(50f, 0f, 34f), UnityEngine.AI.NavMesh.AllAreas, path)
+                && path.status == UnityEngine.AI.NavMeshPathStatus.PathComplete;
+            Vector3 toEdge = new Vector3(44f, 0f, 24f) - new Vector3(53f, 0f, 9f);
+            float angleSouthEnd = Vector3.Angle(Vector3.back, toEdge);
+            var settings = Load<SoldierSettings>("AI/LiderEsquadrao");
+            bool timing = angleSouthEnd > settings.viewAngle * 0.5f;
+
+            Result(stableId && ai != null && ai.IsLeader && ai.enabled && moved && onMesh && route && timing,
+                $"id estável={stableId}, líder={ai != null && ai.IsLeader}, andou={moved}, na malha={onMesh}, caminho tenda-saída={route}, " +
+                $"ponto da saída fora do cone no sul da ronda={timing} ({angleSouthEnd:0}° contra {settings.viewAngle * 0.5f:0}°)");
+            return true;
+        }
+
+        static HelicopterSpotter Spotter() =>
+            Object.FindObjectsByType<HelicopterSpotter>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .FirstOrDefault(s => s.name == "Helicoptero_Passagem");
+
+        static bool Spotted(HelicopterSpotter spotter) =>
+            (bool)typeof(HelicopterSpotter).GetField("spotted", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(spotter);
+
+        // Sem soldados atirando na Elena durante o teste (só o helicóptero é testado).
+        static void SilenceGuards(bool perceptionOnly)
+        {
+            foreach (var p in Object.FindObjectsByType<SoldierPerception>(FindObjectsSortMode.None)) p.enabled = false;
+            foreach (var s in Object.FindObjectsByType<SniperAI>(FindObjectsSortMode.None)) s.enabled = false;
+            if (!perceptionOnly)
+                foreach (var a in Object.FindObjectsByType<SoldierAI>(FindObjectsSortMode.None)) a.enabled = false;
+        }
+
+        static bool HeliCovered(float elapsed)
+        {
+            if (phase == 1)
+            {
+                SilenceGuards(perceptionOnly: false);
+                phase = 2;
+                return false;
+            }
+            var spotter = Spotter();
+            if (spotter == null) { Result(false, "helicóptero da passagem não encontrado"); return true; }
+            if (phase == 2)
+            {
+                // A Elena já nasce dentro do gatilho; se o evento não disparou, sai e entra de novo.
+                if (Raised("ChegouAoUltimoConteinerDaBase")) { phase = 3; return false; }
+                if (elapsed > 3f) { Teleport(new Vector3(14f, 0.1f, -2.5f), 0f); phase = 3; }
+                return false;
+            }
+            if (Spotted(spotter)) { Result(false, "avistou a Elena atrás do contêiner"); return true; }
+            if (!Raised("HelicopteroPassouNaBase")) return false;
+            Result(true, $"o helicóptero cruzou a base (evento HelicopteroPassouNaBase) sem avistar a Elena coberta");
+            return true;
+        }
+
+        static bool HeliExposed(float elapsed)
+        {
+            if (phase == 1)
+            {
+                SilenceGuards(perceptionOnly: true);
+                phase = 2;
+                return false;
+            }
+            var spotter = Spotter();
+            if (spotter == null) { Result(false, "helicóptero da passagem não encontrado"); return true; }
+            if (phase == 2)
+            {
+                if (!Raised("ChegouAoUltimoConteinerDaBase") && elapsed > 3f) Teleport(new Vector3(14f, 0.1f, -2.5f), 0f);
+                // Quando o helicóptero chega perto, a Elena pisa na avenida, a céu aberto.
+                if (spotter.gameObject.activeInHierarchy && spotter.transform.position.x < 40f)
+                {
+                    Teleport(new Vector3(8f, 0.1f, 8.5f), 0f);
+                    phase = 3;
+                }
+                return false;
+            }
+            if (!Spotted(spotter)) return false;
+
+            var alerted = SoldierAI.All.Where(s => s.CurrentState == SoldierAI.State.Combate).Select(s => s.name).ToList();
+            bool sniperCalled = SoldierAI.All.Any(s => s.GetComponent<SniperAI>() != null);
+            Result(alerted.Count > 0 && !sniperCalled, $"avistou a Elena na avenida; em combate=[{string.Join(", ", alerted)}], atirador na lista do helicóptero={sniperCalled}");
             return true;
         }
 
