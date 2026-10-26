@@ -99,7 +99,7 @@ namespace Nibiru.EditorTools
         // Mundo de quem acabou de sair da base (passos 1 a 10), mais estes eventos, com as armas.
         // Os de raiseLive acontecem depois de recarregar. Também usado pelos atalhos do passo 12.
         internal static void Begin(string[] extra, int questStep, Vector3 spawn, float yaw, string message, bool crouch = false,
-            string[] raiseLive = null, Action thenAlso = null)
+            string[] raiseLive = null, Action thenAlso = null, Action extraSetup = null)
         {
             Action then = () =>
             {
@@ -108,7 +108,7 @@ namespace Nibiru.EditorTools
                 thenAlso?.Invoke();
                 if (crouch) After(0.2f, Crouch);
             };
-            Step9Shortcuts.Start(revealed: true, extra: LeftBase.Concat(extra ?? new string[0]).ToArray(), questStep, spawn, yaw, then);
+            Step9Shortcuts.Start(revealed: true, extra: LeftBase.Concat(extra ?? new string[0]).ToArray(), questStep, spawn, yaw, then, extraSetup);
             Debug.Log(message);
         }
 

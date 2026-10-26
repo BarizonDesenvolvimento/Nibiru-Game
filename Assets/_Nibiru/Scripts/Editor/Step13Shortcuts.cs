@@ -43,6 +43,9 @@ namespace Nibiru.EditorTools
                 "Passo 13: no túnel, junto da fita de Irena (degrau de pedra à esquerda). Pegue com o botão de interagir e siga andando: a fita toca sem travar o controle."));
             Register("passo13.rampa", () => Step11Shortcuts.Begin(TapeTaken, FollowStep, RampSpot, 0f,
                 "Passo 13: na rampa, com a fita já pega e ainda não ouvida até o fim (como ao voltar do salvamento): ela toca de novo do começo. Suba até o topo."));
+            Register("passo13.fita_linha3", () => Step11Shortcuts.Begin(TapeTaken, FollowStep, RampSpot, 0f,
+                "Passo 13: na rampa, com a fita pega e tocando a partir da 3ª linha (como ao voltar do salvamento no meio dela). Ela continua daquela linha, sem recomeçar.",
+                extraSetup: () => Save.WorldState.SetSceneValue("tape." + TapeResumeId(), TapeResumeLine)));
             Register("passo13.topo", () => Step11Shortcuts.Begin(TapeFinished, FollowStep, TopSpot, 0f,
                 "Passo 13: no pé do topo da rampa. Ande para o norte: o salvamento automático e o fim do passo (a saída para o wadi)."));
             Register("passo13.antecamara", () => Step11Shortcuts.Begin(Opened, FollowStep, TunnelSpot, 90f,
@@ -60,6 +63,13 @@ namespace Nibiru.EditorTools
 
         [MenuItem(MenuRoot + "4. Na rampa, com a fita já pega (toca de novo)")]
         static void Ramp() => Go("passo13.rampa");
+
+        // A fita de Irena nº 1 (Data/Tapes/Fita_Irena_1) e a linha (0 = primeira) em que o atalho 8 a deixa.
+        internal const int TapeResumeLine = 2;
+        internal static string TapeResumeId() => AssetDatabase.LoadAssetAtPath<Documents.TapeDefinition>("Assets/_Nibiru/Data/Tapes/Fita_Irena_1.asset").Id;
+
+        [MenuItem(MenuRoot + "8. Na rampa, com a fita na 3ª linha (continua dali)")]
+        static void RampLine3() => Go("passo13.fita_linha3");
 
         [MenuItem(MenuRoot + "5. Pé do topo da rampa: salvamento e saída para o wadi")]
         static void Top() => Go("passo13.topo");

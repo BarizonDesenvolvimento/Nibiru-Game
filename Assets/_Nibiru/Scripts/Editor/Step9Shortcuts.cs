@@ -88,14 +88,18 @@ namespace Nibiru.EditorTools
         }
 
         // Mundo até o fim do passo 8. Se o Samir não revelou que é Guardião, a Elena contou a verdade (Guardiões +5).
-        internal static void Start(bool revealed, string[] extra, int questStep, Vector3 spawn, float yaw, Action then)
+        internal static void Start(bool revealed, string[] extra, int questStep, Vector3 spawn, float yaw, Action then, Action extraSetup = null)
         {
             var events = Step8Shortcuts.EventsUntilStep7.Concat(Step8Events)
                 .Append(revealed ? "SamirRevelouGuardiao" : "ContouAVerdadeAoSamir")
                 .Concat(extra ?? new string[0]).ToArray();
             StartFrom(events, new[] { ("Sobrevivente", questStep), ("RemedioParaYusuf", 0), ("OQueOTomViu", 0) },
                 TransformationAfterTablet, spawn, yaw, then,
-                setup: () => { if (!revealed) Save.WorldState.SetReputation("Guardioes", 5); });
+                setup: () =>
+                {
+                    if (!revealed) Save.WorldState.SetReputation("Guardioes", 5);
+                    extraSetup?.Invoke();
+                });
         }
     }
 }

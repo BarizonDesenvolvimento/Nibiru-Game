@@ -57,6 +57,8 @@ namespace Nibiru.EditorTools
             checks.Add(new Check { name = "Túnel caminhável até o topo da rampa; lamparinas acesas; só dois pontos de retorno; salvamento e fim do passo", moment = "passo13.aberta", step = Route });
             checks.Add(new Check { name = "Fita: pega, toca andando sem travar o controle, não é cortada ao sair e termina", moment = "passo13.fita", step = Tape });
             checks.Add(new Check { name = "Fita pega e não terminada: ao voltar do salvamento ela toca de novo", moment = "passo13.rampa", step = TapeResume });
+            checks.Add(new Check { name = "Fita guardada na 3ª linha: ao voltar do salvamento ela continua da 3ª linha, sem recomeçar", moment = "passo13.fita_linha3", step = TapeResumeLine3 });
+            checks.Add(new Check { name = "Fita terminada: ao voltar do salvamento ela não toca de novo e não deixa linha guardada", moment = "passo13.topo", step = TapeFinishedStaysQuiet });
             checks.Add(new Check { name = "Câmera no túnel estreito: nunca dentro de parede nem atravessando teto ou parede", moment = "passo13.aberta", step = CameraCollision });
             checks.Add(new Check { name = "Voltar à antecâmara com a passagem aberta: nada trava", moment = "passo13.antecamara", step = BackToHall });
         }
@@ -368,6 +370,39 @@ namespace Nibiru.EditorTools
             var tape = Load<TapeDefinition>("Tapes/Fita_Irena_1");
             bool ok = tapePlayer.IsPlaying && tape.IsCollected && !tape.IsFinished;
             Result(ok, $"tocando={tapePlayer.IsPlaying}, coletada={tape.IsCollected}, terminada={tape.IsFinished}");
+            return true;
+        }
+
+        // Fita guardada na 3ª linha (índice 2): ao carregar, continua dali (a linha guardada segue sendo a 2, não a 0).
+        static bool TapeResumeLine3()
+        {
+            if (phase == 1)
+            {
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            if (Time.time < mark + 1f) return false;
+            var tapePlayer = Object.FindFirstObjectByType<TapePlayer>();
+            bool has = Save.WorldState.TryGetSceneValue("tape." + Step13Shortcuts.TapeResumeId(), out int line);
+            bool ok = tapePlayer.IsPlaying && has && line == Step13Shortcuts.TapeResumeLine;
+            Result(ok, $"tocando={tapePlayer.IsPlaying}, linha guardada={(has ? line.ToString() : "nenhuma")}, esperada={Step13Shortcuts.TapeResumeLine}");
+            return true;
+        }
+
+        // Fita terminada: não toca de novo ao voltar e não deixa linha guardada.
+        static bool TapeFinishedStaysQuiet()
+        {
+            if (phase == 1)
+            {
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            if (Time.time < mark + 2f) return false;
+            var tapePlayer = Object.FindFirstObjectByType<TapePlayer>();
+            bool has = Save.WorldState.TryGetSceneValue("tape." + Step13Shortcuts.TapeResumeId(), out _);
+            Result(!tapePlayer.IsPlaying && !has, $"tocando={tapePlayer.IsPlaying}, linha guardada={has}");
             return true;
         }
 
