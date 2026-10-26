@@ -962,6 +962,28 @@ Na volta, o listener de `ChegouAAldeia` chama `PlaceAtPointAhead.PlaceSaved` ant
 2. **Soldado:** Passo 8 > 6 (entrada sul) e 7 (entrada norte): o soldado caído e a cena do encontro estão lá, e não na entrada leste. Para o caminho real: entre na Aldeia por um lado que não seja o leste, vá até o pátio (ponto de retorno), morra e volte.
 3. **Poço:** Passo 11 > 4 (ponto de retorno do pé da descida). A Elena nasce no patamar sem ser empurrada; morra de novo e confira.
 
+## Etapa B1v (em andamento): Git da ArteFonte, 6 personagens, área-vitrine e créditos
+
+Plano aprovado pelo dono em 26/out/2026, nesta ordem: Partes 0 + 1 → 4 → 2 (importação e vitrine, pausa para o Play; troca das cápsulas, pausa para o Play) → 3. Um commit por etapa; na Parte 2, push só depois do OK do dono no Play.
+
+**Feito:**
+- **Parte 0:** horas da B1 (~1 h) registradas na seção dela.
+- **Parte 1 (Git da ArteFonte):** `Dra. Weiss` → `DraWeiss`, `Umm Karim` → `UmmKarim` (com a referência `Umm  Karim.png` → `UmmKarim.png`) e `AtiradorDeElite/2_RIG` → `2_Rig`. A troca só de maiúsculas foi feita direto no índice (`git rm --cached` + `git add`), porque o Git no Windows (`core.ignorecase=true`) não a enxerga. Conferido: 17 renomeações R100, os 11 binários no LFS com os mesmos identificadores (nada novo subiu) e Git igual ao disco, diferenciando maiúsculas. Commit `635965e` (enviado).
+- **Parte 4 (créditos):** `Docs/Creditos-e-Licencas.md` criado (commit `54918bc`). Pro Magic, Magic Locomotion e Scary Zombie: **nenhum uso** em `Assets`, cenas, prefabs ou scripts (comparado byte a byte; `X Bot` e `Standing React Death Backward` vieram da pasta `Avulsas`). Nada foi removido. As imagens de `Art/Referencias` não são usadas por nada e não entram no build.
+- **LFS conferido** (commit `ce23200`, seção "Git"): ~1,5 GB no histórico, uns 15% de 10 GiB do plano Free; a Parte 2 deve somar ~80 MB. O plano real da conta não foi conferido no GitHub (o `gh` não está instalado): o dono confere em Billing → Git LFS.
+
+**Decisões do dono:**
+- Pasta `DraWeiss`, sem ponto; imagem `UmmKarim.png`. Os identificadores de `speaker` ("Dra. Weiss", "Umm Karim") não mudam.
+- Cópias das texturas dos personagens em `Assets` em **2K** (os originais 4K ficam na ArteFonte).
+- Na área-vitrine valem texturas **CC0** (ambientCG, Poly Haven) e objetos do **Meshy**, todos registrados nos créditos. "Sem pacotes novos" = nada da Asset Store e nada pago.
+- **Unity CLI: não atualizar agora** (a ponte avisa da 1.0.0-beta.14).
+- Antes da Parte 2: se a soma prevista do LFS passar de 80% do limite, parar e avisar.
+
+**Pendente:**
+- **Parte 2:** importar ArqueologaJovem, ArqueologoVeterano, DraWeiss, TrabalhadorEscavacao, UmmKarim e Yusuf (padrão dos 9 já importados: AccuRig Humanoid com dedos, altura da tabela, sem animação embutida). Umm Karim em pé (parada, andar, conversa); Weiss sentada no chão (`Sitting Idle2`, o clipe da Elena sentada); Yusuf deitado (`Laying Idle`, a importar); a equipe morta só com prefab e vitrine. Depois, trocar as cápsulas da Weiss, da Umm Karim e do Yusuf, mantendo o nome dos objetos e o tamanho dos colisores, e rodar de novo os menus: Trincheiras, Aldeia, O que o Tom viu, Boca do Poço, Wadi, Fuga, Remédio para Yusuf.
+- **Parte 3:** o dono ainda escolhe o trecho da vitrine (A: casa do altar e frente do pátio da Aldeia, recomendado; B: Passagem dos Guardiões; C: tenda da Elena e pátio do Acampamento). O visual final fica para outra conversa.
+- **Respostas que faltam do dono:** a Weiss fica sentada no chão, encostada na tenda médica? (antes da troca das cápsulas). Nos créditos, **a confirmar**: o plano do Meshy quando os modelos foram gerados, a origem das imagens de referência e a das texturas do manto da Ninsar.
+
 ## Próximos passos
 
 1. Teste do dono nas vitrines de animação (veja "Animações da biblioteca"); os passos 1 a 15 já foram aprovados pelo dono. Depois, o segundo líder e a passagem do helicóptero na base, a revelação dos filmes do Tom.
