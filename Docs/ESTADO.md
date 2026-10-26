@@ -22,6 +22,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **passo 15** (a fuga na caminhonete do Samir até o fim da demo: nicho do túnel para quem devolve a tabuleta, embarque, viagem em trilho com a conversa "A estrada" de cada escolha, diário, tela de fim da demo e menu principal provisório) está pronto em blockout, testado pela ponte e **testado no Play pelo dono e aprovado** (as três escolhas, o nicho, a pausa, o diário, o fim da demo e o menu principal). Fechado, menos as animações de sentado e de dirigir, que o dono vai trazer. Veja "Fuga, passo 15".
 - O **Arquivo de documentos e fitas** (etapa A3: tela no menu de pausa, códigos estáveis para o salvamento do A4, inscrições da Aldeia e da passagem e a carta do soldado nas Trincheiras) está pronto, testado pela ponte e **testado no Play pelo dono e aprovado em 26/out/2026**. A parte 2 do A3 (rolagem, mais 2 documentos da base e os textos definitivos das inscrições da Aldeia e do Poço) está pronta, testada pela ponte e **testada no Play pelo dono e aprovada em 26/out/2026**. Veja "Arquivo de documentos e fitas (etapa A3)".
 - O **salvamento em disco com 3 slots** (etapa A4a: gravar e carregar o último checkpoint, códigos permanentes, "Continuar" mínimo no menu principal) está pronto, testado pela ponte e **testado no Play pelo dono e aprovado em 26/out/2026** (as 10 situações de teste). A tela de slots fica para o A4b. Veja "Salvamento em disco, 3 slots (etapa A4a)".
+- A **tela de slots do menu principal** (etapa A4b: Novo jogo e Carregar com 3 slots, estados vazio, ocupado, "demo concluída" e ilegível, apagar e sobrescrever com confirmação, "Continuar" pelo slot jogável mais recente e "Sair para o menu" na pausa) está pronta e testada pela ponte; **falta o teste do dono no Play**. Veja "Tela de slots e menu principal (etapa A4b)".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
@@ -52,7 +53,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 | --- | --- |
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir animado com conversa de teste, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
 | `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento, das Trincheiras e da Aldeia |
-| `Scenes/MenuPrincipal` | Menu principal provisório (Continuar, só quando há um slot recente que carrega; Novo jogo, no slot 1; Sair). Primeira da lista do Build; a tela de fim da demo volta para ele. Criada por **Nibiru > Conteúdo > Criar menu principal provisório** |
+| `Scenes/MenuPrincipal` | Menu principal em blockout (Continuar, só quando há slot jogável; Novo jogo e Carregar, que abrem a tela de 3 slots; Sair). Primeira da lista do Build; a tela de fim da demo e a pausa ("Sair para o menu") voltam para ele. Criada por **Nibiru > Conteúdo > Criar menu principal provisório** |
 | `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
 | `Scenes/Memoria_Shuruppak` | Memória jogável da Tabuleta do Junco (Shuruppak ao pôr do sol). Não se joga sozinha: é carregada por cima da região no passo 8. Fica longe da origem, em (2000, 0, 2000) |
 
@@ -330,7 +331,7 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 
 **Onde ficam os arquivos:** em `Application.persistentDataPath`, que no Windows é `C:\Users\<usuário>\AppData\LocalLow\Barizon Desenvolvimento\Nibiru\` (atalho **Abrir a pasta dos slots**, abaixo):
 - `save_1.json`, `save_2.json`, `save_3.json`: um arquivo por slot.
-- `ultimo_slot.json`: qual slot foi usado por último (o "Continuar").
+- `ultimo_slot.json`: **não é mais usado** (A4b: o código nem lê nem grava; um arquivo antigo no disco fica ali, sem efeito). O "Continuar" escolhe pela data de gravação.
 - Cada gravação vai primeiro para `save_N.json.tmp` e só depois troca o definitivo: se o jogo cair no meio, o arquivo antigo fica inteiro.
 - As opções (sensibilidade, inverter eixo, idioma) **não** entram nos slots: continuam no `PlayerPrefs` (`GameOptions`, `Loc`).
 
@@ -342,7 +343,7 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 
 **Fim da demo:** a tela de fim (`DemoEndScreen.Show`) marca o slot como **"demo concluída"**: ele não carrega mais e some do "Continuar"; pode ser sobrescrito (uma partida nova nele) ou apagado.
 
-**Arquivo ruim:** ausente, corrompido, cortado, vazio, de outra versão, ou com um código que o jogo não conhece mais (item, arma, missão ou passo): o jogo **não trava**, trata o slot como vazio e avisa no Console ("Salvamento: ..."). A mensagem ao jogador entra no A4b.
+**Arquivo ruim:** ausente, corrompido, cortado, vazio, de outra versão, ou com um código que o jogo não conhece mais (item, arma, missão ou passo): o jogo **não trava**, trata o slot como não carregável e avisa no Console ("Salvamento: ..."). **No A4b** esses casos viram o estado **ilegível** (só o arquivo ausente é vazio) e a tela de slots avisa o jogador.
 
 **Tempo jogado** (`Save/PlayTime`): conta em tempo de relógio (conversas e cenas contam) e **para** no menu de pausa (e no Arquivo, que abre por ele), no menu principal e na tela de fim da demo. É gravado e volta ao carregar.
 
@@ -400,6 +401,61 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 | 10. Tempo jogado e pausa | Situações > Mostrar o tempo jogado agora; pause uns 30 s (abra o Arquivo); mostre de novo | O tempo não anda na pausa; descansando no nicho, o Resumo mostra o tempo gravado no slot 2; Fechar e continuar segue de onde parou |
 
 Mais dois itens no mesmo menu: **Mostrar o tempo jogado agora** e **Matar a Elena agora**. **Fechar e continuar** (no menu Salvamento) funciona a partir de qualquer atalho de passo. Conferidas pela ponte: a 3 (os três slots certos, cada um com o seu lugar, inventário e mundo), o "Continuar" abrindo o slot 3 e a 4 (a pistola gravou o slot 1 e não mexeu no 2 nem no 3). **O dono testou as 10 situações no Play e aprovou em 26/out/2026.**
+
+## Tela de slots e menu principal (etapa A4b)
+
+**Decisões da governança (26/out/2026):** o formato continua na **`Version = 1`**, sem migração: o **tempo jogado já existia** na v1 (`resumo.tempoJogadoSegundos`) e agora o campo é **opcional na leitura** (um arquivo sem ele carrega e mostra "—"). **Ilegível** é um estado novo: só o arquivo **ausente** é vazio; 0 bytes, JSON cortado ou corrompido, versão 0, versão maior que a atual e código desconhecido (item, arma, missão, passo) contam como **ilegíveis**. O jogo **nunca apaga** um slot ilegível sozinho: ele sai só se o jogador sobrescrever ou apagar.
+
+**Menu principal** (`UI/MainMenuUI`, blockout, sem mouse): **Continuar** (escondido se não há slot jogável), **Novo jogo**, **Carregar** (só aparece se algum slot tem arquivo, para dar para apagar os que não carregam) e **Sair do jogo**. Foco inicial: Continuar, ou Novo jogo se não há Continuar. Setas ou direcional escolhem, Enter, Espaço ou A confirmam, **Esc ou B voltam**.
+
+**Tela de slots** (a mesma para Novo jogo e Carregar; texto em `UI/SlotRows`): cada linha mostra "Slot N", o nome da área (pela localização, `ui.area.*`), data e hora no formato do computador, "Tempo hh:mm" (ou "Tempo —") e "Demo concluída" quando for o caso; **vazio** mostra "Vazio" e **ilegível** mostra "Dados do slot ilegíveis" em vermelho. Foco inicial: no **Novo jogo**, o primeiro slot vazio (ou o 1); no **Carregar**, o slot do "Continuar" (ou o primeiro que tem arquivo). **Delete** (teclado) ou **X** (controle) apagam o slot em foco. A dica de teclas aparece no pé da tela (o menu não aceita mouse, então a dica não é clicável).
+- **Novo jogo** em slot vazio começa na hora e grava o começo; em slot ocupado, "demo concluída" ou ilegível **pede confirmação para sobrescrever**. Não há mais slot 1 fixo.
+- **Carregar** só carrega slot ocupado e legível (é o `Checkpoints.Restart` do A4a). "Demo concluída", ilegível e vazio não carregam: mostram um aviso na tela e nada acontece.
+- **Apagar** sempre pede confirmação.
+- **Confirmação** (`UI/ConfirmDialog`, um componente só, usado no menu principal e na pausa): o foco **sempre começa em "Cancelar"**; cima ou baixo trocam; Esc ou B cancelam.
+- **Continuar** (`SaveSlots.LatestSlot`): o slot ocupado e legível de **data de gravação mais recente**; empate: o de menor número; "demo concluída" e ilegível não contam. A data agora é gravada com milissegundos (arquivos antigos, só com segundos, continuam lidos).
+
+**Pausa:** novo item **"Sair para o menu"** (entre "Voltar ao último checkpoint" e "Sair do jogo"), com confirmação avisando que o progresso desde o último checkpoint será perdido. Confirmar chama `SessionReset.ToMenu()` (`Save/SessionReset`), que também é usado pelo fim da demo. O menu principal limpa o mesmo estado ao abrir (`SessionReset.Clean`), então vale por qualquer caminho.
+
+**Tempo jogado:** o relógio (`PlayTime`) conta só no jogo: não anda no menu principal, na pausa (nem no Arquivo) nem na tela de fim. **Cada quadro conta no máximo 0,25 s** (`PlayTime.MaxStep`), então o travamento de um carregamento de cena não entra no tempo.
+
+**Varredura dos campos `static` (para o reset ao voltar ao menu):**
+
+| Campo | Resultado |
+| --- | --- |
+| `Checkpoints.last` | Resetado (`Checkpoints.Clear`) |
+| `WorldState` (eventos, missões, itens pegos, checkpoints, reputação, transformação) | Resetado (`WorldState.Clear`) |
+| `SaveSlots.CurrentSlot` | Resetado (`SaveSlots.Detach`) |
+| `PlayTime.Seconds` e quem segura o relógio | Segundos zerados; os "seguradores" são objetos da cena e somem sozinhos ao trocar de cena. O objeto do relógio (`DontDestroyOnLoad`) é o **único** que sobrevive, de propósito |
+| `Storm.Intensity` e `Storm.settings` | Resetado por segurança (`Storm.Clear`). O `StormController` já zerava ao desligar; o teste não achou diferença |
+| `Time.timeScale`, `AudioListener.pause`, cursor | Resetados em `SessionReset.Clean` (o código do jogo não usa `AudioListener.pause`) |
+| `SoldierAI.all`, `EchoTarget.all` | **Não precisou**: as listas se mantêm sozinhas (entram em `OnEnable`, saem em `OnDisable`) |
+| `ArchiveCatalog.cached`, `SaveRegistry.instance`, `UiFont.cached`, `Loc` (idioma e tabelas) | **Não precisou**: são dados e preferências do jogador, iguais entre partidas |
+| `Reputation.Changed`, `StoryEvents.Raised`, `Transformation.Changed`, `Noise.Emitted`, `Notifications.Posted` (eventos estáticos) | **Não precisou**: quem assina são objetos da cena, que se desligam ao sair. Mesmo padrão da morte e do Carregar, que já recarregam a cena |
+
+**Atalhos de depuração** (**Nibiru > Testes > Salvamento > Slots**, `Scripts/Editor/Save/SlotShortcuts.cs`): slot ocupado falso, slot "demo concluída" e slot ilegível (cada um no slot 1, 2 ou 3), **Preencher os 3 slots** (ocupado, demo, ilegível; pergunta antes), **Limpar todos os slots** (pergunta antes) e **Avançar o tempo jogado** em 10 min ou 1 h (no relógio e nos arquivos legíveis). O slot falso é gravado como o do "Novo jogo": **carregá-lo sempre abre o começo da região**, então não basta para testar o Carregar (jogue até um checkpoint real). Todos entram no **teste geral dos atalhos**: um item a mais confere todas as ações numa pasta de teste (`Teste_AtalhosDeSlot`, apagada no fim; os atalhos com id `salvamento.*` seguem pulados como no A4a).
+
+**Teste automático** (**Nibiru > Testes > Salvamento > Teste automático**, 15 cenários, **tudo OK**): os 11 do A4a (com os de arquivo ruim ajustados para "ilegível", sem `ultimo_slot.json`) mais 4 novos: metadados (área, data local, `hh:mm`, "—" sem tempo, os quatro estados e o **JSON v1 sem `tempoJogadoSegundos`**, que carrega e mostra "—"); Continuar (o mais recente, empate, demo e ilegível ignorados, some sem jogável, "Carregar" some sem arquivo); tela de slots (foco inicial, ilegível, demo e vazio não carregam, apagar e sobrescrever com confirmação e foco em Cancelar, voltar fecha o diálogo, nenhuma exceção no Console); e **Sair para o menu** (confirmação, estado limpo com a tempestade e o relógio sujos de propósito, depois Continuar, Carregar e Novo jogo valem como numa sessão nova, comparando com o voltar depois de morrer). O teste também confere que um quadro longo conta no máximo 0,25 s e põe o idioma em pt-BR enquanto roda. Teste de chaves da localização, teste de códigos e **teste geral dos atalhos: 88 OK, 0 FALHOU, 41 pulados** (um item a mais é o dos atalhos da tela de slots; os pulados são os de sempre, que mexem nos arquivos ou não põem a Elena andando).
+
+**O que o teste achou:** o teste do "Continuar" do A4a assumia o `ultimo_slot.json`; passou a usar a data. Nada mais no jogo.
+
+**Como testar a etapa A4b (roteiro do dono no Play).** Antes: **Nibiru > Testes > Salvamento > Slots**.
+
+| # | O que fazer | O que deve acontecer |
+| --- | --- | --- |
+| 1 | **Limpar todos os slots**, ligue o Play no menu (abra a cena `MenuPrincipal`) | Só "Novo jogo" e "Sair do jogo": sem Continuar nem Carregar |
+| 2 | Novo jogo | Tela de 3 slots vazios, foco no slot 1. Enter no slot 1: começa na barraca, sem confirmação |
+| 3 | **Preencher os 3 slots**, abra o menu | "Continuar", "Novo jogo", "Carregar". Em Carregar: slot 1 com área, data, hora e tempo; slot 2 "Demo concluída"; slot 3 "Dados do slot ilegíveis" em vermelho |
+| 4 | Carregar: Enter no slot 2 e no slot 3 | Nada carrega; aparece o aviso na tela |
+| 5 | Delete no slot 3: Esc; Delete de novo e Enter; Delete de novo, desça e Enter | A confirmação sempre abre com o foco em "Cancelar"; Esc e Enter em Cancelar fecham sem apagar; só o último apaga |
+| 6 | Novo jogo, Enter nos slots 1, 2 e 3 (um de cada vez), cancelando | Sempre pergunta "Sobrescrever o slot N?" com o foco em Cancelar; nada muda |
+| 7 | **Slot ocupado falso** (slot 2), Carregar, Enter nele | Abre o começo da região (é falso: sempre o começo) |
+| 8 | **Avançar o tempo jogado em 1 hora** e abra o menu de novo | Os tempos dos slots legíveis subiram 1 h (formato hh:mm) |
+| 9 | **Jogar até um checkpoint real:** Novo jogo num slot vazio, saia da barraca ("Ponto de retorno marcado"), ande até o próximo checkpoint (a pistola nas Trincheiras, por exemplo) | O slot guarda a área, a data e o tempo do último checkpoint |
+| 10 | Esc (pausa), **Sair para o menu**: Esc e Enter em Cancelar ficam no jogo; depois confirme | Aviso do progresso perdido, foco em Cancelar. Confirmado, volta ao menu com o cursor livre |
+| 11 | No menu: **Continuar**; depois Esc, Sair para o menu, **Carregar** e o slot dele; depois Sair para o menu e **Novo jogo** em outro slot | Continuar e Carregar põem a Elena no checkpoint do passo 9, com o inventário e o mundo de antes; o Novo jogo começa na barraca, limpo (sem vento de tempestade, sem itens, tempo normal), igual a abrir o jogo de novo |
+| 12 | Com o controle (Steam Deck): repita 3 a 6 e 10 | Direcional, A, B e X fazem o mesmo que setas, Enter, Esc e Delete |
+| 13 | Deixe o jogo na pausa por uns 30 s, volte e salve num checkpoint | O tempo do slot não conta a pausa nem o menu |
 
 ## Sistemas prontos
 
