@@ -50,11 +50,7 @@ namespace Nibiru.UI
         /// <summary>Zera a partida e carrega o menu principal.</summary>
         public void ReturnToMenu()
         {
-            Checkpoints.Clear();
-            WorldState.Clear();
-            SaveSlots.Detach();
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(menuScene);
+            SessionReset.ToMenu(menuScene);
         }
 
         void Build()

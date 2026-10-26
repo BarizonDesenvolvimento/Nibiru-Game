@@ -31,7 +31,8 @@ namespace Nibiru.UI
 
         // O item "Arquivo" (documentos e fitas já lidos) fica logo depois das opções.
         const int ArchiveItem = 2;
-        const int MainItemCount = 5;
+        const int MainItemCount = 6;
+        const int ExitToMenuItem = 4;
 
         static string MainItem(int index)
         {
@@ -41,6 +42,7 @@ namespace Nibiru.UI
                 case 1: return "Opções";
                 case ArchiveItem: return Loc.Get("ui.arquivo.item_menu", "Arquivo");
                 case 3: return "Voltar ao último checkpoint";
+                case ExitToMenuItem: return Loc.Get("ui.pausa.sair_menu", "Sair para o menu");
                 default: return "Sair do jogo";
             }
         }
@@ -50,6 +52,7 @@ namespace Nibiru.UI
         const string Muted = "#9AA0AA";
 
         readonly StringBuilder builder = new StringBuilder();
+        readonly ConfirmDialog dialog = new ConfirmDialog();
         Page page;
         int selected;
         float timeScaleBefore = 1f;
@@ -73,6 +76,9 @@ namespace Nibiru.UI
 
         public bool IsOpen => panel.activeSelf;
 
+        /// <summary>A confirmação de "Sair para o menu" (para os testes).</summary>
+        public ConfirmDialog ExitDialog => dialog;
+
         void Awake() => panel.SetActive(false);
 
         void Update()
@@ -86,6 +92,14 @@ namespace Nibiru.UI
             if (Time.frameCount == openedFrame) return;
             // Com uma entrada do Arquivo aberta na tela de leitura, a leitura é quem recebe os botões.
             if (openReading != null && openReading.IsOpen) return;
+
+            // A confirmação de "Sair para o menu" consome os botões (Esc e voltar cancelam).
+            if (dialog.IsOpen)
+            {
+                dialog.Handle(input.VerticalNavStep, input.ConfirmPressed, input.PausePressed || input.BackPressed);
+                Refresh();
+                return;
+            }
 
             if (input.PausePressed)
             {
@@ -137,6 +151,7 @@ namespace Nibiru.UI
 
         void Close()
         {
+            dialog.Cancel();
             GameOptions.Save();
             panel.SetActive(false);
             Time.timeScale = timeScaleBefore;
@@ -254,7 +269,8 @@ namespace Nibiru.UI
                         Close();
                         Checkpoints.Restart(gameObject.scene.name);
                         break;
-                    case 4: Quit(); break;
+                    case ExitToMenuItem: RequestExitToMenu(); break;
+                    case 5: Quit(); break;
                 }
                 return;
             }
@@ -267,6 +283,21 @@ namespace Nibiru.UI
 
             if (selected == 2 || selected == 3) AdjustOption(1);
             else if (selected == 4) ShowPage(Page.Principal, 1);
+        }
+
+        /// <summary>Pede confirmação (o foco começa em "Cancelar") e, confirmado, volta ao menu principal com o estado limpo.</summary>
+        public void RequestExitToMenu()
+        {
+            dialog.Open(
+                Loc.Get("ui.confirmar.sair_menu.titulo", "Sair para o menu?"),
+                Loc.Get("ui.confirmar.sair_menu.texto", "O progresso desde o último checkpoint será perdido."),
+                Loc.Get("ui.confirmar.sair_menu.botao", "Sair para o menu"),
+                () =>
+                {
+                    GameOptions.Save();
+                    SessionReset.ToMenu();
+                });
+            Refresh();
         }
 
         void AdjustOption(int direction)
@@ -306,6 +337,11 @@ namespace Nibiru.UI
         void Refresh()
         {
             builder.Clear();
+            if (dialog.IsOpen)
+            {
+                content.text = dialog.Render(Gold, Muted);
+                return;
+            }
             if (page == Page.Principal)
             {
                 builder.AppendLine("<size=56><b>PAUSA</b></size>").AppendLine();
