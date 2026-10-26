@@ -567,9 +567,9 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | Elena Varga | `Elena` | 1,70 m | **No jogo** (prefab `Player/Elena`) |
 | Samir Haddad | `Samir` | 1,75 m | **No jogo** (prefab `Personagens/Samir`) |
 | Yusuf | `Yusuf` | 1,74 m | Pronto para importar |
-| Umm Karim | `Umm Karim` | 1,58 m | Pronto para importar |
+| Umm Karim | `UmmKarim` | 1,58 m | Pronto para importar |
 | Abu Faris | (variação do aldeão base, a criar) | — | Pendente de modelo: morador que tinha um estúdio de fotos em Nasiriyah; aparece só no quarto escuro de "O que o Tom viu" (hoje cápsula com o nome) |
-| Dra. Weiss | `Dra. Weiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (o `FingerWeightFix` corrige na importação) |
+| Dra. Weiss | `DraWeiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (o `FingerWeightFix` corrige na importação) |
 | Soldado da Contenção | `Soldado` | 1,82 m | **No jogo** (prefab `AI/Soldado`); o osso de dedo sem peso é corrigido na importação |
 | Líder de esquadra | `LiderDeEsquadra` | 1,80 m | **No jogo** (prefab `AI/Soldado_Lider`) |
 | Atirador de elite | `AtiradorDeElite` | 1,78 m | **No jogo** (prefab `AI/Soldado_Atirador`, com a IA trocada pela `SniperAI` no passo 10) |
@@ -926,6 +926,8 @@ Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fo
 - **Mouse nas telas que ainda não têm (etapa D):** mouse nas escolhas de diálogo, no inventário e na tela de morte (hoje só teclado e controle, com o cursor preso). A tela de Opções com mais itens também entra na etapa D.
 
 ## Pendências de checkpoint resolvidas (etapa B1, testadas pela ponte e **aprovadas pelo dono no Play em 26/out/2026**)
+
+**Horas:** ~1 h.
 
 Os três problemas eram: a fita de Irena recomeçava do início ao voltar de um checkpoint, o soldado caído da Aldeia reaparecia sempre na entrada leste e a Elena reaparecia 0,6 m ao lado do ponto de retorno do pé da descida do Poço. Os dois primeiros tinham a mesma raiz (estado de execução que a cena produz e o `WorldState` não guardava); o terceiro era um colisor.
 
