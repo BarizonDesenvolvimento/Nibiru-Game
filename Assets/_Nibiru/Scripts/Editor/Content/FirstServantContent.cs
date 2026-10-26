@@ -54,7 +54,8 @@ namespace Nibiru.EditorTools.Content
         static Events ev;
         static DialogueDefinition wakeTalk, fallTalk;
 
-        public static void Build(Transform active, LulluAI lullu)
+        // lullus: os Lullu do Poço (o do fundo e a sentinela da antecâmara). Todos fogem quando o Servo acorda.
+        public static void Build(Transform active, params LulluAI[] lullus)
         {
             CreateData();
             Transform g = Group(active, "Primeiro_Servo");
@@ -67,12 +68,15 @@ namespace Nibiru.EditorTools.Content
             Transform afterGroup = Group(g, "Depois_Da_Luta");
             var afterCheckpoint = BuildAfterGroup(afterGroup);
 
-            BuildWake(Group(g, "Despertar"), fight, lullu, fightGroup, fightCheckpoint);
+            BuildWake(Group(g, "Despertar"), fight, lullus, fightGroup, fightCheckpoint);
             BuildVictory(Group(g, "Vitoria"), afterGroup, afterCheckpoint);
 
-            // O Lullu não volta à luta: ao voltar de um checkpoint depois do despertar, ele não está mais lá.
-            Listener(lullu.transform.parent.gameObject, ev.acordou, e => SetActive(e, lullu.gameObject, false));
-            SetField(lullu.transform.parent.GetComponents<StoryEventListener>().Last(), "onlyOnLoad", true);
+            // Os Lullu não voltam à luta: ao voltar de um checkpoint depois do despertar, nenhum está mais lá.
+            Listener(lullus[0].transform.parent.gameObject, ev.acordou, e =>
+            {
+                foreach (LulluAI lullu in lullus) SetActive(e, lullu.gameObject, false);
+            });
+            SetField(lullus[0].transform.parent.GetComponents<StoryEventListener>().Last(), "onlyOnLoad", true);
         }
 
         static void CreateData()
@@ -225,7 +229,7 @@ namespace Nibiru.EditorTools.Content
 
         // ---------- O despertar (ao vivo, depois do flash) ----------
 
-        static void BuildWake(Transform g, FirstServantFight fight, LulluAI lullu, Transform fightGroup, Save.Checkpoint checkpoint)
+        static void BuildWake(Transform g, FirstServantFight fight, LulluAI[] lullus, Transform fightGroup, Save.Checkpoint checkpoint)
         {
             var talk = DialogueTrigger(g, "Dialogo_Despertar", wakeTalk);
             var raiser = talk.gameObject.AddComponent<StoryEventRaiser>();
@@ -241,7 +245,10 @@ namespace Nibiru.EditorTools.Content
                     SetActive(e, fight.gameObject, true);
                     Call(e, fight.Wake);
                 }),
-                S("o Lullu, se vivo, foge e não volta", 0.4f, e => Call(e, lullu.FleeTo, fleePoint)),
+                S("os Lullu, se vivos, fogem e não voltam", 0.4f, e =>
+                {
+                    foreach (LulluAI lullu in lullus) Call(e, lullu.FleeTo, fleePoint);
+                }),
                 S("a Elena vê o Servo", 0.4f, e => Call(e, talk.StartDialogue)),
                 S("ponto de retorno na boca da antecâmara", 0.1f, e => Call(e, checkpoint.ActivateNow)));
             Listener(talk.gameObject, ev.flashDoPoco, e => Call(e, sequence.Play));

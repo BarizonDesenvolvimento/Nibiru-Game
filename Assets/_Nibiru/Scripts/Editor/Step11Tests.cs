@@ -43,7 +43,9 @@ namespace Nibiru.EditorTools
         static float mark;
 
         // Acompanhamento do Lullu nos testes.
-        static LulluAI lullu;
+        static LulluAI lullu, sentinel;
+        static bool sentinelFrozen;
+        static Vector3 sentinelStart;
         static float lulluStartY, lulluMaxY, lulluSilentDistance;
         static bool lulluHunted, lulluStruck, lulluFrozen;
 
@@ -57,7 +59,12 @@ namespace Nibiru.EditorTools
             checks.Add(new Check { name = "Parede do barco de junco fecha a passagem", moment = "passo11.depois_lullu", step = BoatWall });
             checks.Add(new Check { name = "Flash com o Lullu vivo: ele congela e depois solta", moment = "passo11.flash_vivo", step = t => Flash(true) });
             checks.Add(new Check { name = "Flash depois do Lullu (sem ele)", moment = "passo11.depois_lullu", step = t => Flash(false) });
+            checks.Add(new Check { name = "2º Lullu (sentinela): na antecâmara, longe do ponto de retorno, vagueia pouco, ouve mais", moment = "passo11.depois_lullu", step = Sentinel });
+            checks.Add(new Check { name = "Inscrição do Poço: aviso, leitura na tela e evento", moment = "passo11.depois_lullu", step = Inscription });
         }
+
+        // O Lullu do fundo do poço (a sentinela da antecâmara tem outro nome).
+        static LulluAI Deep() => GameObject.Find("Lullu_Poco")?.GetComponent<LulluAI>();
 
         [MenuItem("Nibiru/Testes/Passo 11/7. Teste automático (resumo no Console)")]
         static void Run() => Go("passo11.teste");
@@ -194,7 +201,7 @@ namespace Nibiru.EditorTools
         {
             if (phase == 1)
             {
-                lullu = Object.FindFirstObjectByType<LulluAI>();
+                lullu = Deep();
                 if (lullu == null) { Result(false, "Lullu não encontrado"); return true; }
                 var player = Object.FindFirstObjectByType<PlayerMotor>();
                 lulluSilentDistance = Vector3.Distance(player.transform.position, lullu.transform.position);
@@ -215,7 +222,7 @@ namespace Nibiru.EditorTools
             var player = Object.FindFirstObjectByType<PlayerMotor>();
             if (phase == 1)
             {
-                lullu = Object.FindFirstObjectByType<LulluAI>();
+                lullu = Deep();
                 if (lullu == null) { Result(false, "Lullu não encontrado"); return true; }
                 lulluStartY = lullu.transform.position.y;
                 lulluMaxY = lulluStartY;
@@ -263,9 +270,12 @@ namespace Nibiru.EditorTools
             var player = Object.FindFirstObjectByType<PlayerMotor>();
             if (phase == 1)
             {
-                lullu = Object.FindFirstObjectByType<LulluAI>();
+                lullu = Deep();
+                sentinel = GameObject.Find("Lullu_Sentinela")?.GetComponent<LulluAI>();
+                sentinelFrozen = false;
                 if (withLullu && lullu == null) { Result(false, "Lullu não encontrado"); return true; }
                 if (!withLullu && lullu != null) { Result(false, "o Lullu devia ter sumido depois de passar por ele"); return true; }
+                if (sentinel == null) { Result(false, "a sentinela (2º Lullu) não está na antecâmara"); return true; }
                 // O atalho põe a Elena antes da área do flash: se ele já começou, foi antes da hora.
                 if (Raised("ChegouPertoDoSelo")) { Result(false, $"o flash começou sozinho no ponto do atalho, em {player.transform.position}"); return true; }
                 lulluFrozen = false;
@@ -284,22 +294,88 @@ namespace Nibiru.EditorTools
             if (phase == 3)
             {
                 // Esta etapa só roda enquanto não há conversa: a espera de 1,4 s antes da Voz.
-                if (Raised("ChegouPertoDoSelo") && !Raised("FlashDoPoco")) lulluFrozen |= lullu != null && !lullu.enabled;
+                if (Raised("ChegouPertoDoSelo") && !Raised("FlashDoPoco"))
+                {
+                    lulluFrozen |= lullu != null && !lullu.enabled;
+                    sentinelFrozen |= sentinel != null && !sentinel.enabled;
+                }
                 if (Raised("FlashDoPoco")) { mark = Time.time; phase = 4; }
                 else if (Time.time > mark + 20f) Result(false, "o flash não terminou");
                 return false;
             }
             if (Time.time < mark + 3f) return false;
 
-            bool released = lullu == null || lullu.enabled;
+            bool released = (lullu == null || lullu.enabled) && sentinel.enabled;
             var flash = Object.FindFirstObjectByType<ScreenFlash>();
             bool cleared = flash != null && !flash.IsCovering;
             bool seen = DialogueRunner.HasSeen(Load<DialogueDefinition>("Dialogues/Poco_Flash"));
-            bool ok = Raised("FlashDoPoco") && seen && released && cleared && (!withLullu || lulluFrozen);
+            bool ok = Raised("FlashDoPoco") && seen && released && cleared && (!withLullu || lulluFrozen) && sentinelFrozen;
             Result(ok, $"Voz falou={seen}, fim do passo={Raised("FlashDoPoco")}, Lullu congelado no flash={(withLullu ? lulluFrozen.ToString() : "n/a")}, " +
-                $"solto no fim={released}, luz apagada={cleared}, objetivo=\"{Objective()}\"");
+                $"sentinela congelada={sentinelFrozen}, soltos no fim={released}, luz apagada={cleared}, objetivo=\"{Objective()}\"");
             return true;
         }
+
+        // A sentinela: fica na antecâmara (a leste), longe do ponto de retorno, vagueia pouco e ouve mais que o do fundo.
+        static bool Sentinel(float elapsed)
+        {
+            if (phase == 1)
+            {
+                sentinel = GameObject.Find("Lullu_Sentinela")?.GetComponent<LulluAI>();
+                lullu = Deep();
+                if (sentinel == null) { Result(false, "a sentinela não está na cena"); return true; }
+                sentinelStart = sentinel.transform.position;
+                lulluSilentDistance = 0f;
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            lulluSilentDistance = Mathf.Max(lulluSilentDistance, Flat(sentinel.transform.position - sentinelStart).magnitude);
+            if (Time.time < mark + 8f) return false;
+
+            float fromCheckpoint = Flat(sentinelStart - new Vector3(45f, 0f, 87.5f)).magnitude;
+            var own = (LulluSettings)typeof(LulluAI).GetField("settings", Any).GetValue(sentinel);
+            float deepHearing = 1.2f;
+            if (lullu != null) deepHearing = ((LulluSettings)typeof(LulluAI).GetField("settings", Any).GetValue(lullu)).hearingMultiplier;
+            bool onMesh = sentinel.GetComponent<UnityEngine.AI.NavMeshAgent>().isOnNavMesh;
+            bool calm = sentinel.CurrentState == LulluAI.State.Vagando;
+            bool ok = fromCheckpoint >= 5f && lulluSilentDistance <= 3.5f && own.hearingMultiplier > deepHearing && onMesh && calm
+                && sentinel.MaxClimb > 0f;
+            Result(ok, $"a {fromCheckpoint:0.0} m do ponto de retorno (mínimo 5), andou no máximo {lulluSilentDistance:0.0} m em 8 s, " +
+                $"ouve x{own.hearingMultiplier:0.0} (o do fundo x{deepHearing:0.0}), na malha={onMesh}, estado={sentinel.CurrentState}, preso ao chão={sentinel.MaxClimb > 0f}");
+            return true;
+        }
+
+        // A inscrição: o aviso aparece diante dela, a leitura mostra o texto na tela e o evento dispara.
+        static bool Inscription(float elapsed)
+        {
+            if (phase == 1)
+            {
+                Teleport(new Vector3(52.6f, -14f + FeetToCenter, 83.9f), 90f);
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            if (phase == 2)
+            {
+                if (Time.time < mark + 1.2f) return false;
+                string prompt = TestFlow.Prompt();
+                if (prompt != "Ler a inscrição") { Result(false, $"aviso diante da inscrição: \"{prompt}\""); return true; }
+                GameObject.Find("Ler_Inscricao").GetComponent<Interaction.InteractableEvent>().Interact(null);
+                mark = Time.unscaledTime; // a tela de leitura pausa o jogo
+                phase = 3;
+                return false;
+            }
+            if (Time.unscaledTime < mark + 0.6f) return false;
+            var reading = TestFlow.Reading();
+            bool open = reading != null && reading.IsOpen;
+            string title = open ? TestFlow.ReadingText("titleLabel") : "";
+            bool raised = Raised("LeuAInscricaoDoPoco");
+            TestFlow.CloseReading();
+            Result(open && raised && title.Contains("Inscrição dos Guardiões do Poço"), $"tela aberta={open}, título=\"{title}\", evento={raised}");
+            return true;
+        }
+
+        static Vector3 Flat(Vector3 v) => new Vector3(v.x, 0f, v.z);
 
         // ---------- Ajudas ----------
 

@@ -1,3 +1,4 @@
+using Nibiru.Localization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,6 +14,9 @@ namespace Nibiru.Interaction
         [Tooltip("Verbo mostrado na tela, por exemplo \"Pegar\", \"Abrir\", \"Ler\".")]
         [SerializeField] string prompt = "Usar";
 
+        [Tooltip("Chave do verbo na tabela de textos. Vazio, usa o texto acima.")]
+        [SerializeField, LocKey] string promptKey;
+
         [Tooltip("Se marcado, só funciona uma vez.")]
         [SerializeField] bool singleUse;
 
@@ -21,7 +25,7 @@ namespace Nibiru.Interaction
 
         bool used;
 
-        public string Prompt => prompt;
+        public string Prompt => Loc.Get(promptKey, prompt);
         public bool CanInteract => isActiveAndEnabled && !(singleUse && used);
 
         public void Interact(PlayerInteractor interactor)

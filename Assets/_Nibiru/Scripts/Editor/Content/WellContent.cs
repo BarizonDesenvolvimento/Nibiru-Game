@@ -1,6 +1,7 @@
 using System.Linq;
 using Nibiru.AI;
 using Nibiru.Dialogue;
+using Nibiru.Documents;
 using Nibiru.Quests;
 using Nibiru.Sequences;
 using Nibiru.UI;
@@ -8,6 +9,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 namespace Nibiru.EditorTools.Content
 {
@@ -46,6 +48,16 @@ namespace Nibiru.EditorTools.Content
         // O Lullu vagueia na boca da antecâmara, entre o fundo do poço e o começo dela.
         static readonly Vector3 LulluHome = new Vector3(44f, -14f, 78f);
 
+        // A sentinela (2º Lullu): guarda o lado leste da antecâmara, entre o ponto de retorno (x = 45) e a
+        // inscrição. Vagueia pouco e ouve mais que o do fundo (dados em Data/AI/Lullu_Sentinela).
+        static readonly Vector3 SentinelHome = new Vector3(52f, -14f, 87f);
+
+        // A inscrição dos Guardiões do Poço: na parede leste da antecâmara, a uns 4 m da sentinela.
+        static readonly Vector3 InscriptionWall = new Vector3(53.95f, -12.6f, 83.9f);
+        static readonly Vector3 InscriptionLamp = new Vector3(53.2f, -14f, 82.9f);
+        static readonly Vector3 InscriptionZoneCenter = new Vector3(52.6f, -13f, 83.9f);
+        static readonly Vector3 InscriptionZoneSize = new Vector3(2f, 2.2f, 2.4f);
+
         // Ponto de retorno do pé da descida: no último patamar de andaime, longe do Lullu e em silêncio.
         static readonly Vector3 FootCheckpointCenter = new Vector3(49f, -9f, 73.5f);
         static readonly Vector3 FootCheckpointSize = new Vector3(3f, 5f, 5f);
@@ -66,7 +78,7 @@ namespace Nibiru.EditorTools.Content
 
         class Events
         {
-            public StoryEvent saiuDaBase, chegouABoca, desceuOPoco, passouPeloLullu, chegouPertoDoSelo, flashDoPoco;
+            public StoryEvent saiuDaBase, chegouABoca, desceuOPoco, passouPeloLullu, chegouPertoDoSelo, flashDoPoco, leuAInscricao;
         }
 
         class Dialogues
@@ -76,6 +88,8 @@ namespace Nibiru.EditorTools.Content
 
         static Events ev;
         static Dialogues dlg;
+        static DocumentDefinition inscription;
+        static LulluSettings sentinelSettings;
 
         [MenuItem("Nibiru/Conteúdo/Povoar Boca do Poço na cena aberta")]
         static void Build()
@@ -94,11 +108,14 @@ namespace Nibiru.EditorTools.Content
             Transform active = Group(root, "Poco_Ativo");
             BuildAmbience(Group(active, "Ambiente"));
             BuildMouth(Group(active, "Boca"));
-            LulluAI lullu = BuildLullu(Group(active, "Lullu"));
+            Transform lulluGroup = Group(active, "Lullu");
+            LulluAI lullu = BuildLullu(lulluGroup);
+            LulluAI sentinel = BuildSentinel(lulluGroup);
             BuildDescent(Group(active, "Descida"), lullu);
-            BuildFlash(Group(active, "Flash_Do_Selo"), lullu);
+            BuildFlash(Group(active, "Flash_Do_Selo"), lullu, sentinel);
+            BuildInscription(Group(active, "Inscricao_Do_Poco"));
             // Passo 12: o Primeiro Servo acorda quando a Voz do flash acaba.
-            FirstServantContent.Build(active, lullu);
+            FirstServantContent.Build(active, lullu, sentinel);
             // Passo 13: a passagem dos Guardiões atrás da parede do barco de junco.
             GuardianPassageContent.Build(active);
 
@@ -121,7 +138,20 @@ namespace Nibiru.EditorTools.Content
                 passouPeloLullu = Event("PassouPeloLullu", "A Elena atravessou a boca da antecâmara, passando pelo Lullu (agachada ou livrando-se dele)."),
                 chegouPertoDoSelo = Event("ChegouPertoDoSelo", "A Elena chegou a uns 12 m do Selo de Kur, na antecâmara. Começa o flash."),
                 flashDoPoco = Event("FlashDoPoco", "O flash da noite esquecida acabou e a Voz falou. Fecha o passo 11; o 12 (o Primeiro Servo) começa daí."),
+                leuAInscricao = Event("LeuAInscricaoDoPoco", "A Elena leu a inscrição dos Guardiões na parede leste da antecâmara do Poço (colecionável, opcional)."),
             };
+
+            if (!AssetDatabase.IsValidFolder(DataFolder + "/Documents")) AssetDatabase.CreateFolder(DataFolder, "Documents");
+            inscription = Asset<DocumentDefinition>("Documents/Poco_Inscricao", d => d.raiseOnRead = ev.leuAInscricao);
+
+            // A sentinela é um Lullu com os mesmos números do primeiro, mas que fica mais parado e ouve mais.
+            sentinelSettings = Asset<LulluSettings>("AI/Lullu_Sentinela", s =>
+            {
+                var basic = Load<LulluSettings>("AI/Lullu");
+                if (basic != null) EditorUtility.CopySerialized(basic, s);
+                s.wanderRadius = 1.5f;
+                s.hearingMultiplier = (basic != null ? basic.hearingMultiplier : 1.2f) * 1.4f;
+            });
 
             dlg = new Dialogues
             {
@@ -201,6 +231,27 @@ namespace Nibiru.EditorTools.Content
             return ai;
         }
 
+        // O 2º Lullu: a sentinela da antecâmara. Mesmo prefab, mas com os dados Lullu_Sentinela (vagueia
+        // 1,5 m e ouve 40% mais longe que o do fundo). Tem de ser contornado ou enfrentado antes do flash.
+        // O Lullu do fundo some ao passar pela boca da antecâmara; a sentinela fica até o flash e foge com ele.
+        static LulluAI BuildSentinel(Transform g)
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(LulluPrefabPath);
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, g);
+            go.name = "Lullu_Sentinela";
+            Vector3 home = OnNavMesh(SentinelHome, "da sentinela");
+            go.transform.SetPositionAndRotation(home, Quaternion.LookRotation(Vector3.left));
+
+            var ai = go.GetComponent<LulluAI>();
+            SetField(ai, "settings", sentinelSettings);
+            SetField(ai, "maxClimb", 2f);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(ai);
+
+            Audio(go, EditorTools.Audio.ProvisionalSounds.LulluBreathing, loop: true, playOnAwake: true, volume: 0.8f, minDistance: 3f, maxDistance: 22f);
+            StableId(go);
+            return ai;
+        }
+
         // ---------- A descida e a antecâmara ----------
 
         static void BuildDescent(Transform g, LulluAI lullu)
@@ -214,7 +265,7 @@ namespace Nibiru.EditorTools.Content
 
         // ---------- O flash ----------
 
-        static void BuildFlash(Transform g, LulluAI lullu)
+        static void BuildFlash(Transform g, LulluAI lullu, LulluAI sentinel)
         {
             EventZone(g, "Gatilho_Flash", FlashZoneCenter, FlashZoneSize, ev.chegouPertoDoSelo);
 
@@ -223,9 +274,13 @@ namespace Nibiru.EditorTools.Content
             var sequence = talk.gameObject.AddComponent<TimedSequence>();
             SetField(sequence, "skipIfRaised", ev.flashDoPoco);
 
-            // Nenhum inimigo age durante o flash: o Lullu, se ainda vivo, congela até a Voz falar.
+            // Nenhum inimigo age durante o flash: os Lullu, se ainda vivos, congelam até a Voz falar.
             SetSteps(sequence,
-                S("congela o Lullu", 0f, e => Call(e, lullu.Pause, true)),
+                S("congela os Lullu", 0f, e =>
+                {
+                    Call(e, lullu.Pause, true);
+                    Call(e, sentinel.Pause, true);
+                }),
                 S("a luz do Selo toma a tela", 0f, e => Call(e, flash.FadeIn)),
                 S("a Elena vê o flash e a Voz fala", 1.4f, e => Call(e, talk.StartDialogue)));
             Listener(talk.gameObject, ev.chegouPertoDoSelo, e => Call(e, sequence.Play));
@@ -236,8 +291,44 @@ namespace Nibiru.EditorTools.Content
             {
                 Call(e, flash.FadeOut);
                 Call(e, lullu.Pause, false);
+                Call(e, sentinel.Pause, false);
             });
             SetField(talk.GetComponents<StoryEventListener>().Last(), "replayOnLoad", false);
+        }
+
+        // ---------- A inscrição dos Guardiões ----------
+
+        // Colecionável opcional: o barco de junco e uma faixa de glifos em ouro na parede leste, com a
+        // lamparina de barro (luz quente, nunca azul). Ler abre o documento na tela de leitura.
+        static void BuildInscription(Transform g)
+        {
+            Prim(PrimitiveType.Cube, g, "Pedra_Da_Inscricao", InscriptionWall, new Vector3(0.1f, 1.5f, 2.2f), "BO_Rocha", collider: ColliderMode.None);
+            Prim(PrimitiveType.Cube, g, "Barco_Casco", InscriptionWall + new Vector3(-0.07f, -0.45f, 0f), new Vector3(0.08f, 0.2f, 1.2f), "BO_Ouro", collider: ColliderMode.None);
+            Prim(PrimitiveType.Cube, g, "Barco_Mastro", InscriptionWall + new Vector3(-0.07f, -0.1f, 0f), new Vector3(0.08f, 0.55f, 0.07f), "BO_Ouro", collider: ColliderMode.None);
+            float[] heights = { 0.2f, 0.14f, 0.22f, 0.16f, 0.2f, 0.12f, 0.18f };
+            for (int i = 0; i < heights.Length; i++)
+                Prim(PrimitiveType.Cube, g, $"Glifo_{i + 1}", InscriptionWall + new Vector3(-0.07f, 0.45f, -0.9f + i * 0.3f), new Vector3(0.07f, heights[i], 0.1f), "BO_Ouro", collider: ColliderMode.None);
+
+            // Lamparina de barro com a chama acesa, marca dos altares dos Guardiões.
+            Prim(PrimitiveType.Cylinder, g, "Lamparina_Barro", InscriptionLamp + new Vector3(0f, 0.05f, 0f), new Vector3(0.22f, 0.06f, 0.22f), "BO_TijoloBarro", collider: ColliderMode.None);
+            Prim(PrimitiveType.Sphere, g, "Lamparina_Chama", InscriptionLamp + new Vector3(0f, 0.21f, 0f), new Vector3(0.08f, 0.16f, 0.08f), "BO_Chama", collider: ColliderMode.None);
+            var lightGo = new GameObject("Lamparina_Luz");
+            lightGo.transform.SetParent(g, false);
+            lightGo.transform.position = InscriptionLamp + new Vector3(-0.2f, 0.5f, 0f);
+            var light = lightGo.AddComponent<Light>();
+            light.type = LightType.Point;
+            light.color = new Color(1f, 0.75f, 0.45f);
+            light.intensity = 1.2f;
+            light.range = 4.5f;
+            light.shadows = LightShadows.None;
+
+            GameObject zone = Zone(g, "Ler_Inscricao", InscriptionZoneCenter, InscriptionZoneSize);
+            var view = zone.AddComponent<DocumentView>();
+            SetField(view, "document", inscription);
+            var interact = zone.AddComponent<Interaction.InteractableEvent>();
+            SetField(interact, "prompt", "Ler a inscrição");
+            SetField(interact, "promptKey", "ui.interact.poco_ler_inscricao");
+            Call(GetField<UnityEvent>(interact, "onInteract"), view.Show);
         }
 
         // ---------- Ajudas ----------

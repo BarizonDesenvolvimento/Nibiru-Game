@@ -272,6 +272,9 @@
   "doc.Fotos_Do_Tom.footer": "Quem tirou esta foto ainda estava vivo depois de todos. Tom… onde você está?",
   "doc.Fotos_Do_Tom.text": "Foto 1 — A boca do Poço ao entardecer. Cordas presas em estacas, lanternas acesas. Alguém da equipe acena para a câmera.\n\nFoto 2 — A descida. Três lanternas lá embaixo, cada vez menores. Na parede, marcas de ferramenta antigas, regulares demais.\n\nFoto 3 — O fundo. Um círculo de pedra no chão, coberto de inscrições. A equipe em volta, agachada, medindo. Alguém está rindo.\n\nFoto 4 — Tremida. A luz das lanternas puxada para um lado, como se todos tivessem se virado ao mesmo tempo.\n\nFoto 5 — Quase toda escura. No canto, uma mão aberta no chão.\n\nFoto 6 — O círculo visto de cima, do alto da escada. Os corpos da equipe estão no chão, em volta da borda, imóveis. No centro, de pé, uma figura cercada de luz azul. A luz é forte demais e apaga o rosto. A silhueta é estreita, de cabelo preso.",
   "doc.Fotos_Do_Tom.title": "Fotos do Tom",
+  "doc.Poco_Inscricao.footer": "Entalhada na parede da antecâmara, sob o barco de junco.",
+  "doc.Poco_Inscricao.text": "[Texto provisório. A inscrição dos Guardiões do Poço, sobre o juramento de quem vigia o Selo, será escrita na governança.]",
+  "doc.Poco_Inscricao.title": "Inscrição dos Guardiões do Poço (a definir)",
   "doc.Weiss_Documento.footer": "Entregue pela Dra. Weiss, nas trincheiras.",
   "doc.Weiss_Documento.text": "[Texto provisório. O conteúdo deste documento, tirado do briefing da equipe pela Dra. Weiss, ainda será escrito.]",
   "doc.Weiss_Documento.title": "Documento da Dra. Weiss (a definir)",
@@ -384,5 +387,6 @@
   "tape.Fita_Irena_1.name": "Fita de Irena nº 1",
   "ui.interact.abu_faris_give_rolls": "Entregar os rolos de filme a Abu Faris",
   "ui.interact.abu_faris_talk": "Falar com Abu Faris",
+  "ui.interact.poco_ler_inscricao": "Ler a inscrição",
   "ui.radio.helicoptero_base_avistou": "Rádio: \"Aqui é o Falcão. Alvo no pátio da base, mandando a posição!\""
 }

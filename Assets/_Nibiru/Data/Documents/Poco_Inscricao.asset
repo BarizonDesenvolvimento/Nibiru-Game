@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
+  m_Name: Poco_Inscricao
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
+  titleKey: doc.Poco_Inscricao.title
+  textKey: doc.Poco_Inscricao.text
+  footerKey: doc.Poco_Inscricao.footer
+  displayName: 
+  text: 
+  footer: 
+  raiseOnRead: {fileID: 11400000, guid: 2d82e2d0535c18f479bde0d54d6f448b, type: 2}
