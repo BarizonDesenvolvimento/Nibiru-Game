@@ -29,6 +29,9 @@ namespace Nibiru.AI
         [Tooltip("Aviso na tela quando o helicóptero avista a Elena.")]
         [SerializeField] string radioMessage = "Rádio: \"Aqui é o Falcão. Alvo à vista, mandando a posição!\"";
 
+        [Tooltip("Chave do aviso na tabela de idiomas (ui.radio...). Vazio = usa o texto acima.")]
+        [SerializeField] string radioMessageKey;
+
         [Tooltip("O que mais acontece quando ele avista a Elena (opcional).")]
         [SerializeField] UnityEvent onSpotted = new UnityEvent();
 
@@ -78,7 +81,8 @@ namespace Nibiru.AI
         void Spot()
         {
             spotted = true;
-            if (!string.IsNullOrEmpty(radioMessage)) Notifications.Post(radioMessage);
+            string message = Localization.Loc.Get(radioMessageKey, radioMessage);
+            if (!string.IsNullOrEmpty(message)) Notifications.Post(message);
 
             Vector3 position = player.transform.position;
             foreach (SoldierAI soldier in SoldierAI.All)
