@@ -33,7 +33,9 @@ namespace Nibiru.EditorTools
         static readonly Vector3 HighRouteSpot = new Vector3(6f, 14f, 45f);
         static readonly Vector3 BehindLeaderSpot = new Vector3(21.4f, 0f, 6.7f);
         static readonly Vector3 LastContainerSpot = new Vector3(14f, 0f, -2.5f);
-        static readonly Vector3 EastLeaderApproachSpot = new Vector3(42f, 0f, 14f);
+        static readonly Vector3 BeforeAvenueTriggerSpot = new Vector3(-16f, 0f, 8.5f);
+        static readonly Vector3 BeforeStairTriggerSpot = new Vector3(-17.5f, 0f, -2f);
+        static readonly Vector3 EastLeaderApproachSpot = new Vector3(47f, 0f, 3f);
         static readonly Vector3 InsideTentSpot = new Vector3(28.5f, 0f, 7f);
         static readonly Vector3 PanelSpot = new Vector3(23.8f, 0f, 9.3f);
         static readonly Vector3 NorthEastSpot = new Vector3(52f, 0f, 26f);
@@ -52,7 +54,11 @@ namespace Nibiru.EditorTools
                 "atrás do líder de esquadra, na porta da tenda de comando: \"Golpe pelas costas\" aparece na tela.", crouch: true));
             Register("passo10.conteiner_gatilho", () => Begin(null, CrossYardStep, LastContainerSpot, 0f,
                 "no corredor atrás do último contêiner do sul. Um helicóptero entra de longe e cruza a avenida: espere coberta e ele passa; corra pela avenida e ele avista."));
-            Register("passo10.lider_leste", () => Begin(null, CrossYardStep, EastLeaderApproachSpot, 90f,
+            Register("passo10.gatilho_avenida", () => Begin(null, CrossYardStep, BeforeAvenueTriggerSpot, 90f,
+                "logo depois da entrada, antes do começo da avenida. Ao pisar na avenida, o helicóptero entra de longe: volte para trás do muro ou corra."));
+            Register("passo10.gatilho_escada", () => Begin(null, CrossYardStep, BeforeStairTriggerSpot, 270f,
+                "perto do pé da escada de madeira da rota alta. Ao chegar à escada, o helicóptero entra de longe e cruza a avenida.", crouch: true));
+            Register("passo10.lider_leste", () => Begin(null, CrossYardStep, EastLeaderApproachSpot, 0f,
                 "a leste do heliponto, perto da ronda do 2º líder. Chegue ao nordeste (saída para o Poço) passando pelo lado oeste quando ele olhar para o sul, ou pelas costas dele com a faca.", crouch: true));
             Register("passo10.tenda", () => Begin(new[] { "ChegouATendaDeComando" }, SearchDeskStep, InsideTentSpot, 90f,
                 "dentro da tenda de comando, de frente para a mesa do Kast. Examine a mesa."));
@@ -88,6 +94,12 @@ namespace Nibiru.EditorTools
 
         [MenuItem(MenuRoot + "8a. Último contêiner: o helicóptero cruza a avenida")]
         static void LastContainer() => Go("passo10.conteiner_gatilho");
+
+        [MenuItem(MenuRoot + "8c. Começo da avenida: o helicóptero cruza")]
+        static void AvenueStart() => Go("passo10.gatilho_avenida");
+
+        [MenuItem(MenuRoot + "8d. Pé da escada da rota alta: o helicóptero cruza")]
+        static void StairStart() => Go("passo10.gatilho_escada");
 
         [MenuItem(MenuRoot + "8b. Perto da ronda do 2º líder, a leste")]
         static void EastLeader() => Go("passo10.lider_leste");

@@ -64,6 +64,12 @@ namespace Nibiru.EditorTools.Content
         public const float PassLaneZ = 12.5f;
         static readonly Vector3 PassTriggerCenter = new Vector3(14f, 1f, -2.5f);
         static readonly Vector3 PassTriggerSize = new Vector3(6f, 2f, 4f);
+        // Mesma passagem pelas outras duas rotas: o começo da avenida (logo depois da entrada, antes do
+        // trecho aberto) e o pé da escada de madeira da rota alta, junto do muro oeste.
+        static readonly Vector3 AvenueTriggerCenter = new Vector3(-11f, 1f, 8.5f);
+        static readonly Vector3 AvenueTriggerSize = new Vector3(4f, 2f, 8f);
+        static readonly Vector3 StairTriggerCenter = new Vector3(-20.6f, 1.2f, -2f);
+        static readonly Vector3 StairTriggerSize = new Vector3(3f, 2.4f, 3f);
         static readonly Vector3[] PassRoute =
         {
             new Vector3(170f, 40f, 30f), new Vector3(75f, PassHeight + 2f, PassLaneZ), new Vector3(30f, PassHeight, PassLaneZ),
@@ -100,7 +106,7 @@ namespace Nibiru.EditorTools.Content
 
         class Events
         {
-            public StoryEvent entrouNaBase, chegouATenda, leuOEmail, viuAFoto, leuOsDocumentos, abriuOPortao, saiuDaBase, chegouAoConteiner, helicopteroPassou;
+            public StoryEvent entrouNaBase, chegouATenda, leuOEmail, viuAFoto, leuOsDocumentos, abriuOPortao, saiuDaBase, chegouAoFimDaCobertura, helicopteroPassou;
         }
 
         class Dialogues
@@ -157,7 +163,7 @@ namespace Nibiru.EditorTools.Content
                 leuOsDocumentos = Event("LeuOsDocumentosDoKast", "Depois do e-mail e da foto, a Elena comentou o que viu. Marca o ponto de retorno da tenda e acende o painel do portão."),
                 abriuOPortao = Event("AbriuOPortaoDaAldeia", "A Elena abriu pelo painel da tenda de comando o portão do muro oeste: atalho entre a base e a Aldeia."),
                 saiuDaBase = Event("SaiuDaBaseRumoAoPoco", "A Elena saiu da base pelo nordeste, rumo à boca do Poço. Fecha o passo 10."),
-                chegouAoConteiner = Event("ChegouAoUltimoConteinerDaBase", "A Elena chegou ao corredor atrás do último contêiner do sul da base, ainda coberta. Chama o helicóptero que cruza a avenida."),
+                chegouAoFimDaCobertura = Event("ChegouAoFimDaCoberturaDaBase", "A Elena chegou ao fim da cobertura de uma das três rotas da base (corredor dos contêineres, começo da avenida ou pé da escada da rota alta). Chama o helicóptero que cruza a avenida; só o primeiro gatilho vale."),
                 helicopteroPassou = Event("HelicopteroPassouNaBase", "O segundo helicóptero da Fundação terminou de cruzar a avenida da base. Acontece uma vez só."),
             };
 
@@ -308,9 +314,13 @@ namespace Nibiru.EditorTools.Content
                 Call(e, move.Play);
             }));
 
-            GameObject trigger = EventZone(g, "Gatilho_Ultimo_Conteiner", PassTriggerCenter, PassTriggerSize, ev.chegouAoConteiner);
-            Listener(trigger, ev.chegouAoConteiner, e => Call(e, pass.Play));
-            SetField(trigger.GetComponent<StoryEventListener>(), "replayOnLoad", false);
+            // Um gatilho na entrada de cada rota, todos com o mesmo evento: o primeiro atingido chama a
+            // passagem; o evento já levantado deixa os outros inertes.
+            EventZone(g, "Gatilho_Cobertura_Conteiner", PassTriggerCenter, PassTriggerSize, ev.chegouAoFimDaCobertura);
+            EventZone(g, "Gatilho_Cobertura_Avenida", AvenueTriggerCenter, AvenueTriggerSize, ev.chegouAoFimDaCobertura);
+            EventZone(g, "Gatilho_Cobertura_Escada", StairTriggerCenter, StairTriggerSize, ev.chegouAoFimDaCobertura);
+            Listener(g.gameObject, ev.chegouAoFimDaCobertura, e => Call(e, pass.Play));
+            SetField(g.gameObject.GetComponent<StoryEventListener>(), "replayOnLoad", false);
         }
 
         /// <summary>

@@ -56,6 +56,10 @@ namespace Nibiru.EditorTools
             checks.Add(new Check { name = "Saída nordeste fecha o passo 10", moment = "passo10.saida", step = Exit });
             checks.Add(new Check { name = "2º líder: ID estável, na malha, ronda e rota livre com timing", moment = "passo10.lider_leste", step = EastLeader });
             checks.Add(new Check { name = "Helicóptero: Elena coberta no gatilho não é avistada", moment = "passo10.conteiner_gatilho", step = HeliCovered });
+            checks.Add(new Check { name = "Helicóptero: o gatilho do começo da avenida dispara a passagem", moment = "passo10.gatilho_avenida", step = t => HeliTrigger("Gatilho_Cobertura_Avenida", new Vector3(-11f, 0.1f, 8.5f)) });
+            checks.Add(new Check { name = "Helicóptero: o gatilho do pé da escada da rota alta dispara a passagem", moment = "passo10.gatilho_escada", step = t => HeliTrigger("Gatilho_Cobertura_Escada", new Vector3(-20.6f, 0.1f, -2f)) });
+            checks.Add(new Check { name = "Helicóptero: o gatilho do corredor dos contêineres dispara a passagem", moment = "passo10.gatilho_avenida", step = t => HeliTrigger("Gatilho_Cobertura_Conteiner", new Vector3(14f, 0.1f, -2.5f)) });
+            checks.Add(new Check { name = "Helicóptero: cruzando dois gatilhos, a passagem dispara uma vez só", moment = "passo10.gatilho_avenida", step = HeliOnce });
             checks.Add(new Check { name = "Helicóptero: Elena exposta na avenida é avistada e o atirador fica de fora", moment = "passo10.conteiner_gatilho", step = HeliExposed });
         }
 
@@ -339,6 +343,69 @@ namespace Nibiru.EditorTools
                 foreach (var a in Object.FindObjectsByType<SoldierAI>(FindObjectsSortMode.None)) a.enabled = false;
         }
 
+        static GameObject ActivePassHelicopter() =>
+            Object.FindObjectsByType<HelicopterSpotter>(FindObjectsSortMode.None).Select(s => s.gameObject).FirstOrDefault(g => g.name == "Helicoptero_Passagem");
+
+        // Entra no gatilho de uma rota (a partir de fora) e confere que a passagem começou. O evento não
+        // pode ter sido levantado antes, e a Elena sozinha no gatilho é o que o dispara.
+        static bool HeliTrigger(string zoneName, Vector3 inside)
+        {
+            if (phase == 1)
+            {
+                SilenceGuards(perceptionOnly: false);
+                if (Raised("ChegouAoFimDaCoberturaDaBase") || ActivePassHelicopter() != null || GameObject.Find(zoneName) == null)
+                { Result(false, $"estado inicial errado (evento levantado={Raised("ChegouAoFimDaCoberturaDaBase")}, gatilho existe={GameObject.Find(zoneName) != null})"); return true; }
+                Teleport(inside, 0f);
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            if (Time.time < mark + 2.5f) return false;
+            var heli = ActivePassHelicopter();
+            bool raised = Raised("ChegouAoFimDaCoberturaDaBase");
+            bool moving = heli != null && heli.transform.position.x < 169f;
+            Result(raised && moving, $"evento={raised}, helicóptero em x={(heli != null ? heli.transform.position.x : float.NaN):0}");
+            return true;
+        }
+
+        // A Elena cruza o gatilho da avenida e, em seguida, o do corredor e o da escada: só uma passagem,
+        // que não recomeça (o helicóptero só avança) e termina com o evento da passagem.
+        static bool HeliOnce(float elapsed)
+        {
+            if (phase == 1)
+            {
+                SilenceGuards(perceptionOnly: false);
+                Teleport(new Vector3(-11f, 0.1f, 8.5f), 0f);
+                mark = Time.time;
+                phase = 2;
+                return false;
+            }
+            var heli = ActivePassHelicopter();
+            if (phase == 2)
+            {
+                if (Time.time < mark + 3f) return false;
+                if (heli == null) { Result(false, "a passagem não começou no primeiro gatilho"); return true; }
+                leaderStart = heli.transform.position;
+                Teleport(new Vector3(14f, 0.1f, -2.5f), 0f);
+                phase = 3;
+                mark = Time.time;
+                return false;
+            }
+            if (phase == 3)
+            {
+                if (Time.time < mark + 1.5f) return false;
+                Teleport(new Vector3(-20.6f, 0.1f, -2f), 0f);
+                phase = 4;
+                mark = Time.time;
+                return false;
+            }
+            if (Time.time < mark + 1.5f) return false;
+            int helis = Object.FindObjectsByType<HelicopterSpotter>(FindObjectsInactive.Include, FindObjectsSortMode.None).Count(s => s.name == "Helicoptero_Passagem");
+            bool restarted = heli != null && heli.transform.position.x > leaderStart.x + 0.5f;
+            Result(!restarted && helis == 1, $"helicópteros={helis}, recomeçou={restarted} (x {leaderStart.x:0} → {(heli != null ? heli.transform.position.x : float.NaN):0})");
+            return true;
+        }
+
         static bool HeliCovered(float elapsed)
         {
             if (phase == 1)
@@ -352,7 +419,7 @@ namespace Nibiru.EditorTools
             if (phase == 2)
             {
                 // A Elena já nasce dentro do gatilho; se o evento não disparou, sai e entra de novo.
-                if (Raised("ChegouAoUltimoConteinerDaBase")) { phase = 3; return false; }
+                if (Raised("ChegouAoFimDaCoberturaDaBase")) { phase = 3; return false; }
                 if (elapsed > 3f) { Teleport(new Vector3(14f, 0.1f, -2.5f), 0f); phase = 3; }
                 return false;
             }
@@ -374,7 +441,7 @@ namespace Nibiru.EditorTools
             if (spotter == null) { Result(false, "helicóptero da passagem não encontrado"); return true; }
             if (phase == 2)
             {
-                if (!Raised("ChegouAoUltimoConteinerDaBase") && elapsed > 3f) Teleport(new Vector3(14f, 0.1f, -2.5f), 0f);
+                if (!Raised("ChegouAoFimDaCoberturaDaBase") && elapsed > 3f) Teleport(new Vector3(14f, 0.1f, -2.5f), 0f);
                 // Quando o helicóptero chega perto, a Elena pisa na avenida, a céu aberto.
                 if (spotter.gameObject.activeInHierarchy && spotter.transform.position.x < 40f)
                 {
