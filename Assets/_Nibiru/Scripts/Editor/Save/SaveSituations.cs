@@ -179,7 +179,7 @@ namespace Nibiru.EditorTools.Saving
                 SaveSlots.Attach(1);
                 SaveSlots.WriteCurrent();
                 Say("7. Slot 1 gravado aqui (Estrada para Tell Amar). Espere a última fala, feche o diário: aparece a tela de fim, e o slot 1 fica \"DEMO CONCLUÍDA\" " +
-                    "(Salvamento > Resumo). Confirme para ir ao menu: sem \"Continuar\" (o slot 1 era o mais recente). Salvamento > Carregar o slot 1: recusa, com aviso no Console.\n" + Summary());
+                    "(Salvamento > Resumo). Confirme para ir ao menu: o slot 1 não conta mais para \"Continuar\". Salvamento > Carregar o slot 1: recusa, com aviso no Console.\n" + Summary());
             });
         }
 
@@ -187,9 +187,9 @@ namespace Nibiru.EditorTools.Saving
         {
             Directory.CreateDirectory(SaveSlots.Folder);
             File.WriteAllText(SaveSlots.PathOf(3), content);
-            File.WriteAllText(Path.Combine(SaveSlots.Folder, "ultimo_slot.json"), "{\"slot\": 3}");
-            OpenMenu($"Slot 3 {what}, e ele é o \"último usado\". O jogo não trava: o menu NÃO mostra \"Continuar\" e o Console avisa (\"Salvamento: o slot 3 ...\"). " +
-                "Salvamento > Resumo: o slot 3 aparece vazio. Salvamento > Carregar o slot 3: nada acontece, só o aviso. Gravar no slot 3 de novo o conserta.");
+            OpenMenu($"Slot 3 {what}. O jogo não trava: o menu NÃO mostra \"Continuar\" (se os outros slots estão vazios), \"Carregar\" aparece e o Console avisa (\"Salvamento: o slot 3 ...\"). " +
+                "Em Carregar (ou Novo jogo), o slot 3 mostra \"Dados do slot ilegíveis\" em vermelho: Enter não carrega, Delete (ou X) apaga com confirmação, e Novo jogo nele pede confirmação para sobrescrever. " +
+                "Salvamento > Resumo: o slot 3 aparece como ILEGÍVEL. Ele só some se você sobrescrever ou apagar.");
         }
 
         static void PlayTimeSituation()
@@ -228,8 +228,6 @@ namespace Nibiru.EditorTools.Saving
         static void DeleteAll()
         {
             for (int slot = 1; slot <= SaveSlots.SlotCount; slot++) SaveSlots.Delete(slot);
-            string last = Path.Combine(SaveSlots.Folder, "ultimo_slot.json");
-            if (File.Exists(last)) File.Delete(last);
         }
 
         static bool Loadable(int slot)
@@ -293,10 +291,12 @@ namespace Nibiru.EditorTools.Saving
             var lines = new List<string>();
             for (int slot = 1; slot <= SaveSlots.SlotCount; slot++)
             {
-                SaveSlots.SlotInfo info = SaveSlots.Info(slot);
-                lines.Add(info == null ? $"Slot {slot}: vazio." : $"Slot {slot}: {info.AreaName}, {info.savedAt:HH:mm:ss}{(info.demoCompleted ? ", DEMO CONCLUÍDA" : "")}.");
+                SaveSlots.SlotInfo info = SaveSlots.Inspect(slot);
+                lines.Add(info.state == SaveSlots.SlotState.Empty ? $"Slot {slot}: vazio."
+                    : info.state == SaveSlots.SlotState.Unreadable ? $"Slot {slot}: ILEGÍVEL."
+                    : $"Slot {slot}: {info.AreaName}, {info.savedAt:HH:mm:ss}{(info.demoCompleted ? ", DEMO CONCLUÍDA" : "")}.");
             }
-            lines.Add($"Usado por último: {SaveSlots.LatestSlot()}.");
+            lines.Add($"\"Continuar\" abre o slot: {SaveSlots.LatestSlot()} (0 = nenhum).");
             return string.Join("\n", lines);
         }
 

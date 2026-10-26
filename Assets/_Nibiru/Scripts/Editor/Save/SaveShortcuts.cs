@@ -84,17 +84,18 @@ namespace Nibiru.EditorTools.Saving
             var text = new StringBuilder($"Salvamento: slots em {SaveSlots.Folder}\n");
             for (int slot = 1; slot <= SaveSlots.SlotCount; slot++) text.AppendLine(Describe(slot));
             int latest = SaveSlots.LatestSlot();
-            text.AppendLine(latest == 0 ? "Nenhum slot usado por último." : $"Usado por último: slot {latest} (\"Continuar\" {(SaveSlots.CanContinue ? "abre este" : "não aparece")}).");
+            text.AppendLine(latest == 0 ? "\"Continuar\" não aparece (nenhum slot jogável)." : $"\"Continuar\" abre o slot {latest} (o jogável mais recente).");
             if (EditorApplication.isPlaying) text.AppendLine($"Slot da partida agora: {(SaveSlots.CurrentSlot == 0 ? "nenhum (nada é gravado)" : SaveSlots.CurrentSlot.ToString())}; tempo jogado {PlayTime.Seconds:0} s.");
             Debug.Log(text.ToString());
         }
 
         static string Describe(int slot)
         {
-            SaveSlots.SlotInfo info = SaveSlots.Info(slot);
-            if (info == null) return $"Slot {slot}: vazio.";
+            SaveSlots.SlotInfo info = SaveSlots.Inspect(slot);
+            if (info.state == SaveSlots.SlotState.Empty) return $"Slot {slot}: vazio.";
+            if (info.state == SaveSlots.SlotState.Unreadable) return $"Slot {slot}: ILEGÍVEL (não carrega; só sai se for sobrescrito ou apagado).";
             int seconds = Mathf.RoundToInt(info.playSeconds);
-            return $"Slot {slot}: {info.AreaName}, gravado em {info.savedAt:dd/MM/yyyy HH:mm:ss}, tempo jogado {seconds / 3600}h{seconds / 60 % 60:00}m{seconds % 60:00}s" +
+            return $"Slot {slot}: {info.AreaName}, gravado em {info.savedAt:dd/MM/yyyy HH:mm:ss}, tempo jogado {(info.hasPlayTime ? $"{seconds / 3600}h{seconds / 60 % 60:00}m{seconds % 60:00}s" : "—")}" +
                 (info.demoCompleted ? ", DEMO CONCLUÍDA (não carrega)" : "") + ".";
         }
 

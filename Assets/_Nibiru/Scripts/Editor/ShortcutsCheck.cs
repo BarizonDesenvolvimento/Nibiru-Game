@@ -61,9 +61,13 @@ namespace Nibiru.EditorTools
         {
             // Primeiro os códigos do salvamento (sem Play).
             (bool codesOk, string codes) = Saving.SaveCodes.RunTest();
-            SessionState.SetString(ReportKey, codesOk ? "OK  códigos do salvamento (lista de códigos conhecidos)\n"
-                : "FALHOU  códigos do salvamento:\n" + codes + "\n");
-            SessionState.SetString(CountsKey, codesOk ? "1,0,0" : "0,1,0");
+            string text = codesOk ? "OK  códigos do salvamento (lista de códigos conhecidos)\n" : "FALHOU  códigos do salvamento:\n" + codes + "\n";
+            // Os atalhos da tela de slots (slot falso, demo, ilegível, preencher, limpar, avançar o tempo), numa pasta de teste.
+            (bool slotsOk, string slots) = Saving.SlotShortcuts.RunTest();
+            text += slotsOk ? "OK  atalhos da tela de slots (ocupado, demo, ilegível, preencher, limpar, avançar o tempo)\n"
+                : "FALHOU  atalhos da tela de slots:\n" + slots + "\n";
+            SessionState.SetString(ReportKey, text);
+            SessionState.SetString(CountsKey, $"{(codesOk ? 1 : 0) + (slotsOk ? 1 : 0)},{(codesOk ? 0 : 1) + (slotsOk ? 0 : 1)},0");
             Go("geral.regiao");
         }
 

@@ -509,7 +509,7 @@ namespace Nibiru.EditorTools
                 bool clean = Time.timeScale == 1f && !Raised("EscolheuONoWadi") && !Raised("FimDaFatia") && !Checkpoints.TryGetFor(RegionSceneName, out _);
                 detail += $"; menu principal aberto={menu != null}, jogo zerado={clean}";
                 if (menu == null || !clean) { Result(false, detail); return true; }
-                menu.StartGame();
+                menu.StartGame(1);
                 startedAt = EditorApplication.timeSinceStartup;
                 phase = 31;
                 return false;
