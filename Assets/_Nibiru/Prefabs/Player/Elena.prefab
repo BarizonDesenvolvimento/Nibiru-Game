@@ -1091,7 +1091,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7794043218392186513}
+  - {fileID: 4052080292879024347}
   - {fileID: 4579137010929715870}
   - {fileID: 3401335159130718717}
   - {fileID: 7654201043574784810}
@@ -1266,9 +1266,6 @@ MonoBehaviour:
   inventory: {fileID: 0}
   swingVisual: {fileID: 4579137010929715870}
   swingArc: 120
-  takedownReach: 1.7
-  takedownBackArc: 140
-  takedownNoiseRadius: 1
 --- !u!114 &1265022158567877417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1371,7 +1368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d31d4ae562c4a48b48998c186e38c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Player.PlayerAnimator
-  animator: {fileID: 4236248803909510379}
+  animator: {fileID: 7988204151560968865}
   motor: {fileID: 3110832709876994596}
   weapons: {fileID: 1265022158567877417}
   melee: {fileID: 4942451461779874155}
@@ -1396,7 +1393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959e812cff99e2245911705ef949c68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Tablets.TransformationMark
-  animator: {fileID: 4236248803909510379}
+  animator: {fileID: 7988204151560968865}
   material: {fileID: 2100000, guid: 6b0afa49c83e54b41ae756f32892c2b8, type: 2}
   diameter: 0.075
   width: 0.018
@@ -3765,10 +3762,6 @@ MonoBehaviour:
   label: {fileID: 8461959715926127796}
   duration: 2.5
   maxVisible: 4
-  importantDuration: 9
-  importantFade: 0.6
-  importantHeight: 0.62
-  importantScale: 1.15
 --- !u!1 &8896515505896250459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3895,8 +3888,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.UI.InteractionPromptUI
   interactor: {fileID: 3391958336138082657}
   input: {fileID: 8282052060555257985}
-  melee: {fileID: 0}
-  takedownPrompt: Golpe pelas costas
   panel: {fileID: 7675718648700942685}
   label: {fileID: 5598816027585214034}
 --- !u!114 &7141834162141051426
@@ -4179,7 +4170,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
---- !u!1001 &7755401410894862714
+--- !u!1001 &4589547299269977904
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -4260,13 +4251,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f67429c9092b679488a5b0125bf2e17e, type: 3}
---- !u!95 &4236248803909510379 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: f67429c9092b679488a5b0125bf2e17e, type: 3}
-  m_PrefabInstance: {fileID: 7755401410894862714}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7794043218392186513 stripped
+--- !u!4 &4052080292879024347 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f67429c9092b679488a5b0125bf2e17e, type: 3}
-  m_PrefabInstance: {fileID: 7755401410894862714}
+  m_PrefabInstance: {fileID: 4589547299269977904}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7988204151560968865 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: f67429c9092b679488a5b0125bf2e17e, type: 3}
+  m_PrefabInstance: {fileID: 4589547299269977904}
   m_PrefabAsset: {fileID: 0}

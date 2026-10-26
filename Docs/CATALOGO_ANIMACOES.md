@@ -18,7 +18,7 @@ Lacuna resolvida: o dono baixou na `Avulsas` `X Bot@Sitting Idle`, `X Bot@Sittin
 - `X Bot@Driving` e `X Bot@Entering Car` são sentados de banco de carro.
 - Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1.
 
-**Origem dos pacotes:** as pastas `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` estão em `ArteFonte/Animacoes/Mixamo`, mas não constavam da lista de pacotes do projeto; a origem delas não foi confirmada, e **nada delas foi usado**.
+**Origem dos pacotes:** as pastas `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` estão em `ArteFonte/Animacoes/Mixamo`, mas não constavam da lista de pacotes do projeto: **origem não confirmada, não usar até confirmação.** Nada delas foi usado.
 
 ## Clipes em uso no jogo (importados)
 
@@ -266,6 +266,8 @@ Combate corpo a corpo com machado; os "unarmed" servem sem arma.
 
 ## Pro Magic Pack
 
+**Origem não confirmada, não usar até confirmação.**
+
 Magia e combate desarmado (poderes dos Anunnaki, fase futura).
 
 | Arquivo | Movimento |
@@ -284,6 +286,10 @@ Magia e combate desarmado (poderes dos Anunnaki, fase futura).
 | Standing React Small From Front / Back / Left / Right | dano leve |
 | Standing React Large From Front / Back / Left / Right | dano forte |
 | Standing React Death Backward / Forward / Left / Right | mortes |
+
+## Magic Locomotion Pack e Scary Zombie Pack
+
+**Origem não confirmada, não usar até confirmação.** Estão na pasta mas não constam da lista de pacotes do projeto; não foram catalogados clipe a clipe. (O "Not So Scary Zombie Pack", usado no Lullu, é outro pacote e consta da lista.)
 
 ## Universal Animation Library (UAL1 e UAL2)
 
