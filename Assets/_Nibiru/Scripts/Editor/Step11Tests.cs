@@ -371,7 +371,7 @@ namespace Nibiru.EditorTools
             string title = open ? TestFlow.ReadingText("titleLabel") : "";
             bool raised = Raised("LeuAInscricaoDoPoco");
             TestFlow.CloseReading();
-            Result(open && raised && title.Contains("Inscrição dos Guardiões do Poço"), $"tela aberta={open}, título=\"{title}\", evento={raised}");
+            Result(open && raised && title == "Inscrição da antecâmara", $"tela aberta={open}, título=\"{title}\", evento={raised}");
             return true;
         }
 

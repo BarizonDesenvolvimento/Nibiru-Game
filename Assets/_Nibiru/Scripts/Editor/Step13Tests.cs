@@ -216,7 +216,9 @@ namespace Nibiru.EditorTools
             }
             if (Time.time < mark + 1.5f) return false;
             var passage = Object.FindFirstObjectByType<GuardianPassage>();
-            bool inscriptionGone = GameObject.Find("Ler_Inscricao") == null;
+            // Só a zona da passagem: a inscrição do Poço (parede leste) e a da Aldeia têm o mesmo nome e não somem.
+            bool inscriptionGone = !Resources.FindObjectsOfTypeAll<GameObject>().Any(o => o.name == "Ler_Inscricao" && o.activeInHierarchy
+                && o.scene.IsValid() && o.GetComponentsInParent<Transform>().Any(t => t.name == "Passagem_Dos_Guardioes"));
             Light pulse = GetPulseLight(passage);
 
             Teleport(new Vector3(38f, -14f + FeetToCenter, 96f), 270f);
