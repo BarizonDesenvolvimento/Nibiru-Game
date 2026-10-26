@@ -20,6 +20,8 @@ namespace Nibiru.EditorTools
     /// perde mais de 1 m de altura em 1,5 s). Os atalhos da região rodam numa partida só; os do
     /// laboratório, numa segunda. Atalhos que não põem a Elena andando num lugar (testes automáticos,
     /// vitrines, a viagem presa na caçamba e a memória de Shuruppak) são pulados, com o motivo no resumo.
+    /// Antes dos atalhos, roda o teste de códigos do salvamento (sem Play), para que um código renomeado ou apagado
+    /// seja sempre acusado; ele conta como um item a mais no resumo.
     /// No fim, escreve um resumo no Console (OK, FALHOU ou PULADO em cada atalho).
     /// Menu: Nibiru > Testes > Teste geral dos atalhos (Elena na malha).
     /// </summary>
@@ -57,8 +59,11 @@ namespace Nibiru.EditorTools
         [MenuItem("Nibiru/Testes/Teste geral dos atalhos (Elena na malha)")]
         static void Run()
         {
-            SessionState.SetString(ReportKey, "");
-            SessionState.SetString(CountsKey, "0,0,0");
+            // Primeiro os códigos do salvamento (sem Play).
+            (bool codesOk, string codes) = Saving.SaveCodes.RunTest();
+            SessionState.SetString(ReportKey, codesOk ? "OK  códigos do salvamento (lista de códigos conhecidos)\n"
+                : "FALHOU  códigos do salvamento:\n" + codes + "\n");
+            SessionState.SetString(CountsKey, codesOk ? "1,0,0" : "0,1,0");
             Go("geral.regiao");
         }
 
@@ -66,6 +71,7 @@ namespace Nibiru.EditorTools
         static string SkipReason(string id)
         {
             if (id.StartsWith("geral.")) return "é este teste";
+            if (id.StartsWith("salvamento.")) return "carrega um slot do disco (o teste do salvamento cobre)";
             if (id.Contains(".teste")) return "é um teste automático, não um lugar";
             if (id.StartsWith("animacoes.") || id.EndsWith(".vitrine")) return "vitrine de animações, num chão sem malha";
             if (id.StartsWith("passo15.meio_") || id == "passo15.chegada" || id.StartsWith("remedio.viagem"))
