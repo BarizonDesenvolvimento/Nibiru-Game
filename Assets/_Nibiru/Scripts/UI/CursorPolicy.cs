@@ -52,18 +52,21 @@ namespace Nibiru.UI
             if (first) pointerShown = showPointer;
             EnsureDriver();
             Apply();
+            // O editor da Unity também mexe no cursor ao apertar Esc: reaplica nos quadros seguintes.
+            if (driver != null) driver.ReapplyLater();
         }
 
         public static void Release(object owner)
         {
             if (!owners.Remove(owner)) return;
             Apply();
+            if (driver != null) driver.ReapplyLater();
         }
 
         /// <summary>Esconde ou mostra o cursor livre (usado pelo <see cref="MenuPointer"/>).</summary>
         public static void ShowPointer(bool show)
         {
-            if (pointerShown == show) return;
+            // Sempre reaplica: o editor ou o sistema podem ter mostrado o cursor por conta própria.
             pointerShown = show;
             Apply();
         }
@@ -79,8 +82,8 @@ namespace Nibiru.UI
         public static void Apply()
         {
             if (!AnyFree && !gameActive) return;
-            Cursor.lockState = WantedLock;
-            Cursor.visible = WantedVisible;
+            if (Cursor.lockState != WantedLock) Cursor.lockState = WantedLock;
+            if (Cursor.visible != WantedVisible) Cursor.visible = WantedVisible;
         }
 
         /// <summary>A janela recuperou o foco (alt-tab): reaplica o estado certo agora e de novo uns quadros depois.</summary>

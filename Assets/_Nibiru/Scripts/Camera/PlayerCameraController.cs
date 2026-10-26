@@ -80,7 +80,7 @@ namespace Nibiru.Cameras
         {
             // Com um menu aberto (pausa, leitura) o cursor é do menu: o clique não prende o cursor.
             if (lockCursor && !CursorPolicy.AnyFree && Cursor.lockState != CursorLockMode.Locked
-                && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+                && Mouse.current != null && (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame))
                 LockCursor();
         }
 
