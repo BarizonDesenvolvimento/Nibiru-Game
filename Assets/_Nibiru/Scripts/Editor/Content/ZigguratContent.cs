@@ -52,6 +52,24 @@ namespace Nibiru.EditorTools.Content
         static readonly Vector3 LeaderSpot = new Vector3(20.5f, 0f, 5.5f);
         static readonly Vector3 LeaderLookAt = new Vector3(14f, 0f, -4f);
 
+        // 2º líder: ronda curta no trecho final, a leste do heliponto, entre a tenda de comando e a saída
+        // para o Poço. O corredor entre o zigurate (x = 40) e a cerca (x = 60) fica largo o bastante para
+        // passar pelo lado oeste quando ele olha para o outro lado.
+        static readonly Vector3[] EastLeaderRound = { new Vector3(53f, 0f, 9f), new Vector3(53f, 0f, 19f) };
+
+        // Helicóptero que cruza a avenida (de leste para oeste), vindo de fora da base. Dispara quando a
+        // Elena chega ao corredor atrás do último contêiner do sul (x = 14), ainda coberta. A rota passa
+        // a 12,5 m do eixo do corredor, fora do raio de 14 m de quem está de pé atrás do contêiner.
+        public const float PassHeight = 12f;
+        public const float PassLaneZ = 12.5f;
+        static readonly Vector3 PassTriggerCenter = new Vector3(14f, 1f, -2.5f);
+        static readonly Vector3 PassTriggerSize = new Vector3(6f, 2f, 4f);
+        static readonly Vector3[] PassRoute =
+        {
+            new Vector3(170f, 40f, 30f), new Vector3(75f, PassHeight + 2f, PassLaneZ), new Vector3(30f, PassHeight, PassLaneZ),
+            new Vector3(-25f, PassHeight, PassLaneZ), new Vector3(-170f, 45f, 20f),
+        };
+
         // Portão do muro oeste, corrido por dentro (x = -21,7): fechado no vão (z 6 a 12), aberto ao norte.
         static readonly Vector3 GateClosed = new Vector3(-21.7f, 1.45f, 9f);
         static readonly Vector3 GateOpen = new Vector3(-21.7f, 1.45f, 15f);
@@ -82,7 +100,7 @@ namespace Nibiru.EditorTools.Content
 
         class Events
         {
-            public StoryEvent entrouNaBase, chegouATenda, leuOEmail, viuAFoto, leuOsDocumentos, abriuOPortao, saiuDaBase;
+            public StoryEvent entrouNaBase, chegouATenda, leuOEmail, viuAFoto, leuOsDocumentos, abriuOPortao, saiuDaBase, chegouAoConteiner, helicopteroPassou;
         }
 
         class Dialogues
@@ -116,6 +134,7 @@ namespace Nibiru.EditorTools.Content
             BuildSoldiers(Group(active, "Soldados"));
             BuildCommandTent(Group(active, "Tenda_De_Comando"), gate);
             BuildLooseItems(Group(active, "Itens"));
+            BuildHelicopterPass(Group(active, "Passagem_Helicoptero"));
 
             // Tudo da base (soldados, gatilhos, pontos de retorno) só existe depois de a Elena entrar
             // pela ponta do muro (fim do passo 9). O portão fechado está sempre lá.
@@ -138,6 +157,8 @@ namespace Nibiru.EditorTools.Content
                 leuOsDocumentos = Event("LeuOsDocumentosDoKast", "Depois do e-mail e da foto, a Elena comentou o que viu. Marca o ponto de retorno da tenda e acende o painel do portão."),
                 abriuOPortao = Event("AbriuOPortaoDaAldeia", "A Elena abriu pelo painel da tenda de comando o portão do muro oeste: atalho entre a base e a Aldeia."),
                 saiuDaBase = Event("SaiuDaBaseRumoAoPoco", "A Elena saiu da base pelo nordeste, rumo à boca do Poço. Fecha o passo 10."),
+                chegouAoConteiner = Event("ChegouAoUltimoConteinerDaBase", "A Elena chegou ao corredor atrás do último contêiner do sul da base, ainda coberta. Chama o helicóptero que cruza a avenida."),
+                helicopteroPassou = Event("HelicopteroPassouNaBase", "O segundo helicóptero da Fundação terminou de cruzar a avenida da base. Acontece uma vez só."),
             };
 
             if (!AssetDatabase.IsValidFolder(DataFolder + "/Documents")) AssetDatabase.CreateFolder(DataFolder, "Documents");
@@ -236,6 +257,12 @@ namespace Nibiru.EditorTools.Content
             // O líder chama reforços pelo rádio se o combate durar: derrubá-lo primeiro é a tática.
             Soldier(soldiers, "Lider_Tenda_Comando", leaderSpot, LeaderLookAt, null, leader: true);
 
+            // O 2º líder guarda o fim do caminho: ronda curta a leste do heliponto. Código fixo para o salvamento.
+            Vector3[] round = EastLeaderRound.Select((p, i) => OnNavMesh(p, $"Ronda_Lider_Leste_{i + 1}")).ToArray();
+            Transform[] roundPoints = round.Select((p, i) => Point(g, $"Ronda_Lider_Leste_Ponto_{i + 1}", p)).ToArray();
+            GameObject eastLeader = Soldier(soldiers, "Lider_Leste_Heliponto", round[0], round[1], roundPoints, leader: true);
+            StableId(eastLeader);
+
             GameObject sniper = Sniper(g, "Atirador_De_Elite", SniperSpot, SniperSpot + Vector3.back * 10f);
 
             // A Base_Ativa liga junto com a entrada; aqui só se acorda a IA.
@@ -245,6 +272,45 @@ namespace Nibiru.EditorTools.Content
                 SetEnabled(e, sniper.GetComponent<SoldierPerception>(), true);
                 SetEnabled(e, sniper.GetComponent<SniperAI>(), true);
             });
+        }
+
+        // ---------- Helicóptero cruzando a avenida ----------
+
+        // Um segundo helicóptero, vindo de fora da base (o do heliponto, do passo 9, continua pousado).
+        // Quem espera coberto vê a ameaça passar; quem corre pela avenida é avistado e chama os soldados
+        // (o atirador não, ele reage por conta própria). Uma passagem só.
+        static void BuildHelicopterPass(Transform g)
+        {
+            Transform route = Group(g, "Rota_Passagem");
+            Transform[] points = PassRoute.Select((p, i) => Point(route, $"P{i + 1}", p)).ToArray();
+
+            GameObject heli = Helicopter(g, "Helicoptero_Passagem", points[0].position, -100f);
+            var move = heli.AddComponent<MoveAlongPath>();
+            SetField(move, "points", points);
+            SetField(move, "speed", 13f);
+            SetField(move, "turnSpeed", 35f);
+            SetField(move, "slowDownDistance", 0f);
+            var spotter = heli.AddComponent<HelicopterSpotter>();
+            SetField(spotter, "radioMessageKey", "ui.radio.helicoptero_base_avistou");
+            heli.SetActive(false);
+
+            var passed = g.gameObject.AddComponent<StoryEventRaiser>();
+            SetField(passed, "storyEvent", ev.helicopteroPassou);
+            UnityEvent arrived = GetField<UnityEvent>(move, "onArrived");
+            SetActive(arrived, heli, false);
+            Call(arrived, passed.Raise);
+
+            var pass = g.gameObject.AddComponent<TimedSequence>();
+            SetField(pass, "skipIfRaised", ev.helicopteroPassou);
+            SetSteps(pass, S("o helicóptero entra de longe", 1f, e =>
+            {
+                SetActive(e, heli, true);
+                Call(e, move.Play);
+            }));
+
+            GameObject trigger = EventZone(g, "Gatilho_Ultimo_Conteiner", PassTriggerCenter, PassTriggerSize, ev.chegouAoConteiner);
+            Listener(trigger, ev.chegouAoConteiner, e => Call(e, pass.Play));
+            SetField(trigger.GetComponent<StoryEventListener>(), "replayOnLoad", false);
         }
 
         /// <summary>
