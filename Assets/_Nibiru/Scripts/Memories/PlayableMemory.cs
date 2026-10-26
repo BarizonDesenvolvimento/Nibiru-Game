@@ -303,7 +303,7 @@ namespace Nibiru.Memories
             rect.sizeDelta = new Vector2(1600f, 80f);
             rect.anchoredPosition = position;
             var text = go.AddComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.font = Nibiru.UI.UiFont.Current;
             text.fontSize = size;
             text.fontStyle = FontStyle.Italic;
             text.alignment = TextAnchor.MiddleCenter;

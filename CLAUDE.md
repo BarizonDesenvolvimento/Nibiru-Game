@@ -31,6 +31,36 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 - Um passo por vez: ao terminar um sistema, mostre o resultado e espere o dono testar no Play antes de seguir.
 - Todo passo novo da missão ganha um menu de atalhos de teste em **Nibiru > Testes > Passo N**, como o do passo 8 (`Scripts/Editor/Step8Shortcuts.cs`): cada atalho liga o Play e põe a Elena num momento do passo, com o mundo como se ela tivesse jogado até ali. Teste os atalhos pela ponte e liste-os no `Docs/ESTADO.md` ao pedir o teste do dono.
 
+## Textos e idiomas (localização)
+
+Todo texto que o jogador vê **nasce com chave**, em pt-BR e en (o inglês pode ficar vazio: cai no pt-BR). Os textos moram só em `Assets/_Nibiru/Resources/Localization/pt-BR.json` e `en.json` (um objeto `"chave": "texto"`). Os arquivos de dados guardam só a chave; os scripts de `Editor/Content` não têm texto, só códigos. Para conteúdo novo: escreva primeiro os textos no `pt-BR.json`, depois crie o arquivo (os campos recebem as chaves padrão e o Console avisa se algum texto faltar). Sistema em `Scripts/Localization/Loc.cs`; ferramentas em **Nibiru > Localização** e **Nibiru > Testes > Localização**.
+
+**Chaves** (minúsculas só nos nomes de personagens; o resto usa o nome do arquivo):
+
+| Tipo | Chave |
+| --- | --- |
+| Fala de conversa | `dlg.<Conversa>.<idDaFala>` |
+| Resposta de uma fala | `dlg.<Conversa>.<idDaFala>.<c1, c2...>` |
+| Nome de quem fala | `spk.<nome_sem_acento>` (compartilhado; o campo `speaker` da fala é o identificador do personagem) |
+| Documento | `doc.<Nome>.title`, `.text`, `.footer` |
+| Fita | `tape.<Nome>.name`, `.label`, `.<l1, l2...>` |
+| Item | `item.<Nome>.name`, `.desc`, `.hint` |
+| Missão | `quest.<Nome>.name`, `quest.<Nome>.<s1, s2...>` |
+| Tabuleta | `tablet.<Nome>.name`, `.text` |
+| Memória | `memory.<Nome>.character`, `.place` |
+| Texto fixo do código ou da cena (parte 2) | `ui.<área>.<nome>` |
+
+**Códigos permanentes:** cada fala, resposta (`c1`...), linha de fita (`l1`...) e passo de missão (`s1`...) tem um código próprio que **nunca muda, nunca se repete e nunca é reaproveitado**. Inserir ou tirar itens não mexe nas chaves dos outros (o código novo é o maior número usado mais um). O teste **Nibiru > Testes > Localização > Teste de chaves e códigos** acusa código vazio ou repetido, chave sem texto, texto antigo ainda no arquivo, chave usada por dois campos e o inglês com chave que não existe no pt-BR.
+
+**Tags de cor e `{0}` nos textos:**
+- Use tags de formatação (`<color=#RRGGBB>`, `<b>`, `<i>`, `<size=N>`) só quando o próprio texto precisar. Toda tag aberta fecha no mesmo texto, e a tradução leva **as mesmas tags**. Cores fixas da interface (dourado dos títulos, cinza das dicas) ficam no código, não no texto.
+- Valores que mudam entram como `{0}`, `{1}`... numerados, nunca `{}` vazio nem `{nome}`; a tradução leva os mesmos `{n}`, na ordem que a língua pedir. Nunca monte uma frase juntando pedaços traduzidos (a ordem das palavras muda por idioma): faça um texto só, com `{0}`. O teste confere tags e `{n}` do pt-BR e do inglês.
+- Quebra de linha é `\n` dentro do JSON.
+
+**Fonte:** a interface usa o `Text` da Unity com a fonte central `UiFont.Current`; o tema fica em `Resources/UiTheme` (criado por **Nibiru > Localização > Criar tema da interface**): arraste uma fonte para o campo e ela vale para o jogo inteiro. Vazio, usa a fonte embutida, que já tem os acentos do português e do inglês. TextMeshPro e fontes de outros alfabetos ficam para a parte 2.
+
+**Parte 2 (depois do teste completo da fatia):** textos fixos no código (avisos, menus, interface, "Falar com...") e textos serializados na cena. Até lá, esses ainda estão em português no código e na cena. Exportar e importar CSV fica para a etapa do inglês.
+
 ## Estrutura de pastas
 
 ```

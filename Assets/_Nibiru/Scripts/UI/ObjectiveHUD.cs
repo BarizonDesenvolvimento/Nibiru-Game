@@ -31,12 +31,14 @@ namespace Nibiru.UI
         {
             if (quests != null) quests.Changed += Refresh;
             if (inventory != null) inventory.Changed += Refresh;
+            Localization.Loc.LanguageChanged += Refresh;
         }
 
         void OnDisable()
         {
             if (quests != null) quests.Changed -= Refresh;
             if (inventory != null) inventory.Changed -= Refresh;
+            Localization.Loc.LanguageChanged -= Refresh;
         }
 
         void Start() => Refresh();

@@ -57,7 +57,7 @@ namespace Nibiru.Localization
             EnsureLoaded();
             if (code == language) return;
             language = code;
-            current = code == DefaultLanguage ? fallback : Load(code);
+            current = Table(code);
             if (save)
             {
                 PlayerPrefs.SetString(PrefsKey, code);
@@ -91,6 +91,16 @@ namespace Nibiru.Localization
             return !string.IsNullOrEmpty(key) && Table(code).TryGetValue(key, out string value) && !string.IsNullOrEmpty(value);
         }
 
+        /// <summary>
+        /// SÓ PARA TESTES: põe um texto numa tabela só na memória (não grava nada e some ao esquecer o cache ou
+        /// ao sair do Play). Serve para ver a troca de idioma funcionando sem ter traduzido nada.
+        /// </summary>
+        public static void SetTemporaryText(string code, string key, string text)
+        {
+            Table(code)[key] = text;
+
+        }
+
         /// <summary>Esquece as tabelas lidas, para a próxima consulta ler os arquivos de novo (o editor chama depois de gravar).</summary>
         public static void InvalidateCache()
         {
@@ -105,6 +115,11 @@ namespace Nibiru.Localization
         static Dictionary<string, string> Table(string code)
         {
             EnsureLoaded();
+            return TableOf(code);
+        }
+
+        static Dictionary<string, string> TableOf(string code)
+        {
             if (!loaded.TryGetValue(code, out Dictionary<string, string> table))
                 loaded[code] = table = Load(code);
             return table;
@@ -116,8 +131,8 @@ namespace Nibiru.Localization
             loaded.Clear();
             string saved = PlayerPrefs.GetString(PrefsKey, DefaultLanguage);
             language = Array.IndexOf(Languages, saved) >= 0 ? saved : DefaultLanguage;
-            fallback = Load(DefaultLanguage);
-            current = language == DefaultLanguage ? fallback : Load(language);
+            fallback = TableOf(DefaultLanguage);
+            current = TableOf(language);
         }
 
         static Dictionary<string, string> Load(string code)

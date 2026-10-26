@@ -112,7 +112,7 @@ namespace Nibiru.UI
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
             var text = go.AddComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.font = Nibiru.UI.UiFont.Current;
             text.text = content;
             text.fontSize = size;
             text.color = color;

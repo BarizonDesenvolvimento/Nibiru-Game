@@ -272,7 +272,7 @@ namespace Nibiru.AI
             }
             var label = Rect(bar.transform, "Nome", new Vector2(0.5f, 1f), new Vector2(0f, -46f), new Vector2(720f, 30f));
             var text = label.gameObject.AddComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.font = Nibiru.UI.UiFont.Current;
             text.fontSize = 24;
             text.alignment = TextAnchor.MiddleCenter;
             text.color = new Color(0.95f, 0.85f, 0.55f);

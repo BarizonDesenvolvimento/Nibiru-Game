@@ -25,7 +25,7 @@ namespace Nibiru.UI
         }
 
         static readonly string[] MainItems = { "Continuar", "Opções", "Voltar ao último checkpoint", "Sair do jogo" };
-        const int OptionItemCount = 4;
+        const int OptionItemCount = 5;
         const float SensitivityStep = 0.1f;
         const string Gold = "#E8C46A";
         const string Muted = "#9AA0AA";
@@ -121,8 +121,8 @@ namespace Nibiru.UI
                 return;
             }
 
-            if (selected == 2) AdjustOption(1);
-            else if (selected == 3) ShowPage(Page.Principal, 1);
+            if (selected == 2 || selected == 3) AdjustOption(1);
+            else if (selected == 4) ShowPage(Page.Principal, 1);
         }
 
         void AdjustOption(int direction)
@@ -132,12 +132,22 @@ namespace Nibiru.UI
                 case 0: GameOptions.MouseSensitivity = Round(GameOptions.MouseSensitivity + direction * SensitivityStep); break;
                 case 1: GameOptions.GamepadSensitivity = Round(GameOptions.GamepadSensitivity + direction * SensitivityStep); break;
                 case 2: GameOptions.InvertY = !GameOptions.InvertY; break;
+                case 3: NextLanguage(direction); break;
                 default: return;
             }
             Refresh();
         }
 
         static float Round(float value) => Mathf.Round(value * 10f) / 10f;
+
+        // Troca o idioma dos textos (esquerda e direita, ou confirmar). Os textos fixos do menu ainda são em português:
+        // eles entram na tradução na parte 2 da localização.
+        static void NextLanguage(int direction)
+        {
+            string[] languages = Localization.Loc.Languages;
+            int index = System.Array.IndexOf(languages, Localization.Loc.Language);
+            Localization.Loc.SetLanguage(languages[(index + direction + languages.Length) % languages.Length]);
+        }
 
         static void Quit()
         {
@@ -163,7 +173,8 @@ namespace Nibiru.UI
                 AppendItem($"Sensibilidade do mouse      <  {GameOptions.MouseSensitivity:0.0}  >", 0);
                 AppendItem($"Sensibilidade do controle   <  {GameOptions.GamepadSensitivity:0.0}  >", 1);
                 AppendItem($"Inverter eixo vertical      <  {(GameOptions.InvertY ? "Sim" : "Não")}  >", 2);
-                AppendItem("Voltar", 3);
+                AppendItem($"Idioma                     <  {Localization.Loc.DisplayName(Localization.Loc.Language)}  >", 3);
+                AppendItem("Voltar", 4);
             }
 
             builder.AppendLine().Append("<size=24><color=").Append(Muted).Append(">[").Append(input.ConfirmButtonLabel).Append("] Escolher     [")

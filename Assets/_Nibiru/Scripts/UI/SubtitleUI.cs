@@ -50,7 +50,7 @@ namespace Nibiru.UI
             rect.offsetMin = rect.offsetMax = Vector2.zero;
 
             label = textGo.AddComponent<Text>();
-            label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            label.font = Nibiru.UI.UiFont.Current;
             label.fontSize = 26;
             label.alignment = TextAnchor.LowerCenter;
             label.color = new Color(1f, 0.95f, 0.82f);
