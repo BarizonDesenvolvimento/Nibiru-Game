@@ -42,9 +42,15 @@ namespace Nibiru.Save
 
         public static void Release(Object owner) => holders.Remove(owner);
 
+        /// <summary>
+        /// Teto de cada quadro, em segundos. Um quadro longo (o carregamento de uma cena trava o jogo por alguns segundos)
+        /// conta no máximo isto, então carregar não entra no tempo jogado.
+        /// </summary>
+        public const float MaxStep = 0.25f;
+
         internal static void Tick(float deltaTime)
         {
-            if (Running) Seconds += deltaTime;
+            if (Running) Seconds += Mathf.Min(deltaTime, MaxStep);
         }
     }
 }

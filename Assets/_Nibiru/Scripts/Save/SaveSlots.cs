@@ -19,7 +19,7 @@ namespace Nibiru.Save
     /// Salvamento em disco, com 3 slots. Cada slot é um arquivo JSON (save_1.json a save_3.json) em
     /// Application.persistentDataPath, com o último checkpoint (posição, vida, inventário, munição) e o estado do mundo
     /// daquele momento, mais um resumo para a tela de slots (área, data e hora, tempo jogado, demo concluída).
-    /// ultimo_slot.json guarda qual slot foi usado por último ("Continuar").
+    /// "Continuar" abre o slot ocupado e legível de data de gravação mais recente (empate: o de menor número).
     ///
     /// A partida grava sempre no slot escolhido ao começar: no "Novo jogo" e a cada checkpoint, altar ou salvamento
     /// automático. Nunca dentro de uma memória jogável. Sem slot escolhido (Play direto na cena, atalhos de teste)
@@ -27,8 +27,9 @@ namespace Nibiru.Save
     ///
     /// Tudo é gravado por código permanente (itens, armas e missões pelo <see cref="SaveRegistry"/>; passos de missão
     /// pelo código s1, s2...; eventos e facções pelo nome do arquivo; objetos da cena pelo PersistentId), nunca por
-    /// referência. Qualquer mudança no formato do arquivo aumenta <see cref="Version"/>: um arquivo de outra versão,
-    /// corrompido ou ilegível conta como slot vazio e deixa um aviso no Console.
+    /// referência. Qualquer mudança no formato do arquivo aumenta <see cref="Version"/>. Só o arquivo ausente é slot
+    /// vazio: um arquivo de outra versão, corrompido, cortado, vazio ou com código desconhecido é "ilegível" (a tela de
+    /// slots avisa, deixa um aviso no Console e nunca o apaga sozinha).
     /// </summary>
     public static class SaveSlots
     {
@@ -63,8 +64,6 @@ namespace Nibiru.Save
         public static void UseFolder(string path) => folderOverride = path;
 
         public static string PathOf(int slot) => Path.Combine(Folder, $"save_{slot}.json");
-
-        static string LastSlotPath => Path.Combine(Folder, "ultimo_slot.json");
 
         /// <summary>A partida deixa de gravar em slot (atalhos de teste, volta ao menu).</summary>
         public static void Detach() => CurrentSlot = 0;
@@ -116,10 +115,44 @@ namespace Nibiru.Save
             Write(CurrentSlot, file);
         }
 
-        public static void Delete(int slot)
+        /// <summary>Apaga o arquivo do slot. False se o slot não tem arquivo (ou não deu para apagar).</summary>
+        public static bool Delete(int slot)
+        {
+            if (!ValidSlot(slot) || !File.Exists(PathOf(slot))) return false;
+            try
+            {
+                File.Delete(PathOf(slot));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Salvamento: não consegui apagar o slot {slot} ({e.Message}).");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Só para atalhos e testes: grava um slot no formato do "Novo jogo" (sem checkpoint: abre o começo da região) com a
+        /// área, a data e o tempo pedidos. Não mexe no slot da partida. <paramref name="playSeconds"/> negativo omite o campo.
+        /// </summary>
+        public static void WriteTestSlot(int slot, string area, DateTime savedAt, float playSeconds, bool demoCompleted, string sceneName)
         {
             if (!ValidSlot(slot)) return;
-            if (File.Exists(PathOf(slot))) File.Delete(PathOf(slot));
+            Write(slot, new SaveFile
+            {
+                version = Version,
+                summary = new Summary
+                {
+                    area = area,
+                    savedAt = savedAt.ToString("yyyy-MM-ddTHH:mm:ss.fff", CultureInfo.InvariantCulture),
+                    playSeconds = playSeconds >= 0f ? playSeconds : (float?)null,
+                    demoCompleted = demoCompleted,
+                },
+                scene = sceneName,
+                world = ToFile(new WorldState.Snapshot(
+                    new Dictionary<string, int>(), new HashSet<string>(), new HashSet<string>(), new Dictionary<string, int>(),
+                    new HashSet<string>(), new Dictionary<string, int>(), 0)),
+            });
         }
 
         static void Write(int slot, SaveFile file)
@@ -128,7 +161,6 @@ namespace Nibiru.Save
             {
                 Directory.CreateDirectory(Folder);
                 WriteSafely(PathOf(slot), JsonConvert.SerializeObject(file, Formatting.Indented));
-                WriteSafely(LastSlotPath, JsonConvert.SerializeObject(new LastSlotFile { slot = slot }));
             }
             catch (Exception e)
             {
@@ -147,43 +179,95 @@ namespace Nibiru.Save
 
         // ---------- Ler ----------
 
-        /// <summary>Resumo de um slot para a tela de slots, ou null se ele está vazio (ou ilegível).</summary>
+        /// <summary>Resumo de um slot para a tela de slots, ou null se ele está vazio (arquivo ausente).</summary>
         public static SlotInfo Info(int slot)
         {
-            SaveFile file = Read(slot);
-            if (file == null) return null;
-            DateTime.TryParse(file.summary.savedAt, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime savedAt);
-            return new SlotInfo
-            {
-                slot = slot,
-                area = file.summary.area,
-                savedAt = savedAt,
-                playSeconds = file.summary.playSeconds,
-                demoCompleted = file.summary.demoCompleted,
-            };
+            SlotInfo info = Inspect(slot);
+            return info.state == SlotState.Empty ? null : info;
         }
 
-        /// <summary>O slot usado por último (1 a 3), ou 0 se nenhum.</summary>
-        public static int LatestSlot()
+        /// <summary>
+        /// O estado e o resumo de um slot, sem nunca lançar exceção: vazio (sem arquivo), ocupado, demo concluída ou
+        /// ilegível (arquivo vazio, cortado, corrompido, de outra versão ou com código que o jogo não conhece).
+        /// Um arquivo ilegível deixa um aviso no Console.
+        /// </summary>
+        public static SlotInfo Inspect(int slot)
         {
+            var info = new SlotInfo { slot = slot, state = SlotState.Empty };
+            if (!ValidSlot(slot) || !File.Exists(PathOf(slot))) return info;
+
+            SaveFile file = TryRead(slot, out string problem);
+            if (file == null)
+            {
+                Debug.LogWarning($"Salvamento: o slot {slot} ({PathOf(slot)}) está ilegível ({problem}); ele aparece como \"dados ilegíveis\" e não é apagado sozinho.");
+                info.state = SlotState.Unreadable;
+                return info;
+            }
+
+            info.area = file.summary.area;
+            info.playSeconds = file.summary.playSeconds ?? 0f;
+            info.hasPlayTime = file.summary.playSeconds.HasValue;
+            if (DateTime.TryParse(file.summary.savedAt, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime savedAt)) info.savedAt = savedAt;
+            info.demoCompleted = file.summary.demoCompleted;
+            if (file.summary.demoCompleted)
+            {
+                info.state = SlotState.DemoCompleted;
+                return info;
+            }
+
+            // Confere agora se os códigos do arquivo ainda existem, para o slot ruim não parecer carregável.
             try
             {
-                if (!File.Exists(LastSlotPath)) return 0;
-                int slot = JsonConvert.DeserializeObject<LastSlotFile>(File.ReadAllText(LastSlotPath))?.slot ?? 0;
-                return ValidSlot(slot) ? slot : 0;
+                WorldState.Snapshot world = FromFile(file.world);
+                if (file.checkpoint != null) ToCheckpoint(file, world);
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Salvamento: não consegui ler qual slot foi usado por último ({e.Message}).");
-                return 0;
+                Debug.LogWarning($"Salvamento: o slot {slot} ({PathOf(slot)}) tem dados que o jogo não consegue usar ({e.Message}); ele aparece como \"dados ilegíveis\" e não é apagado sozinho.");
+                info.state = SlotState.Unreadable;
+                return info;
             }
+            info.state = SlotState.Occupied;
+            return info;
         }
 
-        /// <summary>True se há um slot mais recente que pode ser carregado ("Continuar").</summary>
-        public static bool CanContinue => Info(LatestSlot())?.CanLoad ?? false;
+        /// <summary>
+        /// O slot de "Continuar": o ocupado e legível de data de gravação mais recente (empate: o de menor número).
+        /// "Demo concluída" e ilegível não contam. 0 se não há nenhum.
+        /// </summary>
+        public static int LatestSlot()
+        {
+            var infos = new SlotInfo[SlotCount];
+            for (int i = 0; i < infos.Length; i++) infos[i] = Inspect(i + 1);
+            return LatestSlot(infos);
+        }
 
-        /// <summary>Abre o slot mais recente. False se não há o que continuar.</summary>
-        public static bool ContinueLatest() => CanContinue && Load(LatestSlot());
+        /// <summary>O mesmo, a partir de resumos já lidos (a tela não relê os arquivos a cada tecla).</summary>
+        public static int LatestSlot(SlotInfo[] infos)
+        {
+            int best = 0;
+            DateTime bestTime = DateTime.MinValue;
+            foreach (SlotInfo info in infos)
+            {
+                if (!info.CanLoad) continue;
+                if (best == 0 || info.savedAt > bestTime)
+                {
+                    best = info.slot;
+                    bestTime = info.savedAt;
+                }
+            }
+            return best;
+        }
+
+        /// <summary>True se há um slot que pode ser carregado ("Continuar").</summary>
+        public static bool CanContinue => LatestSlot() != 0;
+
+        /// <summary>Abre o slot de "Continuar". False se não há o que continuar.</summary>
+        public static bool ContinueLatest()
+        {
+            int slot = LatestSlot();
+            return slot != 0 && Load(slot);
+        }
 
         /// <summary>
         /// Carrega o slot: volta ao último checkpoint gravado, como depois de morrer. False (e um aviso no Console) se o
@@ -217,15 +301,7 @@ namespace Nibiru.Save
             }
 
             CurrentSlot = slot;
-            PlayTime.Set(file.summary.playSeconds);
-            try
-            {
-                WriteSafely(LastSlotPath, JsonConvert.SerializeObject(new LastSlotFile { slot = slot }));
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"Salvamento: não consegui gravar qual slot foi usado por último ({e.Message}).");
-            }
+            PlayTime.Set(file.summary.playSeconds ?? 0f);
 
             if (data != null)
             {
@@ -243,30 +319,43 @@ namespace Nibiru.Save
             return true;
         }
 
-        /// <summary>Lê o arquivo de um slot. Null se ausente, corrompido ou de outra versão (os dois últimos avisam no Console).</summary>
+        /// <summary>Lê o arquivo de um slot. Null se ausente ou ilegível (os ilegíveis avisam no Console).</summary>
         static SaveFile Read(int slot)
         {
-            if (!ValidSlot(slot)) return null;
-            string path = PathOf(slot);
-            if (!File.Exists(path)) return null;
+            if (!ValidSlot(slot) || !File.Exists(PathOf(slot))) return null;
+            SaveFile file = TryRead(slot, out string problem);
+            if (file == null) Debug.LogWarning($"Salvamento: o slot {slot} ({PathOf(slot)}) está ilegível ({problem}).");
+            return file;
+        }
+
+        /// <summary>Lê e confere o arquivo, sem avisar nem lançar exceção. Null (e o motivo em <paramref name="problem"/>) se não serve.</summary>
+        static SaveFile TryRead(int slot, out string problem)
+        {
+            problem = null;
             try
             {
-                SaveFile file = JsonConvert.DeserializeObject<SaveFile>(File.ReadAllText(path));
+                string text = File.ReadAllText(PathOf(slot));
+                if (string.IsNullOrWhiteSpace(text))
+                {
+                    problem = "arquivo vazio";
+                    return null;
+                }
+                SaveFile file = JsonConvert.DeserializeObject<SaveFile>(text);
                 if (file == null || file.summary == null || file.world == null || string.IsNullOrEmpty(file.scene))
                 {
-                    Debug.LogWarning($"Salvamento: o slot {slot} ({path}) está incompleto; ele conta como vazio.");
+                    problem = "arquivo incompleto";
                     return null;
                 }
                 if (file.version != Version)
                 {
-                    Debug.LogWarning($"Salvamento: o slot {slot} ({path}) é da versão {file.version} do formato, e o jogo lê a {Version}; ele conta como vazio.");
+                    problem = $"versão {file.version} do formato; o jogo lê a {Version}";
                     return null;
                 }
                 return file;
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Salvamento: o slot {slot} ({path}) está corrompido ou ilegível ({e.Message}); ele conta como vazio.");
+                problem = $"corrompido: {e.Message}";
                 return null;
             }
         }
@@ -317,7 +406,7 @@ namespace Nibiru.Save
             demoCompleted = demoCompleted,
         };
 
-        static string Now() => DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+        static string Now() => DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff", CultureInfo.InvariantCulture);
 
         static SaveFile FromCheckpoint(Checkpoints.Data data, string area, bool demoCompleted)
         {
@@ -447,22 +536,32 @@ namespace Nibiru.Save
 
         // ---------- Formato do arquivo ----------
 
+        public enum SlotState
+        {
+            /// <summary>Sem arquivo.</summary>
+            Empty,
+            /// <summary>Jogável: carrega.</summary>
+            Occupied,
+            /// <summary>A demo terminou nele: não carrega, só sobrescreve ou apaga.</summary>
+            DemoCompleted,
+            /// <summary>Arquivo que o jogo não consegue ler: não carrega, só sobrescreve ou apaga.</summary>
+            Unreadable,
+        }
+
         /// <summary>O que a tela de slots mostra de um slot.</summary>
         public class SlotInfo
         {
             public int slot;
+            public SlotState state;
             public string area;
             public DateTime savedAt;
             public float playSeconds;
+            /// <summary>False se o arquivo não tem o tempo jogado (a tela mostra "—").</summary>
+            public bool hasPlayTime;
             public bool demoCompleted;
 
             public string AreaName => SaveSlots.AreaName(area);
-            public bool CanLoad => !demoCompleted;
-        }
-
-        class LastSlotFile
-        {
-            [JsonProperty("slot")] public int slot;
+            public bool CanLoad => state == SlotState.Occupied;
         }
 
         class SaveFile
@@ -479,7 +578,8 @@ namespace Nibiru.Save
         {
             [JsonProperty("area")] public string area;
             [JsonProperty("dataHora")] public string savedAt;
-            [JsonProperty("tempoJogadoSegundos")] public float playSeconds;
+            /// <summary>Null em arquivo sem o campo: a tela mostra "—".</summary>
+            [JsonProperty("tempoJogadoSegundos")] public float? playSeconds;
             [JsonProperty("demoConcluida")] public bool demoCompleted;
         }
 

@@ -21,6 +21,13 @@ namespace Nibiru.Environment
             Intensity = 0f;
         }
 
+        /// <summary>Acaba com a tempestade (ao voltar ao menu principal, para ela não passar para a partida seguinte).</summary>
+        public static void Clear()
+        {
+            settings = null;
+            Intensity = 0f;
+        }
+
         internal static void Set(StormSettings newSettings, float intensity)
         {
             settings = newSettings;
