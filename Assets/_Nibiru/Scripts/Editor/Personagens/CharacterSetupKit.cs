@@ -82,6 +82,24 @@ namespace Nibiru.EditorTools
             return texture;
         }
 
+        /// <summary>
+        /// Reduz um PNG (no disco, ainda sem importar) para no máximo <paramref name="size"/> pixels de lado.
+        /// Os bytes são lidos sem conversão de cor, então serve para cor e normal.
+        /// </summary>
+        public static void ShrinkPng(string path, int size)
+        {
+            var texture = LoadRaw(path);
+            if (texture.width <= size && texture.height <= size)
+            {
+                Object.DestroyImmediate(texture);
+                return;
+            }
+            float scale = (float)size / Mathf.Max(texture.width, texture.height);
+            var small = Resize(texture, Mathf.RoundToInt(texture.width * scale), Mathf.RoundToInt(texture.height * scale));
+            File.WriteAllBytes(path, small.EncodeToPNG());
+            Object.DestroyImmediate(small);
+        }
+
         static Texture2D Resize(Texture2D source, int width, int height)
         {
             var rt = RenderTexture.GetTemporary(width, height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);

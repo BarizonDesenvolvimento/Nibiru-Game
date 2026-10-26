@@ -78,6 +78,9 @@ namespace Nibiru.EditorTools
             // Caminhonete: o Samir dirigindo e a Elena sentada no chão da caçamba (o "Sitting Idle2": quadril ao nível dos pés).
             new("Elena_Sentada", "Caminhonete", "Avulsas/X Bot@Sitting Idle2", true, feet: true),
             new("Samir_Dirigindo", "Caminhonete", "Avulsas/X Bot@Driving", true),
+
+            // Yusuf ferido, deitado (Remédio para Yusuf). A Dra. Weiss sentada usa a Elena_Sentada.
+            new("Yusuf_Deitado", "Yusuf", "Avulsas/Laying Idle", true),
         };
 
         public static bool TryGet(string assetPath, out Entry entry)

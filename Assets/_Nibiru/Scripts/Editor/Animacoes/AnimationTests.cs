@@ -33,6 +33,7 @@ namespace Nibiru.EditorTools
             CheckCreature("PrimeiroServo", new[] { "Locomocao", "Golpe", "Investida", "Urro", "Morte" }, new[] { "Investida", "Urro" });
             CheckSamir();
             CheckElena();
+            CheckVillageTeam();
             Debug.Log(failures.Count == 0
                 ? $"Animações: {checks} verificações, todas passaram."
                 : $"Animações: {checks} verificações, {failures.Count} falharam:\n- " + string.Join("\n- ", failures));
@@ -133,6 +134,95 @@ namespace Nibiru.EditorTools
             Check(State(c, "Base Layer", "Dirigindo")?.motion?.name == "Samir_Dirigindo", "Samir: o estado Dirigindo deveria tocar Samir_Dirigindo");
             foreach (string name in new[] { "Locomocao", "Golpe_Faca", "Conversa_1", "Conversa_4" })
                 Check(State(c, "Base Layer", name) != null, $"Samir: falta o estado {name}");
+        }
+
+        // ---------- Aldeia e equipe (VillageTeamSetup) ----------
+
+        // Tolerância das medidas em metros: altura da tabela e contato do corpo com o chão.
+        const float Tolerance = 0.15f;
+
+        static void CheckVillageTeam()
+        {
+            foreach (string character in VillageTeamSetup.Characters)
+            {
+                string model = $"{Characters}{character}/{character}.fbx";
+                var importer = AssetImporter.GetAtPath(model) as ModelImporter;
+                Check(importer != null, $"{character}: modelo não encontrado em {model}");
+                if (importer == null) continue;
+                var avatar = AssetDatabase.LoadAllAssetsAtPath(model).OfType<Avatar>().FirstOrDefault();
+                Check(importer.animationType == ModelImporterAnimationType.Human && avatar != null && avatar.isValid && avatar.isHuman, $"{character}: não é Humanoid válido");
+                Check(importer.humanDescription.human.Any(h => h.humanName == "Left Index Proximal") && importer.humanDescription.human.Any(h => h.humanName == "Right Thumb Distal"), $"{character}: o Humanoid não mapeou os dedos");
+
+                foreach (string suffix in new[] { "BaseColor", "Normal" })
+                {
+                    int side = PngWidth($"{Characters}{character}/{character}_{suffix}.png");
+                    Check(side > 0 && side <= VillageTeamSetup.TextureSize, $"{character}: a textura {suffix} em Assets tem {side} px (o limite é {VillageTeamSetup.TextureSize})");
+                }
+
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(VillageTeamSetup.PrefabPath(character));
+                Check(prefab != null, $"{character}: prefab não encontrado");
+                if (prefab == null) continue;
+                var renderer = prefab.GetComponentInChildren<SkinnedMeshRenderer>();
+                var material = renderer != null ? renderer.sharedMaterial : null;
+                Check(material != null && material.shader.name == "Universal Render Pipeline/Lit" && material.GetFloat("_Cull") == 0f, $"{character}: material não é URP Lit de dois lados");
+
+                var animator = prefab.GetComponentInChildren<Animator>();
+                Check(animator != null && animator.avatar == avatar, $"{character}: o Animator do prefab não usa o avatar do modelo");
+
+                var (min, max) = CharacterHeights.Extent(model, null);
+                Check(Mathf.Abs((max - min) - CharacterHeights.Meters[character]) <= Tolerance, $"{character}: mede {max - min:0.00} m, a tabela pede {CharacterHeights.Meters[character]:0.00} m");
+            }
+
+            // Equipe morta: só o modelo, sem controlador.
+            foreach (string character in new[] { "ArqueologoVeterano", "ArqueologaJovem", "TrabalhadorEscavacao" })
+            {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(VillageTeamSetup.PrefabPath(character));
+                Check(prefab != null && prefab.GetComponentInChildren<Animator>()?.runtimeAnimatorController == null, $"{character}: deveria ser só o modelo, sem controlador");
+            }
+
+            // Umm Karim: em pé, parada, andar e conversa.
+            var karim = AssetDatabase.LoadAssetAtPath<AnimatorController>(VillageTeamSetup.ControllerPath("UmmKarim"));
+            Check(karim != null, "UmmKarim: controlador não encontrado");
+            if (karim != null)
+            {
+                CheckParams(karim, "UmmKarim", "Velocidade", "Agachar");
+                var tree = State(karim, "Base Layer", "Locomocao")?.motion as BlendTree;
+                Check(tree != null && tree.blendParameter == "Velocidade" && tree.children.Length == 2, "UmmKarim: a locomoção deveria ser uma blend tree pela Velocidade (parada e andar)");
+                Check(State(karim, "Base Layer", "Conversa_1")?.motion?.name == "Conversa_1", "UmmKarim: falta o gesto Conversa_1");
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(VillageTeamSetup.PrefabPath("UmmKarim"));
+                Check(prefab != null && prefab.GetComponent<AI.NpcAnimator>() != null && prefab.GetComponentInChildren<Animator>().runtimeAnimatorController == karim, "UmmKarim: o prefab deveria ter o NpcAnimator e este controlador");
+            }
+
+            CheckGround("DraWeiss", "Sentada", "Elena_Sentada", 1.2f);
+            CheckGround("Yusuf", "Deitado", "Yusuf_Deitado", 0.7f);
+        }
+
+        // Estado único tocando o clipe, e o corpo naquela pose encostado no chão (o ponto mais baixo em y = 0,
+        // com a tolerância) e baixo o bastante para estar sentado ou deitado.
+        static void CheckGround(string character, string state, string clipName, float maxHeight)
+        {
+            var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(VillageTeamSetup.ControllerPath(character));
+            Check(controller != null, $"{character}: controlador não encontrado");
+            if (controller == null) return;
+            Check(State(controller, "Base Layer", state)?.motion?.name == clipName, $"{character}: o estado {state} deveria tocar {clipName}");
+            var clip = AnimationLibrary.Clip(clipName);
+            Check(clip != null, $"{character}: falta o clipe {clipName}");
+            if (clip == null) return;
+            float lift = AssetDatabase.LoadAssetAtPath<GameObject>(VillageTeamSetup.PrefabPath(character)).transform.Find("Modelo").localPosition.y;
+            var (low, high) = CharacterHeights.Extent($"{Characters}{character}/{character}.fbx", clip);
+            float min = low + lift, max = high + lift;
+            Check(Mathf.Abs(min) <= Tolerance, $"{character}: na pose {state.ToLower()}, o ponto mais baixo está a {min:0.00} m do chão (tolerância {Tolerance:0.00} m)");
+            Check(max <= maxHeight, $"{character}: na pose {state.ToLower()}, o ponto mais alto está a {max:0.00} m (esperado até {maxHeight:0.0} m)");
+        }
+
+        // Largura do PNG lida do cabeçalho do arquivo (a importação da Unity pode limitar o tamanho).
+        static int PngWidth(string path)
+        {
+            if (!System.IO.File.Exists(path)) return 0;
+            using var stream = System.IO.File.OpenRead(path);
+            var header = new byte[24];
+            if (stream.Read(header, 0, 24) < 24) return 0;
+            return (header[16] << 24) | (header[17] << 16) | (header[18] << 8) | header[19];
         }
 
         // O controlador da Elena continua o aprovado: só confere que nada se perdeu.

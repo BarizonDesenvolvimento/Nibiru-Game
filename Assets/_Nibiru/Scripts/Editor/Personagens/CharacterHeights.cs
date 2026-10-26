@@ -49,6 +49,39 @@ namespace Nibiru.EditorTools
             return height;
         }
 
+        /// <summary>
+        /// Menor e maior altura (y) da malha do modelo, na pose de repouso ou, com um clipe, no primeiro
+        /// quadro dele. O modelo fica na origem, sem giro.
+        /// </summary>
+        public static (float min, float max) Extent(string modelPath, AnimationClip clip)
+        {
+            var instance = (GameObject)Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(modelPath));
+            try
+            {
+                if (clip != null) clip.SampleAnimation(instance, 0f);
+                float min = float.MaxValue, max = float.MinValue;
+                var baked = new Mesh();
+                foreach (var renderer in instance.GetComponentsInChildren<SkinnedMeshRenderer>())
+                {
+                    renderer.BakeMesh(baked, true);
+                    var t = renderer.transform;
+                    var toWorld = Matrix4x4.TRS(t.position, t.rotation, Vector3.one);
+                    foreach (var v in baked.vertices)
+                    {
+                        float y = toWorld.MultiplyPoint3x4(v).y;
+                        min = Mathf.Min(min, y);
+                        max = Mathf.Max(max, y);
+                    }
+                }
+                Object.DestroyImmediate(baked);
+                return (min, max);
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
         // Altura da malha na pose em que o FBX foi salvo (a de repouso), com a escala de importação.
         static float Measure(string modelPath)
         {

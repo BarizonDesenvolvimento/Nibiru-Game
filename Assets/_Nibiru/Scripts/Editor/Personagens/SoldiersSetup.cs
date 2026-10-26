@@ -110,7 +110,9 @@ namespace Nibiru.EditorTools
         // ---------- Modelo e material ----------
 
         // Cópia do FBX do AccuRig e das texturas do Meshy, se ainda não estiverem na Unity.
-        public static void ImportCharacter(string character)
+        // maxTexture: se maior que zero, as cópias em Assets da cor e do normal são reduzidas a esse
+        // tamanho (o original continua na ArteFonte).
+        public static void ImportCharacter(string character, int maxTexture = 0)
         {
             string root = ArtRoot + character;
             string source = Path.Combine(Application.dataPath, "..", "ArteFonte", character);
@@ -137,6 +139,7 @@ namespace Nibiru.EditorTools
                     return;
                 }
                 File.Copy(png, target);
+                if (maxTexture > 0) ShrinkPng(target, maxTexture);
             }
             AssetDatabase.Refresh();
 
