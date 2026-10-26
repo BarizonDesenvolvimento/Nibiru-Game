@@ -637,7 +637,22 @@ namespace Nibiru.EditorTools.Content
                     var wedge = Local(PrimitiveType.Cube, inscription, $"Cunha_{row + 1}_{i + 1}", new Vector3(-0.3f + i * 0.2f, 0.2f - row * 0.2f, 0f), new Vector3(0.025f, 0.12f, 0.01f), "BO_Ouro");
                     wedge.transform.localRotation = Quaternion.Euler(0f, 0f, ((row * 4 + i) * 47 % 3 - 1) * 35f);
                 }
-            inscription.gameObject.AddComponent<Powers.EchoHiddenMark>();
+            var mark = inscription.gameObject.AddComponent<Powers.EchoHiddenMark>();
+
+            // Etapa A3: depois de o Eco revelar a escrita pela primeira vez, "Ler a inscrição" abre o documento
+            // (e o Arquivo). Antes disso a zona não existe, então o aviso nunca aparece sobre uma parede vazia.
+            ArchiveContent.EnsureData();
+            StoryEvent revealed = Event("RevelouAInscricaoDaAldeia", "O Eco do Abzu revelou a inscrição escondida na parede do fundo da casa do altar. Libera o \"Ler a inscrição\".");
+            SetField(mark, "raiseOnRevealed", revealed);
+            GameObject zone = Zone(inscription, "Ler_Inscricao", inscription.position + new Vector3(0.1f, -0.4f, 0.9f), new Vector3(1.6f, 2f, 1.6f));
+            var view = zone.AddComponent<Documents.DocumentView>();
+            SetField(view, "document", Load<Documents.DocumentDefinition>("Documents/Aldeia_Inscricao"));
+            var interact = zone.AddComponent<Interaction.InteractableEvent>();
+            SetField(interact, "prompt", "Ler a inscrição");
+            SetField(interact, "promptKey", "ui.interact.aldeia_ler_inscricao");
+            Call(GetField<UnityEvent>(interact, "onInteract"), view.Show);
+            zone.SetActive(false);
+            Listener(inscription.gameObject, revealed, e => SetActive(e, zone, true));
         }
 
         // Na região, a tabuleta só se decifra no nicho. Pelo inventário, só depois (para reler).

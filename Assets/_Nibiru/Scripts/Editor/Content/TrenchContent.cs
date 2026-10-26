@@ -57,6 +57,7 @@ namespace Nibiru.EditorTools.Content
             }
 
             IdPrefix = "trincheiras";
+            ArchiveContent.EnsureData();
             CreateData();
 
             Transform root = NewRoot(RootName, "Povoar Trincheiras");
@@ -328,6 +329,22 @@ namespace Nibiru.EditorTools.Content
             Pickup(bandage1, bandage, 1, null);
             GameObject bandage2 = Prim(PrimitiveType.Cube, g, "Curativo_2", new Vector3(13.6f, 0.05f, -62.6f), new Vector3(0.18f, 0.08f, 0.12f), "BO_BrancoFundacao", -30f);
             Pickup(bandage2, bandage, 1, null);
+
+            // Etapa A3: a carta de um soldado da Fundação, achado opcional fora do caminho (canto sudeste, atrás da
+            // coluna de taludes). Ler abre o documento e o põe no Arquivo.
+            Transform letter = Group(g, "Carta_Do_Soldado");
+            Prim(PrimitiveType.Cube, letter, "Mochila", LetterSpot + new Vector3(0f, 0.2f, 0f), new Vector3(0.45f, 0.4f, 0.3f), "BO_VerdeOliva", 20f);
+            Prim(PrimitiveType.Cube, letter, "Carta", LetterSpot + new Vector3(0.4f, 0.02f, -0.2f), new Vector3(0.22f, 0.01f, 0.3f), "BO_BrancoFundacao", -15f, ColliderMode.None);
+            GameObject zone = Zone(letter, "Ler_Carta", LetterSpot + Vector3.up * 0.8f, new Vector3(1.6f, 1.6f, 1.6f));
+            var view = zone.AddComponent<Documents.DocumentView>();
+            SetField(view, "document", Load<Documents.DocumentDefinition>("Documents/Trincheiras_CartaDoSoldado"));
+            var interact = zone.AddComponent<Interaction.InteractableEvent>();
+            SetField(interact, "prompt", "Ler a carta");
+            SetField(interact, "promptKey", "ui.interact.trincheiras_ler_carta");
+            Call(GetField<UnityEvent>(interact, "onInteract"), view.Show);
         }
+
+        // Canto sudeste das trincheiras (o 2º rolo está no nordeste e os curativos no sudoeste e no leste).
+        static readonly Vector3 LetterSpot = new Vector3(23.5f, 0f, -72.5f);
     }
 }
