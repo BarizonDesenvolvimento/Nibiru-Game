@@ -40,6 +40,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 | `Docs/Regiao-1-Sitio-de-Ur.md` | Região 1 aprovada: mapa, missões, inimigos, itens, diálogos, sistemas (Grupos 1 e 2), controles, blockout e perguntas abertas |
 | `Docs/Arte/Regiao1_SitioDeUr_Arte.md` | Direção de arte da região 1: paleta (o azul de lápis-lazúli só onde Kur vaza), luz e lista de peças por área |
 | `Docs/Guia-MCP-Unity.md` | Como a Unity conversa com o Claude Code |
+| `Docs/Auditoria-2026-10-25.md` | Auditoria da fatia vertical: o que está pronto, provisório e falta, com esforço, mais as decisões depois dela |
 | `Docs/ESTADO.md` | Este arquivo |
 
 ## Cenas
@@ -592,6 +593,14 @@ Pendências vistas na prévia (ainda não corrigidas):
 - Qual o peso da consequência na Aldeia ao devolver a tabuleta ao Poço?
 - Nome definitivo do jogo, dublagem da Elena e idiomas de lançamento (do GDD).
 
+## Decisões de 25/out/2026 (depois da auditoria)
+
+Veja `Docs/Auditoria-2026-10-25.md` (tabela do que está pronto, provisório e falta, com esforço).
+
+- **Localização em 2 partes.** Parte 1 agora: tabelas pt-BR e en, extração dos textos dos arquivos de dados (diálogos, escolhas, documentos, fita, itens, missões, tabuleta, memória), scripts de `Editor/Content` gerando e usando chaves, fontes com acento e seletor de idioma. A partir daí, **todo texto novo nasce com chave, em pt-BR e en**. Parte 2 (textos fixos no código e textos serializados na cena) só depois do teste completo, com o layout congelado. O inglês pode ficar vazio ou com fallback para pt-BR; nada é traduzido por enquanto.
+- **O diário fica fora da demo.** A recompensa de "O que o Tom viu" é o item "Fotos do Tom", aberto na tela de leitura (sem entrada de diário).
+- **Etapa de equilíbrio (B):** munição (20 balas no mapa, o roteiro pede cerca de 30), curativos (4), kits médicos (3, falta colocar), espingarda e cartuchos (falta a casa trancada) e rádio de campanha (não faz nada) ficam juntos com o equilíbrio do passo 12.
+
 ## Pendências para o teste completo da fatia
 
 - **Remédio para Yusuf:** a recompensa (antibióticos, gastar um dos 2 curativos do mapa na Weiss) não mexe no combate, mas conferir no teste completo se os curativos fazem falta para quem os troca.
@@ -604,7 +613,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 3. Pendências das Trincheiras: documentos da Fundação (falta uma tela de leitura de documentos) e o rádio de campanha avisando onde estão as patrulhas.
 4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
 5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
-6. Versões simples do Grupo 2 (cenas, diário, crafting, save em disco). A memória jogável já tem a versão simples.
+6. Versões simples do Grupo 2 (cenas, crafting, save em disco). O diário fica fora da demo (decisão de 25/out). A memória jogável já tem a versão simples. Localização parte 1 e a conclusão de "O que o Tom viu" (fotógrafo, quarto escuro, item "Fotos do Tom") estão na fila; veja "Decisões de 25/out/2026".
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
 ### Como testar o passo 15
