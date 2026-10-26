@@ -204,7 +204,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - Objetivos (passos 27 e 28 da missão): "Leia a inscrição na parede do barco de junco e abra a passagem" (`AbriuAPassagem`) e "Siga a passagem dos Guardiões até o wadi" (`SaiuDaPassagem`). Depois do 28 a missão aparece como concluída, até o passo 14 existir.
 - **Abrir a parede:** de frente para a parede, "Ler a inscrição" (`DialogueStarter` na área `Ler_Inscricao`; a faixa de glifos dourados fica sobre o barco). A Elena lê em voz alta (conversa `Passagem_Inscricao`, legenda), a tabuleta pulsa numa **luz azul** sobre a inscrição (2 pulsos), a parede **afunda no chão** em 4 s, com som de pedra e poeira, e some (colisão e desenho). Só então vale `AbriuAPassagem`. Fala `Passagem_Aberta` ("Alguém ainda cuida deste caminho") e, logo depois, o **único ponto de retorno** da passagem (`Checkpoint_Passagem_Aberta`, de frente para o túnel). Voltando dele, a parede já está aberta, sem pulso nem conversa (`GuardianPassage.SnapOpen`).
 - **Túnel** (blockout que já existia): 4 lamparinas de barro **acesas** (também na arte final: alguém cuida da passagem; luz quente, a chama treme), som ambiente (vento e pingos). Sem inimigos nem enigma: os Guardiões aparecem só como marca, lamparinas e a fita.
-- **Fita de Irena nº 1** (`Documents/TapeDefinition`, `TapePickup`, `TapePlayer`; legenda no pé da tela por `UI/SubtitleUI`): "Pegar a fita" num degrau de pedra. Toca **enquanto a Elena anda**, sem pausar o jogo nem tomar o controle (legenda mais o chiado de fita; sem voz gravada ainda). Pegar fica registrado no evento `ColetouAFitaDeIrena1` e terminar no `FitaDeIrena1Terminou`: a futura tela de documentos e fitas (a mesma da foto de 1979) lê daí (`TapeDefinition.IsCollected` e `IsFinished`). Sem menu. O `TapePlayer` fica num objeto que nunca desliga, então **sair do túnel não corta a fita**. Se a Elena voltar de um salvamento guardado com a fita pega e não terminada, ela toca de novo do começo.
+- **Fita de Irena nº 1** (`Documents/TapeDefinition`, `TapePickup`, `TapePlayer`; legenda no pé da tela por `UI/SubtitleUI`): "Pegar a fita" num degrau de pedra. Toca **enquanto a Elena anda**, sem pausar o jogo nem tomar o controle (legenda mais o chiado de fita; sem voz gravada ainda). Pegar fica registrado no evento `ColetouAFitaDeIrena1` e terminar no `FitaDeIrena1Terminou`: a futura tela de documentos e fitas (a mesma da foto de 1979) lê daí (`TapeDefinition.IsCollected` e `IsFinished`). Sem menu. O `TapePlayer` fica num objeto que nunca desliga, então **sair do túnel não corta a fita**. Se a Elena voltar de um salvamento guardado com a fita pega e não terminada, ela continua no começo da linha em que estava (veja "Pendências de checkpoint resolvidas").
 - **Passo 14 (feito):** o rádio do Kast no wadi espera a fita terminar (`Dialogue/RadioAfterTape`, veja "Wadi, passo 14").
 - **Saída:** no topo da rampa (z = 139), `SaiuDaPassagem` e um **salvamento automático** (`Autosave_Topo_Da_Rampa`). A caminhonete do Samir (z = 143,5 em diante) fecha o fim da rampa; o passo 14 parte daí.
 - **Voltar à antecâmara:** com a passagem aberta nada trava: a parede não fecha mais, a inscrição some, o Servo continua caído e nenhum evento ou conversa se repete.
@@ -384,7 +384,7 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 
 **Teste automático** (11 cenários, **tudo OK**; grava numa pasta só de teste, `Teste_Salvamento`, apagada no fim): cada um dos 19 checkpoints da região (ativar, gravar, limpar a memória, carregar e comparar com a volta depois de morrer: eventos, missões, falhas, reputação, transformação, itens pegos, checkpoints, inventário, munição, vida, direção e posição, e o tempo jogado); três slots independentes; carregar e avançar até outro checkpoint (o slot muda, os outros não); morrer depois de carregar; menu principal ("Continuar" abre o mais recente, sem slots não aparece, "Novo jogo" grava o começo e o "Continuar" funciona antes do primeiro checkpoint); arquivo ausente, corrompido, cortado, vazio, de versão 0 e 2, com item e missão desconhecidos e "último slot" quebrado; memória de Shuruppak sem gravar; fim da demo; tempo jogado na pausa; nomes das áreas. **Teste de códigos** (8 conferências, tudo OK): código vazio, repetido, fora do registro, fora da lista ou sumido da lista, objetos da região sem código e área de cada checkpoint. Ele também roda **no começo do teste geral dos atalhos**, como um item a mais (resultado em "Teste geral dos atalhos"). O teste de chaves e códigos da localização continua todo OK. "Fechar e continuar" foi conferido à parte pela ponte (do nicho da Aldeia, volta ao nicho com o mundo igual).
 
-**O que voltou diferente do esperado:** nada no salvamento. Uma observação do comportamento de hoje, que já acontece ao morrer: no checkpoint **`poco.checkpoint_pe_da_descida`** a Elena reaparece uns **0,6 m ao lado** do ponto de retorno (algo do andaime a empurra). O teste aceita até 1 m e escreve uma observação no Console. Ficou nas pendências da etapa B.
+**O que voltou diferente do esperado:** nada no salvamento. Uma observação do comportamento de hoje, que já acontece ao morrer: no checkpoint **`poco.checkpoint_pe_da_descida`** a Elena reaparece uns **0,6 m ao lado** do ponto de retorno (era o canto cortado `Poco_Canto_SE`). **Resolvido na etapa B1** (veja "Pendências de checkpoint resolvidas"): o teste agora exige 0,15 m.
 
 **Como testar o salvamento (roteiro do dono):** **Nibiru > Testes > Salvamento > Situações** (`Scripts/Editor/Save/SaveSituations.cs`). Cada situação liga o Play, prepara os slots **de verdade** (apaga ou sobrescreve o que estiver lá) e escreve no Console o que fazer. Use **Salvamento > Resumo de todos os slots** para conferir. Rode a 3 antes da 4 e da 5.
 
@@ -923,10 +923,41 @@ Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fo
 
 ## Pendências da etapa B (polimento)
 
-- **Fita de Irena recomeçando:** ao voltar de um checkpoint (ou carregar um slot) com a fita nº 1 pega e não terminada, ela toca de novo do começo. Aceito pelo dono por enquanto (26/out).
-- **Soldado caído da Aldeia:** ao voltar de um checkpoint (ou carregar um slot) depois do encontro com o Samir, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo). Aceito pelo dono por enquanto (26/out).
 - **Mouse nas telas que ainda não têm (etapa D):** mouse nas escolhas de diálogo, no inventário e na tela de morte (hoje só teclado e controle, com o cursor preso). A tela de Opções com mais itens também entra na etapa D.
-- **Ponto de retorno do pé da descida do Poço** (`poco.checkpoint_pe_da_descida`): a Elena reaparece uns 0,6 m ao lado do ponto (achado pelo teste do salvamento; acontece igual ao morrer).
+
+## Pendências de checkpoint resolvidas (etapa B1, testadas pela ponte; falta o teste do dono no Play)
+
+Os três problemas eram: a fita de Irena recomeçava do início ao voltar de um checkpoint, o soldado caído da Aldeia reaparecia sempre na entrada leste e a Elena reaparecia 0,6 m ao lado do ponto de retorno do pé da descida do Poço. Os dois primeiros tinham a mesma raiz (estado de execução que a cena produz e o `WorldState` não guardava); o terceiro era um colisor.
+
+**Valores da cena (`WorldState.SetSceneValue / TryGetSceneValue / RemoveSceneValue`):** um armazém de números soltos (texto → inteiro) que entra no snapshot do checkpoint e no arquivo do slot. No arquivo é o campo opcional `valoresDaCena`, na **mesma versão 1**: sem o campo, o slot carrega com o armazém vazio. Regras: a chave **sempre começa com o prefixo do sistema** (`tape.`, `place.`), é estável como os demais códigos, e não guarda estado que já tem lugar próprio no snapshot (eventos, missões, itens, reputação). **Toda chave nova entra na tabela abaixo.**
+
+| Chave | Quem grava | Valor |
+| --- | --- | --- |
+| `tape.<id da fita>` (por exemplo `tape.irena_1`) | `Documents/TapePlayer`, no começo de cada linha; some quando a fita termina | índice da linha atual (0 = primeira). Ao voltar, a fita continua no começo dessa linha, sem o atraso inicial; fita terminada não toca de novo |
+| `place.aldeia_encontro.ponto` | `Sequences/PlaceAtPointAhead` (campo `stateKey`), quando o encontro com o Samir escolhe a entrada | índice do ponto em `Pontos_Encontro` (0 leste, 1 sudeste, 2 sul, 3 norte). Sem o valor, cai na leste, como antes |
+| `place.aldeia_encontro.giro` | o mesmo | direção da cena em graus inteiros (0 a 359) |
+
+Na volta, o listener de `ChegouAAldeia` chama `PlaceAtPointAhead.PlaceSaved` antes de ligar o soldado e o Samir. O menu da Aldeia grava a chave (`stateKey`) no componente.
+
+**Poço:** o spawn do `Checkpoint_Pe_Da_Descida` em (49; -10,5; 71) ficava dentro do `Poco_Canto_SE` (o canto cortado em diagonal), que penetrava 0,586 m na cápsula da Elena e a empurrava para (-0,71; 0; 0,71). Medido na física do editor, sem Play. O spawn agora é (48,4; -10,5; 71,4), livre de colisor (`WellContent.FootCheckpointSpawn`). Não era o `PlayerMotor`.
+
+**Tolerância do teste do salvamento:** de 1 m para **0,15 m** em todos os checkpoints (a observação de "igual a depois de morrer" saiu). Todos passaram; nenhum outro estava empurrado.
+
+**Menus que rodei de novo (nesta ordem, por causa das dependências):** Aldeia, O que o Tom viu, Boca do Poço, Wadi, Fuga, Remédio para Yusuf. Se rodar o da Aldeia de novo, repita essa ordem.
+
+**Atalhos novos (Nibiru > Testes):**
+- **Passo 8 > 6** e **7**: o pátio, de volta do salvamento com o soldado caído na entrada sul / norte.
+- **Passo 13 > 8**: na rampa, com a fita de Irena na 3ª linha (continua dali).
+
+**Testes que ganharam casos:**
+- Salvamento (automático, agora 18 cenários): "Valores da cena" (ida e volta pelo disco; arquivo sem o campo carrega vazio) e "Encontro da Aldeia" (as 4 entradas, depois de morrer e do disco, e a leste sem valores). Todo checkpoint volta a menos de 0,15 m.
+- Passo 13 (automático): fita guardada na 3ª linha continua dela; fita terminada não toca de novo nem deixa linha guardada.
+- Teste geral dos atalhos: conferências próprias dos três atalhos novos (fita tocando a partir da 3ª linha; soldado na entrada certa). Resultado: **94 OK, 0 FALHOU, 46 pulados**.
+
+**Roteiro curto para o teste do dono no Play:**
+1. **Fita:** Passo 13 > 8 (rampa, fita na 3ª linha). Veja que ela continua da 3ª linha. Morra (ou Esc e carregue o slot) no meio de uma fala: ela volta no começo dessa fala, não da primeira. Deixe a fita terminar, morra de novo: ela não toca outra vez.
+2. **Soldado:** Passo 8 > 6 (entrada sul) e 7 (entrada norte): o soldado caído e a cena do encontro estão lá, e não na entrada leste. Para o caminho real: entre na Aldeia por um lado que não seja o leste, vá até o pátio (ponto de retorno), morra e volte.
+3. **Poço:** Passo 11 > 4 (ponto de retorno do pé da descida). A Elena nasce no patamar sem ser empurrada; morra de novo e confira.
 
 ## Próximos passos
 
