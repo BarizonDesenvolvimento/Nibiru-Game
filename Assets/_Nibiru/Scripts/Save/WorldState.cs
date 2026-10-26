@@ -20,10 +20,12 @@ namespace Nibiru.Save
             internal readonly HashSet<string> failedQuests;
             internal readonly Dictionary<string, int> reputation;
             internal readonly int transformation;
+            internal readonly Dictionary<string, int> sceneValues;
 
             internal Snapshot()
             {
                 transformation = WorldState.Transformation;
+                sceneValues = new Dictionary<string, int>(WorldState.sceneValues);
                 failedQuests = new HashSet<string>(WorldState.failedQuests);
                 pickupsRemaining = new Dictionary<string, int>(WorldState.pickupsRemaining);
                 activatedCheckpoints = new HashSet<string>(WorldState.activatedCheckpoints);
@@ -34,8 +36,10 @@ namespace Nibiru.Save
 
             // Montado peça por peça (ao ler o arquivo de salvamento).
             internal Snapshot(Dictionary<string, int> pickupsRemaining, HashSet<string> activatedCheckpoints, HashSet<string> storyEvents,
-                Dictionary<string, int> questSteps, HashSet<string> failedQuests, Dictionary<string, int> reputation, int transformation)
+                Dictionary<string, int> questSteps, HashSet<string> failedQuests, Dictionary<string, int> reputation, int transformation,
+                Dictionary<string, int> sceneValues = null)
             {
+                this.sceneValues = sceneValues ?? new Dictionary<string, int>();
                 this.pickupsRemaining = pickupsRemaining;
                 this.activatedCheckpoints = activatedCheckpoints;
                 this.storyEvents = storyEvents;
@@ -52,6 +56,19 @@ namespace Nibiru.Save
         static readonly Dictionary<string, int> questSteps = new Dictionary<string, int>();
         static readonly HashSet<string> failedQuests = new HashSet<string>();
         static readonly Dictionary<string, int> reputation = new Dictionary<string, int>();
+        static readonly Dictionary<string, int> sceneValues = new Dictionary<string, int>();
+
+        /// <summary>
+        /// Valor solto que a cena precisa lembrar ao voltar de um checkpoint e que não cabe em nenhum
+        /// outro lugar do estado (por exemplo, em que linha uma fita estava ou em qual entrada um encontro
+        /// aconteceu). A chave sempre começa com o prefixo do sistema ("tape.", "place.") e é estável como
+        /// os demais códigos; cada chave nova entra no ESTADO.md. Não guarde aqui o que já tem lugar próprio.
+        /// </summary>
+        public static void SetSceneValue(string key, int value) => sceneValues[key] = value;
+
+        public static bool TryGetSceneValue(string key, out int value) => sceneValues.TryGetValue(key, out value);
+
+        public static void RemoveSceneValue(string key) => sceneValues.Remove(key);
 
         /// <summary>Transformação da Elena, de 0 (humana) a 100 (divina).</summary>
         public static int Transformation { get; set; }
@@ -66,6 +83,7 @@ namespace Nibiru.Save
             questSteps.Clear();
             failedQuests.Clear();
             reputation.Clear();
+            sceneValues.Clear();
             Transformation = 0;
         }
 
@@ -110,6 +128,7 @@ namespace Nibiru.Save
             foreach (KeyValuePair<string, int> pair in snapshot.reputation) lines.Add($"reputação {pair.Key} = {pair.Value}");
             foreach (KeyValuePair<string, int> pair in snapshot.pickupsRemaining) lines.Add($"item pego {pair.Key} = {pair.Value}");
             foreach (string id in snapshot.activatedCheckpoints) lines.Add("checkpoint " + id);
+            foreach (KeyValuePair<string, int> pair in snapshot.sceneValues) lines.Add($"valor da cena {pair.Key} = {pair.Value}");
             lines.Sort(System.StringComparer.Ordinal);
             lines.Add("transformação = " + snapshot.transformation);
             return string.Join("\n", lines);
@@ -118,6 +137,7 @@ namespace Nibiru.Save
         public static void Restore(Snapshot snapshot)
         {
             Clear();
+            foreach (KeyValuePair<string, int> pair in snapshot.sceneValues) sceneValues[pair.Key] = pair.Value;
             foreach (KeyValuePair<string, int> pair in snapshot.pickupsRemaining) pickupsRemaining[pair.Key] = pair.Value;
             activatedCheckpoints.UnionWith(snapshot.activatedCheckpoints);
             storyEvents.UnionWith(snapshot.storyEvents);

@@ -457,6 +457,8 @@ namespace Nibiru.Save
                 pickups = new SortedDictionary<string, int>(world.pickupsRemaining),
                 checkpoints = world.activatedCheckpoints.OrderBy(c => c, StringComparer.Ordinal).ToList(),
                 quests = new SortedDictionary<string, string>(),
+                // Campo opcional (mesma versão): só entra quando há valores.
+                sceneValues = world.sceneValues.Count > 0 ? new SortedDictionary<string, int>(world.sceneValues) : null,
             };
             foreach (KeyValuePair<string, int> pair in world.questSteps)
             {
@@ -505,7 +507,8 @@ namespace Nibiru.Save
                 questSteps,
                 failed,
                 new Dictionary<string, int>(file.reputation ?? new SortedDictionary<string, int>()),
-                file.transformation);
+                file.transformation,
+                new Dictionary<string, int>(file.sceneValues ?? new SortedDictionary<string, int>()));
         }
 
         static Checkpoints.Data ToCheckpoint(SaveFile file, WorldState.Snapshot world)
@@ -610,6 +613,7 @@ namespace Nibiru.Save
             [JsonProperty("transformacao")] public int transformation;
             [JsonProperty("itensPegos")] public SortedDictionary<string, int> pickups;
             [JsonProperty("checkpointsAtivados")] public List<string> checkpoints;
+            [JsonProperty("valoresDaCena", NullValueHandling = NullValueHandling.Ignore)] public SortedDictionary<string, int> sceneValues;
         }
     }
 }

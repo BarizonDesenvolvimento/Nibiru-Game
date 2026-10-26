@@ -67,6 +67,7 @@ namespace Nibiru.EditorTools.Saving
             Start("Salvamento, teste automático", new List<(string, Func<IEnumerator>)>
             {
                 ("Cada checkpoint da região: gravar, limpar a memória, carregar e comparar com a volta depois de morrer", EveryCheckpoint),
+                ("Valores da cena: vão ao disco e voltam; arquivo sem o campo (mesma versão) carrega vazio", SceneValuesRoundTrip),
                 ("Três slots independentes: gravar num não mexe nos outros, e cada um carrega o seu", ThreeSlots),
                 ("Carregar um slot, avançar até outro checkpoint: o slot é atualizado e os outros dois ficam iguais", LoadAndAdvance),
                 ("Morrer depois de carregar volta ao mesmo checkpoint, com o mesmo estado", DieAfterLoad),
@@ -146,6 +147,40 @@ namespace Nibiru.EditorTools.Saving
                 Check(SaveSlots.CurrentSlot == 1, $"{code}: o slot da partida deveria ser o 1");
                 Check(Mathf.Abs(PlayTime.Seconds - savedTime) < 1f, $"{code}: o tempo jogado deveria voltar com o slot");
             }
+        }
+
+        // Valores da cena (campo opcional da mesma versão): vão ao disco e voltam; arquivo sem o campo carrega vazio.
+        static IEnumerator SceneValuesRoundTrip()
+        {
+            yield return Restart("arquivo.cheio");
+            Prepare(3);
+            SaveSlots.Attach(1);
+            WorldState.SetSceneValue("tape.teste_a", 3);
+            WorldState.SetSceneValue("place.teste_b", 2);
+            Cp("trincheiras.checkpoint_pistola").ActivateNow();
+            string file = File.ReadAllText(SaveSlots.PathOf(1));
+            Check(file.Contains("valoresDaCena") && file.Contains("tape.teste_a"), "o arquivo deveria guardar os valores da cena");
+
+            WorldState.Clear();
+            Checkpoints.Clear();
+            SaveSlots.Detach();
+            yield return Reload(() => SaveSlots.Load(1));
+            Check(WorldState.TryGetSceneValue("tape.teste_a", out int a) && a == 3, "tape.teste_a deveria voltar com 3 ao carregar");
+            Check(WorldState.TryGetSceneValue("place.teste_b", out int b) && b == 2, "place.teste_b deveria voltar com 2 ao carregar");
+
+            // Arquivo de antes do campo (sem "valoresDaCena"): mesma versão, carrega, valores vazios.
+            var json = Newtonsoft.Json.Linq.JObject.Parse(file);
+            json.SelectToken("$..valoresDaCena")?.Parent?.Remove();
+            string without = json.ToString();
+            Check(!without.Contains("valoresDaCena"), "o arquivo de teste deveria ficar sem o campo");
+            File.WriteAllText(SaveSlots.PathOf(1), without);
+            WorldState.Clear();
+            Checkpoints.Clear();
+            SaveSlots.Detach();
+            bool loaded = false;
+            yield return Reload(() => loaded = SaveSlots.Load(1));
+            Check(loaded, "arquivo sem o campo de valores da cena deveria carregar");
+            Check(!WorldState.TryGetSceneValue("tape.teste_a", out _), "arquivo sem o campo deveria carregar sem valores da cena");
         }
 
         static IEnumerator ThreeSlots()
