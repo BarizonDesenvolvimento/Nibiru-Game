@@ -8,13 +8,15 @@ namespace Nibiru.Save
 {
     /// <summary>
     /// Guarda o último checkpoint (onde a Elena estava, vida, inventário e estado do mundo)
-    /// e recomeça a partir dele quando ela morre. Só na memória: o save em disco vem depois.
+    /// e recomeça a partir dele quando ela morre. Fica na memória; o <see cref="SaveSlots"/> grava uma cópia no disco.
     /// </summary>
     public static class Checkpoints
     {
         public class Data
         {
             public string sceneName;
+            /// <summary>Código (PersistentId) do checkpoint que guardou isto; vazio se veio de um atalho de teste.</summary>
+            public string checkpointId;
             public Vector3 position;
             public Quaternion rotation;
             public float health;
@@ -30,6 +32,9 @@ namespace Nibiru.Save
         static void ResetOnPlay() => last = null;
 
         public static void Save(Data data) => last = data;
+
+        /// <summary>O último checkpoint guardado (null se ainda não há).</summary>
+        public static Data Last => last;
 
         /// <summary>Esquece o ponto de retorno (ao voltar ao menu principal).</summary>
         public static void Clear() => last = null;

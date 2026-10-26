@@ -46,3 +46,4 @@ MonoBehaviour:
   reputationOnComplete:
   - faction: {fileID: 11400000, guid: e0c386dc13728be4087ce05e9b6861f6, type: 2}
     amount: -10
+  stableId: missao.teste_treinamento

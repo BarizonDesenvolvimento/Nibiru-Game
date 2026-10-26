@@ -60,9 +60,11 @@ namespace Nibiru.Save
 
         void Activate(PlayerRespawn player)
         {
+            // ActivateNow pode chegar antes do Awake, num checkpoint que ainda não ligou.
+            if (persistentId == null) persistentId = GetComponent<PersistentId>();
             // Marca antes de guardar, para o próprio checkpoint já constar como ativado ao voltar.
             WorldState.MarkCheckpointActivated(persistentId.Id);
-            player.SaveCheckpoint(spawnPoint != null ? spawnPoint : transform);
+            player.SaveCheckpoint(spawnPoint != null ? spawnPoint : transform, persistentId.Id);
             Notifications.Post("Ponto de retorno marcado");
             Quests.StoryEvents.Raise(raiseOnActivate);
         }

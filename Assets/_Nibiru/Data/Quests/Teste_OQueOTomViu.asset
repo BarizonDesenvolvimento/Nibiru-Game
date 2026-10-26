@@ -26,3 +26,4 @@ MonoBehaviour:
   raiseOnComplete: {fileID: 0}
   failOn: {fileID: 0}
   reputationOnComplete: []
+  stableId: missao.teste_o_que_o_tom_viu

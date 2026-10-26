@@ -400,6 +400,14 @@
   "tape.Fita_Irena_1.l8": "Eu volto. Eu prometo, Elena.",
   "tape.Fita_Irena_1.label": "Irena, 1979",
   "tape.Fita_Irena_1.name": "Fita de Irena nº 1",
+  "ui.area.acampamento": "Acampamento",
+  "ui.area.aldeia": "Aldeia",
+  "ui.area.base": "Base do zigurate",
+  "ui.area.fuga": "Estrada para Tell Amar",
+  "ui.area.poco": "Boca do Poço",
+  "ui.area.sitio_de_ur": "Sítio de Ur",
+  "ui.area.trincheiras": "Trincheiras",
+  "ui.area.wadi": "Wadi",
   "ui.arquivo.aviso_novo": "Adicionado ao Arquivo (menu de pausa)",
   "ui.arquivo.grupo_fitas": "Fitas",
   "ui.arquivo.grupo_fundacao": "Documentos da Fundação",
@@ -415,5 +423,6 @@
   "ui.interact.base_ler_registro": "Ler o registro",
   "ui.interact.poco_ler_inscricao": "Ler a inscrição",
   "ui.interact.trincheiras_ler_carta": "Ler a carta",
+  "ui.menu.continuar": "Continuar",
   "ui.radio.helicoptero_base_avistou": "Rádio: \"Aqui é o Falcão. Alvo no pátio da base, mandando a posição!\""
 }

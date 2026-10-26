@@ -10,6 +10,12 @@ namespace Nibiru.Combat
     [CreateAssetMenu(menuName = "Nibiru/Combate/Arma de Fogo", fileName = "NovaArma")]
     public class FirearmDefinition : ScriptableObject
     {
+        [Tooltip("Código permanente da arma no arquivo de salvamento (arma.<nome>). Nunca muda, mesmo se o arquivo for renomeado. Preenchido por Nibiru > Salvamento > Criar registro e códigos.")]
+        public string id;
+
+        /// <summary>O código permanente usado pelo salvamento em disco.</summary>
+        public string Id => id;
+
         [Tooltip("Item da arma no inventário.")]
         public ItemDefinition weaponItem;
 

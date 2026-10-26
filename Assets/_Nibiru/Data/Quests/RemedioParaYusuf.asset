@@ -32,3 +32,4 @@ MonoBehaviour:
   raiseOnComplete: {fileID: 11400000, guid: a0cee971f9eab704b82113bf91fb5b70, type: 2}
   failOn: {fileID: 11400000, guid: f64bd24934445734eb2f7d092b025539, type: 2}
   reputationOnComplete: []
+  stableId: missao.remedio_para_yusuf

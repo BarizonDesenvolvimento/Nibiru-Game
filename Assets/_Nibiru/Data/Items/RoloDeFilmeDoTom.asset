@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: RoloDeFilmeDoTom
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  id: 
+  id: rolo_de_filme_do_tom
   nameKey: item.RoloDeFilmeDoTom.name
   descriptionKey: item.RoloDeFilmeDoTom.desc
   hintKey: 

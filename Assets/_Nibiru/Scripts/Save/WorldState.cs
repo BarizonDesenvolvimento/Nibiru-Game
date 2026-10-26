@@ -31,6 +31,19 @@ namespace Nibiru.Save
                 questSteps = new Dictionary<string, int>(WorldState.questSteps);
                 reputation = new Dictionary<string, int>(WorldState.reputation);
             }
+
+            // Montado peça por peça (ao ler o arquivo de salvamento).
+            internal Snapshot(Dictionary<string, int> pickupsRemaining, HashSet<string> activatedCheckpoints, HashSet<string> storyEvents,
+                Dictionary<string, int> questSteps, HashSet<string> failedQuests, Dictionary<string, int> reputation, int transformation)
+            {
+                this.pickupsRemaining = pickupsRemaining;
+                this.activatedCheckpoints = activatedCheckpoints;
+                this.storyEvents = storyEvents;
+                this.questSteps = questSteps;
+                this.failedQuests = failedQuests;
+                this.reputation = reputation;
+                this.transformation = transformation;
+            }
         }
 
         static readonly Dictionary<string, int> pickupsRemaining = new Dictionary<string, int>();
@@ -86,6 +99,21 @@ namespace Nibiru.Save
         public static void SetReputation(string factionId, int value) => reputation[factionId] = value;
 
         public static Snapshot Capture() => new Snapshot();
+
+        /// <summary>O estado em texto, uma linha por coisa e em ordem (para os testes compararem).</summary>
+        public static string Describe(Snapshot snapshot)
+        {
+            var lines = new List<string>();
+            foreach (string id in snapshot.storyEvents) lines.Add("evento " + id);
+            foreach (KeyValuePair<string, int> pair in snapshot.questSteps) lines.Add($"missão {pair.Key} = {pair.Value}");
+            foreach (string id in snapshot.failedQuests) lines.Add("missão que falhou " + id);
+            foreach (KeyValuePair<string, int> pair in snapshot.reputation) lines.Add($"reputação {pair.Key} = {pair.Value}");
+            foreach (KeyValuePair<string, int> pair in snapshot.pickupsRemaining) lines.Add($"item pego {pair.Key} = {pair.Value}");
+            foreach (string id in snapshot.activatedCheckpoints) lines.Add("checkpoint " + id);
+            lines.Sort(System.StringComparer.Ordinal);
+            lines.Add("transformação = " + snapshot.transformation);
+            return string.Join("\n", lines);
+        }
 
         public static void Restore(Snapshot snapshot)
         {

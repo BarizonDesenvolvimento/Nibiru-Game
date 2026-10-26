@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb6e0dc16dc60d4286d0cdd710a3629, type: 3}
+  m_Name: Registro
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Save.SaveRegistry
+  items:
+  - {fileID: 11400000, guid: 92bf7d5708c911d4ca74bc3d26a2b357, type: 2}
+  - {fileID: 11400000, guid: 14380211a56f24745a323057d322542e, type: 2}
+  - {fileID: 11400000, guid: 9475fb7564f1f254ebf818ea15ebb417, type: 2}
+  - {fileID: 11400000, guid: 0a4e6cc9e9410304dae740f90b1ab8cf, type: 2}
+  - {fileID: 11400000, guid: ec5eb5afb6a94e24e87ddb8a73a25000, type: 2}
+  - {fileID: 11400000, guid: 3416721fa0b16e14cb127628bdb9bdab, type: 2}
+  - {fileID: 11400000, guid: 5a0c6a3cbf9149f47a7d9ce53875292d, type: 2}
+  - {fileID: 11400000, guid: d911b10c3532eb247b0f7bd7a2e0d74c, type: 2}
+  - {fileID: 11400000, guid: b2c4d2c0d295b0940a9ec403b7b0ab60, type: 2}
+  - {fileID: 11400000, guid: 6950293c2cb8b6e48a7c5c50666ab597, type: 2}
+  - {fileID: 11400000, guid: ce205903d0fa66e4b97fcebc1a94d39a, type: 2}
+  - {fileID: 11400000, guid: a0092fd2173c29c4193b492747b4b5c5, type: 2}
+  firearms:
+  - {fileID: 11400000, guid: dadc544dd397d9b4e9ad244de041b61c, type: 2}
+  - {fileID: 11400000, guid: fb333045abf35d54a90cce85ce5a4d9d, type: 2}
+  quests:
+  - {fileID: 11400000, guid: c50912646b5a1594a9f326970086a102, type: 2}
+  - {fileID: 11400000, guid: 4f82a6f5f1642c842880d705d4701f43, type: 2}
+  - {fileID: 11400000, guid: 34ebf8c54fa37a9458d091ce85c4e7a3, type: 2}
+  - {fileID: 11400000, guid: f130ebd9111697f45b818223eb2062af, type: 2}
+  - {fileID: 11400000, guid: 00a54cb6b545cfb4d8abbce6c8b782aa, type: 2}

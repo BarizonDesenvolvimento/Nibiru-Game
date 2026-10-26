@@ -74,5 +74,11 @@ namespace Nibiru.Quests
         public Factions.ReputationChange[] reputationOnComplete = new Factions.ReputationChange[0];
 
         public string Id => name;
+
+        [Tooltip("Código permanente da missão no arquivo de salvamento (missao.<nome>). Nunca muda, mesmo se o arquivo for renomeado. Preenchido por Nibiru > Salvamento > Criar registro e códigos.")]
+        public string stableId;
+
+        /// <summary>O código permanente usado pelo salvamento em disco (o campo stableId).</summary>
+        public string StableId => stableId;
     }
 }

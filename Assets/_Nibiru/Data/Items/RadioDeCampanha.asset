@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: RadioDeCampanha
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  id: 
+  id: radio_de_campanha
   nameKey: item.RadioDeCampanha.name
   descriptionKey: item.RadioDeCampanha.desc
   hintKey: item.RadioDeCampanha.hint

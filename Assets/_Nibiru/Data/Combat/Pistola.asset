@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f45e0cd0fbb5df46b599e6601d2e245, type: 3}
   m_Name: Pistola
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Combat.FirearmDefinition
+  id: arma.pistola
   weaponItem: {fileID: 11400000, guid: b2c4d2c0d295b0940a9ec403b7b0ab60, type: 2}
   ammoItem: {fileID: 11400000, guid: d911b10c3532eb247b0f7bd7a2e0d74c, type: 2}
   magazineSize: 8

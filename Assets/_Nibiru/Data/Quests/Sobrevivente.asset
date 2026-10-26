@@ -230,3 +230,4 @@ MonoBehaviour:
   raiseOnComplete: {fileID: 0}
   failOn: {fileID: 0}
   reputationOnComplete: []
+  stableId: missao.sobrevivente

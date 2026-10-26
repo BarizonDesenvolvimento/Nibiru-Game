@@ -46,13 +46,17 @@ namespace Nibiru.Save
             pending = null;
         }
 
-        /// <summary>Guarda o estado atual como ponto de retorno, reaparecendo em spawnPoint.</summary>
-        public void SaveCheckpoint(Transform spawnPoint)
+        /// <summary>
+        /// Guarda o estado atual como ponto de retorno, reaparecendo em spawnPoint, e grava uma cópia no slot da partida
+        /// (se houver um). checkpointId é o código do checkpoint (diz a área no resumo do slot).
+        /// </summary>
+        public void SaveCheckpoint(Transform spawnPoint, string checkpointId = null)
         {
             var (slots, keyItems) = inventory.CopyContents();
             Checkpoints.Save(new Checkpoints.Data
             {
                 sceneName = gameObject.scene.name,
+                checkpointId = checkpointId,
                 position = spawnPoint.position,
                 rotation = Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f),
                 health = health.Current,
@@ -61,6 +65,7 @@ namespace Nibiru.Save
                 weapons = weapons != null ? weapons.Capture() : null,
                 world = WorldState.Capture(),
             });
+            SaveSlots.WriteCurrent();
         }
     }
 }

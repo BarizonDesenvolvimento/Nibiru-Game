@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Nibiru.Localization;
 using Nibiru.Save;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,7 +9,8 @@ using UnityEngine.UI;
 namespace Nibiru.UI
 {
     /// <summary>
-    /// Menu principal provisório (cena MenuPrincipal): Novo jogo e Sair. Setas ou direcional escolhem,
+    /// Menu principal provisório (cena MenuPrincipal): Continuar (o slot mais recente, se ele puder ser carregado),
+    /// Novo jogo (no slot 1, enquanto a tela de slots não existe) e Sair. Setas ou direcional escolhem,
     /// Enter, Espaço ou o botão A confirmam. Montado por código; lê o teclado e o controle direto, pois
     /// o jogador (e o leitor de controles dele) só existe na cena da região.
     /// </summary>
@@ -15,7 +18,17 @@ namespace Nibiru.UI
     {
         [SerializeField] string gameScene = "Regiao1_SitioDeUr";
 
-        static readonly string[] Items = { "Novo jogo", "Sair do jogo" };
+        enum Item
+        {
+            Continuar,
+            NovoJogo,
+            Sair,
+        }
+
+        /// <summary>Slot do "Novo jogo" enquanto a tela de slots (A4b) não existe.</summary>
+        const int NewGameSlot = 1;
+
+        readonly List<Item> items = new List<Item>();
         const string Gold = "#E8C46A";
         const string Muted = "#9AA0AA";
 
@@ -29,6 +42,10 @@ namespace Nibiru.UI
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            PlayTime.Hold(this);
+            if (SaveSlots.CanContinue) items.Add(Item.Continuar);
+            items.Add(Item.NovoJogo);
+            items.Add(Item.Sair);
             Build();
             Refresh();
         }
@@ -50,7 +67,7 @@ namespace Nibiru.UI
             }
             if (move != 0)
             {
-                selected = (selected + move + Items.Length) % Items.Length;
+                selected = (selected + move + items.Count) % items.Count;
                 Refresh();
             }
 
@@ -61,18 +78,40 @@ namespace Nibiru.UI
 
         void Activate()
         {
-            if (selected == 0) StartGame();
-            else Quit();
+            switch (items[selected])
+            {
+                case Item.Continuar: Continue(); break;
+                case Item.NovoJogo: StartGame(); break;
+                default: Quit(); break;
+            }
         }
 
-        /// <summary>Começa uma partida nova: zera o estado do mundo e os pontos de retorno e abre a região.</summary>
+        /// <summary>True se o menu mostra "Continuar" (há um slot recente que pode ser carregado).</summary>
+        public bool ShowsContinue => items.Contains(Item.Continuar);
+
+        /// <summary>
+        /// Começa uma partida nova no slot 1: zera o estado do mundo e os pontos de retorno, grava o começo no slot
+        /// (para "Continuar" funcionar mesmo antes do primeiro checkpoint) e abre a região.
+        /// </summary>
         public void StartGame()
         {
-            Checkpoints.Clear();
-            WorldState.Clear();
+            SaveSlots.BeginNewGame(NewGameSlot, gameScene);
             Time.timeScale = 1f;
             SceneManager.LoadScene(gameScene);
         }
+
+        /// <summary>Abre o slot usado por último, no último checkpoint dele.</summary>
+        public void Continue()
+        {
+            if (!SaveSlots.ContinueLatest()) Debug.LogWarning("Menu principal: não há partida para continuar.");
+        }
+
+        static string Label(Item item) => item switch
+        {
+            Item.Continuar => Loc.Get("ui.menu.continuar"),
+            Item.NovoJogo => "Novo jogo",
+            _ => "Sair do jogo",
+        };
 
         static void Quit()
         {
@@ -86,8 +125,8 @@ namespace Nibiru.UI
         void Refresh()
         {
             var text = new System.Text.StringBuilder();
-            for (int i = 0; i < Items.Length; i++)
-                text.AppendLine(i == selected ? $"<color={Gold}>›  {Items[i]}</color>" : $"<color={Muted}>   {Items[i]}</color>");
+            for (int i = 0; i < items.Count; i++)
+                text.AppendLine(i == selected ? $"<color={Gold}>›  {Label(items[i])}</color>" : $"<color={Muted}>   {Label(items[i])}</color>");
             list.text = text.ToString();
         }
 

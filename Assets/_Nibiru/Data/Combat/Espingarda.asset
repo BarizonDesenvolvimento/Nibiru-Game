@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f45e0cd0fbb5df46b599e6601d2e245, type: 3}
   m_Name: Espingarda
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Combat.FirearmDefinition
+  id: arma.espingarda
   weaponItem: {fileID: 11400000, guid: 0a4e6cc9e9410304dae740f90b1ab8cf, type: 2}
   ammoItem: {fileID: 11400000, guid: 14380211a56f24745a323057d322542e, type: 2}
   magazineSize: 2

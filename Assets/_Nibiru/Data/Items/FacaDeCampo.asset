@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: FacaDeCampo
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
-  id: 
+  id: faca_de_campo
   nameKey: item.FacaDeCampo.name
   descriptionKey: item.FacaDeCampo.desc
   hintKey: item.FacaDeCampo.hint

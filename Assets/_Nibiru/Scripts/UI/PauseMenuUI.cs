@@ -130,6 +130,7 @@ namespace Nibiru.UI
             openedFrame = Time.frameCount;
             timeScaleBefore = Time.timeScale;
             Time.timeScale = 0f;
+            PlayTime.Hold(this);
             input.SetGameplayEnabled(false);
             ShowPage(Page.Principal, 0);
         }
@@ -139,6 +140,7 @@ namespace Nibiru.UI
             GameOptions.Save();
             panel.SetActive(false);
             Time.timeScale = timeScaleBefore;
+            PlayTime.Release(this);
             input.SetGameplayEnabled(true);
         }
 

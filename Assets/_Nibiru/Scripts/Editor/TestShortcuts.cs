@@ -100,6 +100,8 @@ namespace Nibiru.EditorTools
                 return;
             }
 
+            // Um atalho nunca grava num slot de verdade (o "gravar no slot" do Salvamento escolhe o slot depois).
+            SaveSlots.Detach();
             WorldState.Clear();
             foreach (string id in events) WorldState.MarkStoryEvent(id);
             foreach (var (quest, step) in quests) WorldState.SetQuestStep(quest, step);

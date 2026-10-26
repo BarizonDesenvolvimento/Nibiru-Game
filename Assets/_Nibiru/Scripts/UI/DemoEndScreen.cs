@@ -7,8 +7,9 @@ using UnityEngine.UI;
 namespace Nibiru.UI
 {
     /// <summary>
-    /// Tela provisória de fim da demo: aparece quando o evento do fim da fatia dispara e, ao confirmar,
-    /// zera a partida e volta ao menu principal. Montada por código (sem Instantiate), no tempo real.
+    /// Tela provisória de fim da demo: aparece quando o evento do fim da fatia dispara (e marca o slot da partida como
+    /// "demo concluída") e, ao confirmar, zera a partida e volta ao menu principal. Montada por código (sem Instantiate),
+    /// no tempo real.
     /// </summary>
     public class DemoEndScreen : MonoBehaviour
     {
@@ -28,6 +29,8 @@ namespace Nibiru.UI
             input = FindFirstObjectByType<PlayerInputReader>();
             if (panel == null) Build();
             Time.timeScale = 0f;
+            PlayTime.Hold(this);
+            SaveSlots.MarkDemoCompleted();
             if (input != null)
             {
                 input.SetGameplayEnabled(false);
@@ -49,6 +52,7 @@ namespace Nibiru.UI
         {
             Checkpoints.Clear();
             WorldState.Clear();
+            SaveSlots.Detach();
             Time.timeScale = 1f;
             SceneManager.LoadScene(menuScene);
         }
