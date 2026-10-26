@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc894d72569ad94884c776125e64ef1, type: 3}
+  m_Name: Base_NotaDoSelo1927
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Documents.DocumentDefinition
+  id: doc.base_nota_selo_1927
+  titleKey: doc.Base_NotaDoSelo1927.title
+  textKey: doc.Base_NotaDoSelo1927.text
+  footerKey: doc.Base_NotaDoSelo1927.footer
+  displayName: 
+  text: 
+  footer: 
+  raiseOnRead: {fileID: 11400000, guid: dedb719a5f3f43946852126b66d64254, type: 2}

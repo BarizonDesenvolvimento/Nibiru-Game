@@ -24,6 +24,8 @@ namespace Nibiru.EditorTools.Content
             ("Base_EmailDoKast", "doc.base_email_kast"),
             ("Base_Foto1979", "doc.base_foto_1979"),
             ("Trincheiras_CartaDoSoldado", "doc.trincheiras_carta_soldado"),
+            ("Base_RegistroDoGuincho", "doc.base_registro_guincho"),
+            ("Base_NotaDoSelo1927", "doc.base_nota_selo_1927"),
             ("Aldeia_Inscricao", "doc.aldeia_inscricao"),
             ("Poco_Inscricao", "doc.poco_inscricao"),
             ("Passagem_Inscricao", "doc.passagem_inscricao"),
@@ -48,6 +50,11 @@ namespace Nibiru.EditorTools.Content
                 d.raiseOnRead = Event("LeuAInscricaoDaAldeia", "A Elena leu a inscrição dos Guardiões da Aldeia, que o Eco do Abzu revelou na parede do fundo da casa do altar."));
             Asset<DocumentDefinition>("Documents/Trincheiras_CartaDoSoldado", d =>
                 d.raiseOnRead = Event("LeuACartaDoSoldado", "A Elena leu a carta de um soldado da Fundação que estava numa mochila nas Trincheiras (achado opcional)."));
+
+            Asset<DocumentDefinition>("Documents/Base_RegistroDoGuincho", d =>
+                d.raiseOnRead = Event("LeuORegistroDoGuincho", "A Elena leu o registro do turno da noite no guincho do Poço, numa mochila ao pé de um contêiner da base (achado opcional)."));
+            Asset<DocumentDefinition>("Documents/Base_NotaDoSelo1927", d =>
+                d.raiseOnRead = Event("LeuANotaDoSelo", "A Elena leu a nota interna sobre o selo de 1927, sobre a mesa da tenda de provas da base (achado opcional)."));
 
             foreach ((string asset, string id) in DocumentIds)
             {
@@ -96,7 +103,7 @@ namespace Nibiru.EditorTools.Content
 
             catalog.groups = new[]
             {
-                Group("ui.arquivo.grupo_fundacao", Doc("Base_EmailDoKast"), Doc("Base_Foto1979"), Doc("Trincheiras_CartaDoSoldado")),
+                Group("ui.arquivo.grupo_fundacao", Doc("Base_EmailDoKast"), Doc("Base_Foto1979"), Doc("Trincheiras_CartaDoSoldado"), Doc("Base_RegistroDoGuincho"), Doc("Base_NotaDoSelo1927")),
                 Group("ui.arquivo.grupo_guardioes", Doc("Aldeia_Inscricao"), Doc("Poco_Inscricao"), Doc("Passagem_Inscricao")),
                 Group("ui.arquivo.grupo_pessoal", Doc("Weiss_Documento"), Doc("Fotos_Do_Tom")),
                 Group("ui.arquivo.grupo_fitas", Tape("Fita_Irena_1")),

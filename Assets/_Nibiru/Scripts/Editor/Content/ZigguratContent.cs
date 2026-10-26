@@ -130,6 +130,7 @@ namespace Nibiru.EditorTools.Content
 
             IdPrefix = "base";
             EditorTools.Audio.ProvisionalSounds.Generate(overwrite: false);
+            ArchiveContent.EnsureData();
             CreateData();
 
             Transform root = NewRoot(RootName, "Povoar Base do Zigurate");
@@ -538,7 +539,35 @@ namespace Nibiru.EditorTools.Content
             Prim(PrimitiveType.Cube, g, "Mesa_Tenda_Provas", EvidenceTableCenter, new Vector3(1.6f, 0.9f, 0.7f), "BO_Madeira");
             GameObject roll = Prim(PrimitiveType.Cylinder, g, "Rolo_De_Filme_3", EvidenceTableCenter + new Vector3(-0.3f, 0.51f, 0f), new Vector3(0.12f, 0.06f, 0.12f), "BO_Metal");
             Pickup(roll, filmRoll, 1, null);
+
+            // Etapa A3: a nota sobre o selo de 1927 na ponta leste da mesma mesa (o rolo fica na oeste), e o registro do guincho
+            // numa mochila no pé SUL do contêiner 5, junto do heliponto da base. Os dois são achados opcionais do Arquivo.
+            ReadableFind(g, "Nota_Do_Selo_1927", EvidenceTableCenter + new Vector3(0.35f, 0.35f, 0f), new Vector3(1.0f, 1.6f, 2.4f),
+                "Documents/Base_NotaDoSelo1927", "Ler a nota", "ui.interact.base_ler_nota",
+                Prim(PrimitiveType.Cube, g, "Nota_Papel", EvidenceTableCenter + new Vector3(0.35f, 0.47f, 0f), new Vector3(0.28f, 0.015f, 0.2f), "BO_BrancoFundacao", 12f, ColliderMode.None));
+
+            Transform bag = Group(g, "Registro_Do_Guincho");
+            Prim(PrimitiveType.Cube, bag, "Mochila", GuinchoSpot + new Vector3(0f, 0.2f, 0f), new Vector3(0.45f, 0.4f, 0.3f), "BO_VerdeOliva", 15f);
+            ReadableFind(bag, "Ler_Registro", GuinchoSpot + new Vector3(0f, 0.8f, -0.55f), new Vector3(1.6f, 1.6f, 1.2f),
+                "Documents/Base_RegistroDoGuincho", "Ler o registro", "ui.interact.base_ler_registro",
+                Prim(PrimitiveType.Cube, bag, "Registro_Papel", GuinchoSpot + new Vector3(0.4f, 0.02f, -0.1f), new Vector3(0.22f, 0.01f, 0.3f), "BO_BrancoFundacao", -10f, ColliderMode.None));
         }
+
+        // Documento opcional: uma zona "Ler..." que abre o documento na tela de leitura (e o põe no Arquivo).
+        static void ReadableFind(Transform parent, string name, Vector3 zoneCenter, Vector3 zoneSize, string documentPath, string prompt, string promptKey, GameObject paper)
+        {
+            GameObject zone = Zone(parent, name, zoneCenter, zoneSize);
+            var view = zone.AddComponent<Documents.DocumentView>();
+            SetField(view, "document", Load<DocumentDefinition>(documentPath));
+            var interact = zone.AddComponent<Interaction.InteractableEvent>();
+            SetField(interact, "prompt", prompt);
+            SetField(interact, "promptKey", promptKey);
+            Call(GetField<UnityEvent>(interact, "onInteract"), view.Show);
+        }
+
+        // Pé sul do contêiner 5 (22; 17; 6 x 2,5 m): o contêiner fica entre a mochila e o atirador do zigurate (ao norte), então
+        // quem lê aqui não está na linha de tiro dele. Conferido pela ponte (raios do atirador até o ponto, todos barrados).
+        static readonly Vector3 GuinchoSpot = new Vector3(22.5f, 0f, 15.35f);
 
         // ---------- Ajudas ----------
 

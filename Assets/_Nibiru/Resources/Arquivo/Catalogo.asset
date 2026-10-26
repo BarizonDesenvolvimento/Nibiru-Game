@@ -21,6 +21,10 @@ MonoBehaviour:
       tape: {fileID: 0}
     - document: {fileID: 11400000, guid: 69560a0c94a8a8141ae13b3eed71963f, type: 2}
       tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: b739d427edf7ded4d9ed019a20ffce5c, type: 2}
+      tape: {fileID: 0}
+    - document: {fileID: 11400000, guid: df829bdb7266e4943a9ddca6a37c9acd, type: 2}
+      tape: {fileID: 0}
   - titleKey: ui.arquivo.grupo_guardioes
     entries:
     - document: {fileID: 11400000, guid: fed21b82a2a612f459d076cedf025c20, type: 2}
