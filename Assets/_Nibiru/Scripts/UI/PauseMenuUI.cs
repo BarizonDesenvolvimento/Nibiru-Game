@@ -244,14 +244,15 @@ namespace Nibiru.UI
                 AppendItem("Voltar", 4);
             }
 
-            builder.AppendLine().Append("<size=24><color=").Append(Muted).Append(">[").Append(input.ConfirmButtonLabel).Append("] Escolher     [")
+            if (page != Page.Arquivo) builder.AppendLine();
+            builder.Append("<size=24><color=").Append(Muted).Append(">[").Append(input.ConfirmButtonLabel).Append("] Escolher     [")
                 .Append(input.BackButtonLabel).Append("] Voltar</color></size>");
             content.text = builder.ToString();
         }
 
         void AppendArchive()
         {
-            builder.Append("<size=56><b>").Append(Loc.Get("ui.arquivo.titulo", "ARQUIVO")).AppendLine("</b></size>").AppendLine();
+            builder.Append("<size=40><b>").Append(Loc.Get("ui.arquivo.titulo", "ARQUIVO")).AppendLine("</b></size>");
             ArchiveCatalog catalog = ArchiveCatalog.Current;
             if (catalog == null || archiveRows.Count == 0)
             {
@@ -264,8 +265,8 @@ namespace Nibiru.UI
             {
                 List<ArchiveCatalog.Entry> unlocked = catalog.UnlockedIn(group);
                 if (unlocked.Count == 0) continue;
-                builder.Append("<size=26><color=").Append(Muted).Append(">").Append(group.LocalizedTitle).AppendLine("</color></size>");
-                foreach (ArchiveCatalog.Entry entry in unlocked) AppendItem(entry.Title, row++);
+                builder.Append("<size=20><color=").Append(Muted).Append(">").Append(group.LocalizedTitle).AppendLine("</color></size>");
+                foreach (ArchiveCatalog.Entry entry in unlocked) AppendItem("<size=26>" + entry.Title + "</size>", row++);
             }
         }
 
