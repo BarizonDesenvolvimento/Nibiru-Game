@@ -19,6 +19,18 @@ namespace Nibiru.Sequences
         [Tooltip("Até quantos graus para cada lado da frente da Elena um ponto conta como \"à frente\".")]
         [SerializeField, Range(10f, 180f)] float maxAngle = 90f;
 
+        [Tooltip("Chave estável no estado do mundo (começa com \"place.\"). Com ela, o ponto escolhido e a direção ficam guardados no ponto de retorno e PlaceSaved refaz a escolha. Vazio = não guarda.")]
+        [SerializeField] string stateKey = "";
+
+        /// <summary>Volta de um checkpoint: leva o objeto ao ponto que foi escolhido ao vivo. Sem nada guardado, não mexe.</summary>
+        public void PlaceSaved()
+        {
+            if (string.IsNullOrEmpty(stateKey)) return;
+            if (!Save.WorldState.TryGetSceneValue(stateKey + ".ponto", out int index) || index < 0 || index >= points.Length || points[index] == null) return;
+            Save.WorldState.TryGetSceneValue(stateKey + ".giro", out int yaw);
+            (target != null ? target : transform).SetPositionAndRotation(points[index].position, Quaternion.Euler(0f, yaw, 0f));
+        }
+
         public void Place()
         {
             var player = FindAnyObjectByType<Player.PlayerMotor>();
@@ -53,6 +65,12 @@ namespace Nibiru.Sequences
             Vector3 toPlayer = Vector3.ProjectOnPlane(from - chosen.position, Vector3.up);
             Quaternion facing = toPlayer.sqrMagnitude > 0.01f ? Quaternion.LookRotation(toPlayer) : chosen.rotation;
             moved.SetPositionAndRotation(chosen.position, facing);
+
+            if (!string.IsNullOrEmpty(stateKey))
+            {
+                Save.WorldState.SetSceneValue(stateKey + ".ponto", System.Array.IndexOf(points, chosen));
+                Save.WorldState.SetSceneValue(stateKey + ".giro", Mathf.RoundToInt(facing.eulerAngles.y) % 360);
+            }
         }
 
         void OnDrawGizmosSelected()

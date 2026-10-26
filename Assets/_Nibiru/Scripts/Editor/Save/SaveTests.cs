@@ -68,6 +68,7 @@ namespace Nibiru.EditorTools.Saving
             {
                 ("Cada checkpoint da região: gravar, limpar a memória, carregar e comparar com a volta depois de morrer", EveryCheckpoint),
                 ("Valores da cena: vão ao disco e voltam; arquivo sem o campo (mesma versão) carrega vazio", SceneValuesRoundTrip),
+                ("Encontro da Aldeia: o soldado caído volta na entrada onde o encontro aconteceu (morrer e disco); sem valores, na leste", VillageEncounterEntrance),
                 ("Três slots independentes: gravar num não mexe nos outros, e cada um carrega o seu", ThreeSlots),
                 ("Carregar um slot, avançar até outro checkpoint: o slot é atualizado e os outros dois ficam iguais", LoadAndAdvance),
                 ("Morrer depois de carregar volta ao mesmo checkpoint, com o mesmo estado", DieAfterLoad),
@@ -181,6 +182,50 @@ namespace Nibiru.EditorTools.Saving
             yield return Reload(() => loaded = SaveSlots.Load(1));
             Check(loaded, "arquivo sem o campo de valores da cena deveria carregar");
             Check(!WorldState.TryGetSceneValue("tape.teste_a", out _), "arquivo sem o campo deveria carregar sem valores da cena");
+        }
+
+        // O encontro da Aldeia volta na entrada onde aconteceu (ponto e direção em "place.aldeia_encontro"), ao morrer e do disco;
+        // slot sem os valores (de antes do campo) cai na entrada leste.
+        static IEnumerator VillageEncounterEntrance()
+        {
+            yield return Restart("arquivo.cheio");
+            string[] names = { "Entrada_Leste", "Entrada_Sudeste", "Entrada_Sul", "Entrada_Norte" };
+            for (int i = 0; i < names.Length; i++)
+            {
+                Prepare(i + 2);
+                SaveSlots.Attach(1);
+                WorldState.SetSceneValue("place.aldeia_encontro.ponto", i);
+                WorldState.SetSceneValue("place.aldeia_encontro.giro", 90 * i);
+                Cp("aldeia.checkpoint_patio").ActivateNow();
+
+                yield return Reload(() => Checkpoints.Restart(RegionSceneName));
+                CheckEncounterAt(names[i], $"{names[i]}, depois de morrer");
+
+                WorldState.Clear();
+                Checkpoints.Clear();
+                SaveSlots.Detach();
+                yield return Reload(() => SaveSlots.Load(1));
+                CheckEncounterAt(names[i], $"{names[i]}, carregado do disco");
+            }
+
+            // Sem os valores guardados (slot de antes do campo): entrada leste, como era.
+            Prepare(6);
+            SaveSlots.Attach(1);
+            WorldState.RemoveSceneValue("place.aldeia_encontro.ponto");
+            WorldState.RemoveSceneValue("place.aldeia_encontro.giro");
+            Cp("aldeia.checkpoint_patio").ActivateNow();
+            yield return Reload(() => Checkpoints.Restart(RegionSceneName));
+            CheckEncounterAt("Entrada_Leste", "sem valores guardados");
+        }
+
+        static void CheckEncounterAt(string entrance, string what)
+        {
+            Transform encounter = Obj("Encontro_Samir")?.transform;
+            Transform scene = encounter != null ? encounter.Find("Cena") : null;
+            Transform point = encounter != null ? encounter.Find("Pontos_Encontro/" + entrance) : null;
+            Check(scene != null && point != null, $"encontro da Aldeia ({what}): não achei a cena ou o ponto {entrance}");
+            if (scene == null || point == null) return;
+            Check(Near(scene.position, point.position, 0.5f), $"encontro da Aldeia ({what}): a cena deveria estar em {entrance} {point.position}, está em {scene.position}");
         }
 
         static IEnumerator ThreeSlots()

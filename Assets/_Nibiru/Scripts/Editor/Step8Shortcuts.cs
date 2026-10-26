@@ -60,12 +60,33 @@ namespace Nibiru.EditorTools
                     Raise(id);
                 Find("Conteudo_Aldeia/Primeira_Tabuleta/Sequencia_Volta").GetComponent<TimedSequence>().Play();
             }, "de volta da memória. Feche a tela da tabuleta para ver a marca e a conversa com o Samir."));
+            Register("passo8.encontro_sul", () => AtPatioAfterEncounter(2, 0f, "entrada sul"));
+            Register("passo8.encontro_norte", () => AtPatioAfterEncounter(3, 180f, "entrada norte"));
             Register("passo8.jogo_novo", () =>
             {
                 FreshGame();
                 Debug.Log("Passo 8: jogo novo no Acampamento. Abra o inventário e use a Tabuleta do Junco: deve aparecer \"Não aqui.\"");
             });
         }
+
+        // Como ao voltar do ponto de retorno do pátio depois de um encontro que aconteceu numa entrada que não é a leste.
+        static void AtPatioAfterEncounter(int entrance, float yaw, string name)
+        {
+            StartFrom(EventsUntilStep7, new[] { ("Sobrevivente", ReadTabletStep), ("RemedioParaYusuf", 0), ("OQueOTomViu", 0) }, 0,
+                new Vector3(-44.5f, 0f, -19.5f), 215f, null,
+                setup: () =>
+                {
+                    Save.WorldState.SetSceneValue("place.aldeia_encontro.ponto", entrance);
+                    Save.WorldState.SetSceneValue("place.aldeia_encontro.giro", Mathf.RoundToInt(yaw));
+                });
+            Debug.Log($"Passo 8: no pátio, de volta do salvamento com o encontro na {name}. O soldado caído deve estar lá (Conteudo_Aldeia/Encontro_Samir/Cena), e não na entrada leste.");
+        }
+
+        [MenuItem(MenuRoot + "6. Pátio, com o soldado caído na entrada sul (volta do salvamento)")]
+        static void PatioSouth() => Go("passo8.encontro_sul");
+
+        [MenuItem(MenuRoot + "7. Pátio, com o soldado caído na entrada norte (volta do salvamento)")]
+        static void PatioNorth() => Go("passo8.encontro_norte");
 
         [MenuItem(MenuRoot + "1. No nicho, pronto para ler a tabuleta")]
         static void Niche() => Go("passo8.nicho");

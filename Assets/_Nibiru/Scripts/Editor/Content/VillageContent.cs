@@ -364,6 +364,8 @@ namespace Nibiru.EditorTools.Content
             var picker = g.gameObject.AddComponent<PlaceAtPointAhead>();
             SetField(picker, "points", points);
             SetField(picker, "target", scene);
+            // Chave estável: a entrada escolhida e a direção voltam junto do ponto de retorno (ESTADO.md, "Valores da cena").
+            SetField(picker, "stateKey", "place.aldeia_encontro");
 
             var cornered = DialogueTrigger(g, "Dialogo_Encurralada", dlg.encurralada);
             var guide = DialogueTrigger(g, "Dialogo_OGuia", dlg.oGuia);
@@ -411,6 +413,8 @@ namespace Nibiru.EditorTools.Content
             Call(GetField<UnityEvent>(walkOrSnap, "ifNotRaised"), walker.Walk);
             Listener(g.gameObject, ev.chegouAAldeia, e =>
             {
+                // Antes de tudo: a cena (soldado, Samir) vai para a entrada onde o encontro aconteceu.
+                Call(e, picker.PlaceSaved);
                 SetActive(e, soldier, true);
                 Call(e, soldierAnimator.LieDeadForward);
                 SetActive(e, samir, true);
