@@ -41,7 +41,7 @@ namespace Nibiru.UI
         public static void SetGameActive(bool active)
         {
             gameActive = active;
-            EnsureDriver();
+            if (active) EnsureDriver(); // ao sair do jogo não cria nada (a cena está fechando)
         }
 
         /// <summary>Um menu pede o cursor livre. <paramref name="showPointer"/>: já visível (aberto pelo mouse) ou escondido.</summary>
