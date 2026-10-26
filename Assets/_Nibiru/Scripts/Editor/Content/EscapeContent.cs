@@ -1,4 +1,5 @@
 using System.Linq;
+using Nibiru.AI;
 using Nibiru.Dialogue;
 using Nibiru.Documents;
 using Nibiru.Inventory;
@@ -191,6 +192,9 @@ namespace Nibiru.EditorTools.Content
 
         // ---------- A caminhonete ----------
 
+        // Onde o Samir senta na cabine (local da caminhonete): os pés no chão da cabine, o quadril sobre o banco.
+        const float DriverX = -0.5f, DriverY = 0.9f, DriverZ = 0.45f;
+
         static TruckRide BuildTruck(Transform g, out GameObject samir)
         {
             // g já é filho do grupo da fuga; a própria caminhonete é o objeto que anda.
@@ -203,7 +207,9 @@ namespace Nibiru.EditorTools.Content
             Local(PrimitiveType.Cube, truckRoot, "Chassi", new Vector3(0f, 0.75f, 0f), new Vector3(2.2f, 0.3f, 5f), "BO_Metal", ColliderMode.Solid);
             Local(PrimitiveType.Cube, truckRoot, "Capo", new Vector3(0f, 1.2f, 1.9f), new Vector3(2f, 0.7f, 1.3f), "BO_VerdeOliva", ColliderMode.Solid);
             Local(PrimitiveType.Cube, truckRoot, "Painel", new Vector3(0f, 1.45f, 1.15f), new Vector3(2f, 0.4f, 0.1f), "BO_Metal");
-            Local(PrimitiveType.Cube, truckRoot, "Cabine_Fundo", new Vector3(0f, 1.9f, -0.1f), new Vector3(2f, 1.8f, 0.1f), "BO_Metal", ColliderMode.Solid);
+            // Fundo da cabine com uma janela traseira (de 1,9 m a 2,75 m), para o Samir aparecer ao volante.
+            Local(PrimitiveType.Cube, truckRoot, "Cabine_Fundo", new Vector3(0f, 1.45f, -0.1f), new Vector3(2f, 0.9f, 0.1f), "BO_Metal", ColliderMode.Solid);
+            Local(PrimitiveType.Cube, truckRoot, "Cabine_Fundo_Topo", new Vector3(0f, 2.8f, -0.1f), new Vector3(2f, 0.1f, 0.1f), "BO_Metal");
             Local(PrimitiveType.Cube, truckRoot, "Teto", new Vector3(0f, 2.95f, 0.5f), new Vector3(2.3f, 0.1f, 1.5f), "BO_Metal");
             foreach (float x in new[] { -1f, 1f })
             {
@@ -224,12 +230,21 @@ namespace Nibiru.EditorTools.Content
             seatPoint.localPosition = new Vector3(0.35f, 0.9f, -1.35f);
             Transform seat = seatPoint;
 
-            // O Samir na cabine, de pé ao volante (sem animação de dirigir): só aparece depois da escolha.
+            // O Samir na cabine, sentado ao volante (animação Dirigindo): só aparece depois da escolha.
+            // Banco e volante provisórios, em formas simples, na altura do quadril e das mãos do clipe.
+            Local(PrimitiveType.Cube, truckRoot, "Banco", new Vector3(DriverX, 1.1f, DriverZ - 0.15f), new Vector3(0.9f, 0.4f, 0.6f), "BO_Madeira");
+            GameObject wheelRim = Local(PrimitiveType.Cylinder, truckRoot, "Volante", new Vector3(DriverX + 0.02f, 1.74f, DriverZ + 0.2f), new Vector3(0.42f, 0.02f, 0.42f), "BO_Metal");
+            wheelRim.transform.localRotation = Quaternion.Euler(-60f, 0f, 0f);
             samir = new GameObject("Samir_Na_Caminhonete");
             samir.transform.SetParent(truckRoot, false);
-            samir.transform.localPosition = new Vector3(-0.5f, 0.9f, 0.55f);
+            samir.transform.localPosition = new Vector3(DriverX, DriverY, DriverZ);
             samir.transform.localRotation = Quaternion.identity;
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(SamirSetup.PrefabPath) != null) SamirSetup.AddVisual(samir.transform, 0f);
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(SamirSetup.PrefabPath) != null)
+            {
+                var visual = SamirSetup.AddVisual(samir.transform, 0f);
+                var npc = visual.GetComponent<NpcAnimator>();
+                if (npc != null) SetField(npc, "driving", true);
+            }
             else Debug.LogWarning("Fuga: prefab do Samir não encontrado. Rode Nibiru > Personagens > Montar Samir animado.");
             samir.SetActive(false);
 

@@ -132,6 +132,24 @@ namespace Nibiru.EditorTools
             leave.hasFixedDuration = true;
             leave.duration = 0.25f;
 
+            // Dirigindo (a caminhonete do passo 15): sentado ao volante, enquanto o parâmetro "Dirigindo" estiver ligado.
+            var driving = AnimationLibrary.Clip("Samir_Dirigindo");
+            if (driving != null)
+            {
+                controller.AddParameter(NpcAnimator.DrivingParam, AnimatorControllerParameterType.Bool);
+                var drive = machine.AddState(NpcAnimator.DrivingState, new Vector3(300f, 100f));
+                drive.motion = driving;
+                var sit = machine.AddAnyStateTransition(drive);
+                sit.AddCondition(AnimatorConditionMode.If, 0f, NpcAnimator.DrivingParam);
+                sit.hasExitTime = false;
+                sit.duration = 0.1f;
+                sit.canTransitionToSelf = false;
+                var stand = drive.AddTransition(locomotion);
+                stand.AddCondition(AnimatorConditionMode.IfNot, 0f, NpcAnimator.DrivingParam);
+                stand.hasExitTime = false;
+                stand.duration = 0.2f;
+            }
+
             // Gestos de conversa: o NpcAnimator entra e sai deles (CrossFade), um por fala do Samir.
             for (int i = 0; i < TalkCuts.Length; i++)
             {

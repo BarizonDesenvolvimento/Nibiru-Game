@@ -17,7 +17,9 @@ namespace Nibiru.AI
         public const string SpeedParam = "Velocidade";
         public const string CrouchParam = "Agachar";
         public const string StrikeParam = "Golpe";
+        public const string DrivingParam = "Dirigindo";
         public const string LocomotionState = "Locomocao";
+        public const string DrivingState = "Dirigindo";
         public const string TalkStatePrefix = "Conversa_";
 
         [SerializeField] Animator animator;
@@ -39,6 +41,9 @@ namespace Nibiru.AI
 
         [Tooltip("Velocidade do NavMeshAgent andando agachado (m/s).")]
         [SerializeField, Min(0.1f)] float crouchSpeed = 1.4f;
+
+        [Tooltip("Sentado ao volante (o Samir na caminhonete): liga o estado Dirigindo, em vez de andar.")]
+        [SerializeField] bool driving;
 
         [Tooltip("Suaviza a velocidade passada ao Animator (segundos).")]
         [SerializeField] float speedDamping = 0.1f;
@@ -69,7 +74,11 @@ namespace Nibiru.AI
                 rightLowerArm = animator.GetBoneTransform(HumanBodyBones.RightLowerArm);
             }
             if (knife != null) knife.gameObject.SetActive(false);
+            if (driving) animator.SetBool(DrivingParam, true);
         }
+
+        /// <summary>Senta ao volante (ou levanta). Precisa do estado Dirigindo no controlador.</summary>
+        public void SetDriving(bool value) => animator.SetBool(DrivingParam, value);
 
         void OnDisable()
         {

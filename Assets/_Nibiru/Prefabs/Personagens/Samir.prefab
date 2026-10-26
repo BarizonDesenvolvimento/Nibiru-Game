@@ -86,6 +86,7 @@ MonoBehaviour:
   knife: {fileID: 5811767662993829893}
   knifeShownFor: 0.8
   crouchSpeed: 1.9
+  driving: 0
   speedDamping: 0.1
   talkBlend: 0.35
 --- !u!1 &6889226251580370970
