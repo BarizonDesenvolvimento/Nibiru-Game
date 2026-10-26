@@ -31,6 +31,7 @@ namespace Nibiru.EditorTools
         const string LabScenePath = "Assets/_Nibiru/Scenes/Teste_Personagem.unity";
         const string ReportKey = "Nibiru.ShortcutsCheck.Report";
         const string CountsKey = "Nibiru.ShortcutsCheck.Counts";
+        const string RealSlotsKey = "Nibiru.ShortcutsCheck.RealSlots";
 
         // Quanto o pé da Elena pode estar longe da malha de navegação, e o quanto ela pode descer em 1,5 s.
         const float MeshTolerance = 0.8f;
@@ -68,6 +69,9 @@ namespace Nibiru.EditorTools
                 : "FALHOU  atalhos da tela de slots:\n" + slots + "\n";
             SessionState.SetString(ReportKey, text);
             SessionState.SetString(CountsKey, $"{(codesOk ? 1 : 0) + (slotsOk ? 1 : 0)},{(codesOk ? 0 : 1) + (slotsOk ? 0 : 1)},0");
+            // Execução automática: nenhum atalho pode mexer nos slots reais (o SlotGuard barra e confere no fim).
+            SessionState.SetString(RealSlotsKey, Saving.SlotGuard.RealFingerprint());
+            Saving.SlotGuard.Begin();
             Go("geral.regiao");
         }
 
@@ -145,8 +149,10 @@ namespace Nibiru.EditorTools
             if (!EditorApplication.isPlaying)
             {
                 EditorApplication.update -= Tick;
+                Saving.SlotGuard.End();
                 return;
             }
+            Saving.SlotGuard.Renew();
             tick++;
             float elapsed = (float)(EditorApplication.timeSinceStartup - startedAt);
             if (elapsed > 40f)
@@ -247,6 +253,12 @@ namespace Nibiru.EditorTools
                 return;
             }
 
+            // Os 3 slots reais têm de estar exatamente como antes do teste.
+            bool realOk = Saving.SlotGuard.RealFingerprint() == SessionState.GetString(RealSlotsKey, "");
+            report.AppendLine(realOk ? "OK  os slots reais não foram tocados" : "FALHOU  os slots reais mudaram durante o teste");
+            if (realOk) ok++;
+            else failed++;
+            Saving.SlotGuard.End();
             Debug.Log($"Teste geral dos atalhos: {ok} OK, {failed} FALHOU, {skipped} pulados\n{report}");
             EditorApplication.isPlaying = false;
             if (labPass) EditorApplication.update += ReopenRegion;

@@ -39,18 +39,26 @@ namespace Nibiru.EditorTools.Saving
 
         static SaveSituations()
         {
-            Register("salvamento.sit_sem_slots", NoSlots);
+            // Toda situação que grava, regrava ou apaga slot passa pelo SlotGuard (pergunta antes de sobrescrever um slot real ocupado).
+            Register("salvamento.sit_sem_slots", Guarded("a situação 1 (apagar os 3 slots)", NoSlots, 1, 2, 3));
             Register("salvamento.sit_menu", () => OpenMenu("Menu principal como está. Se há um slot recente que carrega, \"Continuar\" aparece em cima."));
-            Register("salvamento.sit_tres_slots", ThreeSlots);
-            Register("salvamento.sit_avancar", LoadAndAdvance);
-            Register("salvamento.sit_morrer", DieAfterLoad);
-            Register("salvamento.sit_memoria", Memory);
-            Register("salvamento.sit_fim", DemoEnd);
-            Register("salvamento.sit_corrompido", () => BrokenSlot("{ isto não é um arquivo de salvamento", "corrompido"));
-            Register("salvamento.sit_versao_antiga", () => BrokenSlot(
-                "{\"versao\": 0, \"resumo\": {\"area\": \"aldeia\", \"dataHora\": \"2026-10-01T10:00:00\"}, \"cena\": \"Regiao1_SitioDeUr\", \"mundo\": {}}", "de versão antiga (0)"));
-            Register("salvamento.sit_tempo", PlayTimeSituation);
+            Register("salvamento.sit_tres_slots", Guarded("a situação 3 (apagar e regravar os 3 slots)", ThreeSlots, 1, 2, 3));
+            Register("salvamento.sit_avancar", Guarded("a situação 4 (carrega o slot 1; o próximo ponto de retorno o regrava)", LoadAndAdvance, 1));
+            Register("salvamento.sit_morrer", Guarded("a situação 5 (carrega o slot 3; um ponto de retorno depois o regrava)", DieAfterLoad, 3));
+            Register("salvamento.sit_memoria", Guarded("a situação 6 (grava o slot 1)", Memory, 1));
+            Register("salvamento.sit_fim", Guarded("a situação 7 (grava o slot 1 e o marca como demo concluída)", DemoEnd, 1));
+            Register("salvamento.sit_corrompido", Guarded("a situação 8 (grava um arquivo corrompido no slot 3)",
+                () => BrokenSlot("{ isto não é um arquivo de salvamento", "corrompido"), 3));
+            Register("salvamento.sit_versao_antiga", Guarded("a situação 9 (grava um arquivo de versão antiga no slot 3)", () => BrokenSlot(
+                "{\"versao\": 0, \"resumo\": {\"area\": \"aldeia\", \"dataHora\": \"2026-10-01T10:00:00\"}, \"cena\": \"Regiao1_SitioDeUr\", \"mundo\": {}}", "de versão antiga (0)"), 3));
+            Register("salvamento.sit_tempo", Guarded("a situação 10 (grava o slot 2)", PlayTimeSituation, 2));
         }
+
+        // A situação só roda se o SlotGuard deixar (slot real ocupado pede confirmação; execução automática nunca roda).
+        static Action Guarded(string what, Action situation, params int[] slots) => () =>
+        {
+            if (SlotGuard.Allow(what, slots)) situation();
+        };
 
         [MenuItem(MenuRoot + "1. Menu sem nenhum slot (Novo jogo e Continuar antes do primeiro ponto de retorno)", priority = 1)]
         static void M1() => Go("salvamento.sit_sem_slots");

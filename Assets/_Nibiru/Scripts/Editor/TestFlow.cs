@@ -123,6 +123,7 @@ namespace Nibiru.EditorTools
         static void Stop()
         {
             running = false;
+            Saving.SlotGuard.End();
             EditorApplication.update -= Tick;
             Notifications.Posted -= OnPosted;
             Notifications.PostedImportant -= OnPosted;
@@ -145,6 +146,7 @@ namespace Nibiru.EditorTools
                 Stop();
                 return;
             }
+            Saving.SlotGuard.Renew();
             try
             {
                 if (waiting != null)

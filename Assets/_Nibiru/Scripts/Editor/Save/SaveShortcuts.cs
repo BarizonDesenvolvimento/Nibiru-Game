@@ -39,17 +39,19 @@ namespace Nibiru.EditorTools.Saving
         [MenuItem(MenuRoot + "Gravar aqui no slot 3", priority = 3)] static void Write3() => WriteHere(3);
 
         /// <summary>Marca um ponto de retorno onde a Elena está e grava no slot (que vira o slot da partida).</summary>
-        static void WriteHere(int slot)
+        static bool WriteHere(int slot)
         {
             var respawn = EditorApplication.isPlaying ? Object.FindFirstObjectByType<PlayerRespawn>() : null;
             if (respawn == null)
             {
                 Debug.LogWarning("Salvamento: ligue o Play na região (por um atalho de passo, por exemplo) antes de gravar.");
-                return;
+                return false;
             }
+            if (!SlotGuard.Allow($"gravar aqui no slot {slot}", slot)) return false;
             SaveSlots.Attach(slot);
             respawn.SaveCheckpoint(respawn.transform);
             Debug.Log($"Salvamento: gravado no slot {slot}, com a Elena em {respawn.transform.position}.\n{Describe(slot)}");
+            return true;
         }
 
         // ---------- Carregar ----------
@@ -71,7 +73,7 @@ namespace Nibiru.EditorTools.Saving
 
         static void Delete(int slot)
         {
-            if (!EditorUtility.DisplayDialog("Apagar slot", $"Apagar o slot {slot} ({SaveSlots.PathOf(slot)})?", "Apagar", "Cancelar")) return;
+            if (!SlotGuard.Allow($"apagar o slot {slot}", slot)) return;
             SaveSlots.Delete(slot);
             Debug.Log($"Salvamento: slot {slot} apagado.");
         }
@@ -112,7 +114,7 @@ namespace Nibiru.EditorTools.Saving
                 Debug.LogWarning("Salvamento: ligue o Play na região antes de \"fechar e continuar\".");
                 return;
             }
-            WriteHere(SaveSlots.CurrentSlot != 0 ? SaveSlots.CurrentSlot : 1);
+            if (!WriteHere(SaveSlots.CurrentSlot != 0 ? SaveSlots.CurrentSlot : 1)) return;
             SessionState.SetInt(CloseAndContinueKey, 1);
             EditorApplication.isPlaying = false;
         }

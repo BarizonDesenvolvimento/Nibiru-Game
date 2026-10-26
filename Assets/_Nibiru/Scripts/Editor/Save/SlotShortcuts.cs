@@ -25,39 +25,53 @@ namespace Nibiru.EditorTools.Saving
 
         // ---------- Menu ----------
 
-        [MenuItem(MenuRoot + "Slot ocupado falso no slot 1", priority = 1)] static void Occupied1() => Log(MakeOccupied(1));
-        [MenuItem(MenuRoot + "Slot ocupado falso no slot 2", priority = 2)] static void Occupied2() => Log(MakeOccupied(2));
-        [MenuItem(MenuRoot + "Slot ocupado falso no slot 3", priority = 3)] static void Occupied3() => Log(MakeOccupied(3));
+        [MenuItem(MenuRoot + "Slot ocupado falso no slot 1", priority = 1)] static void Occupied1() => Log(GuardedOccupied(1));
+        [MenuItem(MenuRoot + "Slot ocupado falso no slot 2", priority = 2)] static void Occupied2() => Log(GuardedOccupied(2));
+        [MenuItem(MenuRoot + "Slot ocupado falso no slot 3", priority = 3)] static void Occupied3() => Log(GuardedOccupied(3));
 
-        [MenuItem(MenuRoot + "Slot demo concluída no slot 1", priority = 11)] static void Demo1() => Log(MakeDemo(1));
-        [MenuItem(MenuRoot + "Slot demo concluída no slot 2", priority = 12)] static void Demo2() => Log(MakeDemo(2));
-        [MenuItem(MenuRoot + "Slot demo concluída no slot 3", priority = 13)] static void Demo3() => Log(MakeDemo(3));
+        [MenuItem(MenuRoot + "Slot demo concluída no slot 1", priority = 11)] static void Demo1() => Log(GuardedDemo(1));
+        [MenuItem(MenuRoot + "Slot demo concluída no slot 2", priority = 12)] static void Demo2() => Log(GuardedDemo(2));
+        [MenuItem(MenuRoot + "Slot demo concluída no slot 3", priority = 13)] static void Demo3() => Log(GuardedDemo(3));
 
-        [MenuItem(MenuRoot + "Slot ilegível no slot 1", priority = 21)] static void Unreadable1() => Log(MakeUnreadable(1));
-        [MenuItem(MenuRoot + "Slot ilegível no slot 2", priority = 22)] static void Unreadable2() => Log(MakeUnreadable(2));
-        [MenuItem(MenuRoot + "Slot ilegível no slot 3", priority = 23)] static void Unreadable3() => Log(MakeUnreadable(3));
+        [MenuItem(MenuRoot + "Slot ilegível no slot 1", priority = 21)] static void Unreadable1() => Log(GuardedUnreadable(1));
+        [MenuItem(MenuRoot + "Slot ilegível no slot 2", priority = 22)] static void Unreadable2() => Log(GuardedUnreadable(2));
+        [MenuItem(MenuRoot + "Slot ilegível no slot 3", priority = 23)] static void Unreadable3() => Log(GuardedUnreadable(3));
 
         [MenuItem(MenuRoot + "Preencher os 3 slots (ocupado, demo concluída e ilegível)", priority = 31)]
-        static void FillMenu()
-        {
-            if (!Confirm("Sobrescrever os 3 slots reais com slots falsos?")) return;
-            Log(FillAll());
-        }
+        static void FillMenu() => Log(GuardedFill());
 
         [MenuItem(MenuRoot + "Limpar todos os slots", priority = 32)]
-        static void ClearMenu()
+        static void ClearMenu() => Log(GuardedClear());
+
+        [MenuItem(MenuRoot + "Avançar o tempo jogado em 10 minutos", priority = 41)] static void Advance10() => Log(GuardedAdvance(600f));
+        [MenuItem(MenuRoot + "Avançar o tempo jogado em 1 hora", priority = 42)] static void Advance60() => Log(GuardedAdvance(3600f));
+
+        static void Log(string text)
         {
-            if (!Confirm("Apagar os 3 slots reais?")) return;
-            ClearAll();
-            Log("Salvamento: os 3 slots foram apagados.");
+            if (text != null) Debug.Log(text);
         }
 
-        [MenuItem(MenuRoot + "Avançar o tempo jogado em 10 minutos", priority = 41)] static void Advance10() => Log(AdvancePlayTime(600f));
-        [MenuItem(MenuRoot + "Avançar o tempo jogado em 1 hora", priority = 42)] static void Advance60() => Log(AdvancePlayTime(3600f));
+        // ---------- Com a proteção dos slots reais (as ações abaixo devolvem null se foram canceladas ou barradas) ----------
 
-        static bool Confirm(string text) => EditorUtility.DisplayDialog("Slots de teste", text + "\n" + SaveSlots.Folder, "Sim", "Cancelar");
+        static readonly int[] AllSlots = Enumerable.Range(1, SaveSlots.SlotCount).ToArray();
 
-        static void Log(string text) => Debug.Log(text);
+        public static string GuardedOccupied(int slot) => SlotGuard.Allow($"gravar um slot ocupado falso no slot {slot}", slot) ? MakeOccupied(slot) : null;
+
+        public static string GuardedDemo(int slot) => SlotGuard.Allow($"gravar um slot com a demo concluída no slot {slot}", slot) ? MakeDemo(slot) : null;
+
+        public static string GuardedUnreadable(int slot) => SlotGuard.Allow($"gravar um slot ilegível no slot {slot}", slot) ? MakeUnreadable(slot) : null;
+
+        public static string GuardedFill() => SlotGuard.Allow("preencher os 3 slots com slots falsos", AllSlots) ? FillAll() : null;
+
+        public static string GuardedClear()
+        {
+            if (!SlotGuard.Allow("apagar os 3 slots", AllSlots)) return null;
+            ClearAll();
+            return "Salvamento: os 3 slots foram apagados.";
+        }
+
+        public static string GuardedAdvance(float seconds) =>
+            SlotGuard.Allow($"avançar o tempo jogado em {seconds / 60f:0} min nos slots que têm arquivo", AllSlots) ? AdvancePlayTime(seconds) : null;
 
         // ---------- Ações (as mesmas que o teste confere) ----------
 
