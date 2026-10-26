@@ -77,7 +77,7 @@ namespace Nibiru.UI
             {
                 ItemDefinition item = entries[selected].item;
                 // Ler uma tabuleta abre outra tela: fecha o inventário antes.
-                if (item.tablet != null) SetOpen(false);
+                if (item.tablet != null || item.document != null) SetOpen(false);
                 itemUser.TryUse(item, out string message);
                 if (!string.IsNullOrEmpty(message)) Notifications.Post(message);
                 Refresh();

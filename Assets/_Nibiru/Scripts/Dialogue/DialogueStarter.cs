@@ -1,4 +1,7 @@
 using Nibiru.Interaction;
+using Nibiru.Inventory;
+using Nibiru.Localization;
+using Nibiru.Quests;
 using UnityEngine;
 
 namespace Nibiru.Dialogue
@@ -21,13 +24,47 @@ namespace Nibiru.Dialogue
         [Tooltip("Texto do aviso, por exemplo \"Falar com Samir\".")]
         [SerializeField] string prompt = "Falar";
 
+        [Tooltip("Chave do texto do aviso na tabela de idiomas (ui.interact...). Vazio = usa o texto acima.")]
+        [SerializeField, LocKey] string promptKey;
+
         [Tooltip("A conversa acontece uma vez só por partida.")]
         [SerializeField] bool onlyOnce;
 
-        public string Prompt => prompt;
+        [Header("Conversa alternativa (opcional)")]
+        [Tooltip("Vale no lugar da conversa normal enquanto a Elena tiver o item abaixo e nenhum dos eventos abaixo tiver acontecido.")]
+        [SerializeField] DialogueDefinition alternateDialogue;
+        [SerializeField] ItemDefinition alternateItem;
+        [SerializeField, Min(1)] int alternateItemCount = 1;
+        [SerializeField] StoryEvent[] alternateUnlessRaised = new StoryEvent[0];
+
+        PlayerInventory inventory;
+
+        public string Prompt => Loc.Get(promptKey, prompt);
         public bool CanInteract => interactable && isActiveAndEnabled && CanPlay;
 
-        bool CanPlay => dialogue != null && !(onlyOnce && DialogueRunner.HasSeen(dialogue));
+        // A conversa que vale agora: a alternativa, se as condições batem, ou a normal.
+        DialogueDefinition Chosen => UseAlternate ? alternateDialogue : dialogue;
+
+        bool UseAlternate
+        {
+            get
+            {
+                if (alternateDialogue == null || alternateItem == null) return false;
+                foreach (StoryEvent blocker in alternateUnlessRaised)
+                    if (StoryEvents.HasBeenRaised(blocker)) return false;
+                if (inventory == null) inventory = FindFirstObjectByType<PlayerInventory>();
+                return inventory != null && inventory.Has(alternateItem, alternateItemCount);
+            }
+        }
+
+        bool CanPlay
+        {
+            get
+            {
+                DialogueDefinition chosen = Chosen;
+                return chosen != null && !(onlyOnce && DialogueRunner.HasSeen(chosen));
+            }
+        }
 
         void Awake()
         {
@@ -41,7 +78,7 @@ namespace Nibiru.Dialogue
 
         public void StartDialogue()
         {
-            if (CanPlay) runner.Play(dialogue);
+            if (CanPlay) runner.Play(Chosen);
         }
     }
 }

@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f515f2d78f90c478b69593785f8897, type: 3}
+  m_Name: Aldeia_QuartoEscuro
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueDefinition
+  nodes:
+  - id: q1
+    speaker: Umm Karim
+    speakerKey: spk.umm_karim
+    textKey: dlg.Aldeia_QuartoEscuro.q1
+    text: 
+    next: q2
+    raise: {fileID: 0}
+    choices: []
+  - id: q2
+    speaker: Abu Faris
+    speakerKey: spk.abu_faris
+    textKey: dlg.Aldeia_QuartoEscuro.q2
+    text: 
+    next: q3
+    raise: {fileID: 0}
+    choices: []
+  - id: q3
+    speaker: Elena
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_QuartoEscuro.q3
+    text: 
+    next: q4
+    raise: {fileID: 0}
+    choices: []
+  - id: q4
+    speaker: Abu Faris
+    speakerKey: spk.abu_faris
+    textKey: dlg.Aldeia_QuartoEscuro.q4
+    text: 
+    next: q5
+    raise: {fileID: 0}
+    choices: []
+  - id: q5
+    speaker: Abu Faris
+    speakerKey: spk.abu_faris
+    textKey: dlg.Aldeia_QuartoEscuro.q5
+    text: 
+    next: q6
+    raise: {fileID: 0}
+    choices: []
+  - id: q6
+    speaker: Abu Faris
+    speakerKey: spk.abu_faris
+    textKey: dlg.Aldeia_QuartoEscuro.q6
+    text: 
+    next: q7
+    raise: {fileID: 0}
+    choices: []
+  - id: q7
+    speaker: Umm Karim
+    speakerKey: spk.umm_karim
+    textKey: dlg.Aldeia_QuartoEscuro.q7
+    text: 
+    next: q8
+    raise: {fileID: 0}
+    choices: []
+  - id: q8
+    speaker: Elena
+    speakerKey: spk.elena
+    textKey: dlg.Aldeia_QuartoEscuro.q8
+    text: 
+    next: 
+    raise: {fileID: 0}
+    choices: []
+  raiseOnEnd: {fileID: 0}

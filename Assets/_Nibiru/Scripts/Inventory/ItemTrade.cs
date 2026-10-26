@@ -1,5 +1,6 @@
 using Nibiru.Dialogue;
 using Nibiru.Interaction;
+using Nibiru.Localization;
 using Nibiru.Quests;
 using Nibiru.UI;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace Nibiru.Inventory
         [Header("Troca")]
         [Tooltip("Aviso quando a Elena tem o item a entregar, por exemplo \"Dar os curativos à Dra. Weiss\".")]
         [SerializeField] string tradePrompt = "Entregar";
+        [Tooltip("Chave do aviso na tabela de idiomas (ui.interact...). Vazio = usa o texto acima.")]
+        [SerializeField, LocKey] string tradePromptKey;
         [SerializeField] ItemDefinition takeItem;
         [SerializeField, Min(1)] int takeCount = 1;
 
@@ -45,6 +48,7 @@ namespace Nibiru.Inventory
         [Tooltip("Sem o item a entregar, o personagem diz isto (repetível).")]
         [SerializeField] DialogueDefinition waitingDialogue;
         [SerializeField] string talkPrompt = "Falar";
+        [SerializeField, LocKey] string talkPromptKey;
         [Tooltip("Depois da troca, o personagem diz isto (repetível).")]
         [SerializeField] DialogueDefinition afterDialogue;
 
@@ -69,7 +73,7 @@ namespace Nibiru.Inventory
             }
         }
 
-        public string Prompt => CanTrade ? tradePrompt : talkPrompt;
+        public string Prompt => CanTrade ? Loc.Get(tradePromptKey, tradePrompt) : Loc.Get(talkPromptKey, talkPrompt);
 
         public bool CanInteract
         {

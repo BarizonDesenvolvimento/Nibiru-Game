@@ -49,6 +49,19 @@ namespace Nibiru.Inventory
                 return true;
             }
 
+            if (item.document != null)
+            {
+                // Um documento que virou item (as fotos do Tom): abre na tela de leitura.
+                var reading = FindFirstObjectByType<UI.ReadingScreenUI>();
+                if (reading != null)
+                {
+                    reading.Show(item.document.LocalizedTitle, item.document.LocalizedText, item.document.LocalizedFooter);
+                    Quests.StoryEvents.Raise(item.document.raiseOnRead);
+                    message = null;
+                    return true;
+                }
+            }
+
             if (item.tablet != null && tabletReader != null)
             {
                 // A tela de leitura já mostra o resultado (ou a mensagem diz por que ainda não).

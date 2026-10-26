@@ -19,6 +19,12 @@ namespace Nibiru.Inventory
     [CreateAssetMenu(menuName = "Nibiru/Itens/Item", fileName = "NovoItem")]
     public class ItemDefinition : ScriptableObject
     {
+        [Tooltip("Código estável do item, para o salvamento e para referências fora do jogo. Nunca muda depois de definido, mesmo se o arquivo for renomeado. Vazio = usa o nome do arquivo.")]
+        public string id;
+
+        /// <summary>O código estável do item (o campo Id, ou o nome do arquivo se estiver vazio).</summary>
+        public string Id => string.IsNullOrEmpty(id) ? name : id;
+
         [Tooltip("Chaves dos textos na tabela de idiomas (item.<nome>.name, .desc, .hint).")]
         [LocKey] public string nameKey;
         [LocKey] public string descriptionKey;
@@ -56,6 +62,9 @@ namespace Nibiru.Inventory
 
         [Tooltip("Só para tabuletas: os dados da tabuleta. Usar o item decifra (ou relê) a tabuleta.")]
         public Tablets.TabletDefinition tablet;
+
+        [Tooltip("Só para documentos que viram item (as fotos do Tom): usar o item abre o documento na tela de leitura.")]
+        public Documents.DocumentDefinition document;
 
         public bool IsKeyItem => category == ItemCategory.Chave;
     }

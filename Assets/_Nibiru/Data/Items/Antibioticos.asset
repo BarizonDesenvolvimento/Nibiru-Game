@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97d3e1356bfd73438162047cca03c87, type: 3}
   m_Name: Antibioticos
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Inventory.ItemDefinition
+  id: 
   nameKey: item.Antibioticos.name
   descriptionKey: item.Antibioticos.desc
   hintKey: 
@@ -24,3 +25,4 @@ MonoBehaviour:
   healAmount: 0
   firearm: {fileID: 0}
   tablet: {fileID: 0}
+  document: {fileID: 0}
