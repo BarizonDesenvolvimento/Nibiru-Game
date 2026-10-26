@@ -21,6 +21,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **passo 14** (o wadi: um leito de uns 60 m com curva, tempestade de areia provisória, um líder de esquadra, o rádio do Kast que espera a fita de Irena terminar e a primeira escolha de facção, com três opções) está pronto em blockout, testado pela ponte e **testado no Play pelo dono e aprovado**. Fechado. Veja "Wadi, passo 14".
 - O **passo 15** (a fuga na caminhonete do Samir até o fim da demo: nicho do túnel para quem devolve a tabuleta, embarque, viagem em trilho com a conversa "A estrada" de cada escolha, diário, tela de fim da demo e menu principal provisório) está pronto em blockout, testado pela ponte e **testado no Play pelo dono e aprovado** (as três escolhas, o nicho, a pausa, o diário, o fim da demo e o menu principal). Fechado, menos as animações de sentado e de dirigir, que o dono vai trazer. Veja "Fuga, passo 15".
 - O **Arquivo de documentos e fitas** (etapa A3: tela no menu de pausa, códigos estáveis para o salvamento do A4, inscrições da Aldeia e da passagem e a carta do soldado nas Trincheiras) está pronto, testado pela ponte e **testado no Play pelo dono e aprovado em 26/out/2026**. A parte 2 do A3 (rolagem, mais 2 documentos da base e os textos definitivos das inscrições da Aldeia e do Poço) está pronta, testada pela ponte e **testada no Play pelo dono e aprovada em 26/out/2026**. Veja "Arquivo de documentos e fitas (etapa A3)".
+- O **salvamento em disco com 3 slots** (etapa A4a: gravar e carregar o último checkpoint, códigos permanentes, "Continuar" mínimo no menu principal) está pronto e testado pela ponte, **esperando o teste do dono no Play**. A tela de slots fica para o A4b. Veja "Salvamento em disco, 3 slots (etapa A4a)".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
@@ -51,7 +52,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 | --- | --- |
 | `Scenes/Teste_Personagem` | Laboratório de sistemas: tem conteúdo de teste de tudo (missão Treinamento, Samir animado com conversa de teste, soldados, Lullu, chefe, bonecos, brasas, altar). Os arquivos de teste têm prefixo `Teste_` |
 | `Scenes/Regiao1_SitioDeUr` | A região de verdade: blockout, Elena e o conteúdo do Acampamento, das Trincheiras e da Aldeia |
-| `Scenes/MenuPrincipal` | Menu principal provisório (Novo jogo, Sair). Primeira da lista do Build; a tela de fim da demo volta para ele. Criada por **Nibiru > Conteúdo > Criar menu principal provisório** |
+| `Scenes/MenuPrincipal` | Menu principal provisório (Continuar, só quando há um slot recente que carrega; Novo jogo, no slot 1; Sair). Primeira da lista do Build; a tela de fim da demo volta para ele. Criada por **Nibiru > Conteúdo > Criar menu principal provisório** |
 | `Scenes/Teste_Ninsar` | Prévia da Ninsar animada: troca de animação por teclas (setas, 1 a 0, espaço recomeça) ou pelo menu na tela; câmera gira com o botão direito do mouse |
 | `Scenes/Memoria_Shuruppak` | Memória jogável da Tabuleta do Junco (Shuruppak ao pôr do sol). Não se joga sozinha: é carregada por cima da região no passo 8. Fica longe da origem, em (2000, 0, 2000) |
 
@@ -251,7 +252,7 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **A Elena na viagem:** presa na caçamba (movimento, interação, combate e dano desligados); a câmera gira livre. Pausar (Esc) congela o trilho e continuar o retoma; "Voltar ao último checkpoint" na pausa recomeça do embarque.
 - **Fim:** ao chegar, o diário (`Data/Documents/Diario_Entrada_1`, texto provisório, na tela de leitura dos documentos) dispara `LeuODiario`; ao fechá-lo dispara `FimDaFatia`, que abre a **tela provisória de fim da demo** (`UI/DemoEndScreen`). Confirmar zera a partida e os pontos de retorno e volta ao **menu principal** (`UI/MainMenuUI`, cena `Scenes/MenuPrincipal`, primeira da lista do Build: "Novo jogo" e "Sair do jogo", setas ou direcional e Enter ou A). "Novo jogo" abre a região do começo.
 - **Para ajustar jogando:** as falas estão em `Data/Dialogues/Fuga_*`; o diário em `Data/Documents/Diario_Entrada_1`; a duração mínima (60 s), o atraso da conversa (2 s) e o trilho no `TruckRide` da `Conteudo_Fuga/Caminhonete/Caminhonete_Do_Samir`.
-- **Provisório e pendências:** o **Samir dirige** (sentado ao volante, num banco e volante provisórios; o fundo da cabine ganhou uma janela traseira de 1,9 a 2,75 m para ele aparecer) e a **Elena viaja sentada no chão da caçamba** (veja "Animações da biblioteca"); falta voz nas falas; a estrada, a caminhonete e a tempestade são formas simples; o diário é só uma tela de texto; a tabuleta de quem **entrega** continua no inventário (só os eventos mudam); o menu principal não tem opções nem save; o segundo líder de esquadra e a passagem do helicóptero sobre a base continuam como pendência da base do zigurate.
+- **Provisório e pendências:** o **Samir dirige** (sentado ao volante, num banco e volante provisórios; o fundo da cabine ganhou uma janela traseira de 1,9 a 2,75 m para ele aparecer) e a **Elena viaja sentada no chão da caçamba** (veja "Animações da biblioteca"); falta voz nas falas; a estrada, a caminhonete e a tempestade são formas simples; o diário é só uma tela de texto; a tabuleta de quem **entrega** continua no inventário (só os eventos mudam); o menu principal não tem opções nem a tela de slots (o "Continuar" mínimo veio no A4a; a tela fica para o A4b); o segundo líder de esquadra e a passagem do helicóptero sobre a base continuam como pendência da base do zigurate.
 - Teste feito pela ponte (teste automático, 3 itens): veja "Como testar o passo 15".
 
 **Secundária "Remédio para Yusuf" (em blockout, testada pela ponte e aprovada pelo dono no Play):**
@@ -323,6 +324,67 @@ Os textos novos (`doc.Aldeia_Inscricao.*`, `doc.Passagem_Inscricao.*`, `doc.Trin
 
 **O A3 está fechado, parte de texto incluída, e os textos foram testados no Play pelo dono e aprovados em 26/out/2026.** **Pendências do Arquivo:** a fita só se revê em texto e o texto dela é provisório (a voz de Irena entra depois); a leitura do registro do guincho (o texto mais longo) cabe na tela com letra 22 de no máximo 32, sem cortar a última linha (o teste confere que todo documento cabe, com letra de pelo menos 18); ordem dos menus depois de mexer na base: **Base > Poço > Wadi > Fuga > Remédio para Yusuf > O que o Tom viu** (o menu do Poço recria a passagem e o da Fuga acrescenta a conversa do Remédio à viagem).
 
+## Salvamento em disco, 3 slots (etapa A4a)
+
+**Decisão (26/out/2026):** a decisão antiga "sem save em disco, a fatia se joga de uma vez, só com checkpoints" (tabela de `Docs/Regiao-1-Sitio-de-Ur.md`) foi trocada por **3 slots de salvamento**. O A4a fez o sistema e o teste; a **tela de slots** (escolher, sobrescrever e apagar, e a mensagem ao jogador sobre arquivo ruim) fica para o **A4b**.
+
+**Onde ficam os arquivos:** em `Application.persistentDataPath`, que no Windows é `C:\Users\<usuário>\AppData\LocalLow\Barizon Desenvolvimento\Nibiru\` (atalho **Abrir a pasta dos slots**, abaixo):
+- `save_1.json`, `save_2.json`, `save_3.json`: um arquivo por slot.
+- `ultimo_slot.json`: qual slot foi usado por último (o "Continuar").
+- Cada gravação vai primeiro para `save_N.json.tmp` e só depois troca o definitivo: se o jogo cair no meio, o arquivo antigo fica inteiro.
+- As opções (sensibilidade, inverter eixo, idioma) **não** entram nos slots: continuam no `PlayerPrefs` (`GameOptions`, `Loc`).
+
+**O que grava** (`Save/SaveSlots`): o último checkpoint (`Checkpoints.Data`: cena, código do checkpoint, posição, rotação, vida, inventário, itens-chave, arma equipada e balas em cada arma) e o mundo daquele momento (`WorldState`: eventos, passo de cada missão, missões que falharam, reputação, transformação, itens pegos e checkpoints ativados). Mais um **resumo** para a tela de slots: código da área (o nome vem de `ui.area.<área>` no `pt-BR.json`), data e hora, tempo jogado e "demo concluída". Documentos e fitas lidos não precisam de campo próprio: vivem nos eventos.
+
+**Quando grava:** sempre no slot escolhido ao começar a partida: no **"Novo jogo"** (o começo, antes do primeiro checkpoint, para o "Continuar" já funcionar) e a cada **checkpoint, altar ou salvamento automático** (`PlayerRespawn.SaveCheckpoint`). Não há salvamento manual nem slot separado de automático. **Nunca dentro da memória de Shuruppak** (vale o último checkpoint de antes). Enquanto a tela de slots não existe, "Novo jogo" usa o **slot 1**. **Play direto na cena e atalhos de teste não gravam** (sem slot escolhido; `TestShortcuts.StartFrom` solta o slot), para os testes não apagarem um slot de verdade.
+
+**Carregar** = voltar ao último checkpoint pelo **mesmo caminho de quando a Elena morre** (`Checkpoints.Restart`); a vida volta com pelo menos 50%, como na morte. Nenhuma regra nova para inimigos ou itens. Um slot gravado no "Novo jogo" (sem checkpoint) abre a região do começo.
+
+**Fim da demo:** a tela de fim (`DemoEndScreen.Show`) marca o slot como **"demo concluída"**: ele não carrega mais e some do "Continuar"; pode ser sobrescrito (uma partida nova nele) ou apagado.
+
+**Arquivo ruim:** ausente, corrompido, cortado, vazio, de outra versão, ou com um código que o jogo não conhece mais (item, arma, missão ou passo): o jogo **não trava**, trata o slot como vazio e avisa no Console ("Salvamento: ..."). A mensagem ao jogador entra no A4b.
+
+**Tempo jogado** (`Save/PlayTime`): conta em tempo de relógio (conversas e cenas contam) e **para** no menu de pausa (e no Arquivo, que abre por ele), no menu principal e na tela de fim da demo. É gravado e volta ao carregar.
+
+**Regra da versão:** o arquivo tem o campo `versao` (hoje **1**, `SaveSlots.Version`). **Qualquer mudança futura no formato do arquivo aumenta esse número.** Um arquivo de outra versão conta como vazio (avisa no Console); se um dia for preciso aproveitar saves antigos, escreva a conversão da versão velha para a nova.
+
+**Códigos permanentes (IDs estáveis).** O arquivo nunca guarda nome de arquivo nem referência, só códigos que **nunca mudam, nunca se repetem e nunca são reaproveitados**:
+
+| O quê | Código | Onde fica |
+| --- | --- | --- |
+| Itens (12) | campo `id` do item: `antibioticos`, `cartucho`, `curativo`, `espingarda`, `faca_de_campo`, `fotos_do_tom`, `kit_medico`, `municao_9mm`, `pistola_makarov`, `radio_de_campanha`, `rolo_de_filme_do_tom`, `tabuleta_do_junco` | `ItemDefinition.id` |
+| Armas (2) | `arma.pistola`, `arma.espingarda` | `FirearmDefinition.id` (campo novo) |
+| Missões (5) | `missao.sobrevivente`, `missao.remedio_para_yusuf`, `missao.o_que_o_tom_viu` (e as de teste `missao.teste_treinamento`, `missao.teste_o_que_o_tom_viu`) | `QuestDefinition.stableId` (campo novo; o `Id` de antes, o nome do arquivo, continua sendo a chave do `WorldState`) |
+| Passos de missão | o código do passo (`s1`, `s2`...), gravado como `missao.x/sN`; missão terminada grava `concluida` | `QuestStep.id` (o mesmo da localização) |
+| Checkpoints e itens do chão (35 na região, 19 deles checkpoints) | `PersistentId`: prefixo da área + nome do objeto (`aldeia.checkpoint_patio`) | gerado pelos scripts de conteúdo (`ContentKit.StableId`) |
+| Documentos e fitas | `doc.*`, `tape.*` (veja a tabela do Arquivo) | `DocumentDefinition.id`, `TapeDefinition.id` |
+| Eventos (93) e facções (3) | **o nome do arquivo** (decisão do dono: não ganharam campo próprio). **Não renomeie** um evento nem uma facção | `StoryEvent.Id`, `FactionDefinition.Id` |
+
+- **Registro central:** `Resources/Save/Registro` (`SaveRegistry`) liga código a arquivo (itens, armas, missões). Refeito por **Nibiru > Salvamento > Criar registro e códigos**, que também dá código a item, arma ou missão nova que ainda não tem (nunca muda um que já existe).
+- **Lista de códigos conhecidos:** `Docs/Codigos-Salvamento.txt` (205 códigos, uma linha por código). **Só cresce**: o menu acima acrescenta os novos. O teste acusa um código daqui que sumiu (arquivo renomeado ou apagado: um save antigo deixaria de achar o que guardou). Para tirar um código de propósito (um evento apagado de vez), apague a linha dele.
+- **Ao criar conteúdo novo** (item, arma, missão, evento, área): rode **Criar registro e códigos** e faça commit da lista junto. Uma área nova com checkpoints precisa do texto `ui.area.<prefixo>` no `pt-BR.json`; sem ele, o slot mostra "Sítio de Ur" e avisa no Console.
+
+**Nomes das áreas** (`ui.area.*`, pelo prefixo do código do checkpoint): `acampamento` Acampamento, `trincheiras` Trincheiras, `aldeia` Aldeia, `base` Base do zigurate, `poco` Boca do Poço (inclui o topo da rampa da passagem), `wadi` Wadi, `fuga` Estrada para Tell Amar; padrão `sitio_de_ur` Sítio de Ur. O "Continuar" ganhou a chave `ui.menu.continuar`. Os textos só estão no pt-BR (o inglês cai nele).
+
+**Atalhos** (**Nibiru > Testes > Salvamento**, `Scripts/Editor/Save/SaveShortcuts.cs`):
+
+| Atalho | O que faz |
+| --- | --- |
+| Gravar aqui no slot 1, 2 ou 3 | Com o Play ligado na região: marca um ponto de retorno onde a Elena está e grava no slot (ele vira o slot da partida) |
+| Carregar o slot 1, 2 ou 3 | Liga o Play (se preciso) e carrega o slot |
+| Apagar o slot 1, 2 ou 3 | Pergunta antes e apaga o arquivo |
+| Resumo de todos os slots (Console) | Área, data e hora, tempo jogado e "demo concluída" de cada slot, o último usado e o slot da partida |
+| Abrir a pasta dos slots | Abre a pasta no Explorer |
+| Fechar e continuar | Grava no slot da partida (ou no 1), sai do Play, liga o Play no **menu principal** e escolhe "Continuar". Depois disso a cena aberta no editor fica sendo a `MenuPrincipal` |
+| Teste automático | O teste abaixo (uns 40 s) |
+| Teste de códigos | O teste de códigos (sem Play) |
+
+**Teste automático** (11 cenários, **tudo OK**; grava numa pasta só de teste, `Teste_Salvamento`, apagada no fim): cada um dos 19 checkpoints da região (ativar, gravar, limpar a memória, carregar e comparar com a volta depois de morrer: eventos, missões, falhas, reputação, transformação, itens pegos, checkpoints, inventário, munição, vida, direção e posição, e o tempo jogado); três slots independentes; carregar e avançar até outro checkpoint (o slot muda, os outros não); morrer depois de carregar; menu principal ("Continuar" abre o mais recente, sem slots não aparece, "Novo jogo" grava o começo e o "Continuar" funciona antes do primeiro checkpoint); arquivo ausente, corrompido, cortado, vazio, de versão 0 e 2, com item e missão desconhecidos e "último slot" quebrado; memória de Shuruppak sem gravar; fim da demo; tempo jogado na pausa; nomes das áreas. **Teste de códigos** (8 conferências, tudo OK): código vazio, repetido, fora do registro, fora da lista ou sumido da lista, objetos da região sem código e área de cada checkpoint. Ele também roda **no começo do teste geral dos atalhos**, como um item a mais (resultado em "Teste geral dos atalhos"). O teste de chaves e códigos da localização continua todo OK. "Fechar e continuar" foi conferido à parte pela ponte (do nicho da Aldeia, volta ao nicho com o mundo igual).
+
+**O que voltou diferente do esperado:** nada no salvamento. Uma observação do comportamento de hoje, que já acontece ao morrer: no checkpoint **`poco.checkpoint_pe_da_descida`** a Elena reaparece uns **0,6 m ao lado** do ponto de retorno (algo do andaime a empurra). O teste aceita até 1 m e escreve uma observação no Console. Ficou nas pendências da etapa B.
+
+**Para o dono testar no Play:** menu principal > Novo jogo > ande até o primeiro ponto de retorno > pare o Play > Play no menu principal > "Continuar". Ou use **Fechar e continuar** de qualquer atalho de passo. O resumo dos slots mostra o que ficou gravado.
+
 ## Sistemas prontos
 
 Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquivos de dados (`Assets/_Nibiru/Data`).
@@ -336,6 +398,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | Itens e inventário | `Inventory/` | `Data/Items` |
 | Vida, dano, morte | `Combat/Health`, `Player/PlayerDeathHandler` | — |
 | Checkpoints e estado do mundo | `Save/` (`WorldState`, `Checkpoints`, `PersistentId`) | — |
+| Salvamento em disco (3 slots), tempo jogado | `Save/SaveSlots`, `Save/SaveRegistry`, `Save/PlayTime` | `Resources/Save/Registro` |
 | Faca | `Combat/PlayerMeleeAttack` | `Data/Combat/Faca` |
 | Armas de fogo | `Combat/PlayerWeapons` | `Data/Combat/Pistola`, `Espingarda` |
 | Furtividade e ruído | `Stealth/` | valores em `MovimentoJogador` e nas armas |
@@ -650,7 +713,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 Menu **Nibiru > Testes > Teste geral dos atalhos (Elena na malha)** (`Scripts/Editor/ShortcutsCheck.cs`, uns 6 minutos). Roda **todos** os atalhos registrados em `TestShortcuts` (os novos entram sozinhos, sem mexer no teste), espera 2 s o mundo se arrumar (fechando conversas e telas de leitura) e observa 1,5 s: a Elena tem de estar com o pé a menos de 0,8 m da malha de navegação, apoiada no chão (`isGrounded`), viva, sem perder mais de 1 m de altura e acima de y = -30. Os atalhos da região rodam numa partida; os do laboratório (`elena.`, `soldados.` e `samir.laboratorio`), numa segunda, e no fim a região é reaberta. Resumo no Console: OK, FALHOU ou PULADO em cada atalho. Pulados, com o motivo: testes automáticos (`.teste`), vitrines e animações (chão sem malha), a viagem na caçamba (`passo15.meio_*`, `passo15.chegada`, `remedio.viagem_*`: trilho sem malha) e a memória de Shuruppak (`passo8.memoria`, `passo8.cabana`). Para pular outro, mude `SkipReason` no script.
 
-Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 e 9 do passo 11). Depois do Arquivo (A3): **84 OK, 0 FALHOU, 27 pulados**; depois da parte 2 (atalhos 8 e 9): **86 OK, 0 FALHOU, 27 pulados**. Na primeira rodada achou um defeito real: o atalho `soldados.trincheiras` punha a Elena em (0, 0, -75), dentro do talude `Talude_H1_B`, e ela caía 119 m; agora nasce em (0, 0, -77,5).
+Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 e 9 do passo 11). Depois do Arquivo (A3): **84 OK, 0 FALHOU, 27 pulados**; depois da parte 2 (atalhos 8 e 9): **86 OK, 0 FALHOU, 27 pulados**. Depois do salvamento (A4a): **87 OK, 0 FALHOU, 31 pulados** (o item a mais é o teste de códigos do salvamento, que agora roda no começo; os 4 pulados novos são o teste automático e os 3 "carregar o slot", que mexem nos arquivos de salvamento). Na primeira rodada achou um defeito real: o atalho `soldados.trincheiras` punha a Elena em (0, 0, -75), dentro do talude `Talude_H1_B`, e ela caía 119 m; agora nasce em (0, 0, -77,5).
 
 ## Como testar sozinho pela ponte MCP
 
@@ -709,14 +772,20 @@ Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fo
 - **Remédio para Yusuf:** a recompensa (antibióticos, gastar um dos 2 curativos do mapa na Weiss) não mexe no combate, mas conferir no teste completo se os curativos fazem falta para quem os troca.
 - **Equilíbrio da luta do Primeiro Servo:** com pouca munição a luta fica impossível e na faca é difícil demais. Decidir entre munição na arena, faca mais forte contra o Servo atordoado ou munição mínima garantida antes da antecâmara.
 
+## Pendências da etapa B (polimento)
+
+- **Fita de Irena recomeçando:** ao voltar de um checkpoint (ou carregar um slot) com a fita nº 1 pega e não terminada, ela toca de novo do começo. Aceito pelo dono por enquanto (26/out).
+- **Soldado caído da Aldeia:** ao voltar de um checkpoint (ou carregar um slot) depois do encontro com o Samir, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo). Aceito pelo dono por enquanto (26/out).
+- **Ponto de retorno do pé da descida do Poço** (`poco.checkpoint_pe_da_descida`): a Elena reaparece uns 0,6 m ao lado do ponto (achado pelo teste do salvamento; acontece igual ao morrer).
+
 ## Próximos passos
 
 1. Teste do dono nas vitrines de animação (veja "Animações da biblioteca"); os passos 1 a 15 já foram aprovados pelo dono. Depois, o segundo líder e a passagem do helicóptero na base, a revelação dos filmes do Tom.
 2. Seguir área por área: Zigurate, Poço e Wadi.
 3. Pendências das Trincheiras: o rádio de campanha avisando onde estão as patrulhas (a tela de documentos e fitas já existe: veja "Arquivo de documentos e fitas (etapa A3)").
-4. Pendência da Aldeia: ao voltar de um checkpoint depois do encontro, o soldado caído reaparece sempre na entrada leste, e não na entrada onde o encontro aconteceu (guardar a entrada escolhida no estado do mundo).
+4. Salvamento: teste do dono no Play do A4a; depois, o **A4b** (tela de slots no menu principal: escolher, sobrescrever e apagar, mensagem de arquivo ruim). A pendência do soldado caído da Aldeia foi para "Pendências da etapa B (polimento)".
 5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
-6. Versões simples do Grupo 2 (cenas, crafting, save em disco). O diário fica fora da demo (decisão de 25/out). A memória jogável já tem a versão simples. Localização parte 1 e a conclusão de "O que o Tom viu" (fotógrafo, quarto escuro, item "Fotos do Tom") estão na fila; veja "Decisões de 25/out/2026".
+6. Versões simples do Grupo 2 (cenas, crafting; o save em disco está no A4a/A4b). O diário fica fora da demo (decisão de 25/out). A memória jogável já tem a versão simples. Localização parte 1 e a conclusão de "O que o Tom viu" (fotógrafo, quarto escuro, item "Fotos do Tom") estão na fila; veja "Decisões de 25/out/2026".
 7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
 
 ### Como testar o passo 15
