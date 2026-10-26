@@ -6,7 +6,7 @@ namespace Nibiru.UI
 {
     /// <summary>
     /// Tela cheia de leitura: tabuletas agora, documentos e cartas depois. Pausa o jogo
-    /// enquanto está aberta e fecha com Confirmar ou Voltar.
+    /// enquanto está aberta e fecha com Confirmar ou Voltar, ou com o clique do mouse (esquerdo ou direito).
     /// Fica num objeto que não some (o Canvas); o painel filho é que liga e desliga.
     /// </summary>
     public class ReadingScreenUI : MonoBehaviour
@@ -20,6 +20,7 @@ namespace Nibiru.UI
 
         float timeScaleBefore = 1f;
         int shownFrame = -10;
+        int enableGameplayFrame = -1;
 
         public bool IsOpen => panel.activeSelf;
 
@@ -49,6 +50,8 @@ namespace Nibiru.UI
                 timeScaleBefore = Time.timeScale;
                 Time.timeScale = 0f;
                 input.SetGameplayEnabled(false);
+                enableGameplayFrame = -1;
+                CursorPolicy.RequestFree(this, false);
                 panel.SetActive(true);
             }
             onClosed = closedCallback;
@@ -59,15 +62,37 @@ namespace Nibiru.UI
             hintLabel.text = $"[{input.ConfirmButtonLabel}] Fechar";
         }
 
+        void OnDestroy() => CursorPolicy.Release(this);
+
         void Update()
         {
+            // Fechada com o clique do mouse, a leitura devolve o jogo no quadro seguinte (o mesmo clique não atira nem ataca).
+            if (enableGameplayFrame >= 0 && Time.frameCount > enableGameplayFrame)
+            {
+                enableGameplayFrame = -1;
+                if (!IsOpen) input.SetGameplayEnabled(true);
+            }
             // O mesmo apertar que abriu a leitura não a fecha.
             if (!IsOpen || Time.frameCount == shownFrame) return;
-            if (input.ConfirmPressed || input.BackPressed) Close();
+            if (input.ConfirmPressed || input.BackPressed)
+            {
+                MenuPointer.NoteKeyboardOrPad();
+                Close(false);
+                return;
+            }
+            PointerStep(MenuPointer.Read());
         }
 
-        void Close()
+        /// <summary>Um quadro do mouse: o clique esquerdo ou o direito fecham a leitura (também usado pelos testes).</summary>
+        public void PointerStep(MenuPointer.State pointer)
         {
+            if (!IsOpen || Time.frameCount == shownFrame) return;
+            if (pointer.leftClick || pointer.rightClick) Close(true);
+        }
+
+        void Close(bool byPointer)
+        {
+            CursorPolicy.Release(this);
             panel.SetActive(false);
             System.Action callback = onClosed;
             onClosed = null;
@@ -78,7 +103,8 @@ namespace Nibiru.UI
                 return;
             }
             Time.timeScale = timeScaleBefore;
-            input.SetGameplayEnabled(true);
+            if (byPointer) enableGameplayFrame = Time.frameCount;
+            else input.SetGameplayEnabled(true);
         }
     }
 }

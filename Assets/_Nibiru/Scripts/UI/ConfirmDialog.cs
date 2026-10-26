@@ -19,6 +19,15 @@ namespace Nibiru.UI
 
         public bool IsOpen { get; private set; }
 
+        /// <summary>Linha do texto de <see cref="Render"/> onde está "Cancelar" (para o mouse).</summary>
+        public int CancelLine { get; private set; }
+
+        /// <summary>Linha do texto de <see cref="Render"/> onde está o botão de confirmar (para o mouse).</summary>
+        public int ConfirmLine { get; private set; }
+
+        /// <summary>Põe o foco em "Cancelar" (true) ou no botão de confirmar (false), como as setas fariam.</summary>
+        public void SetFocus(bool onCancel) => FocusOnCancel = onCancel;
+
         /// <summary>True enquanto o foco está em "Cancelar".</summary>
         public bool FocusOnCancel { get; private set; } = true;
 
@@ -74,7 +83,9 @@ namespace Nibiru.UI
             var text = new StringBuilder();
             text.Append("<size=52><b>").Append(title).AppendLine("</b></size>").AppendLine();
             text.AppendLine(message).AppendLine();
+            CancelLine = TextLines.NextLine(text);
             AppendOption(text, Loc.Get("ui.confirmar.cancelar", "Cancelar"), FocusOnCancel, gold, muted);
+            ConfirmLine = TextLines.NextLine(text);
             AppendOption(text, confirmLabel, !FocusOnCancel, gold, muted);
             return text.ToString();
         }

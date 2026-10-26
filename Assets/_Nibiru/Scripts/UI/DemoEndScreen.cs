@@ -31,6 +31,7 @@ namespace Nibiru.UI
             Time.timeScale = 0f;
             PlayTime.Hold(this);
             SaveSlots.MarkDemoCompleted();
+            CursorPolicy.RequestFree(this, false);
             if (input != null)
             {
                 input.SetGameplayEnabled(false);
@@ -44,8 +45,23 @@ namespace Nibiru.UI
         {
             // O mesmo apertar que fechou a leitura do diário não confirma esta tela.
             if (!IsOpen || input == null || Time.frameCount - shownFrame < 20) return;
-            if (input.ConfirmPressed) ReturnToMenu();
+            if (input.ConfirmPressed)
+            {
+                MenuPointer.NoteKeyboardOrPad();
+                ReturnToMenu();
+                return;
+            }
+            PointerStep(MenuPointer.Read());
         }
+
+        /// <summary>Um quadro do mouse: o clique esquerdo volta ao menu principal (também usado pelos testes).</summary>
+        public void PointerStep(MenuPointer.State pointer)
+        {
+            if (!IsOpen || Time.frameCount - shownFrame < 20) return;
+            if (pointer.leftClick) ReturnToMenu();
+        }
+
+        void OnDestroy() => CursorPolicy.Release(this);
 
         /// <summary>Zera a partida e carrega o menu principal.</summary>
         public void ReturnToMenu()

@@ -15,6 +15,9 @@ namespace Nibiru.UI
     /// Nas opções, esquerda e direita ajustam sensibilidades e inverter o eixo vertical.
     /// Só abre com a Elena no controle (não abre por cima de outro menu, diálogo ou morte).
     /// Fica num objeto que não some (o Canvas); o painel filho é que liga e desliga.
+    /// O mouse entra por cima do teclado e do controle: passar sobre um item move o foco, o clique esquerdo ativa (nas Opções,
+    /// o lado esquerdo ou direito da seta ajusta), o direito volta, e a roda rola o Arquivo. Enquanto a pausa está aberta o
+    /// cursor fica livre.
     /// </summary>
     public class PauseMenuUI : MonoBehaviour
     {
@@ -58,6 +61,15 @@ namespace Nibiru.UI
         float timeScaleBefore = 1f;
         int openedFrame = -10;
 
+        // Onde cada item está no texto desenhado (linha), para o mouse. Refeito a cada Refresh.
+        readonly Dictionary<int, int> rowLines = new Dictionary<int, int>();
+        readonly string[] optionBefore = new string[OptionItemCount];
+        readonly string[] optionGroup = new string[OptionItemCount];
+        int archiveUpLine = -1;
+        int archiveDownLine = -1;
+        int enableGameplayFrame = -1;
+        bool pointerAction;
+
         // Arquivo: as entradas já lidas ou ouvidas, na ordem do catálogo, e a leitura aberta por cima do menu.
         readonly List<ArchiveCatalog.Entry> archiveRows = new List<ArchiveCatalog.Entry>();
         ReadingScreenUI openReading;
@@ -76,13 +88,28 @@ namespace Nibiru.UI
 
         public bool IsOpen => panel.activeSelf;
 
+        /// <summary>Para os testes: a página aberta (Principal, Opcoes ou Arquivo), o item em foco e o texto desenhado.</summary>
+        public string PageName => page.ToString();
+
+        public int FocusedRow => selected;
+
+        public string ScreenText => content.text;
+
         /// <summary>A confirmação de "Sair para o menu" (para os testes).</summary>
         public ConfirmDialog ExitDialog => dialog;
 
         void Awake() => panel.SetActive(false);
 
+        void OnDestroy() => CursorPolicy.Release(this);
+
         void Update()
         {
+            // Fechar com o clique do mouse devolve o jogo no quadro seguinte, para o mesmo clique não atirar nem atacar.
+            if (enableGameplayFrame >= 0 && Time.frameCount > enableGameplayFrame)
+            {
+                enableGameplayFrame = -1;
+                if (!IsOpen) input.SetGameplayEnabled(true);
+            }
             if (!IsOpen)
             {
                 // O mesmo Esc que fechou outro menu neste quadro não abre a pausa.
@@ -96,50 +123,182 @@ namespace Nibiru.UI
             // A confirmação de "Sair para o menu" consome os botões (Esc e voltar cancelam).
             if (dialog.IsOpen)
             {
-                dialog.Handle(input.VerticalNavStep, input.ConfirmPressed, input.PausePressed || input.BackPressed);
-                Refresh();
+                int step = input.VerticalNavStep;
+                bool confirmPressed = input.ConfirmPressed;
+                bool backPressed = input.PausePressed || input.BackPressed;
+                if (step != 0 || confirmPressed || backPressed)
+                {
+                    MenuPointer.NoteKeyboardOrPad();
+                    dialog.Handle(step, confirmPressed, backPressed);
+                    Refresh();
+                    return;
+                }
+                PointerStep(MenuPointer.Read());
                 return;
             }
 
             if (input.PausePressed)
             {
+                MenuPointer.NoteKeyboardOrPad();
                 Close();
                 return;
             }
             if (input.BackPressed)
             {
-                if (page == Page.Opcoes) ShowPage(Page.Principal, 1);
-                else if (page == Page.Arquivo) ShowPage(Page.Principal, ArchiveItem);
-                else Close();
+                MenuPointer.NoteKeyboardOrPad();
+                GoBack(false);
                 return;
             }
 
             int count = page == Page.Principal ? MainItemCount : page == Page.Arquivo ? Mathf.Max(1, archiveRows.Count) : OptionItemCount;
             int vertical = input.VerticalNavStep;
-            if (vertical != 0)
+            int horizontal = page == Page.Opcoes ? input.HorizontalNavStep : 0;
+            bool confirm = input.ConfirmPressed;
+            if (vertical != 0 || horizontal != 0 || confirm)
             {
-                selected = (selected + vertical + count) % count;
-                if (page == Page.Arquivo) KeepArchiveSelectionVisible();
-                Refresh();
-            }
-
-            if (page == Page.Arquivo && Mouse.current != null)
-            {
-                float wheel = Mouse.current.scroll.ReadValue().y;
-                if (wheel != 0f) ScrollArchive(wheel > 0f ? -1 : 1);
-            }
-
-            if (page == Page.Opcoes)
-            {
-                int horizontal = input.HorizontalNavStep;
+                MenuPointer.NoteKeyboardOrPad();
+                if (vertical != 0)
+                {
+                    selected = (selected + vertical + count) % count;
+                    if (page == Page.Arquivo) KeepArchiveSelectionVisible();
+                    Refresh();
+                }
                 if (horizontal != 0) AdjustOption(horizontal);
+                if (confirm) Activate();
+                return;
             }
 
-            if (input.ConfirmPressed) Activate();
+            PointerStep(MenuPointer.Read());
+        }
+
+        // Voltar (Esc, B ou clique direito): das Opções e do Arquivo para a página principal; da principal, fecha a pausa.
+        void GoBack(bool byPointer)
+        {
+            if (page == Page.Opcoes) ShowPage(Page.Principal, 1);
+            else if (page == Page.Arquivo) ShowPage(Page.Principal, ArchiveItem);
+            else Close(byPointer);
+        }
+
+        /// <summary>
+        /// Um quadro do mouse, por cima do teclado e do controle (também é por aqui que os testes "mexem" o mouse): passar
+        /// sobre um item move o foco, o clique esquerdo ativa, o direito volta ou cancela e a roda rola o Arquivo.
+        /// </summary>
+        public void PointerStep(MenuPointer.State pointer)
+        {
+            if (!IsOpen || !pointer.Any || Time.frameCount == openedFrame) return;
+            if (openReading != null && openReading.IsOpen) return;
+
+            if (dialog.IsOpen)
+            {
+                if (pointer.rightClick)
+                {
+                    dialog.Cancel();
+                    Refresh();
+                    return;
+                }
+                int button = ButtonAt(pointer.position);
+                if (button < 0 || !(pointer.moved || pointer.leftClick)) return;
+                dialog.SetFocus(button == 0);
+                if (pointer.leftClick)
+                {
+                    if (button == 0) dialog.Cancel();
+                    else dialog.Confirm();
+                }
+                Refresh();
+                return;
+            }
+
+            if (pointer.rightClick)
+            {
+                GoBack(true);
+                return;
+            }
+            if (page == Page.Arquivo && pointer.wheel != 0f) ScrollArchive(pointer.wheel > 0f ? -1 : 1);
+
+            int line = TextLines.LineAt(content, pointer.position);
+            if (line < 0) return;
+            if (page == Page.Arquivo && pointer.leftClick && (line == archiveUpLine || line == archiveDownLine))
+            {
+                ScrollArchive(line == archiveUpLine ? -1 : 1);
+                return;
+            }
+            int row = RowOfLine(line);
+            if (row < 0 || !(pointer.moved || pointer.leftClick)) return;
+            selected = row;
+            if (pointer.leftClick)
+            {
+                pointerAction = true;
+                try
+                {
+                    if (page == Page.Opcoes && row < 4) ClickOption(row, pointer.position);
+                    else Activate();
+                }
+                finally
+                {
+                    pointerAction = false;
+                }
+            }
+            Refresh();
+        }
+
+        int RowOfLine(int line)
+        {
+            foreach (KeyValuePair<int, int> pair in rowLines)
+                if (pair.Value == line) return pair.Key;
+            return -1;
+        }
+
+        // 0 = "Cancelar", 1 = botão de confirmar, -1 = nenhum.
+        int ButtonAt(Vector2 position)
+        {
+            int line = TextLines.LineAt(content, position);
+            if (line < 0) return -1;
+            if (line == dialog.CancelLine) return 0;
+            return line == dialog.ConfirmLine ? 1 : -1;
+        }
+
+        // Nas Opções, o clique do lado esquerdo do "‹ valor ›" diminui e o do lado direito aumenta.
+        void ClickOption(int row, Vector2 position)
+        {
+            int direction = 1;
+            if (TextLines.TryGetSpan(content, rowLines[row], optionBefore[row], optionGroup[row], out Rect group))
+                direction = position.x < group.center.x ? -1 : 1;
+            AdjustOption(direction);
+        }
+
+        /// <summary>Só para os testes: a faixa de tela de um item (linha inteira).</summary>
+        public bool TryGetRowRect(int row, out Rect rect)
+        {
+            rect = default;
+            if (dialog.IsOpen) return TextLines.TryGetBand(content, row == 0 ? dialog.CancelLine : dialog.ConfirmLine, out rect);
+            return rowLines.TryGetValue(row, out int line) && TextLines.TryGetBand(content, line, out rect);
+        }
+
+        /// <summary>Só para os testes: a faixa da seta esquerda (-1) ou direita (+1) de uma opção, dividida ao meio do "‹ valor ›".</summary>
+        public bool TryGetOptionHalf(int row, int direction, out Rect rect)
+        {
+            rect = default;
+            if (page != Page.Opcoes || !rowLines.TryGetValue(row, out int line) || row >= 4) return false;
+            if (!TextLines.TryGetSpan(content, line, optionBefore[row], optionGroup[row], out Rect group)) return false;
+            rect = direction < 0 ? Rect.MinMaxRect(group.xMin, group.yMin, group.center.x, group.yMax) : Rect.MinMaxRect(group.center.x, group.yMin, group.xMax, group.yMax);
+            return true;
+        }
+
+        /// <summary>Linha de tela do marcador ▲ (-1) ou ▼ (+1) do Arquivo, para os testes.</summary>
+        public int ArchiveMarkerLine(int direction) => direction < 0 ? archiveUpLine : archiveDownLine;
+
+        /// <summary>Só para os testes: a faixa de tela do marcador ▲ (-1) ou ▼ (+1) do Arquivo.</summary>
+        public bool TryGetArchiveMarkerRect(int direction, out Rect rect)
+        {
+            rect = default;
+            int line = ArchiveMarkerLine(direction);
+            return line >= 0 && TextLines.TryGetBand(content, line, out rect);
         }
 
         void Open()
         {
+            enableGameplayFrame = -1;
+            CursorPolicy.RequestFree(this, false);
             panel.SetActive(true);
             openedFrame = Time.frameCount;
             timeScaleBefore = Time.timeScale;
@@ -149,14 +308,19 @@ namespace Nibiru.UI
             ShowPage(Page.Principal, 0);
         }
 
-        void Close()
+        void Close() => Close(pointerAction);
+
+        // byPointer: fechou com o clique do mouse; o jogo só volta a ouvir o controle no quadro seguinte.
+        void Close(bool byPointer)
         {
             dialog.Cancel();
             GameOptions.Save();
             panel.SetActive(false);
             Time.timeScale = timeScaleBefore;
             PlayTime.Release(this);
-            input.SetGameplayEnabled(true);
+            CursorPolicy.Release(this);
+            if (byPointer) enableGameplayFrame = Time.frameCount;
+            else input.SetGameplayEnabled(true);
         }
 
         void ShowPage(Page next, int selection)
@@ -337,6 +501,8 @@ namespace Nibiru.UI
         void Refresh()
         {
             builder.Clear();
+            rowLines.Clear();
+            archiveUpLine = archiveDownLine = -1;
             if (dialog.IsOpen)
             {
                 content.text = dialog.Render(Gold, Muted);
@@ -351,10 +517,10 @@ namespace Nibiru.UI
             else
             {
                 builder.AppendLine("<size=56><b>OPÇÕES</b></size>").AppendLine();
-                AppendItem($"Sensibilidade do mouse      <  {GameOptions.MouseSensitivity:0.0}  >", 0);
-                AppendItem($"Sensibilidade do controle   <  {GameOptions.GamepadSensitivity:0.0}  >", 1);
-                AppendItem($"Inverter eixo vertical      <  {(GameOptions.InvertY ? "Sim" : "Não")}  >", 2);
-                AppendItem($"Idioma                     <  {Localization.Loc.DisplayName(Localization.Loc.Language)}  >", 3);
+                AppendOption("Sensibilidade do mouse      ", $"{GameOptions.MouseSensitivity:0.0}", 0);
+                AppendOption("Sensibilidade do controle   ", $"{GameOptions.GamepadSensitivity:0.0}", 1);
+                AppendOption("Inverter eixo vertical      ", GameOptions.InvertY ? "Sim" : "Não", 2);
+                AppendOption("Idioma                      ", Localization.Loc.DisplayName(Localization.Loc.Language), 3);
                 AppendItem("Voltar", 4);
             }
 
@@ -375,6 +541,7 @@ namespace Nibiru.UI
 
             // ▲ e ▼ ficam sempre reservados (em branco quando não há mais nada) para a lista não pular de lugar.
             ClampArchiveTop();
+            archiveUpLine = TextLines.NextLine(builder);
             AppendScrollMarker(archiveTop > 0, "▲");
             int end = Mathf.Min(archiveLines.Count, archiveTop + ArchiveWindow);
             for (int i = archiveTop; i < end; i++)
@@ -384,6 +551,7 @@ namespace Nibiru.UI
                 else AppendItem(line.text, line.rowIndex);
             }
             for (int i = end - archiveTop; i < ArchiveWindow; i++) builder.AppendLine();
+            archiveDownLine = TextLines.NextLine(builder);
             AppendScrollMarker(end < archiveLines.Count, "▼");
         }
 
@@ -393,8 +561,17 @@ namespace Nibiru.UI
             else builder.AppendLine("<size=22> </size>");
         }
 
+        // Opção com valor: "rótulo ‹  valor  ›". O mouse divide o clique ao meio do trecho "‹  valor  ›".
+        void AppendOption(string label, string value, int index)
+        {
+            optionBefore[index] = (index == selected ? "<color=" + Gold + ">> " : "   ") + label;
+            optionGroup[index] = $"‹  {value}  ›";
+            AppendItem(label + optionGroup[index], index);
+        }
+
         void AppendItem(string text, int index)
         {
+            rowLines[index] = TextLines.NextLine(builder);
             if (index == selected) builder.Append("<color=").Append(Gold).Append(">> ").Append(text).AppendLine("</color>");
             else builder.Append("   ").AppendLine(text);
         }

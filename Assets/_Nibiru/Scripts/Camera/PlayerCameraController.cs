@@ -35,7 +35,16 @@ namespace Nibiru.Cameras
             yaw = (alignOnStart != null ? alignOnStart : transform).eulerAngles.y;
             pitch = settings.startPitch;
             SetMode(startingMode as ICameraMode);
-            if (lockCursor) LockCursor();
+            if (lockCursor)
+            {
+                CursorPolicy.SetGameActive(true);
+                LockCursor();
+            }
+        }
+
+        void OnDestroy()
+        {
+            if (lockCursor) CursorPolicy.SetGameActive(false);
         }
 
         public void SetMode(ICameraMode newMode)
@@ -69,7 +78,8 @@ namespace Nibiru.Cameras
 
         void Update()
         {
-            if (lockCursor && Cursor.lockState != CursorLockMode.Locked
+            // Com um menu aberto (pausa, leitura) o cursor é do menu: o clique não prende o cursor.
+            if (lockCursor && !CursorPolicy.AnyFree && Cursor.lockState != CursorLockMode.Locked
                 && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
                 LockCursor();
         }

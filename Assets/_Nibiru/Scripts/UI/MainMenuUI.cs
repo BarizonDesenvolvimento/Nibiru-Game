@@ -15,7 +15,8 @@ namespace Nibiru.UI
     /// a partida, e Delete (ou o botão X do controle) apaga o slot. Sobrescrever e apagar pedem confirmação, com o foco
     /// em "Cancelar". Setas ou direcional escolhem, Enter, Espaço ou o botão A confirmam, Esc ou o botão B voltam.
     /// Montado por código; lê o teclado e o controle direto, pois o jogador (e o leitor de controles dele) só existe na
-    /// cena da região. Não usa o mouse.
+    /// cena da região. O mouse entra por cima: passar o mouse move o foco (o mesmo destaque do teclado), o clique esquerdo
+    /// ativa, o direito volta (como Esc ou B), e cada slot que tem arquivo ganha o botão "Apagar" na ponta da linha.
     /// </summary>
     public class MainMenuUI : MonoBehaviour
     {
@@ -54,6 +55,13 @@ namespace Nibiru.UI
         int selected;
         string message = "";
 
+        // Onde cada item está no texto desenhado (número da linha), para o mouse. Refeito a cada Refresh.
+        readonly List<int> mainLines = new List<int>();
+        readonly int[] slotLines = new int[SaveSlots.SlotCount + 1];
+        readonly string[] deleteBefore = new string[SaveSlots.SlotCount];
+        const string DeleteSegment = "[Apagar]";
+        string deleteSegment = DeleteSegment;
+
         public string GameScene => gameScene;
 
         /// <summary>True enquanto a tela de slots está aberta.</summary>
@@ -63,6 +71,12 @@ namespace Nibiru.UI
         public bool IsNewGameScreen => newGameMode;
 
         public bool IsDialogOpen => dialog.IsOpen;
+
+        /// <summary>Para os testes: quantas linhas o texto desenhado tem (igual às quebras de linha do texto, sem quebra automática).</summary>
+        public int RenderedLineCount => TextLines.Count(CurrentText());
+
+        /// <summary>O item em foco (na tela principal) ou a linha em foco (na tela de slots: 0 a 2 são os slots, 3 é "Voltar").</summary>
+        public int FocusedRow => selected;
 
         /// <summary>True se o foco do diálogo está em "Cancelar".</summary>
         public bool DialogFocusOnCancel => dialog.FocusOnCancel;
@@ -82,9 +96,12 @@ namespace Nibiru.UI
         {
             SessionReset.Clean();
             PlayTime.Hold(this);
+            CursorPolicy.RequestFree(this, true);
             Build();
             ShowMain();
         }
+
+        void OnDestroy() => CursorPolicy.Release(this);
 
         void Update()
         {
@@ -108,7 +125,105 @@ namespace Nibiru.UI
                 back |= pad.buttonEast.wasPressedThisFrame;
                 delete |= pad.buttonWest.wasPressedThisFrame;
             }
-            if (move != 0 || confirm || back || delete) Step(move, confirm, back, delete);
+            if (move != 0 || confirm || back || delete)
+            {
+                MenuPointer.NoteKeyboardOrPad();
+                Step(move, confirm, back, delete);
+                return;
+            }
+            PointerStep(MenuPointer.Read());
+        }
+
+        /// <summary>
+        /// Um quadro do mouse, por cima do teclado e do controle: passar sobre um item move o foco, o clique esquerdo ativa
+        /// (e o clique em "Apagar" apaga), o direito volta ou cancela. Também é por aqui que os testes "mexem" o mouse.
+        /// </summary>
+        public void PointerStep(MenuPointer.State pointer)
+        {
+            if (!pointer.Any) return;
+            Text text = CurrentText();
+
+            if (dialog.IsOpen)
+            {
+                if (pointer.rightClick)
+                {
+                    Step(0, false, true, false);
+                    return;
+                }
+                int button = RowAt(text, pointer.position, dialog.CancelLine, dialog.ConfirmLine);
+                if (button < 0 || !(pointer.moved || pointer.leftClick)) return;
+                dialog.SetFocus(button == 0);
+                if (pointer.leftClick) Step(0, true, false, false);
+                else Refresh();
+                return;
+            }
+
+            if (screen == Screen.Principal)
+            {
+                int row = RowAt(text, pointer.position, mainLines);
+                if (row < 0 || !(pointer.moved || pointer.leftClick)) return;
+                selected = row;
+                if (pointer.leftClick) Step(0, true, false, false);
+                else Refresh();
+                return;
+            }
+
+            if (pointer.rightClick)
+            {
+                Step(0, false, true, false);
+                return;
+            }
+            int slotRow = RowAt(text, pointer.position, slotLines);
+            if (slotRow < 0 || !(pointer.moved || pointer.leftClick)) return;
+            if (selected != slotRow) message = "";
+            selected = slotRow;
+            if (pointer.leftClick)
+            {
+                if (OverDeleteButton(text, slotRow, pointer.position)) RequestDelete(slotRow + 1);
+                else Step(0, true, false, false);
+            }
+            Refresh();
+        }
+
+        Text CurrentText() => dialog.IsOpen || screen == Screen.Slots ? screenText : list;
+
+        // O botão "Apagar" fica na ponta da linha de um slot que tem arquivo.
+        bool OverDeleteButton(Text text, int slotRow, Vector2 position)
+        {
+            if (slotRow >= SaveSlots.SlotCount || infos[slotRow].state == SaveSlots.SlotState.Empty || string.IsNullOrEmpty(deleteBefore[slotRow])) return false;
+            return TextLines.TryGetSpan(text, slotLines[slotRow], deleteBefore[slotRow], deleteSegment, out Rect span) && span.Contains(position);
+        }
+
+        static int RowAt(Text text, Vector2 position, params int[] lines) => RowAt(text, position, (IList<int>)lines);
+
+        // Qual das linhas (na ordem dada) está sob o ponteiro, ou -1.
+        static int RowAt(Text text, Vector2 position, IList<int> lines)
+        {
+            int line = TextLines.LineAt(text, position);
+            if (line < 0) return -1;
+            for (int i = 0; i < lines.Count; i++)
+                if (lines[i] == line) return i;
+            return -1;
+        }
+
+        /// <summary>Só para os testes: a faixa de tela de um item da lista (principal) ou de um slot/voltar (tela de slots).</summary>
+        public bool TryGetRowRect(int row, out Rect rect)
+        {
+            rect = default;
+            Text text = CurrentText();
+            int line;
+            if (dialog.IsOpen) line = row == 0 ? dialog.CancelLine : dialog.ConfirmLine;
+            else if (screen == Screen.Principal) line = row < mainLines.Count ? mainLines[row] : -1;
+            else line = row < slotLines.Length ? slotLines[row] : -1;
+            return line >= 0 && TextLines.TryGetBand(text, line, out rect);
+        }
+
+        /// <summary>Só para os testes: a faixa de tela do botão "Apagar" de um slot (0 a 2).</summary>
+        public bool TryGetDeleteRect(int slotRow, out Rect rect)
+        {
+            rect = default;
+            if (screen != Screen.Slots || dialog.IsOpen || slotRow >= SaveSlots.SlotCount || string.IsNullOrEmpty(deleteBefore[slotRow])) return false;
+            return TextLines.TryGetSpan(screenText, slotLines[slotRow], deleteBefore[slotRow], deleteSegment, out rect);
         }
 
         /// <summary>Um quadro de entrada. Também é por aqui que os testes "apertam" os botões.</summary>
@@ -333,8 +448,12 @@ namespace Nibiru.UI
             else
             {
                 var text = new StringBuilder();
+                mainLines.Clear();
                 for (int i = 0; i < items.Count; i++)
+                {
+                    mainLines.Add(TextLines.NextLine(text));
                     text.AppendLine(i == selected ? $"<color={Gold}>›  {Label(items[i])}</color>" : $"<color={Muted}>   {Label(items[i])}</color>");
+                }
                 list.text = text.ToString();
             }
         }
@@ -344,15 +463,20 @@ namespace Nibiru.UI
             var text = new StringBuilder();
             string titleKey = newGameMode ? Loc.Get("ui.slots.titulo_novo", "NOVO JOGO") : Loc.Get("ui.slots.titulo_carregar", "CARREGAR");
             text.Append("<size=56><b>").Append(titleKey).AppendLine("</b></size>").AppendLine();
+            deleteSegment = "[" + Loc.Get("ui.slots.apagar", "Apagar") + "]";
             for (int i = 0; i < infos.Length; i++)
             {
                 string row = SlotRows.Format(infos[i]);
-                if (i == selected) text.Append("<color=").Append(Gold).Append(">›  ").Append(row).AppendLine("</color>");
-                else text.Append("<color=").Append(infos[i].state == SaveSlots.SlotState.Unreadable ? Warning : infos[i].state == SaveSlots.SlotState.Empty ? Muted : "#FFFFFF")
-                    .Append(">   ").Append(row).AppendLine("</color>");
+                slotLines[i] = TextLines.NextLine(text);
+                bool filled = infos[i].state != SaveSlots.SlotState.Empty;
+                string color = i == selected ? Gold : infos[i].state == SaveSlots.SlotState.Unreadable ? Warning : infos[i].state == SaveSlots.SlotState.Empty ? Muted : "#FFFFFF";
+                string before = "<color=" + color + ">" + (i == selected ? "›  " : "   ") + row + "   ";
+                deleteBefore[i] = filled ? before : null;
+                text.Append(filled ? before + deleteSegment : before.TrimEnd()).AppendLine("</color>");
                 text.AppendLine();
             }
             string back = Loc.Get("ui.menu.voltar", "Voltar");
+            slotLines[BackRow] = TextLines.NextLine(text);
             if (selected == BackRow) text.Append("<color=").Append(Gold).Append(">›  ").Append(back).AppendLine("</color>");
             else text.Append("<color=").Append(Muted).Append(">   ").Append(back).AppendLine("</color>");
             text.AppendLine();
@@ -379,8 +503,10 @@ namespace Nibiru.UI
             list = MakeText(canvasGo.transform, "Itens", "", 46, Color.white, -80f, 300f, 1200f);
             list.supportRichText = true;
             hint = MakeText(canvasGo.transform, "Dica", Loc.Get("ui.menu.dica", "Setas e Enter  |  direcional e A"), 26, new Color(0.6f, 0.63f, 0.68f), -380f, 80f, 1200f).gameObject;
-            screenText = MakeText(canvasGo.transform, "Tela", "", 34, Color.white, 0f, 760f, 1700f);
+            screenText = MakeText(canvasGo.transform, "Tela", "", 34, Color.white, 0f, 760f, 1800f);
             screenText.supportRichText = true;
+            // Sem quebra automática: uma linha de slot comprida não pode virar duas (o mouse conta as linhas pelas quebras do texto).
+            screenText.horizontalOverflow = HorizontalWrapMode.Overflow;
             screenText.alignment = TextAnchor.MiddleLeft;
         }
 

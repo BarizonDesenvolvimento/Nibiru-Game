@@ -15,6 +15,7 @@
   "ui.menu.sair": "Quit game",
   "ui.menu.voltar": "Back",
   "ui.pausa.sair_menu": "Quit to menu",
+  "ui.slots.apagar": "Delete",
   "ui.slots.aviso_nao_carrega": "This slot cannot be loaded. You can delete it.",
   "ui.slots.aviso_vazio": "Empty slot.",
   "ui.slots.demo": "Demo completed",

@@ -441,6 +441,7 @@
   "ui.menu.voltar": "Voltar",
   "ui.pausa.sair_menu": "Sair para o menu",
   "ui.radio.helicoptero_base_avistou": "Rádio: \"Aqui é o Falcão. Alvo no pátio da base, mandando a posição!\"",
+  "ui.slots.apagar": "Apagar",
   "ui.slots.aviso_nao_carrega": "Este slot não pode ser carregado. Você pode apagá-lo.",
   "ui.slots.aviso_vazio": "Slot vazio.",
   "ui.slots.demo": "Demo concluída",

@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,6 +51,66 @@ namespace Nibiru.UI
             for (int i = 0; i < count; i++)
                 if (TryGetBand(text, i, out Rect band) && band.Contains(screenPoint)) return i;
             return -1;
+        }
+
+        /// <summary>O número da próxima linha de um texto que está sendo montado (as linhas já escritas, contadas pelo barra-n).</summary>
+        public static int NextLine(StringBuilder builder)
+        {
+            int lines = 0;
+            for (int i = 0; i < builder.Length; i++)
+                if (builder[i] == '\n') lines++;
+            return lines;
+        }
+
+        /// <summary>
+        /// A faixa de tela de um trecho dentro de uma linha: <paramref name="before"/> é tudo o que vem antes dele na linha e
+        /// <paramref name="segment"/> o trecho (os dois com as mesmas marcações do texto). A altura é a da linha.
+        /// </summary>
+        public static bool TryGetSpan(Text text, int line, string before, string segment, out Rect screenRect)
+        {
+            screenRect = default;
+            if (!TryGetBand(text, line, out Rect band)) return false;
+            string[] lines = text.text.Split('\n');
+            if (line >= lines.Length) return false;
+
+            RectTransform rect = text.rectTransform;
+            float lineWidth = Width(text, lines[line]);
+            float start;
+            switch (text.alignment)
+            {
+                case TextAnchor.UpperCenter:
+                case TextAnchor.MiddleCenter:
+                case TextAnchor.LowerCenter:
+                    start = rect.rect.center.x - lineWidth / 2f;
+                    break;
+                case TextAnchor.UpperRight:
+                case TextAnchor.MiddleRight:
+                case TextAnchor.LowerRight:
+                    start = rect.rect.xMax - lineWidth;
+                    break;
+                default:
+                    start = rect.rect.xMin;
+                    break;
+            }
+            float x0 = start + Width(text, before);
+            float x1 = start + Width(text, before + segment);
+
+            // A faixa já está em pixels de tela; converte o trecho pela proporção entre a largura da tela e a do retângulo.
+            float pixelsPerLocal = band.width / Mathf.Max(0.0001f, rect.rect.width);
+            float screenLeft = band.xMin + (x0 - rect.rect.xMin) * pixelsPerLocal;
+            float screenRight = band.xMin + (x1 - rect.rect.xMin) * pixelsPerLocal;
+            screenRect = Rect.MinMaxRect(screenLeft, band.yMin, screenRight, band.yMax);
+            return true;
+        }
+
+        // Largura de um trecho em unidades do retângulo. Mede com uma barra no fim: espaços no fim não contariam sozinhos.
+        static float Width(Text text, string content)
+        {
+            TextGenerationSettings settings = text.GetGenerationSettings(Vector2.zero);
+            var generator = new TextGenerator();
+            float bar = generator.GetPreferredWidth("|", settings);
+            float with = generator.GetPreferredWidth(content + "|", settings);
+            return (with - bar) / Mathf.Max(0.0001f, text.pixelsPerUnit);
         }
 
         static Vector2 Project(RectTransform rect, Camera camera, Vector2 local)

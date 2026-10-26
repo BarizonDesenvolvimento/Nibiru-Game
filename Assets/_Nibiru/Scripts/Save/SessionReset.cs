@@ -1,4 +1,5 @@
 using Nibiru.Environment;
+using Nibiru.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +24,7 @@ namespace Nibiru.Save
             Storm.Clear();
             Time.timeScale = 1f;
             AudioListener.pause = false;
+            CursorPolicy.Clear();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
