@@ -38,7 +38,7 @@ namespace Nibiru.EditorTools
         // id do Poly Haven, resolução baixada, metros cobertos por uma repetição da textura.
         static readonly (string id, string res, float meters)[] Scanned =
         {
-            ("patterned_clay_plaster", "2k", 2.5f),
+            ("patterned_clay_plaster", "2k", 1.6f),
             ("dense_sand", "2k", 3f),
             ("slumped_mortar_brick", "1k", 1.5f),
             ("clay_floor_001", "1k", 2f),
@@ -80,16 +80,18 @@ namespace Nibiru.EditorTools
             ConfigureColor(own + "MetalPintado_diff.png", 1024);
             ConfigureColor(own + "Descascado_diff.png", 1024, alpha: true);
 
-            Scan(Plaster, "patterned_clay_plaster", "2k", 2.5f, new Color(0.93f, 0.78f, 0.60f));
-            Scan(PlasterLight, "patterned_clay_plaster", "2k", 2.5f, new Color(1.00f, 0.90f, 0.76f));
-            Scan(Ground, "dense_sand", "2k", 3f, new Color(1.05f, 0.95f, 0.82f));
-            Scan(Floor, "clay_floor_001", "1k", 2f, new Color(1.0f, 0.88f, 0.74f));
-            Scan(Wood, "rough_wood", "1k", 1f, new Color(0.95f, 0.85f, 0.72f));
+            // As cores são a média que cada material deve ter na tela (sRGB): o script calcula o tom que leva a
+            // média da textura até ela. Assim o barro fica claro e quente, como pede a direção de arte.
+            Scan(Plaster, "patterned_clay_plaster", "2k", 1.6f, Calibrated("patterned_clay_plaster", "2k", new Color(0.80f, 0.66f, 0.48f)));
+            Scan(PlasterLight, "patterned_clay_plaster", "2k", 1.6f, Calibrated("patterned_clay_plaster", "2k", new Color(0.86f, 0.78f, 0.64f)));
+            Scan(Ground, "dense_sand", "2k", 3f, Calibrated("dense_sand", "2k", new Color(0.80f, 0.69f, 0.52f)));
+            Scan(Floor, "clay_floor_001", "1k", 2f, Calibrated("clay_floor_001", "1k", new Color(0.72f, 0.60f, 0.46f)));
+            Scan(Wood, "rough_wood", "1k", 1f, Calibrated("rough_wood", "1k", new Color(0.47f, 0.38f, 0.29f)));
 
             var metal = Scan(Metal, "blue_metal_plate", "1k", 1f, new Color(0.24f, 0.66f, 0.66f));
             metal.SetTexture("_BaseMap", Tex(own + "MetalPintado_diff.png"));
 
-            var brick = Scan(Brick, "slumped_mortar_brick", "1k", 1f, new Color(1f, 0.92f, 0.82f));
+            var brick = Scan(Brick, "slumped_mortar_brick", "1k", 1f, Calibrated("slumped_mortar_brick", "1k", new Color(0.64f, 0.50f, 0.36f)));
             brick.SetTexture("_BaseMap", Tex(own + "Descascado_diff.png"));
             brick.SetTextureScale("_BaseMap", Vector2.one);
             Cutout(brick, 0.5f);
@@ -135,6 +137,21 @@ namespace Nibiru.EditorTools
             m.EnableKeyword("_METALLICSPECGLOSSMAP");
             m.EnableKeyword("_OCCLUSIONMAP");
             return m;
+        }
+
+        /// <summary>Tom do material que leva a cor média da textura (em linear) até a média pedida (sRGB).</summary>
+        static Color Calibrated(string id, string res, Color target)
+        {
+            var px = Load(Path(id, "diff", res)).GetPixels();
+            Vector3 mean = Vector3.zero;
+            foreach (var c in px)
+            {
+                var l = c.linear;
+                mean += new Vector3(l.r, l.g, l.b);
+            }
+            mean /= px.Length;
+            var t = target.linear;
+            return new Color(t.r / mean.x, t.g / mean.y, t.b / mean.z).gamma;
         }
 
         static Material Lit(string name, Color color, float metallic, float smoothness)
@@ -377,7 +394,7 @@ namespace Nibiru.EditorTools
                 float u = x / (float)w - 0.5f, v = y / (float)hgt - 0.5f;
                 float r = Mathf.Sqrt(u * u * 1.4f + v * v * 2.2f);
                 float n = Noise(x * 0.012f + 5f, y * 0.012f + 9f, 5);
-                float field = 0.42f - r + (n - 0.5f) * 0.45f;
+                float field = 0.56f - r + (n - 0.5f) * 0.5f;
                 float a = Mathf.Clamp01(field * 25f + 0.5f);
                 float rim = Mathf.Clamp01(1f - field * 18f);
                 var c = px[y * w + x] * Mathf.Lerp(1f, 0.55f, rim * rim);
