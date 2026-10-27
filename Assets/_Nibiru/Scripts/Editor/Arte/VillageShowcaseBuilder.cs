@@ -22,13 +22,27 @@ namespace Nibiru.EditorTools
         public const string RootName = "Arte_AldeiaVitrine";
         const string ModelFolder = M.Root + "Modelos/";
 
-        static readonly string[] Models = { "Kit_CasaAltar" };
+        static readonly string[] Models = { "Kit_CasaAltar", "Kit_Casa6", "Kit_CasasFundo", "Kit_ChaoAldeia" };
 
-        // Caixas do blockout cujo desenho a arte substitui (o colisor fica).
-        static readonly string[] Replaced = { "CasaAltar_Fundo", "CasaAltar_Oeste", "CasaAltar_Leste", "CasaAltar_Teto" };
+        // Caixas do blockout cujo desenho a arte substitui (o colisor fica). Casa_1 a 5 são as do fundo dos
+        // enquadramentos; Casa_6 é a vizinha a leste da casa do altar.
+        static readonly string[] Replaced =
+        {
+            "CasaAltar_Fundo", "CasaAltar_Oeste", "CasaAltar_Leste", "CasaAltar_Teto",
+            "Casa_1", "Porta_1", "Casa_2", "Porta_2", "Casa_3", "Porta_3", "Casa_4", "Porta_4",
+            "Casa_5", "Porta_5", "Casa_6", "Porta_6",
+        };
 
-        // Peças de conteúdo que só trocam de material.
-        static readonly (string name, string material)[] Reskinned = { ("Esteira_Yusuf", M.Mat) };
+        // Peças que só trocam de material: a esteira do Yusuf e as palmeiras do pátio, que seguem em blockout,
+        // mas com cores discretas (palmeira de verdade pede um pacote).
+        static readonly (string name, string material)[] Reskinned =
+        {
+            ("Esteira_Yusuf", M.Mat),
+            ("Palmeira_1_Tronco", M.PalmTrunk), ("Palmeira_1_Copa", M.PalmCrown),
+            ("Palmeira_2_Tronco", M.PalmTrunk), ("Palmeira_2_Copa", M.PalmCrown),
+            ("Palmeira_3_Tronco", M.PalmTrunk), ("Palmeira_3_Copa", M.PalmCrown),
+            ("Palmeira_4_Tronco", M.PalmTrunk), ("Palmeira_4_Copa", M.PalmCrown),
+        };
 
         // Os discos "Marca_" do blockout dentro deste retângulo (x mín, z mín, x máx, z máx) somem.
         static readonly Rect Area = Rect.MinMaxRect(-58f, -34f, -36f, -12f);
@@ -79,7 +93,7 @@ namespace Nibiru.EditorTools
             if (old != null)
                 Object.DestroyImmediate(old);
             SetBlockoutVisible(true);
-            Debug.Log("Vitrine da Aldeia: desfeita. Para a esteira do Yusuf voltar ao material do blockout, rode o menu da Aldeia.");
+            Debug.Log("Vitrine da Aldeia: desfeita. Para a esteira do Yusuf e as palmeiras voltarem ao material do blockout, rode o Blockout e o menu da Aldeia.");
             EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         }
 
@@ -98,7 +112,9 @@ namespace Nibiru.EditorTools
             go.name = model;
             foreach (var r in go.GetComponentsInChildren<MeshRenderer>())
             {
-                string suffix = r.name.Contains("__") ? r.name.Substring(r.name.LastIndexOf("__") + 2) : "";
+                // Um FBX com uma peça só vira a malha na raiz, com o nome do arquivo: aí o sufixo vem do nome da malha.
+                string piece = r.name.Contains("__") ? r.name : r.GetComponent<MeshFilter>().sharedMesh.name;
+                string suffix = piece.Contains("__") ? piece.Substring(piece.LastIndexOf("__") + 2) : "";
                 if (!Suffix.TryGetValue(suffix, out var mat))
                 {
                     Debug.LogWarning($"Vitrine da Aldeia: peça sem material conhecido: {r.name}");
