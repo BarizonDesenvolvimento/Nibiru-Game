@@ -998,7 +998,7 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 - Estimativa no LFS: ~110–125 MB.
 
 **Etapas (um commit por etapa, sem push):**
-1. Texturas CC0 e materiais, créditos. — **pendente**
+1. Texturas CC0 e materiais, créditos. — **feita**: menu **Nibiru > Arte > Vitrine da Aldeia > 1. Criar materiais** (`Scripts/Editor/Arte/VillageShowcaseMaterials.cs`). Texturas em `Art/Ambientes/SitioDeUr/Aldeia/Texturas` (reboco `patterned_clay_plaster` e chão `dense_sand` em 2K; tijolo, piso, madeira e metal em 1K; tapete, esteira, metal cinza e mancha descascada gerados por script em `Proprias`), máscaras do URP montadas do `arm` 1K da ArteFonte. 13 materiais em `.../Aldeia/Materiais` (UV das malhas em metros; a escala fica no material). ~31 MB.
 2. Kit no Blender e casa do altar (por fora e por dentro). — **pendente**
 3. `Casa_6`, chão do pátio e fundo. — **pendente**
 4. Luz, Volume local, claraboia, sonda de reflexo e céu procedural; capturas. — **pendente**

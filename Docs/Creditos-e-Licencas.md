@@ -27,6 +27,21 @@ A biblioteca bruta fica em `ArteFonte/Animacoes` (fora do Git); só os clipes us
 | Universal Animation Library 1 e 2 (Standard) | `ArteFonte/Animacoes/Universal Animation Library[Standard]` e `... 2[Standard]` | **Quaternius** (patreon.com/quaternius) | **CC0 1.0** (domínio público; atribuição não exigida, mas fica aqui por cortesia) | Confirmado (`License.txt`). **Nenhum clipe usado no jogo ainda** |
 | Pro Magic Pack, Magic Locomotion Pack, Scary Zombie Pack | `ArteFonte/Animacoes/Mixamo/` | Não confirmada | — | **Origem não confirmada: não usar.** Conferido em 26/out/2026: **nenhum uso** em `Assets` (nenhum arquivo deles foi copiado, comparando o conteúdo byte a byte; nenhum script, cena ou prefab os cita). Os dois nomes que coincidem (`X Bot` e `Standing React Death Backward`) vieram da pasta `Avulsas`, com conteúdo diferente do desses pacotes |
 
+## Ambientes (área-vitrine da Aldeia, B1v Parte 3)
+
+Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio público; atribuição não exigida, fica aqui por cortesia). Cor e normal estão como baixadas (JPG); a máscara do URP (`*_mascara_1k.png`) é montada do `arm` de 1K, guardado em `ArteFonte/Ambientes/SitioDeUr/Aldeia/Texturas`, pelo menu **Nibiru > Arte > Vitrine da Aldeia > 1. Criar materiais** (`Scripts/Editor/Arte/VillageShowcaseMaterials.cs`).
+
+| Asset | Onde está | Origem (autor) | Licença | Situação |
+| --- | --- | --- | --- | --- |
+| `patterned_clay_plaster` (reboco de barro, 2K) | `Art/Ambientes/SitioDeUr/Aldeia/Texturas/patterned_clay_plaster` | Poly Haven, polyhaven.com/a/patterned_clay_plaster (Amal Kumar) | CC0 | Confirmado |
+| `dense_sand` (chão do pátio, 2K) | `.../Texturas/dense_sand` | Poly Haven, polyhaven.com/a/dense_sand (Dimitrios Savva) | CC0 | Confirmado |
+| `slumped_mortar_brick` (tijolo de barro, 1K) | `.../Texturas/slumped_mortar_brick` | Poly Haven, polyhaven.com/a/slumped_mortar_brick (Dimitrios Savva) | CC0 | Confirmado |
+| `clay_floor_001` (piso de barro, 1K) | `.../Texturas/clay_floor_001` | Poly Haven, polyhaven.com/a/clay_floor_001 (Dimitrios Savva, Rico Cilliers) | CC0 | Confirmado |
+| `rough_wood` (madeira velha, 1K) | `.../Texturas/rough_wood` | Poly Haven, polyhaven.com/a/rough_wood (Rob Tuytel) | CC0 | Confirmado |
+| `blue_metal_plate` (chapa de metal, 1K; base do metal turquesa) | `.../Texturas/blue_metal_plate` | Poly Haven, polyhaven.com/a/blue_metal_plate (Rob Tuytel) | CC0 | Confirmado |
+| Tapete kilim, esteira de junco (cor e normal) | `.../Texturas/Proprias` | Gerados por script do projeto | Próprios | Confirmado |
+| Metal pintado (cinza) e mancha de reboco descascado | `.../Texturas/Proprias` | Gerados por script a partir de `blue_metal_plate` e `slumped_mortar_brick` (CC0) | Próprios (derivados de CC0) | Confirmado |
+
 ## Som, fonte e interface
 
 | Asset | Onde está | Origem | Licença | Situação |
