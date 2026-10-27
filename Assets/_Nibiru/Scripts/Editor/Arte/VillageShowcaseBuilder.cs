@@ -81,6 +81,7 @@ namespace Nibiru.EditorTools
                 else
                     Debug.LogWarning($"Vitrine da Aldeia: não achei \"{name}\" na cena (rode o menu da Aldeia antes).");
             }
+            VillageShowcaseLighting.Build(root.transform);
 
             EditorSceneManager.MarkSceneDirty(root.scene);
             Debug.Log($"Vitrine da Aldeia: montada ({Models.Length} modelos, {hidden} caixas do blockout escondidas). Salve a cena.");
@@ -122,7 +123,7 @@ namespace Nibiru.EditorTools
                 }
                 r.sharedMaterial = M.Get(mat);
                 r.shadowCastingMode = suffix == "Tijolo" ? ShadowCastingMode.Off : ShadowCastingMode.On;
-                GameObjectUtility.SetStaticEditorFlags(r.gameObject, StaticEditorFlags.BatchingStatic);
+                GameObjectUtility.SetStaticEditorFlags(r.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.ReflectionProbeStatic);
             }
         }
 

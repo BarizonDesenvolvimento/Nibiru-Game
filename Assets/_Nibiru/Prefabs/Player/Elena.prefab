@@ -1266,6 +1266,9 @@ MonoBehaviour:
   inventory: {fileID: 0}
   swingVisual: {fileID: 4579137010929715870}
   swingArc: 120
+  takedownReach: 1.7
+  takedownBackArc: 140
+  takedownNoiseRadius: 1
 --- !u!114 &1265022158567877417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3055,6 +3058,7 @@ GameObject:
   - component: {fileID: 4796767128884309175}
   - component: {fileID: 4771569292005143481}
   - component: {fileID: 3543741154626054539}
+  - component: {fileID: 6520393830785223186}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3168,6 +3172,50 @@ MonoBehaviour:
   startingMode: {fileID: 4771569292005143481}
   alignOnStart: {fileID: 483439156831119717}
   lockCursor: 1
+--- !u!114 &6520393830785223186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7384881985878788073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &7489553733422917467
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,6 +3810,10 @@ MonoBehaviour:
   label: {fileID: 8461959715926127796}
   duration: 2.5
   maxVisible: 4
+  importantDuration: 9
+  importantFade: 0.6
+  importantHeight: 0.62
+  importantScale: 1.15
 --- !u!1 &8896515505896250459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3888,6 +3940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.UI.InteractionPromptUI
   interactor: {fileID: 3391958336138082657}
   input: {fileID: 8282052060555257985}
+  melee: {fileID: 0}
+  takedownPrompt: Golpe pelas costas
   panel: {fileID: 7675718648700942685}
   label: {fileID: 5598816027585214034}
 --- !u!114 &7141834162141051426

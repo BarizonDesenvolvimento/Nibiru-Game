@@ -84,11 +84,11 @@ namespace Nibiru.EditorTools
             // média da textura até ela. Assim o barro fica claro e quente, como pede a direção de arte.
             Scan(Plaster, "patterned_clay_plaster", "2k", 1.6f, Calibrated("patterned_clay_plaster", "2k", new Color(0.80f, 0.66f, 0.48f)));
             Scan(PlasterLight, "patterned_clay_plaster", "2k", 1.6f, Calibrated("patterned_clay_plaster", "2k", new Color(0.86f, 0.78f, 0.64f)));
-            Scan(Ground, "dense_sand", "2k", 3f, Calibrated("dense_sand", "2k", new Color(0.80f, 0.69f, 0.52f)));
-            Scan(Floor, "clay_floor_001", "1k", 2f, Calibrated("clay_floor_001", "1k", new Color(0.72f, 0.60f, 0.46f)));
+            Scan(Ground, "dense_sand", "2k", 3f, Calibrated("dense_sand", "2k", new Color(0.80f, 0.69f, 0.52f)), 0.5f);
+            Scan(Floor, "clay_floor_001", "1k", 2f, Calibrated("clay_floor_001", "1k", new Color(0.72f, 0.60f, 0.46f)), 0.3f);
             Scan(Wood, "rough_wood", "1k", 1f, Calibrated("rough_wood", "1k", new Color(0.47f, 0.38f, 0.29f)));
 
-            var metal = Scan(Metal, "blue_metal_plate", "1k", 1f, new Color(0.24f, 0.66f, 0.66f));
+            var metal = Scan(Metal, "blue_metal_plate", "1k", 1f, new Color(0.24f, 0.66f, 0.66f), 1f);
             metal.SetTexture("_BaseMap", Tex(own + "MetalPintado_diff.png"));
 
             var brick = Scan(Brick, "slumped_mortar_brick", "1k", 1f, Calibrated("slumped_mortar_brick", "1k", new Color(0.64f, 0.50f, 0.36f)));
@@ -120,9 +120,10 @@ namespace Nibiru.EditorTools
 
         // ---------- materiais ----------
 
-        static Material Scan(string name, string id, string res, float meters, Color tint)
+        static Material Scan(string name, string id, string res, float meters, Color tint, float smoothness = 0.6f)
         {
-            var m = Lit(name, tint, 0f, 1f);
+            // A lisura da máscara é multiplicada por "smoothness": barro e terra quase não refletem o céu.
+            var m = Lit(name, tint, 0f, smoothness);
             var scale = Vector2.one / meters;
             m.SetTexture("_BaseMap", Tex(Path(id, "diff", res)));
             m.SetTextureScale("_BaseMap", scale);
