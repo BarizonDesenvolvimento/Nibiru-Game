@@ -1011,6 +1011,10 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 5. Objetos (Meshy M1, M9, M6; Poly Haven ou Blender para os outros). — **pendente**, para outra conversa. O altar (`Nicho_Guardioes`, caixa dourada), o barco, a lamparina e o poço ainda são blockout.
 6. Teste da vitrine (0,15 m) e capturas finais. — **pendente**, para outra conversa.
 
+**Testes depois da etapa 4 (26/out/2026):** teste geral dos atalhos **94 OK, 0 FALHOU, 47 pulados**; teste do salvamento **19 OK, 0 FALHOU**; os dois rodados **um de cada vez**, com os slots reais conferidos iguais antes e depois.
+
+**Incidente (slots reais sobrescritos):** numa primeira tentativa, o teste geral dos atalhos foi disparado com o teste do salvamento ainda rodando (o Claude leu no log um resumo antigo como se fosse o novo). Os dois fluxos se misturaram, os cenários de arquivos corrompidos e de "proteção dos slots" gravaram na pasta real (`AppData/LocalLow/Barizon Desenvolvimento/Nibiru/save_1..3.json`, às 23:11:28) e o teste geral acusou 4 falhas ("os slots reais mudaram" e 3 atalhos sem a Elena na cena). **Os 3 slots reais do dono foram perdidos**: agora têm dados falsos de teste (1: demo concluída, 2: ilegível, 3: ocupado). Sem acesso de administrador, não deu para ver as cópias de sombra do Windows; o dono pode tentar clicar com o botão direito na pasta → Propriedades → Versões anteriores. **Regra daqui em diante: nunca rodar dois testes automáticos ao mesmo tempo; antes de disparar um, conferir que o anterior terminou (o `TestFlow` parado e o resumo novo no log, depois da linha em que o teste começou).** Vale também corrigir depois: os testes deveriam se recusar a começar com outro em andamento (pendência da etapa B).
+
 **Onde parou:** etapas 1 a 4 feitas e com commit (sem push). Próximo: o dono olha as capturas e gera no Meshy o M1 (altar) e o M9 (poço), e o M6 (bandeja) se sobrar crédito; depois a etapa 5. Ordem dos menus se o blockout ou a Aldeia forem refeitos: Blockout → Aldeia (e os outros de conteúdo) → **Vitrine da Aldeia > 2** (o 1 e o 3 só se mudar material ou céu).
 
 ## Próximos passos
