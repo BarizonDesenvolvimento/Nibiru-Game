@@ -983,8 +983,29 @@ Plano aprovado pelo dono em 26/out/2026, nesta ordem: Partes 0 + 1 → 4 → 2 (
 
 **Pendente:**
 - **Parte 2, segunda etapa (cápsulas trocadas; aprovada pelo dono no Play e enviada):** `ContentKit.UseModel` troca a forma da cápsula pelo prefab, como filho `Visual`, sem mudar nome, lugar nem colisor (escala anulada; os pés no chão). **Dra_Weiss** (Trincheiras, `TrenchContent`): sentada, na cápsula de colisor de antes, encostada na tenda médica, virada para o sul. **Umm_Karim** (Aldeia, `VillageContent`): em pé, com a cápsula como colisor; no final de "O que o Tom viu" ela anda pelo `Umm_Karim_Raiz` (o `NpcAnimator` lê a velocidade do agente dessa raiz). **Yusuf** (Aldeia): deitado na esteira, sem colisor (o corpo tombado voltou a ficar reto). Menus rodados na ordem do plano com a região aberta: Trincheiras, Aldeia, O que o Tom viu, Boca do Poço, Wadi, Fuga, Remédio para Yusuf (sem avisos). **O estado do Yusuf (morto ou salvo) não muda nada no visual:** `YusufMorreu` só dispara a missão falha e as falas (da Umm Karim e da Elena na viagem); o corpo da Aldeia é o mesmo. Teste geral dos atalhos: 94 OK, 0 FALHOU, 47 pulados. Teste do salvamento: 20 itens, todos OK. **Parte 2 da B1v concluída.** Custo real no LFS: 93 MB (os 217 MiB em disco incluem 6 FBX idênticos aos da ArteFonte, já no servidor); histórico em ~1,6 GB, uns 16% da cota de 10 GiB.
-- **Parte 3 (pendente, para conversa própria):** o dono ainda escolhe o trecho da vitrine (A: casa do altar e frente do pátio da Aldeia, recomendado; B: Passagem dos Guardiões; C: tenda da Elena e pátio do Acampamento). O visual final fica para outra conversa.
-- **Respostas que faltam do dono:** Nos créditos, **a confirmar**: o plano do Meshy quando os modelos foram gerados, a origem das imagens de referência e a das texturas do manto da Ninsar.
+- **Parte 3 (em andamento): área-vitrine, trecho A (casa do altar e frente do pátio da Aldeia).** Veja "Área-vitrine da Aldeia (B1v Parte 3)" logo abaixo: plano aprovado, etapas e **em que etapa o trabalho parou**.
+- **Respostas que faltam do dono:** Nos créditos, **a confirmar**: a origem das imagens de referência e a das texturas do manto da Ninsar. (O plano do Meshy foi respondido: **Pro, pago**, em todos os modelos.)
+
+### Área-vitrine da Aldeia (B1v Parte 3)
+
+Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual final, como amostra do padrão da demo e base de imagens da Steam. Só este trecho; o resto da região segue em blockout. Sem VFX, sem Asset Store, nada pago. Valem texturas CC0 (Poly Haven, ambientCG), modelos CC0 do Poly Haven, peças feitas por script no Blender e objetos do Meshy, todos nos créditos. Não mexer em colisores, navegação, checkpoints, gatilhos nem falas; Umm Karim e Yusuf ficam onde estão.
+
+**Plano aprovado pelo dono em 26/out/2026, com ajustes:**
+- Enquadramentos: 1. pátio, câmera (-40,5; 1,7; -17,5) → (-49; 1,4; -28,5), FOV 50; 2. limiar (-46,3; 1,65; -23,2) → (-47,2; 1,0; -31); 3. nicho (-45,3; 1,5; -27,6) → (-47,2; 0,9; -31,2), versão quente e versão azul (leitura da tabuleta).
+- A arte só desliga o desenho das caixas que substitui; colisores, malha, gatilhos e personagens ficam. Ordem dos menus: Blockout → Aldeia → Vitrine. Limites: face interna da parede do fundo em z = -31,5 (inscrição do Eco), topo do altar em y = 1,0 (tabuleta).
+- **Céu procedural** global: sim (mostrar antes/depois numa captura de outra área). **Claraboia** no teto da casa do altar: sim. **Varanda (riwaq)** na frente aberta: sim.
+- **Meshy** (créditos limitados até 30/11): o dono gera só **M1 (altar)** e **M9 (poço)**, e **M6 (bandeja)** se sobrar. Para M2–M5, M7, M8, M10–M13: primeiro procurar modelo CC0 no Poly Haven; o que não existir, fazer por script no Blender. Registrar a origem de cada um.
+- Estimativa no LFS: ~110–125 MB.
+
+**Etapas (um commit por etapa, sem push):**
+1. Texturas CC0 e materiais, créditos. — **pendente**
+2. Kit no Blender e casa do altar (por fora e por dentro). — **pendente**
+3. `Casa_6`, chão do pátio e fundo. — **pendente**
+4. Luz, Volume local, claraboia, sonda de reflexo e céu procedural; capturas. — **pendente**
+5. Objetos (Meshy M1, M9, M6; Poly Haven ou Blender para os outros). — para outra conversa
+6. Teste da vitrine (0,15 m), teste geral dos atalhos e do salvamento, capturas finais. — para outra conversa
+
+**Onde parou:** etapas 1 a 4 autorizadas nesta conversa; parar depois da 4 com as capturas.
 
 ## Próximos passos
 

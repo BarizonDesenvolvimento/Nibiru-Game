@@ -4,14 +4,14 @@ Origem e licença de cada asset de terceiros usado no projeto. **Todo asset novo
 
 Situação: **confirmado** (lido no arquivo de licença ou nos termos), **a confirmar** (falta informação do dono) ou **resumo** (o que se sabe dos termos do serviço; conferir os termos atuais antes da página da Steam e do lançamento).
 
-Última conferência: 26 de outubro de 2026.
+Última conferência: 26 de outubro de 2026 (plano do Meshy confirmado: Pro).
 
 ## Personagens (modelos 3D)
 
 | Asset | Onde está | Origem | Licença | Situação |
 | --- | --- | --- | --- | --- |
-| Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono | Depende do plano da conta quando cada modelo foi gerado. Pelo que se sabe dos termos do Meshy: no plano gratuito o modelo sai público sob **CC BY 4.0** (exige atribuição nos créditos do jogo); nos planos pagos fica privado, do usuário | **A confirmar** (plano da conta) |
-| Ninsar: 19 animações | `ArteFonte/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática) | A mesma do modelo | **A confirmar** (plano da conta) |
+| Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono, no plano **Pro (pago)** em todos os modelos (resposta do dono em 26/out/2026) | Resumo dos termos do Meshy para planos pagos: o modelo é privado e pertence ao usuário, com uso comercial; atribuição não exigida. Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
+| Ninsar: 19 animações | `ArteFonte/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática), plano Pro | A mesma do modelo | Confirmado (plano); termos: resumo |
 | Esqueletos com dedos (101 ossos) de todos os personagens acima | `ArteFonte/<Personagem>/2_Rig` | **AccuRig** (Reallusion), gratuito | Resumo: o personagem rigado pode ser usado em projetos comerciais | Resumo |
 | Ninsar: montagem, encaixe e scripts do Blender | `ArteFonte/Ninsar/3_Blender` | Feitos no projeto (Blender) | Próprios | Confirmado |
 | Ninsar: texturas do manto (`Ninsar_Tecido_Manto.png`, `Ninsar_Faixa_Bordado.png`) | `ArteFonte/Ninsar/Texturas` | Enviadas pelo dono | — | **A confirmar** (origem) |
