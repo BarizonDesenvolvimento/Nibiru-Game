@@ -41,7 +41,7 @@ Tabela única: `Scripts/Editor/Animacoes/AnimationLibrary.cs`. Os FBX vão para 
 | Criatura_Morte | Creature Pack/mutant dying | uma vez | não | morte dos dois |
 | Elena_Parada_Basic | Female Basic Locomotion Pack/idle | loop | não | **parada da Elena** (no controlador) |
 | Elena_Andar_Basic | Female Basic Locomotion Pack/walking | loop | sim (1,6 m/s) | **andar da Elena** (no controlador) |
-| Elena_Correr_Basic | Female Basic Locomotion Pack/running | loop | sim (3,6 m/s) | **correr da Elena** (no controlador; toca 1,51 vez mais rápido, porque o jogo corre a 6 m/s) |
+| Elena_Correr_Basic | Female Basic Locomotion Pack/running | loop | sim (3,6 m/s) | **correr da Elena** (no controlador; toca 1,67 vez mais rápido, porque o jogo corre a 6 m/s) |
 | Elena_Virar_Esquerda / _Direita | Female Basic Locomotion Pack/left turn, right turn | uma vez | não | importados, sem uso (o jogo gira o corpo por código) |
 | Elena_Pegar | Avulsas/X Bot@Picking Up Object | uma vez | não | importado, sem uso (veja abaixo) |
 | Elena_Abrir | Avulsas/X Bot@Open Door Outwards | uma vez | sim (0,5 m/s) | importado, sem uso (veja abaixo) |

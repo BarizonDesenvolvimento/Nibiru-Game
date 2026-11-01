@@ -487,7 +487,8 @@ namespace Nibiru.EditorTools
         }
 
         // Parada, andar e correr femininos. O andar segue a regra de Speeds; a corrida natural (3,6 m/s)
-        // está longe dos 6 m/s do jogo, então acelera mais, para os pés não patinarem tanto.
+        // acelera até a velocidade do jogo (1,67 vez a 6 m/s), a opção em que os pés menos escorregam
+        // (comparada de lado com 1,51 vez e com o Fast Run em 1º/nov/2026).
         static void UseFemaleLocomotion(BlendTree tree, PlayerMovementSettings settings)
         {
             var idle = AnimationLibrary.Clip("Elena_Parada_Basic");
@@ -503,7 +504,7 @@ namespace Nibiru.EditorTools
                 new ChildMotion { motion = idle, threshold = 0f, timeScale = 1f },
                 new ChildMotion { motion = walk, threshold = walkNatural, timeScale = 1f },
                 new ChildMotion { motion = walk, threshold = settings.walkSpeed, timeScale = Mathf.Sqrt(settings.walkSpeed / walkNatural) },
-                new ChildMotion { motion = run, threshold = settings.runSpeed, timeScale = Mathf.Pow(runRatio, 0.8f) },
+                new ChildMotion { motion = run, threshold = settings.runSpeed, timeScale = runRatio },
             };
             EditorUtility.SetDirty(tree);
         }
