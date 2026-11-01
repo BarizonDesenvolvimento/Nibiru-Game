@@ -11,8 +11,8 @@ Situação: **confirmado** (lido no arquivo de licença ou nos termos), **a conf
 | Asset | Onde está | Origem | Licença | Situação |
 | --- | --- | --- | --- | --- |
 | Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono, no plano **Pro (pago)** em todos os modelos (resposta do dono em 26/out/2026) | Resumo dos termos do Meshy para planos pagos: o modelo é privado e pertence ao usuário, com uso comercial; atribuição não exigida. Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
-| Elena nova (malha e textura de cor; aprovada pelo dono em 1º/nov/2026, substitui a antiga no jogo) | `ArteFonte/Elena_Nova_Usar/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens/ElenaNova` | Gerada no **Meshy** (meshy.ai) pela conta do dono. **Plano a confirmar pelo dono** | A mesma dos outros modelos, se gerada no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano) |
-| Elena nova: imagens de referência | `ArteFonte/Elena_Nova_Usar/Referencias` | **Origem a confirmar pelo dono** (parecem imagens geradas por IA) | Só referência interna: não entram no build | A confirmar |
+| Elena nova (malha e textura de cor; aprovada pelo dono em 1º/nov/2026, substitui a antiga no jogo) | `ArteFonte/Elena_Nova_Usar/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens/ElenaNova` | Gerada no **Meshy** (meshy.ai) pela conta do dono. No plano **Pro** (confirmado pelo dono em 1º/nov/2026) | A mesma dos outros modelos, se gerada no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano) |
+| Elena nova: imagens de referência | `ArteFonte/Elena_Nova_Usar/Referencias` | Geradas no **ChatGPT**, pela conta do dono, em plano pago (confirmado pelo dono em 1º/nov/2026) | Termos da OpenAI. Só referência interna: não entram no build | Confirmado |
 | Ninsar: 19 animações | `ArteFonte/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática), plano Pro | A mesma do modelo | Confirmado (plano); termos: resumo |
 | Esqueletos com dedos (101 ossos) de todos os personagens acima | `ArteFonte/<Personagem>/2_Rig` | **AccuRig** (Reallusion), gratuito | Resumo: o personagem rigado pode ser usado em projetos comerciais | Resumo |
 | Ninsar: montagem, encaixe e scripts do Blender | `ArteFonte/Ninsar/3_Blender` | Feitos no projeto (Blender) | Próprios | Confirmado |
@@ -72,9 +72,11 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 
 Conteúdo gerado por IA que entra no jogo: os **modelos 3D e texturas dos personagens feitos no Meshy** (lista em "Personagens"), incluindo a Elena nova, e os objetos do Meshy registrados neste arquivo. A declaração da Steam precisa citar isso. O esqueleto vem do AccuRig (rig automático), e as animações, do Mixamo.
 
+**Pendência antes da página "Em breve" da Steam:** avaliar a semelhança da Elena nova com a Lara Croft (rabo de cavalo, regata, coldre na coxa, pelo modelo e pelas referências) e, se for preciso, ajustar o visual. O dono decide.
+
 ## Ferramentas (não entram no jogo)
 
-Blender (GPL; não se aplica aos arquivos criados com ele), AccuRig, Meshy, Unity CLI e a ponte MCP.
+Blender (GPL; não se aplica aos arquivos criados com ele), AccuRig, Meshy, ChatGPT (imagens de referência da Elena nova), Unity CLI e a ponte MCP.
 
 ## Como registrar um asset novo
 
