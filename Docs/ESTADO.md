@@ -4,6 +4,40 @@ Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem 
 
 Última atualização: 1º de novembro de 2026.
 
+## Plano oficial (fases)
+
+Este quadro vale acima de qualquer outra data ou nome de etapa neste arquivo.
+
+| Fase | Período | O que é | Marco |
+| --- | --- | --- | --- |
+| **A** | 26/out a 22/nov | Fechar o blockout | Conteúdo da fatia completo em blockout |
+| **B** | 23/nov a 13/dez | Teste completo da fatia (playtest e equilíbrio) | **Layout congelado** |
+| **C** | 14/dez a 7/mar | Arte do cenário | Página "Em breve" na Steam até **1º/fev** |
+| **D** | 8/mar a 18/abr | Som e polimento | |
+| **E** | 19/abr a 16/mai | Build e trailer | **Demo em 17/mai** |
+
+**Etapas internas antigas, mapeadas para as fases** (os nomes antigos continuam nas seções abaixo):
+
+| Etapa interna | Fase |
+| --- | --- |
+| A1 a A4c (segundo líder e helicóptero, inscrição do Poço e 2º Lullu, Arquivo, salvamento, telas de slots, mouse e proteção dos slots) | A (feitas) |
+| B1 (pendências de checkpoint) | A (feita) |
+| B2a/B2b (munição, curativos e kits), B3 (Primeiro Servo), B4 (rádio de campanha), B6 (espingarda), B7 (textos da abertura e do fundo do menu) | A (conteúdo que falta para fechar o blockout) |
+| B5 (equilíbrio: helicóptero, 2º líder, sentinela, avenida, passada cronometrada) e as "pendências de equilíbrio (etapa B)" | B |
+| B1v (vitrine da Aldeia: Partes 0 a 4, M1, M9, M6, teste de 0,15 m e capturas) | C (arte adiantada; **não bloqueia a fase A**) |
+| "Fonte definitiva" (antiga etapa C) | C |
+| Som novo do helicóptero e outros sons (antiga etapa D) | D |
+| Mouse nas escolhas, inventário e morte; Opções maiores (antiga etapa D) | D |
+| Localização parte 2: só os textos fixos do código e da cena | **fim da A** |
+| Localização: TextMeshPro e CSV de exportação e importação | D |
+
+**Para fechar a fase A faltam:**
+1. **Regressão** dos testes que não rodaram depois da proteção dos slots (passos 10 a 15, Remédio, Arquivo e Tom). Resultado em "Regressão depois da proteção dos slots" no fim da seção de proteção.
+2. **Revisão das falas do Tom pelo dono** (as falas do quarto escuro seguem provisórias).
+3. **Localização parte 2, só textos** (TextMeshPro e CSV ficam para a fase D).
+
+**Objetos da vitrine (decisões de 1º/nov/2026):** o **M1 (altar)** e o **M9 (poço)** são gerados no **Tripo Pro (objetos)**, não no Meshy (o Meshy fica para personagens). São arte adiantada da fase C (vitrine) e **não bloqueiam a fase A**. O teste de 0,15 m da vitrine fica para a fase C. Escala do M1: **1,00 × 0,90 × 0,60 m**.
+
 ## Onde estamos
 
 Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o Sítio de Ur.
@@ -169,11 +203,11 @@ As ferramentas comuns desses scripts (peças, gatilhos, itens, soldados, helicó
 - **Sem canto que prenda a Elena** (vale para o Lullu e para o Primeiro Servo do passo 12): o Lullu a encurralava num canto da antecâmara e golpeava sem parar. O blockout (`BuildWell`) mudou: as plataformas oeste e leste vão até a parede (acabaram as frestas de 1 m, becos sem saída); cada uma tem duas rampas (dá para dar a volta por cima); os cantos da antecâmara e do fundo do Poço são cortados em diagonal (`Ante_Canto_*`, `Poco_Canto_*`); a rampa da descida junto da parede sul ganhou uma guarda (`Lance_4_Guarda`) e o pé da 3ª rampa um pilar (`Patamar_3_Base`). **Ferramenta:** **Nibiru > Testes > Conferir cantos sem saída (Poço)** (`Scripts/Editor/RoomTrapCheck.cs`) põe um inimigo grande (raio 1,1 m, cobre o Servo) a 1,4 m da Elena em 8 direções, em cada ponto andável da malha, e vê se ela ainda chega a 5 m dele; escreve no Console um mapa de texto (número = em quantas direções fica presa). Passou de 429 pontos presos para 23: sobram só pontos de 1 direção em cantos côncavos junto às plataformas e rampas, e os cantos da própria descida de andaimes (o Lullu não sobe lá). Para outra arena, mude os limites no topo do script. Se mexer no blockout, rode **Construir Sítio de Ur na cena aberta** e salve a cena (isso refaz a malha de navegação).
 - **Blockout:** o vão da passagem dos Guardiões na parede oeste da antecâmara agora está fechado pela `Parede_Barco_Junco`, com o barco de junco sobre ondas em ouro e a lamparina quente. O passo 13 a abre (a parede e o barco ficam no grupo `Parede_Movel`, que afunda no chão).
 - **Inscrição dos Guardiões do Poço e 2º Lullu (etapa A2, testado no Play pelo dono e aprovado em 26/out/2026; o texto da inscrição segue provisório até o A3):**
-  - **Inscrição** (`Conteudo_Poco/Poco_Ativo/Inscricao_Do_Poco`): na parede leste da antecâmara (x = 54, z = 83,9), com o barco de junco e a faixa de glifos em ouro e a lamparina de barro com luz quente (marca dos Guardiões, sem azul). Diante dela, "Ler a inscrição" abre o documento `Data/Documents/Poco_Inscricao` na tela de leitura e dispara `LeuAInscricaoDoPoco` (a futura tela de documentos lê daí). Opcional e repetível; não tem recompensa. **O texto é provisório** (`doc.Poco_Inscricao.title/.text/.footer` no `pt-BR.json`) e será escrito na governança (A3). O `InteractableEvent` ganhou o campo `promptKey` (aviso com chave); o aviso é `ui.interact.poco_ler_inscricao`.
+  - **Inscrição** (`Conteudo_Poco/Poco_Ativo/Inscricao_Do_Poco`): na parede leste da antecâmara (x = 54, z = 83,9), com o barco de junco e a faixa de glifos em ouro e a lamparina de barro com luz quente (marca dos Guardiões, sem azul). Diante dela, "Ler a inscrição" abre o documento `Data/Documents/Poco_Inscricao` na tela de leitura e dispara `LeuAInscricaoDoPoco` (a futura tela de documentos lê daí). Opcional e repetível; não tem recompensa. **O texto é definitivo desde o A3** (`doc.Poco_Inscricao.title/.text/.footer` no `pt-BR.json`). O `InteractableEvent` ganhou o campo `promptKey` (aviso com chave); o aviso é `ui.interact.poco_ler_inscricao`.
   - **2º Lullu, a sentinela** (`Lullu_Sentinela`, ID estável `poco.lullu_sentinela`): na antecâmara, a leste (52, -14, 87), entre o ponto de retorno (x = 45, a 7,5 m) e a inscrição (a uns 4 m). Mesmo prefab e preso ao chão (`Max Climb` 2 m), mas com os dados `Data/AI/Lullu_Sentinela`: vagueia só 1,5 m (o do fundo, 4 m) e tem **`hearingMultiplier` = 1,68** (1,2 do Lullu comum × 1,4, ou seja, 40% mais longe; este é o único valor registrado): andando ele ouve a uns 8 m, agachada a uns 2,5 m. Então a antecâmara pede agachar (ou dar a volta pelo oeste) até o flash, e ler a inscrição é arriscado. O Lullu do fundo continua como era (some ao passar pela boca da antecâmara, só ao carregar). A sentinela congela no flash, solta com a Voz e foge com o Lullu do fundo quando o Servo acorda (`FirstServantContent.Build` agora recebe vários Lullu); ao voltar de um ponto de retorno depois do despertar, nenhum dos dois está lá.
   - **Atalhos:** **Nibiru > Testes > Passo 11** > **8** (diante da inscrição, agachada, com a sentinela perto) e **9** (a uns 6 m da sentinela). Os testes do passo 11 ganharam 2 itens (sentinela e inscrição) e passaram a achar o Lullu do fundo pelo nome (`Lullu_Poco`); o flash agora confere também que a sentinela congela e solta.
   - **Pendências de equilíbrio (etapa B):** se 1,5 m de ronda e a audição 1,68 (40% mais longe) deixam a antecâmara justa; se a sentinela perto da inscrição atrapalha demais; o Lullu do fundo e a sentinela se ouvem entre si? (não: cada um reage ao barulho da Elena e a estrondos).
-- **Pendências do Poço:** o Lullu já tem modelo e animações (veja "Lullu" em Personagens 3D); sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a terceira inscrição (Aldeia) ainda é só a marca revelada pelo Eco.
+- **Pendências do Poço:** o Lullu já tem modelo e animações (veja "Lullu" em Personagens 3D); sons são sintetizados; a Voz é só legenda; o Lullu que sobrevive ao flash segue vagando para o passo 12; a inscrição da Aldeia já tem texto definitivo (A3) e aparece depois que o Eco revela a marca.
 - **Teste do flash com o Lullu vivo (corrigido):** ele falhava às vezes porque o atalho 6 punha a Elena em z = 89,4 e o colisor dela (0,5 m de raio) encostava exatamente na área do flash (z = 89,9): o flash podia começar sozinho no nascimento. O atalho agora a põe em 88,8 e dispara "passou pelo Lullu" logo depois de carregar (o Lullu continua vivo, como no jogo); o teste não teleporta mais para z = 84,6 (onde ela entrava numa rampa) e acusa se o flash começar antes da hora. Passou 3 vezes seguidas.
 - Teste feito pela ponte (teste automático, tudo OK): chegada à boca, descida caminhável pelos 4 lances, retorno em silêncio, Lullu preso ao chão (barulho do andaime: caça, não sobe, não golpeia), parede do barco, flash com o Lullu vivo (congela e solta) e sem ele.
 
@@ -895,7 +929,7 @@ Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 
 
 ## Decisões da governança de 26/out/2026 (cronograma e salvamento)
 
-**Cronograma adiantado em 26 dias (metas internas):** etapa B até **17/nov**, C até **9/fev**, D até **23/mar**, demo pronta (E) em **21/abr**. **Datas externas mantidas:** estúdio e Steamworks em novembro; página "Em breve" até **1º/fev**; inscrição na Next Fest até **11/abr**; Next Fest de **14 a 21/jun**. **Regra:** quando uma etapa termina antes da meta, as seguintes andam junto. A folga fica no fim, como reserva para playtest e polimento.
+**Cronograma: substituído pelo "Plano oficial (fases)" no topo deste arquivo** (A até 22/nov, B até 13/dez, C até 7/mar, D até 18/abr, E até 16/mai, demo em 17/mai; as metas antigas de 17/nov, 9/fev, 23/mar e 21/abr não valem mais). **Datas externas mantidas:** estúdio e Steamworks em novembro; página "Em breve" até **1º/fev**; inscrição na Next Fest até **11/abr**; Next Fest de **14 a 21/jun**.
 
 **Calibração:** 1 "dia de trabalho com o Claude" ≈ 3 a 4 h do dono; 25 h por semana ≈ 6 a 8 dias.
 
@@ -941,7 +975,7 @@ Veja `Docs/Auditoria-2026-10-25.md` (tabela do que está pronto, provisório e f
 
 Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fonte central estão no `CLAUDE.md` ("Textos e idiomas").
 
-- **Sistema próprio leve** (decisão de 25/out; o pacote `com.unity.localization` não foi usado): `Scripts/Localization/Loc.cs`, com as tabelas `Assets/_Nibiru/Resources/Localization/pt-BR.json` (365 textos) e `en.json` (vazio, cai no pt-BR). O idioma escolhido fica no `PlayerPrefs` (`Nibiru.Language`). Falta de texto: idioma atual, depois pt-BR, depois o texto antigo do campo, depois `[chave]`. Instalei `com.unity.nuget.newtonsoft-json` como dependência direta (lê o JSON).
+- **Sistema próprio leve** (decisão de 25/out; o pacote `com.unity.localization` não foi usado): `Scripts/Localization/Loc.cs`, com as tabelas `Assets/_Nibiru/Resources/Localization/pt-BR.json` (453 chaves em 1º/nov/2026) e `en.json` (27 chaves; o resto cai no pt-BR). O idioma escolhido fica no `PlayerPrefs` (`Nibiru.Language`). Falta de texto: idioma atual, depois pt-BR, depois o texto antigo do campo, depois `[chave]`. Instalei `com.unity.nuget.newtonsoft-json` como dependência direta (lê o JSON).
 - **Campos com chave:** falas (e quem fala), respostas, documentos, fita, itens, missões (nome e passos), tabuleta e memória têm campos de chave e acessores `Localized...`; a interface, os avisos de item/missão/fita e os testes leem por eles. Os campos de texto antigo ficam vazios depois da extração (o nome de quem fala fica gravado em `speaker`, que também identifica o personagem para os gestos de conversa). Respostas, linhas de fita e passos de missão ganharam um `id` próprio e permanente (74 novos).
 - **Extração:** **Nibiru > Localização > Extrair textos dos arquivos de dados** (pode rodar de novo: texto digitado no Inspector vira entrada da tabela e o campo esvazia). **Conferir equivalência da extração** compara com a foto tirada antes (576 de 576 textos iguais; a foto fica em `Library/`, fora do Git).
 - **Inspector:** os campos de chave aparecem só para leitura, com o texto pt-BR embaixo (`[LocKey]`). Editar o texto é no `pt-BR.json`; editar pelo Inspector fica para depois.
@@ -1059,7 +1093,8 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 - **Pontos de escrita, todos em `SaveStorage`:** `SaveSlots.Write`, `WriteSafely` e `Delete`; `SlotShortcuts.MakeUnreadable`, `AdvancePlayTime` e `RunTest`; `SaveSituations.BrokenSlot`; `SaveTests`; `MouseTests`, `HitTestCheck` e `MouseShortcuts`. Pastas de teste saíram da pasta real.
 - **Menus** (Nibiru > Testes > Salvamento): **Teste da proteção dos slots** (sem Play) e **Liberar a trava dos testes** (com janela; só se nada estiver rodando). Sair do Play já libera; um teste de passo que terminou com o Play ligado segura a trava até sair do Play.
 - **Testes** (`Editor/Save/SlotGuardTests.cs`, também dentro do teste do salvamento e do geral): 2ª aquisição recusada; processo vivo recusa e processo morto libera (com um processo de verdade); fim de A não desprotege B; `UseFolder(null)` e `RunTest` por cima da execução; 11 escritas forçadas lançam exceção (com nomes que não são de slot, para o teste não estragar nada); hash igual; varredura dos 227 scripts atrás de escrita direta (ela achou um falso positivo, a pasta do `Registro.asset` em `Assets`, que é exceção).
-- **Resultados, um de cada vez, conferindo o fim pelo log novo:** proteção tudo OK; salvamento **19 OK, 0 FALHOU**; geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**; mouse **10 OK**; hit-test **4 OK**. Hash externo dos 3 slots igual antes e depois de tudo. À parte, com um 2º processo segurando a trava, o menu do teste do salvamento recusou e não ligou o Play. Não rodados nesta etapa: testes dos passos 10 a 15, Remédio, Arquivo e Tom (entram pelo mesmo `Go`).
+- **Resultados, um de cada vez, conferindo o fim pelo log novo:** proteção tudo OK; salvamento **19 OK, 0 FALHOU**; geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**; mouse **10 OK**; hit-test **4 OK**. Hash externo dos 3 slots igual antes e depois de tudo. À parte, com um 2º processo segurando a trava, o menu do teste do salvamento recusou e não ligou o Play. Os testes dos passos 10 a 15, Remédio, Arquivo e Tom não tinham rodado nesta etapa (entram pelo mesmo `Go`); rodaram na regressão abaixo.
+- **Regressão depois da proteção dos slots (1º/nov/2026):** os 9 testes rodaram **um por vez, pelo `AutomatedRun`**, saindo do Play e conferindo o "terminou; slots reais iguais" no log antes do seguinte. **Todos OK, 0 FALHOU:** passo 10 (14 OK), passo 11 (9), passo 12 (10), passo 13 (9), passo 14 (10), passo 15 (3), Remédio para Yusuf (8), Arquivo (6) e O que o Tom viu (3). Hash dos 3 slots reais igual antes e depois (`save_1` 2DE94DD9…, `save_2` B0219DFB…, `save_3` 1C621A3A…).
 - **Os slots reais não foram restaurados nem apagados:** continuam com os dados falsos do incidente. O `save_3.json` tem data posterior (27/out, 08:12, mirante do Acampamento, tempo 5542 s): parece uma partida continuada a partir do slot falso (5525 s), não um cenário de teste.
 
 **Onde parou:** etapas 1 a 4 feitas e com commit (sem push). Próximo: o dono olha as capturas e gera no Meshy o M1 (altar) e o M9 (poço), e o M6 (bandeja) se sobrar crédito; depois a etapa 5. Ordem dos menus se o blockout ou a Aldeia forem refeitos: Blockout → Aldeia (e os outros de conteúdo) → **Vitrine da Aldeia > 2** (o 1 e o 3 só se mudar material ou céu).
