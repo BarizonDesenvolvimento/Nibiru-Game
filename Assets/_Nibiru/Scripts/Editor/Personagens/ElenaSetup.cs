@@ -24,8 +24,10 @@ namespace Nibiru.EditorTools
         const string ModelRoot = "Assets/_Nibiru/Art/Personagens/ElenaNova";
         const string ModelPath = ModelRoot + "/ElenaNova.fbx";
         const string BaseColorPath = ModelRoot + "/ElenaNova_BaseColor.jpg";
-        // Até onde o braço desce no Avatar, em graus (-30: mãos fora das coxas, medido em 1º/nov/2026).
-        const float ArmDownLimit = -30f;
+        // Até onde cada braço desce no Avatar, em graus: o mais fechado que deixa as mãos fora das coxas
+        // com a locomoção feminina (medido em 1º/nov/2026). O direito desce menos por causa do coldre.
+        const float LeftArmDownLimit = -45f;
+        const float RightArmDownLimit = -40f;
         const string MaterialPath = ModelRoot + "/Materiais/ElenaNova.mat";
         const string Mixamo = "Assets/_Nibiru/Art/Animacoes/Mixamo/";
         // Boneco do Mixamo em pose T: o esqueleto de referência de todas as animações do Mixamo.
@@ -69,11 +71,8 @@ namespace Nibiru.EditorTools
             }
         }
 
-        static readonly Cut Idle = new("Parada", "Idle", -1, -1, true);
-        // Andar neutro, de tronco reto. O "Female Walk" anda com o queixo erguido e o tronco para trás.
-        static readonly Cut Walk = new("Andar", "WalkForward", -1, -1, true, moving: true);
-        // Pique atlético a 5,7 m/s, quase a corrida do jogo (6 m/s): os pés quase não escorregam.
-        static readonly Cut Run = new("Correr", "Fast Run", -1, -1, true, moving: true);
+        // Parada, andar e correr vêm da Female Basic Locomotion (veja UseFemaleLocomotion). O resto não
+        // tem versão feminina na biblioteca e é universal.
         // O Mixamo não tem agachada parada: um quadro do andar furtivo com os dois pés apoiados.
         static readonly Cut CrouchIdle = new("Agachada_Parada", "Sneak Walk", 17, 18, true, feet: true);
         static readonly Cut CrouchWalk = new("Agachada_Andando", "Sneak Walk", -1, -1, true, moving: true, feet: true);
@@ -88,7 +87,7 @@ namespace Nibiru.EditorTools
         // Somado por cima do que ela estiver fazendo (camada aditiva): só o tranco do golpe.
         static readonly Cut Hurt = new("Dano", "Hit Reaction", 13, 60, false);
         static readonly Cut Death = new("Morte", "Standing React Death Backward", -1, -1, false, keepTravel: true);
-        static readonly Cut[] Cuts = { Idle, Walk, Run, CrouchIdle, CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death };
+        static readonly Cut[] Cuts = { CrouchIdle, CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death };
 
         [MenuItem("Nibiru/Personagens/Montar Elena animada")]
         static void Build()
@@ -160,7 +159,10 @@ namespace Nibiru.EditorTools
             AssetDatabase.Refresh();
             ConfigureTextures();
             ConfigureModel(BuildMaterial());
-            BuildPrefab(AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath));
+            var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
+            UseFemaleLocomotion(StandingTree(controller), AssetDatabase.LoadAssetAtPath<PlayerMovementSettings>(SettingsPath));
+            EditorUtility.SetDirty(controller);
+            BuildPrefab(controller);
             AssetDatabase.SaveAssets();
             Debug.Log("Modelo da Elena trocado no prefab " + PrefabPath + ".");
         }
@@ -189,7 +191,7 @@ namespace Nibiru.EditorTools
 
         // O modelo novo tem braços longos e coxas largas (calça e coldre): com os limites padrão, as
         // mãos entram nas coxas. Encurtar só o "Arm Down-Up" para baixo (padrão -60°) deixa o braço
-        // caído mais aberto; mira, recarga e golpe, de braço erguido, não mudam.
+        // caído um pouco mais aberto; mira, recarga e golpe, de braço erguido, quase não mudam.
         static void OpenArms(ModelImporter importer)
         {
             var description = importer.humanDescription;
@@ -197,8 +199,9 @@ namespace Nibiru.EditorTools
             for (int i = 0; i < human.Length; i++)
             {
                 HumanBodyBones bone;
-                if (human[i].humanName == nameof(HumanBodyBones.LeftUpperArm)) bone = HumanBodyBones.LeftUpperArm;
-                else if (human[i].humanName == nameof(HumanBodyBones.RightUpperArm)) bone = HumanBodyBones.RightUpperArm;
+                float downLimit;
+                if (human[i].humanName == nameof(HumanBodyBones.LeftUpperArm)) { bone = HumanBodyBones.LeftUpperArm; downLimit = LeftArmDownLimit; }
+                else if (human[i].humanName == nameof(HumanBodyBones.RightUpperArm)) { bone = HumanBodyBones.RightUpperArm; downLimit = RightArmDownLimit; }
                 else continue;
 
                 Vector3 min = default, max = default;
@@ -208,7 +211,7 @@ namespace Nibiru.EditorTools
                     min[axis] = HumanTrait.GetMuscleDefaultMin(muscle);
                     max[axis] = HumanTrait.GetMuscleDefaultMax(muscle);
                 }
-                min.z = ArmDownLimit;
+                min.z = downLimit;
                 var limit = human[i].limit;
                 limit.useDefaultValues = false;
                 limit.min = min;
@@ -334,11 +337,7 @@ namespace Nibiru.EditorTools
 
             var standing = crouchBlend.CreateBlendTreeChild(0f);
             standing.name = "EmPe";
-            Speeds(standing,
-                (Idle, 0f),
-                (Walk, NaturalSpeed(Walk)),
-                (Walk, settings.walkSpeed),
-                (Run, settings.runSpeed));
+            UseFemaleLocomotion(standing, settings);
 
             var crouched = crouchBlend.CreateBlendTreeChild(1f);
             crouched.name = "Agachada";
@@ -469,6 +468,34 @@ namespace Nibiru.EditorTools
                 children[i].timeScale = ratio > 1f ? Mathf.Clamp(Mathf.Sqrt(ratio), 1f, 2.5f) : ratio;
             }
             tree.children = children;
+        }
+
+        static BlendTree StandingTree(AnimatorController controller)
+        {
+            var locomotion = controller.layers[0].stateMachine.states.First(s => s.state.name == "Locomocao").state;
+            return ((BlendTree)locomotion.motion).children.Select(c => c.motion).OfType<BlendTree>().First(t => t.name == "EmPe");
+        }
+
+        // Parada, andar e correr femininos. O andar segue a regra de Speeds; a corrida natural (3,6 m/s)
+        // está longe dos 6 m/s do jogo, então acelera mais, para os pés não patinarem tanto.
+        static void UseFemaleLocomotion(BlendTree tree, PlayerMovementSettings settings)
+        {
+            var idle = AnimationLibrary.Clip("Elena_Parada_Basic");
+            var walk = AnimationLibrary.Clip("Elena_Andar_Basic");
+            var run = AnimationLibrary.Clip("Elena_Correr_Basic");
+            float walkNatural = walk.averageSpeed.magnitude;
+            float runRatio = settings.runSpeed / run.averageSpeed.magnitude;
+            tree.blendType = BlendTreeType.Simple1D;
+            tree.blendParameter = PlayerAnimator.SpeedParam;
+            tree.useAutomaticThresholds = false;
+            tree.children = new[]
+            {
+                new ChildMotion { motion = idle, threshold = 0f, timeScale = 1f },
+                new ChildMotion { motion = walk, threshold = walkNatural, timeScale = 1f },
+                new ChildMotion { motion = walk, threshold = settings.walkSpeed, timeScale = Mathf.Sqrt(settings.walkSpeed / walkNatural) },
+                new ChildMotion { motion = run, threshold = settings.runSpeed, timeScale = Mathf.Pow(runRatio, 0.8f) },
+            };
+            EditorUtility.SetDirty(tree);
         }
 
         static AvatarMask BuildUpperBodyMask()

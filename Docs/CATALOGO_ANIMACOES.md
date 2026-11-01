@@ -39,9 +39,9 @@ Tabela única: `Scripts/Editor/Animacoes/AnimationLibrary.cs`. Os FBX vão para 
 | Servo_Urro | Creature Pack/mutant roaring, quadros 10 a 70 | uma vez | não | urro da luta (`FirstServantFight.IsRoaring`: ao acordar e a cada troca de fase) |
 | Criatura_Golpe_Recebido | Not So Scary Zombie Pack/zombie reaction hit, quadros 8 a 40 | uma vez | não | dano dos dois (camada aditiva) |
 | Criatura_Morte | Creature Pack/mutant dying | uma vez | não | morte dos dois |
-| Elena_Parada_Basic | Female Basic Locomotion Pack/idle | loop | não | **só vitrine**: comparar com a `Parada` atual |
-| Elena_Andar_Basic | Female Basic Locomotion Pack/walking | loop | sim (1,6 m/s) | só vitrine (compara com `Andar`) |
-| Elena_Correr_Basic | Female Basic Locomotion Pack/running | loop | sim (3,6 m/s) | só vitrine (compara com `Correr`; mais lenta que o pique atual de 5,4 m/s) |
+| Elena_Parada_Basic | Female Basic Locomotion Pack/idle | loop | não | **parada da Elena** (no controlador) |
+| Elena_Andar_Basic | Female Basic Locomotion Pack/walking | loop | sim (1,6 m/s) | **andar da Elena** (no controlador) |
+| Elena_Correr_Basic | Female Basic Locomotion Pack/running | loop | sim (3,6 m/s) | **correr da Elena** (no controlador; toca 1,51 vez mais rápido, porque o jogo corre a 6 m/s) |
 | Elena_Virar_Esquerda / _Direita | Female Basic Locomotion Pack/left turn, right turn | uma vez | não | importados, sem uso (o jogo gira o corpo por código) |
 | Elena_Pegar | Avulsas/X Bot@Picking Up Object | uma vez | não | importado, sem uso (veja abaixo) |
 | Elena_Abrir | Avulsas/X Bot@Open Door Outwards | uma vez | sim (0,5 m/s) | importado, sem uso (veja abaixo) |
@@ -304,7 +304,7 @@ Pacotes de outra fonte (Standard, fora do Mixamo), em `Universal Animation Libra
 | Golpe de garra (Lullu, Servo) | Creature Pack: `mutant swiping`, `mutant punch`, `mutant jump attack` (investida); Zombie Pack: `zombie attack` (Lullu) |
 | Urro | Creature Pack: `mutant roaring`; alternativa `mutant flexing muscles` |
 | Saída das rachaduras | Zombie Pack: `zombie stand up` (1, 2, 3), `zombie transition`; Creature: `mutant jumping` |
-| Locomoção da Elena | Female Basic Locomotion Pack já importado só para comparação (veja a vitrine); a atual (aprovada) continua; Action Adventure (cobertura, rolar, cair), Pistol Handgun (armada) |
+| Locomoção da Elena | **feito**: parada, andar e correr da Female Basic Locomotion. Regra do dono: a Elena usa animação feminina sempre que existir; as de ação sem versão feminina seguem universais. Ainda sem uso: Action Adventure (cobertura, rolar, cair), Pistol Handgun (armada) |
 | Sentado (Elena na caçamba) | **feito**: `Elena_Sentada` (`X Bot@Sitting Idle2`, de chão) |
 | Dirigindo (Samir) | **feito**: `Samir_Dirigindo` (`X Bot@Driving`) |
 | Garra, urro, saída (criaturas) | **feitos**, menos a saída das rachaduras (importada, sem evento) |

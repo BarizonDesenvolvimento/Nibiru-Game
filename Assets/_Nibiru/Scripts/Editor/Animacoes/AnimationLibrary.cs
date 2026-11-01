@@ -64,7 +64,7 @@ namespace Nibiru.EditorTools
             new("Criatura_Golpe_Recebido", "Criatura", Zombie + "zombie reaction hit", false, first: 8, last: 40),
             new("Criatura_Morte", "Criatura", Creature + "mutant dying", false, keepTravel: true),
 
-            // Elena: locomoção feminina para comparar com a atual (Idle, WalkForward e Fast Run), mais
+            // Elena: locomoção feminina (parada, andar e correr, em uso no controlador), mais
             // as viradas (sem uso no controlador: o jogo gira o corpo por código) e as interações.
             new("Elena_Parada_Basic", "Elena", Female + "idle", true),
             new("Elena_Andar_Basic", "Elena", Female + "walking", true, moving: true),

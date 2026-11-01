@@ -225,7 +225,7 @@ namespace Nibiru.EditorTools
             return (header[16] << 24) | (header[17] << 16) | (header[18] << 8) | header[19];
         }
 
-        // O controlador da Elena continua o aprovado: só confere que nada se perdeu.
+        // O controlador da Elena: confere a locomoção feminina e que nada se perdeu.
         static void CheckElena()
         {
             var c = Controller("Elena");
@@ -236,6 +236,10 @@ namespace Nibiru.EditorTools
             var crouch = (State(c, "Base Layer", "Locomocao")?.motion as BlendTree)?.children
                 .Select(ch => ch.motion).OfType<BlendTree>().FirstOrDefault(t => t.name == "Agachada");
             Check(crouch != null && crouch.children.Any(ch => ch.motion != null && ch.motion.name == "Elena_Agachada_Parada"), "Elena: a agachada parada deveria usar Elena_Agachada_Parada");
+            var standing = (State(c, "Base Layer", "Locomocao")?.motion as BlendTree)?.children
+                .Select(ch => ch.motion).OfType<BlendTree>().FirstOrDefault(t => t.name == "EmPe");
+            foreach (string clip in new[] { "Elena_Parada_Basic", "Elena_Andar_Basic", "Elena_Correr_Basic" })
+                Check(standing != null && standing.children.Any(ch => ch.motion != null && ch.motion.name == clip), $"Elena: a locomoção em pé deveria usar {clip}");
             foreach (string name in new[] { "Locomocao", "Esquiva", "Golpe_Faca", "Morte" })
                 Check(State(c, "Base Layer", name) != null, $"Elena: falta o estado {name}");
         }

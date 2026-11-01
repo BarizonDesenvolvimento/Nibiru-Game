@@ -190,36 +190,36 @@ BlendTree:
   m_Name: EmPe
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 146b635d294a70949b64068db72af996, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: be686b04b330d1b4c9cbbc95cb0026df, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
-    m_DirectBlendParameter: Blend
+    m_DirectBlendParameter: 
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 36164269130d51844a90a09d4212329c, type: 3}
-    m_Threshold: 1.7005444
+    m_Motion: {fileID: -203655887218126122, guid: 3b7d0ccb39c759f41b6614d471ba552c, type: 3}
+    m_Threshold: 1.5962628
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
-    m_DirectBlendParameter: Blend
+    m_DirectBlendParameter: 
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 36164269130d51844a90a09d4212329c, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: 3b7d0ccb39c759f41b6614d471ba552c, type: 3}
     m_Threshold: 3
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1.3282096
+    m_TimeScale: 1.3709084
     m_CycleOffset: 0
-    m_DirectBlendParameter: Blend
+    m_DirectBlendParameter: 
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 0bc989c3c79c2a647980fd961d20074f, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: 49c71cf1be3d8b54e89cfa434f6a92d2, type: 3}
     m_Threshold: 6
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1.0552851
+    m_TimeScale: 1.5081832
     m_CycleOffset: 0
-    m_DirectBlendParameter: Blend
+    m_DirectBlendParameter: 
     m_Mirror: 0
   m_BlendParameter: Velocidade
   m_BlendParameterY: Blend

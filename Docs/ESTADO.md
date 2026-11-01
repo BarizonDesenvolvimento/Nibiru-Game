@@ -34,7 +34,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O final de **"O que o Tom viu"** (a Umm Karim leva a Elena a Abu Faris, que revela os filmes num quarto escuro; recompensa: o item "Fotos do Tom", código estável `fotos_do_tom`) está pronto em blockout, testado pela ponte e aprovado pelo dono no Play. Veja "Secundária O que o Tom viu: o final".
 - Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte` (falta ainda o Abu Faris, variação do aldeão base), com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
 
-**Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. As **animações da biblioteca** (`Docs/CATALOGO_ANIMACOES.md`) foram importadas para as criaturas (garra, investida, urro, golpe recebido e morte do Lullu e do Primeiro Servo) e para o Samir dirigindo (veja "Animações da biblioteca" abaixo), testadas pela ponte e **aprovadas pelo dono no Play** (vitrines das criaturas e da Elena, viagem do passo 15 com a Elena sentada e o Samir ao volante, passo 11 com o Lullu na caça e passo 12 com o Servo acordando e urrando). **O passo de importação de animações está aprovado.** O `zombie stand up` ficou importado e só na vitrine (nenhuma mecânica de surgimento pelas rachaduras por enquanto), e as pastas Pro Magic, Magic Locomotion e Scary Zombie seguem com **origem não confirmada, não usar até confirmação**. A Elena também já viaja sentada no chão da caçamba e tem agachada parada de verdade. Depois, importar os outros personagens (o kit comum já serve para eles). A corrida da Elena ainda é provisória (veja "Elena"): a Female Basic Locomotion está na vitrine para comparar.
+**Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. As **animações da biblioteca** (`Docs/CATALOGO_ANIMACOES.md`) foram importadas para as criaturas (garra, investida, urro, golpe recebido e morte do Lullu e do Primeiro Servo) e para o Samir dirigindo (veja "Animações da biblioteca" abaixo), testadas pela ponte e **aprovadas pelo dono no Play** (vitrines das criaturas e da Elena, viagem do passo 15 com a Elena sentada e o Samir ao volante, passo 11 com o Lullu na caça e passo 12 com o Servo acordando e urrando). **O passo de importação de animações está aprovado.** O `zombie stand up` ficou importado e só na vitrine (nenhuma mecânica de surgimento pelas rachaduras por enquanto), e as pastas Pro Magic, Magic Locomotion e Scary Zombie seguem com **origem não confirmada, não usar até confirmação**. A Elena também já viaja sentada no chão da caçamba e tem agachada parada de verdade. Depois, importar os outros personagens (o kit comum já serve para eles). A Elena agora usa a locomoção feminina (veja "Elena").
 
 ## Documentos
 
@@ -623,7 +623,7 @@ Clipes importados da `ArteFonte/Animacoes` (fora do Git) para `Art/Animacoes/<Cr
 - **Ligações a coisas que já existiam (sem lógica nova):** o golpe entra pelo estado `Golpe` da `LulluAI`; a investida do Servo, pelo estado `Investida` (o Lullu, que não tem esse estado no controlador, usa o golpe); o urro, pelo `FirstServantFight.IsRoaring` (ao acordar e a cada troca de fase); dano e morte, pelos eventos do `Health`. O `LulluAnimator` só ganhou os dois gatilhos novos (`Investida` e `Urro`), que ignora se o controlador não os tiver.
 - **Samir dirigindo:** estado `Dirigindo` no `Samir.controller` (parâmetro `Dirigindo`; o `NpcAnimator` tem o campo "driving" e `SetDriving`). O menu da Fuga põe o Samir sentado na cabine com banco e volante provisórios. **Rode de novo "Montar Samir animado" e "Povoar Fuga na cena aberta" se mexer nisso.**
 - **Importados e sem ligação** (nenhum evento do jogo serve): saída das rachaduras (`Lullu_Saida_Rachaduras`), pegar e abrir da Elena (o `PlayerInteractor` não tem evento de interação) e as viradas. Estão na vitrine.
-- **Elena:** o controlador aprovado **não mudou**. A parada, o andar e a corrida da Female Basic Locomotion estão só na vitrine, ao lado da atual, para comparar antes de trocar (a nova corrida é mais lenta: 3,6 m/s contra 5,4 do pique atual).
+- **Elena:** em 1º/nov/2026, a parada, o andar e a corrida da Female Basic Locomotion passaram da vitrine para o controlador, a pedido do dono (veja "Elena"). A nova corrida é mais lenta: 3,6 m/s, contra 5,4 do pique anterior.
 - **Elena sentada:** `Elena_Sentada` (`X Bot@Sitting Idle2`, sentada no chão; o `Sitting Idle` é de cadeira e não foi usado). O `Elena.controller` ganhou o parâmetro e o estado `Sentada` (`PlayerAnimator.SetSeated`), que o `TruckRide` liga ao travar a Elena. No mesmo ajuste, o `TruckRide` passou a pôr a **raiz da Elena 1,05 m acima do ponto do banco** (antes os pés ficavam 1 m enterrados no chão da caçamba).
 - **Agachada parada:** `Elena_Agachada_Parada` (`X Bot@Crouching Idle`) substitui o quadro congelado do `Sneak Walk` na blend tree da agachada. É a única mudança no controlador aprovado, além da sentada; peça a vitrine 2 para conferir. As pastas Pro Magic, Magic Locomotion e Scary Zombie seguem sem origem confirmada e sem uso.
 
@@ -654,13 +654,14 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 | Ossos no Humanoid | 52 | 52 (2 do polegar esquerdo mapeados à mão) |
 
 - **Só no Blender** o esqueleto novo aparece girado 90° e a malha deformada sai torta; na Unity está certo. Confira sempre na Unity.
-- **Mãos e coxas:** o modelo novo tem braços longos e calça larga com coldre, e nos limites padrão as mãos entravam nas coxas (até 14 cm). O `ElenaSetup` encurta o limite "Arm Down-Up" para baixo de -60° para **-30°** (`ArmDownLimit`). Com isso, o braço caído fica mais aberto, sem mudar a animação: mira, recarga e golpe mudam no máximo 1 cm. Sobra um toque de 0,2 cm no coldre, num quadro do andar. A folga da mão esquerda agachada é igual à da antiga (ela apoia a mão na perna).
+- **Locomoção feminina (pedido do dono, 1º/nov/2026):** parada, andar e correr agora vêm da `Female Basic Locomotion` (`Elena_Parada_Basic`, `_Andar_Basic`, `_Correr_Basic`), no lugar de `Idle`, `WalkForward` e `Fast Run`. **Regra: a Elena usa animação feminina sempre que existir na biblioteca.** Agachar, rolar, faca, mira, recarga, dano, morte e sentar não têm versão feminina e seguem universais. A corrida feminina anda 3,6 m/s, e o jogo corre a 6: toca 1,51 vez mais rápido e os pés ainda escorregam um pouco.
+- **Mãos e coxas:** o modelo novo tem braços longos e calça larga com coldre, e nos limites padrão as mãos entravam nas coxas (até 14 cm). O `ElenaSetup` encurta o limite "Arm Down-Up" para baixo, de -60° para **-45° no braço esquerdo e -40° no direito** (`LeftArmDownLimit`, `RightArmDownLimit`; o direito por causa do coldre): o mais fechado sem atravessar a coxa, com folga mínima de 0,4 cm na parada e no andar. As poses de braço erguido quase não mudam. A primeira versão, com -30° e a locomoção antiga, foi recusada pelo dono: braços afastados.
 - **Coldre:** a malha nova já traz um coldre com pistola na coxa direita, e a pistola da mão continua sendo o bloco provisório.
 - **Menu novo: Nibiru > Personagens > Trocar só o modelo da Elena** refaz textura, material, importação e o filho "Modelo" do prefab, sem mexer no controlador nem nas animações. Fora do "Modelo", os 2.395 valores do prefab ficaram iguais (comparados antes e depois). Arma e faca seguem a mão direita pelo Humanoid, então não precisaram de ajuste. **A Elena não tem encaixe de lamparina:** as lamparinas são objetos das cenas.
 - A vitrine de animações da Elena (**Nibiru > Testes > Animações**) agora usa o modelo novo.
 - **Capturas e GIFs:** `Docs/Arte/Capturas/ElenaNova`.
-- **Testes pela ponte, com o modelo e o limite finais, um de cada vez:** teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**, com os slots reais iguais; teste do passo 10 **14 OK, 0 FALHOU**, incluindo o golpe pelas costas no líder e no atirador. No Play, com controle virtual: parada, andar, correr, agachar, golpe e mira. A morte apareceu na tela de morte, pela patrulha. Dano e recarga foram conferidos só pela pose, fora do Play.
-- **Falta decidir (dono):** física e movimento secundário ficam para o polimento (etapa B), não para esta troca. A locomoção feminina (`Female Basic Locomotion`) continua só na vitrine: a parada e o andar podem substituir os atuais depois, mas a corrida dela é lenta (3,6 m/s contra os 6 do jogo).
+- **Testes pela ponte, com a versão final, um de cada vez:** teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**, com os slots reais iguais; teste de animações **337 verificações, todas passaram** (agora confere também a locomoção feminina). No Play, com controle virtual: parada, andar, correr, agachar, golpe e mira. O teste do passo 10 (**14 OK, 0 FALHOU**, com o golpe pelas costas no líder e no atirador) e a tela de morte foram vistos antes da troca para a locomoção feminina e para os limites finais, e não foram repetidos. A recarga foi conferida só pela pose, fora do Play, e o dano não foi conferido à parte.
+- **Falta decidir (dono):** física e movimento secundário ficam para o polimento (etapa B), não para esta troca.
 
 O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
 - Modelo `Art/Personagens/ElenaNova/ElenaNova.fbx` (cópia de `ArteFonte/Elena_Nova_Usar/2_Rig/Elena.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,701 (1,70 m), sem blendshapes.
@@ -678,9 +679,9 @@ O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personag
 
 | Trecho | Vem de | Observação |
 | --- | --- | --- |
-| Parada | `Idle` | Respirando |
-| Andar | `WalkForward` | Tronco reto. Natural a 1,7 m/s; a 3 m/s toca 1,3 vez mais rápido |
-| Correr | `Fast Run` | Pique a 5,4 m/s (o jogo corre a 6). **Provisória:** os braços abrem demais; trocar por uma corrida mais atlética |
+| Parada | `Elena_Parada_Basic` (Female Basic Locomotion) | Respirando |
+| Andar | `Elena_Andar_Basic` (Female Basic Locomotion) | Natural a 1,6 m/s; a 3 m/s toca 1,37 vez mais rápido |
+| Correr | `Elena_Correr_Basic` (Female Basic Locomotion) | Natural a 3,6 m/s; o jogo corre a 6, então toca 1,51 vez mais rápido e os pés ainda escorregam um pouco |
 | Agachada_Parada | `Sneak Walk`, quadro 17 | Quadro parado do andar furtivo (falta "Crouch Idle") |
 | Agachada_Andando | `Sneak Walk` | Altura pelos pés |
 | Esquiva | `Stand To Roll`, quadros 10 a 50 | Mergulho e cambalhota, em 0,4 s |
@@ -690,7 +691,7 @@ O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personag
 | Dano | `Hit Reaction`, quadros 13 a 60 | Aditiva |
 | Morte | `Standing React Death Backward` | Cai para trás e fica deitada |
 
-Animações que faltam: corrida mais atlética (a Run Forward está na pasta para conferir), agachada parada ("Crouch Idle"), tiro e recarga de pistola, andar de costas mirando (hoje é o andar tocado ao contrário) e interagir (pegar item). A arma continua sendo o bloco provisório.
+Animações que faltam: tiro e recarga de pistola, andar de costas mirando (hoje é o andar tocado ao contrário) e interagir (pegar item). A arma continua sendo o bloco provisório.
 
 **Como testar a Elena:** menu **Nibiru > Testes > Elena** (`Scripts/Editor/ElenaShortcuts.cs`):
 
