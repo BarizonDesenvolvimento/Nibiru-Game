@@ -193,8 +193,8 @@ namespace Nibiru.EditorTools.Saving
 
         static void BrokenSlot(string content, string what)
         {
-            Directory.CreateDirectory(SaveSlots.Folder);
-            File.WriteAllText(SaveSlots.PathOf(3), content);
+            SaveStorage.CreateDirectory(SaveSlots.Folder);
+            SaveStorage.WriteAllText(SaveSlots.PathOf(3), content);
             OpenMenu($"Slot 3 {what}. O jogo não trava: o menu NÃO mostra \"Continuar\" (se os outros slots estão vazios), \"Carregar\" aparece e o Console avisa (\"Salvamento: o slot 3 ...\"). " +
                 "Em Carregar (ou Novo jogo), o slot 3 mostra \"Dados do slot ilegíveis\" em vermelho: Enter não carrega, Delete (ou X) apaga com confirmação, e Novo jogo nele pede confirmação para sobrescrever. " +
                 "Salvamento > Resumo: o slot 3 aparece como ILEGÍVEL. Ele só some se você sobrescrever ou apagar.");

@@ -31,8 +31,7 @@ namespace Nibiru.EditorTools.Mouse
             EditorApplication.playModeStateChanged += change =>
             {
                 if (change != PlayModeStateChange.EnteredEditMode) return;
-                string folder = Path.Combine(Application.persistentDataPath, TestFolderName);
-                if (Directory.Exists(folder)) Directory.Delete(folder, true);
+                SaveStorage.DeleteTestFolder(SaveStorage.TestFolder(TestFolderName));
             };
         }
 
@@ -52,8 +51,8 @@ namespace Nibiru.EditorTools.Mouse
 
         static void MenuWithSlots()
         {
-            string folder = Path.Combine(Application.persistentDataPath, TestFolderName);
-            if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            string folder = SaveStorage.TestFolder(TestFolderName);
+            SaveStorage.DeleteTestFolder(folder);
             SaveSlots.UseFolder(folder);
             SlotShortcuts.FillAll();
             SlotShortcuts.MakeOccupied(1);

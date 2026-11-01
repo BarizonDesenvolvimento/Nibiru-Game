@@ -76,6 +76,7 @@ namespace Nibiru.EditorTools
         static Wait waiting;
         static int index;
         static bool running;
+        static string runToken;
 
         /// <summary>Avisos postados na tela desde o começo do teste.</summary>
         public static readonly List<string> Posted = new List<string>();
@@ -87,6 +88,14 @@ namespace Nibiru.EditorTools
 
         public static void Start(string testTitle, List<(string name, Func<IEnumerator> body)> list)
         {
+            if (running)
+            {
+                Debug.LogError($"Salvamento, proteção: \"{testTitle}\" não começou: \"{title}\" ainda está rodando. Testes automáticos nunca rodam em paralelo.");
+                return;
+            }
+            // O atalho do teste já começa a execução; um roteiro chamado de outro jeito começa aqui.
+            if (!AutomatedRun.Active && !Saving.SlotGuard.TryBeginRun(testTitle)) return;
+            runToken = AutomatedRun.CurrentToken;
             title = testTitle;
             scenarios = list;
             report.Clear();
@@ -123,7 +132,7 @@ namespace Nibiru.EditorTools
         static void Stop()
         {
             running = false;
-            Saving.SlotGuard.End();
+            AutomatedRun.End(runToken); // só termina a própria execução
             EditorApplication.update -= Tick;
             Notifications.Posted -= OnPosted;
             Notifications.PostedImportant -= OnPosted;
@@ -146,7 +155,6 @@ namespace Nibiru.EditorTools
                 Stop();
                 return;
             }
-            Saving.SlotGuard.Renew();
             try
             {
                 if (waiting != null)

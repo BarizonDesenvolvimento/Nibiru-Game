@@ -32,6 +32,7 @@ namespace Nibiru.EditorTools
         const string ReportKey = "Nibiru.ShortcutsCheck.Report";
         const string CountsKey = "Nibiru.ShortcutsCheck.Counts";
         const string RealSlotsKey = "Nibiru.ShortcutsCheck.RealSlots";
+        const string RunTokenKey = "Nibiru.ShortcutsCheck.RunToken";
 
         // Quanto o pé da Elena pode estar longe da malha de navegação, e o quanto ela pode descer em 1,5 s.
         const float MeshTolerance = 0.8f;
@@ -60,6 +61,9 @@ namespace Nibiru.EditorTools
         [MenuItem("Nibiru/Testes/Teste geral dos atalhos (Elena na malha)")]
         static void Run()
         {
+            // A trava vem antes de tudo: os atalhos de slot abaixo já gravam, e outro teste rodando recusa este.
+            if (!Saving.SlotGuard.TryBeginRun("Teste geral dos atalhos")) return;
+            SessionState.SetString(RunTokenKey, Nibiru.Save.AutomatedRun.CurrentToken);
             // Primeiro os códigos do salvamento (sem Play).
             (bool codesOk, string codes) = Saving.SaveCodes.RunTest();
             string text = codesOk ? "OK  códigos do salvamento (lista de códigos conhecidos)\n" : "FALHOU  códigos do salvamento:\n" + codes + "\n";
@@ -67,11 +71,14 @@ namespace Nibiru.EditorTools
             (bool slotsOk, string slots) = Saving.SlotShortcuts.RunTest();
             text += slotsOk ? "OK  atalhos da tela de slots (ocupado, demo, ilegível, preencher, limpar, avançar o tempo)\n"
                 : "FALHOU  atalhos da tela de slots:\n" + slots + "\n";
+            // A proteção dos slots reais (trava, escrita forçada, pontos de escrita).
+            (bool guardOk, string guard) = Saving.SlotGuardTests.Run();
+            text += guardOk ? "OK  proteção dos slots reais\n" : "FALHOU  proteção dos slots reais:\n" + guard + "\n";
+            int passed = (codesOk ? 1 : 0) + (slotsOk ? 1 : 0) + (guardOk ? 1 : 0);
             SessionState.SetString(ReportKey, text);
-            SessionState.SetString(CountsKey, $"{(codesOk ? 1 : 0) + (slotsOk ? 1 : 0)},{(codesOk ? 0 : 1) + (slotsOk ? 0 : 1)},0");
-            // Execução automática: nenhum atalho pode mexer nos slots reais (o SlotGuard barra e confere no fim).
-            SessionState.SetString(RealSlotsKey, Saving.SlotGuard.RealFingerprint());
-            Saving.SlotGuard.Begin();
+            SessionState.SetString(CountsKey, $"{passed},{3 - passed},0");
+            // Execução automática: nenhum atalho alcança os slots reais (a camada de escrita barra; confere no fim).
+            SessionState.SetString(RealSlotsKey, Nibiru.Save.AutomatedRun.StartFingerprint);
             Go("geral.regiao");
         }
 
@@ -151,10 +158,9 @@ namespace Nibiru.EditorTools
             if (!EditorApplication.isPlaying)
             {
                 EditorApplication.update -= Tick;
-                Saving.SlotGuard.End();
+                Nibiru.Save.AutomatedRun.End(SessionState.GetString(RunTokenKey, ""));
                 return;
             }
-            Saving.SlotGuard.Renew();
             tick++;
             float elapsed = (float)(EditorApplication.timeSinceStartup - startedAt);
             if (elapsed > 40f)
@@ -281,18 +287,19 @@ namespace Nibiru.EditorTools
             bool labNeeded = !labPass && LabMoments.Any(id => MomentIds.Contains(id) && SkipReason(id) == null);
             if (labNeeded)
             {
-                // Os atalhos do laboratório pedem outra cena: sai do Play e liga o Play nela.
+                // Os atalhos do laboratório pedem outra cena: sai do Play e liga o Play nela, ainda na mesma execução.
+                Nibiru.Save.AutomatedRun.KeepForNextPlay(SessionState.GetString(RunTokenKey, ""));
                 EditorApplication.isPlaying = false;
                 EditorApplication.update += WaitForEditMode;
                 return;
             }
 
-            // Os 3 slots reais têm de estar exatamente como antes do teste.
-            bool realOk = Saving.SlotGuard.RealFingerprint() == SessionState.GetString(RealSlotsKey, "");
+            // Os slots reais têm de estar exatamente como antes do teste.
+            bool realOk = Nibiru.Save.SaveStorage.RealFingerprint() == SessionState.GetString(RealSlotsKey, "");
             report.AppendLine(realOk ? "OK  os slots reais não foram tocados" : "FALHOU  os slots reais mudaram durante o teste");
             if (realOk) ok++;
             else failed++;
-            Saving.SlotGuard.End();
+            Nibiru.Save.AutomatedRun.End(SessionState.GetString(RunTokenKey, ""));
             Debug.Log($"Teste geral dos atalhos: {ok} OK, {failed} FALHOU, {skipped} pulados\n{report}");
             EditorApplication.isPlaying = false;
             if (labPass) EditorApplication.update += ReopenRegion;

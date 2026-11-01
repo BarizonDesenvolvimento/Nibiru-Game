@@ -44,25 +44,36 @@ namespace Nibiru.EditorTools
         /// </summary>
         public static void Go(string id, string scenePath = RegionScenePath)
         {
-            if (EditorApplication.isPlaying && SceneManager.GetActiveScene().path == scenePath)
-            {
-                Run(id);
-                return;
-            }
-            if (EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying && SceneManager.GetActiveScene().path != scenePath)
             {
                 Debug.LogWarning($"Este atalho é da cena {System.IO.Path.GetFileNameWithoutExtension(scenePath)}. Saia do Play e use o atalho de novo.");
                 return;
             }
 
+            // Um teste automático só começa com a trava na mão: recusado, não liga o Play nem mexe em nada.
+            bool automated = IsAutomatedTest(id);
+            if (automated && !Saving.SlotGuard.TryBeginRun(id)) return;
+
+            if (EditorApplication.isPlaying)
+            {
+                Run(id);
+                return;
+            }
+
             if (SceneManager.GetActiveScene().path != scenePath)
             {
-                if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+                if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
+                    if (automated) AutomatedRun.End(AutomatedRun.CurrentToken);
+                    return;
+                }
                 EditorSceneManager.OpenScene(scenePath);
             }
             SessionState.SetString(PendingKey, id);
             EditorApplication.isPlaying = true;
         }
+
+        static bool IsAutomatedTest(string id) => id.EndsWith(".teste") || id.StartsWith("mouse.hittest");
 
         static void Run(string id)
         {

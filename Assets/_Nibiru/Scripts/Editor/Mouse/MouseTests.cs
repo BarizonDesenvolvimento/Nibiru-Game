@@ -45,12 +45,11 @@ namespace Nibiru.EditorTools.Mouse
 
         static void Begin()
         {
-            folder = Path.Combine(Application.persistentDataPath, "Teste_Mouse");
-            if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            folder = SaveStorage.TestFolder("Teste_Mouse");
+            SaveStorage.DeleteTestFolder(folder);
             SaveSlots.UseFolder(folder);
             SlotShortcuts.FillAll();
             SlotShortcuts.MakeOccupied(1);
-            SlotGuard.Begin();
             savedMouseSensitivity = GameOptions.MouseSensitivity;
             savedPadSensitivity = GameOptions.GamepadSensitivity;
             savedInvert = GameOptions.InvertY;
@@ -496,7 +495,7 @@ namespace Nibiru.EditorTools.Mouse
 
         static IEnumerator Cleanup()
         {
-            SlotGuard.End();
+            Check(SaveStorage.RealFingerprint() == AutomatedRun.StartFingerprint, "os slots reais não deveriam mudar durante o teste");
             MenuPointer.Source = null;
             GameOptions.MouseSensitivity = savedMouseSensitivity;
             GameOptions.GamepadSensitivity = savedPadSensitivity;
@@ -504,7 +503,7 @@ namespace Nibiru.EditorTools.Mouse
             if (!string.IsNullOrEmpty(previousLanguage)) Loc.SetLanguage(previousLanguage, false);
             SaveSlots.UseFolder(null);
             SaveSlots.Detach();
-            if (folder != null && folder.EndsWith("Teste_Mouse") && Directory.Exists(folder)) Directory.Delete(folder, true);
+            if (folder != null && folder.EndsWith("Teste_Mouse")) SaveStorage.DeleteTestFolder(folder);
             yield break;
         }
     }

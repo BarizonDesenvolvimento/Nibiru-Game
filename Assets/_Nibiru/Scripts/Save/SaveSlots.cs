@@ -45,23 +45,17 @@ namespace Nibiru.Save
 
         const string FinishedQuest = "concluida";
 
-        static string folderOverride;
-
         /// <summary>Slot da partida em andamento (1 a 3), ou 0 se nenhum foi escolhido.</summary>
         public static int CurrentSlot { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetOnPlay()
-        {
-            CurrentSlot = 0;
-            folderOverride = null;
-        }
+        static void ResetOnPlay() => CurrentSlot = 0;
 
-        /// <summary>Pasta dos arquivos (persistentDataPath, ou a pasta dos testes).</summary>
-        public static string Folder => folderOverride ?? Application.persistentDataPath;
+        /// <summary>Pasta dos arquivos (quem decide é o <see cref="SaveStorage"/>).</summary>
+        public static string Folder => SaveStorage.Folder;
 
         /// <summary>Só para os testes: grava e lê noutra pasta (null volta ao normal).</summary>
-        public static void UseFolder(string path) => folderOverride = path;
+        public static void UseFolder(string path) => SaveStorage.UseFolder(path);
 
         public static string PathOf(int slot) => Path.Combine(Folder, $"save_{slot}.json");
 
@@ -121,10 +115,10 @@ namespace Nibiru.Save
             if (!ValidSlot(slot) || !File.Exists(PathOf(slot))) return false;
             try
             {
-                File.Delete(PathOf(slot));
+                SaveStorage.Delete(PathOf(slot));
                 return true;
             }
-            catch (Exception e)
+            catch (Exception e) when (e is not SlotWriteBlockedException)
             {
                 Debug.LogError($"Salvamento: não consegui apagar o slot {slot} ({e.Message}).");
                 return false;
@@ -159,10 +153,10 @@ namespace Nibiru.Save
         {
             try
             {
-                Directory.CreateDirectory(Folder);
+                SaveStorage.CreateDirectory(Folder);
                 WriteSafely(PathOf(slot), JsonConvert.SerializeObject(file, Formatting.Indented));
             }
-            catch (Exception e)
+            catch (Exception e) when (e is not SlotWriteBlockedException)
             {
                 Debug.LogError($"Salvamento: não consegui gravar o slot {slot} ({e.Message}).");
             }
@@ -172,9 +166,9 @@ namespace Nibiru.Save
         static void WriteSafely(string path, string json)
         {
             string temporary = path + ".tmp";
-            File.WriteAllText(temporary, json);
-            if (File.Exists(path)) File.Replace(temporary, path, null);
-            else File.Move(temporary, path);
+            SaveStorage.WriteAllText(temporary, json);
+            if (File.Exists(path)) SaveStorage.Replace(temporary, path);
+            else SaveStorage.Move(temporary, path);
         }
 
         // ---------- Ler ----------

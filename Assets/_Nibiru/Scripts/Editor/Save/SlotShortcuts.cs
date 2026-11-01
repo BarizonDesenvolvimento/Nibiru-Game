@@ -90,8 +90,8 @@ namespace Nibiru.EditorTools.Saving
 
         public static string MakeUnreadable(int slot)
         {
-            Directory.CreateDirectory(SaveSlots.Folder);
-            File.WriteAllText(SaveSlots.PathOf(slot), "{ slot ilegível de teste");
+            SaveStorage.CreateDirectory(SaveSlots.Folder);
+            SaveStorage.WriteAllText(SaveSlots.PathOf(slot), "{ slot ilegível de teste");
             return $"Salvamento: slot {slot} ilegível (arquivo corrompido de propósito).";
         }
 
@@ -121,10 +121,10 @@ namespace Nibiru.EditorTools.Saving
                     if (json["resumo"] is not JObject summary) continue;
                     float now = summary["tempoJogadoSegundos"]?.Value<float>() ?? 0f;
                     summary["tempoJogadoSegundos"] = now + seconds;
-                    File.WriteAllText(SaveSlots.PathOf(slot), json.ToString(Formatting.Indented));
+                    SaveStorage.WriteAllText(SaveSlots.PathOf(slot), json.ToString(Formatting.Indented));
                     changed++;
                 }
-                catch (Exception)
+                catch (Exception e) when (e is not SlotWriteBlockedException)
                 {
                     // Slot ilegível: não mexe.
                 }
@@ -143,7 +143,7 @@ namespace Nibiru.EditorTools.Saving
         /// <summary>Confere todos os atalhos numa pasta de teste (nunca nos slots reais). Roda no teste geral dos atalhos.</summary>
         public static (bool ok, string report) RunTest()
         {
-            string folder = Path.Combine(Application.persistentDataPath, "Teste_AtalhosDeSlot");
+            string folder = SaveStorage.TestFolder("Teste_AtalhosDeSlot");
             var problems = new System.Text.StringBuilder();
             void Check(bool condition, string what)
             {
@@ -152,7 +152,7 @@ namespace Nibiru.EditorTools.Saving
 
             try
             {
-                if (Directory.Exists(folder)) Directory.Delete(folder, true);
+                SaveStorage.DeleteTestFolder(folder);
                 SaveSlots.UseFolder(folder);
                 ClearAll();
 
@@ -193,7 +193,7 @@ namespace Nibiru.EditorTools.Saving
             finally
             {
                 SaveSlots.UseFolder(null);
-                if (Directory.Exists(folder)) Directory.Delete(folder, true);
+                SaveStorage.DeleteTestFolder(folder);
             }
             return (problems.Length == 0, problems.ToString());
         }

@@ -50,14 +50,13 @@ namespace Nibiru.EditorTools.Saving
 
         static void Begin()
         {
-            string folder = Path.Combine(Application.persistentDataPath, "Teste_Salvamento");
-            if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            // A execução automática já começou no atalho: tudo fica na pasta temporária dela (confere os reais na "Limpeza").
+            string folder = SaveStorage.TestFolder("Teste_Salvamento");
+            SaveStorage.DeleteTestFolder(folder);
             SaveSlots.UseFolder(folder);
             warnings.Clear();
             exceptions = 0;
-            // Execução automática: nada pode mexer nos slots reais (confere no fim, na "Limpeza").
-            realSlots = SlotGuard.RealFingerprint();
-            SlotGuard.Begin();
+            realSlots = AutomatedRun.StartFingerprint;
             // Os textos conferidos são os do pt-BR, seja qual for o idioma escolhido nas Opções.
             previousLanguage = Loc.Language;
             Loc.SetLanguage("pt-BR", false);
@@ -82,8 +81,8 @@ namespace Nibiru.EditorTools.Saving
                 ("Fim da demo: o slot fica concluído e não carrega; pode ser sobrescrito e apagado", DemoEnd),
                 ("Tempo jogado: anda no jogo, para na pausa, é gravado e volta ao carregar", PlayTimeScenario),
                 ("Nomes das áreas: todo checkpoint tem área; sem prefixo conhecido mostra \"Sítio de Ur\" e avisa", AreaNames),
-                ("Proteção dos slots reais: ocupado pede confirmação, cancelar não grava, vazio grava direto, execução automática nunca toca", SlotProtection),
-                ("Flag da execução automática: volta ao valor de antes mesmo se o teste quebrar, e vence pelo prazo", AutomatedFlag),
+                ("Janela dos atalhos: ocupado pede confirmação, cancelar não grava, vazio grava direto, execução automática nunca toca", SlotProtection),
+                ("Proteção dos slots reais: 2ª trava recusada, fim de A não desprotege B, escrita forçada lança exceção, hash igual, todos os pontos de escrita guardados", WriteProtection),
                 ("Limpeza: apaga a pasta do teste", Cleanup),
             });
         }
@@ -171,7 +170,7 @@ namespace Nibiru.EditorTools.Saving
             json.SelectToken("$..valoresDaCena")?.Parent?.Remove();
             string without = json.ToString();
             Check(!without.Contains("valoresDaCena"), "o arquivo de teste deveria ficar sem o campo");
-            File.WriteAllText(SaveSlots.PathOf(1), without);
+            SaveStorage.WriteAllText(SaveSlots.PathOf(1), without);
             WorldState.Clear();
             Checkpoints.Clear();
             SaveSlots.Detach();
@@ -367,7 +366,7 @@ namespace Nibiru.EditorTools.Saving
             foreach (var (what, text) in cases)
             {
                 Check(text != good, $"o caso \"{what}\" deveria mudar o arquivo");
-                File.WriteAllText(SaveSlots.PathOf(3), text);
+                SaveStorage.WriteAllText(SaveSlots.PathOf(3), text);
                 int warned = warnings.Count;
                 int thrown = exceptions;
                 SaveSlots.SlotInfo info = null;
@@ -392,11 +391,11 @@ namespace Nibiru.EditorTools.Saving
 
             // O ultimo_slot.json deixou de ser usado: nem lido (lixo ali não atrapalha), nem gravado.
             string last = Path.Combine(SaveSlots.Folder, "ultimo_slot.json");
-            File.WriteAllText(last, "{\"slot\": 3}");
+            SaveStorage.WriteAllText(last, "{\"slot\": 3}");
             Check(SaveSlots.LatestSlot() == 1 && SaveSlots.CanContinue, "o ultimo_slot.json não deveria mais decidir o \"Continuar\"");
-            File.WriteAllText(last, "{ quebrado");
+            SaveStorage.WriteAllText(last, "{ quebrado");
             Check(SaveSlots.LatestSlot() == 1, "ultimo_slot.json quebrado não deveria atrapalhar");
-            File.Delete(last);
+            SaveStorage.Delete(last);
             SaveSlots.Delete(3);
             Check(!File.Exists(last), "nada deveria gravar o ultimo_slot.json");
             yield return new Delay(0.5f);
@@ -511,7 +510,7 @@ namespace Nibiru.EditorTools.Saving
             string before = File.ReadAllText(SaveSlots.PathOf(1));
             string old = Regex.Replace(before, "\\s*\"tempoJogadoSegundos\": [^,\\n]*,?", "");
             Check(old != before && !old.Contains("tempoJogadoSegundos") && old.Contains("\"versao\": 1"), "o JSON v1 sem tempo deveria ser montado");
-            File.WriteAllText(SaveSlots.PathOf(2), old);
+            SaveStorage.WriteAllText(SaveSlots.PathOf(2), old);
             SaveSlots.SlotInfo legacy = SaveSlots.Inspect(2);
             Check(legacy.state == SaveSlots.SlotState.Occupied && !legacy.hasPlayTime && SlotRows.PlayTimeText(legacy) == "—" && SlotRows.Format(legacy).Contains("—"),
                 $"JSON v1 sem tempoJogadoSegundos: deveria carregar e mostrar \"—\" (estado {legacy.state})");
@@ -534,7 +533,7 @@ namespace Nibiru.EditorTools.Saving
             yield return new Delay(0.1f);
             ClearSlots();
             string last = Path.Combine(SaveSlots.Folder, "ultimo_slot.json");
-            if (File.Exists(last)) File.Delete(last);
+            if (File.Exists(last)) SaveStorage.Delete(last);
             var t = new DateTime(2026, 10, 26, 10, 0, 0);
 
             FakeSlot(1, t);
@@ -807,112 +806,78 @@ namespace Nibiru.EditorTools.Saving
                 asked.Add(message);
                 return answer;
             };
-            SlotGuard.ForceReal = true; // a pasta do teste faz o papel dos slots reais
+            // Só muda a resposta do SlotGuard: a pasta do teste faz o papel dos slots reais, e a escrita continua presa nela.
+            SlotGuard.Simulated = (true, false);
             try
             {
-                SlotGuard.Run(false, () =>
+                SlotShortcuts.ClearAll();
+
+                // Slot vazio grava direto, sem janela.
+                Check(SlotShortcuts.GuardedOccupied(1) != null, "slot vazio: deveria gravar");
+                Check(asked.Count == 0, "slot vazio: não deveria perguntar nada");
+                Check(SaveSlots.Inspect(1).state == SaveSlots.SlotState.Occupied, "slot vazio: deveria ficar ocupado");
+
+                // Slot ocupado: pergunta com número, estado, área e data; cancelar não grava.
+                string before = File.ReadAllText(SaveSlots.PathOf(1));
+                SaveSlots.SlotInfo info = SaveSlots.Inspect(1);
+                answer = false;
+                Check(SlotShortcuts.GuardedDemo(1) == null, "slot ocupado, cancelado: não deveria gravar");
+                Check(asked.Count == 1, $"slot ocupado: deveria perguntar uma vez, perguntou {asked.Count}");
+                string text = asked.Count > 0 ? asked[0] : "";
+                Check(text.Contains("Slot 1") && text.Contains("ocupado") && text.Contains(info.AreaName) && text.Contains(info.savedAt.ToString("dd/MM/yyyy")),
+                    $"a janela deveria mostrar o número, o estado, a área e a data: \"{text}\"");
+                Check(File.ReadAllText(SaveSlots.PathOf(1)) == before, "cancelar não deveria mudar o arquivo");
+
+                // Confirmar grava.
+                answer = true;
+                Check(SlotShortcuts.GuardedDemo(1) != null, "slot ocupado, confirmado: deveria gravar");
+                Check(SaveSlots.Inspect(1).state == SaveSlots.SlotState.DemoCompleted, "confirmado: o slot deveria virar demo concluída");
+
+                // Demo concluída e ilegível também contam como ocupados.
+                asked.Clear();
+                answer = false;
+                Check(SlotShortcuts.GuardedOccupied(1) == null && asked.Count == 1 && asked[0].Contains("demo concluída"), "slot de demo concluída também deveria pedir confirmação");
+                SaveStorage.WriteAllText(SaveSlots.PathOf(2), "{ ilegível");
+                asked.Clear();
+                Check(SlotShortcuts.GuardedOccupied(2) == null && asked.Count == 1 && asked[0].Contains("ilegível"), "slot ilegível também deveria pedir confirmação");
+
+                // Preencher, limpar e avançar o tempo: cancelar não mexe em nada.
+                string[] files = Enumerable.Range(1, 3).Select(n => File.Exists(SaveSlots.PathOf(n)) ? File.ReadAllText(SaveSlots.PathOf(n)) : null).ToArray();
+                Check(SlotShortcuts.GuardedFill() == null && SlotShortcuts.GuardedClear() == null && SlotShortcuts.GuardedAdvance(600f) == null, "cancelado: preencher, limpar e avançar não deveriam rodar");
+                for (int n = 1; n <= 3; n++)
                 {
-                    SlotShortcuts.ClearAll();
-
-                    // Slot vazio grava direto, sem janela.
-                    Check(SlotShortcuts.GuardedOccupied(1) != null, "slot vazio: deveria gravar");
-                    Check(asked.Count == 0, "slot vazio: não deveria perguntar nada");
-                    Check(SaveSlots.Inspect(1).state == SaveSlots.SlotState.Occupied, "slot vazio: deveria ficar ocupado");
-
-                    // Slot ocupado: pergunta com número, estado, área e data; cancelar não grava.
-                    string before = File.ReadAllText(SaveSlots.PathOf(1));
-                    SaveSlots.SlotInfo info = SaveSlots.Inspect(1);
-                    answer = false;
-                    Check(SlotShortcuts.GuardedDemo(1) == null, "slot ocupado, cancelado: não deveria gravar");
-                    Check(asked.Count == 1, $"slot ocupado: deveria perguntar uma vez, perguntou {asked.Count}");
-                    string text = asked.Count > 0 ? asked[0] : "";
-                    Check(text.Contains("Slot 1") && text.Contains("ocupado") && text.Contains(info.AreaName) && text.Contains(info.savedAt.ToString("dd/MM/yyyy")),
-                        $"a janela deveria mostrar o número, o estado, a área e a data: \"{text}\"");
-                    Check(File.ReadAllText(SaveSlots.PathOf(1)) == before, "cancelar não deveria mudar o arquivo");
-
-                    // Confirmar grava.
-                    answer = true;
-                    Check(SlotShortcuts.GuardedDemo(1) != null, "slot ocupado, confirmado: deveria gravar");
-                    Check(SaveSlots.Inspect(1).state == SaveSlots.SlotState.DemoCompleted, "confirmado: o slot deveria virar demo concluída");
-
-                    // Demo concluída e ilegível também contam como ocupados.
-                    asked.Clear();
-                    answer = false;
-                    Check(SlotShortcuts.GuardedOccupied(1) == null && asked.Count == 1 && asked[0].Contains("demo concluída"), "slot de demo concluída também deveria pedir confirmação");
-                    File.WriteAllText(SaveSlots.PathOf(2), "{ ilegível");
-                    asked.Clear();
-                    Check(SlotShortcuts.GuardedOccupied(2) == null && asked.Count == 1 && asked[0].Contains("ilegível"), "slot ilegível também deveria pedir confirmação");
-
-                    // Preencher, limpar e avançar o tempo: cancelar não mexe em nada.
-                    string[] files = Enumerable.Range(1, 3).Select(n => File.Exists(SaveSlots.PathOf(n)) ? File.ReadAllText(SaveSlots.PathOf(n)) : null).ToArray();
-                    Check(SlotShortcuts.GuardedFill() == null && SlotShortcuts.GuardedClear() == null && SlotShortcuts.GuardedAdvance(600f) == null, "cancelado: preencher, limpar e avançar não deveriam rodar");
-                    for (int n = 1; n <= 3; n++)
-                    {
-                        string now = File.Exists(SaveSlots.PathOf(n)) ? File.ReadAllText(SaveSlots.PathOf(n)) : null;
-                        Check(now == files[n - 1], $"cancelado: o slot {n} não deveria mudar");
-                    }
-                });
+                    string now = File.Exists(SaveSlots.PathOf(n)) ? File.ReadAllText(SaveSlots.PathOf(n)) : null;
+                    Check(now == files[n - 1], $"cancelado: o slot {n} não deveria mudar");
+                }
 
                 // Execução automática: nunca toca em slot real, nem vazio, e a janela nunca abre.
-                SlotGuard.Run(true, () =>
-                {
-                    asked.Clear();
-                    answer = true;
-                    string slot1 = File.ReadAllText(SaveSlots.PathOf(1));
-                    Check(SlotShortcuts.GuardedOccupied(3) == null, "execução automática: não deveria gravar nem em slot vazio");
-                    Check(SlotShortcuts.GuardedDemo(1) == null && SlotShortcuts.GuardedClear() == null && SlotShortcuts.GuardedFill() == null,
-                        "execução automática: nenhuma ação deveria rodar");
-                    Check(asked.Count == 0, "execução automática: nenhuma janela deveria abrir");
-                    Check(!File.Exists(SaveSlots.PathOf(3)), "execução automática: o slot 3 deveria continuar vazio");
-                    Check(File.ReadAllText(SaveSlots.PathOf(1)) == slot1, "execução automática: o slot 1 não deveria mudar");
+                SlotGuard.Simulated = (true, true);
+                asked.Clear();
+                answer = true;
+                string slot1 = File.ReadAllText(SaveSlots.PathOf(1));
+                Check(SlotShortcuts.GuardedOccupied(3) == null, "execução automática: não deveria gravar nem em slot vazio");
+                Check(SlotShortcuts.GuardedDemo(1) == null && SlotShortcuts.GuardedClear() == null && SlotShortcuts.GuardedFill() == null,
+                    "execução automática: nenhuma ação deveria rodar");
+                Check(asked.Count == 0, "execução automática: nenhuma janela deveria abrir");
+                Check(!File.Exists(SaveSlots.PathOf(3)), "execução automática: o slot 3 deveria continuar vazio");
+                Check(File.ReadAllText(SaveSlots.PathOf(1)) == slot1, "execução automática: o slot 1 não deveria mudar");
 
-                    // Pasta de teste não é slot real: o próprio teste continua podendo gravar nela.
-                    SlotGuard.ForceReal = false;
-                    Check(SlotShortcuts.GuardedOccupied(3) != null && asked.Count == 0, "pasta de teste: grava sem perguntar, mesmo em execução automática");
-                });
+                // Pasta de teste não é slot real: o próprio teste continua podendo gravar nela.
+                SlotGuard.Simulated = (false, true);
+                Check(SlotShortcuts.GuardedOccupied(3) != null && asked.Count == 0, "pasta de teste: grava sem perguntar, mesmo em execução automática");
             }
             finally
             {
                 SlotGuard.Ask = oldAsk;
-                SlotGuard.ForceReal = null;
+                SlotGuard.Simulated = null;
             }
             yield break;
         }
 
-        static IEnumerator AutomatedFlag()
+        static IEnumerator WriteProtection()
         {
-            bool original = SlotGuard.Automated;
-            foreach (bool value in new[] { true, false })
-            {
-                bool threw = false;
-                try
-                {
-                    SlotGuard.Run(value, () =>
-                    {
-                        Check(SlotGuard.Automated == value, $"dentro do Run({value}) o flag deveria ser {value}");
-                        throw new InvalidOperationException("quebra de propósito");
-                    });
-                }
-                catch (InvalidOperationException)
-                {
-                    threw = true;
-                }
-                Check(threw, "a exceção deveria passar por cima do Run");
-                Check(SlotGuard.Automated == original, $"depois de um Run({value}) que quebrou o flag deveria voltar a {original}");
-            }
-
-            // Prazo vencido desliga sozinho; renovar mantém.
-            SlotGuard.Run(false, () =>
-            {
-                SlotGuard.Begin(-1.0);
-                Check(!SlotGuard.Automated, "com o prazo vencido o flag deveria estar desligado");
-                SlotGuard.Begin(30.0);
-                Check(SlotGuard.Automated, "dentro do prazo o flag deveria estar ligado");
-                SlotGuard.End();
-                SlotGuard.Renew();
-                Check(!SlotGuard.Automated, "renovar não deveria religar um flag desligado");
-            });
-            Check(SlotGuard.Automated == original, "no fim o flag deveria estar como estava");
+            (bool ok, string report) = SlotGuardTests.Run();
+            Check(ok, "a proteção falhou:\n" + report);
             yield break;
         }
 
@@ -920,13 +885,13 @@ namespace Nibiru.EditorTools.Saving
         {
             yield return new Delay(0.1f);
             Check(exceptions == 0, $"nenhuma exceção deveria chegar ao Console durante o teste ({exceptions})");
-            Check(SlotGuard.RealFingerprint() == realSlots, "os 3 slots reais não deveriam mudar durante o teste");
+            Check(SaveStorage.RealFingerprint() == realSlots, "os slots reais não deveriam mudar durante o teste");
             Application.logMessageReceived -= OnLog;
             if (!string.IsNullOrEmpty(previousLanguage)) Loc.SetLanguage(previousLanguage, false);
             string folder = SaveSlots.Folder;
             SaveSlots.UseFolder(null);
             SaveSlots.Detach();
-            if (folder.EndsWith("Teste_Salvamento") && Directory.Exists(folder)) Directory.Delete(folder, true);
+            if (folder.EndsWith("Teste_Salvamento")) SaveStorage.DeleteTestFolder(folder);
         }
 
         // ---------- Ajudas ----------
@@ -1021,7 +986,7 @@ namespace Nibiru.EditorTools.Saving
         static void FakeSlot(int slot, DateTime when, bool demo = false, float seconds = 600f) =>
             SaveSlots.WriteTestSlot(slot, "aldeia", when, seconds, demo, RegionSceneName);
 
-        static void Broken(int slot) => File.WriteAllText(SaveSlots.PathOf(slot), "{ isto não é um salvamento");
+        static void Broken(int slot) => SaveStorage.WriteAllText(SaveSlots.PathOf(slot), "{ isto não é um salvamento");
 
         /// <summary>O mundo e a Elena, em texto.</summary>
         static string Full() => WorldState.Describe(WorldState.Capture()) + "\n" + ElenaNow();

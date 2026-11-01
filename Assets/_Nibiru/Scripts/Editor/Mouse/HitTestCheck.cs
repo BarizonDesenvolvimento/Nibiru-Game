@@ -155,12 +155,11 @@ namespace Nibiru.EditorTools.Mouse
 
         static void Begin()
         {
-            folder = Path.Combine(Application.persistentDataPath, "Teste_HitTest");
-            if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            folder = SaveStorage.TestFolder("Teste_HitTest");
+            SaveStorage.DeleteTestFolder(folder);
             SaveSlots.UseFolder(folder);
             SlotShortcuts.FillAll();
             SlotShortcuts.MakeOccupied(1);
-            SlotGuard.Begin();
 
             var list = new List<(string, Func<IEnumerator>)>();
             foreach ((int w, int h) in Sizes)
@@ -175,7 +174,7 @@ namespace Nibiru.EditorTools.Mouse
         static IEnumerator Cleanup()
         {
             SaveSlots.UseFolder(null);
-            if (folder != null && folder.EndsWith("Teste_HitTest") && Directory.Exists(folder)) Directory.Delete(folder, true);
+            if (folder != null && folder.EndsWith("Teste_HitTest")) SaveStorage.DeleteTestFolder(folder);
             yield break;
         }
 
