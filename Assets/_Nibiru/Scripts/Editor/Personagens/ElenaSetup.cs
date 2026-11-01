@@ -19,12 +19,17 @@ namespace Nibiru.EditorTools
     static class ElenaSetup
     {
         const string Root = "Assets/_Nibiru/Art/Personagens/Elena";
-        const string ModelPath = Root + "/Elena.fbx";
+        // O modelo novo (só textura de cor). A Elena antiga fica na pasta Root, como reserva; o
+        // controlador, a máscara e a marca do pulso continuam lá, porque valem para os dois modelos.
+        const string ModelRoot = "Assets/_Nibiru/Art/Personagens/ElenaNova";
+        const string ModelPath = ModelRoot + "/ElenaNova.fbx";
+        const string BaseColorPath = ModelRoot + "/ElenaNova_BaseColor.jpg";
+        // Até onde o braço desce no Avatar, em graus (-30: mãos fora das coxas, medido em 1º/nov/2026).
+        const float ArmDownLimit = -30f;
+        const string MaterialPath = ModelRoot + "/Materiais/ElenaNova.mat";
         const string Mixamo = "Assets/_Nibiru/Art/Animacoes/Mixamo/";
         // Boneco do Mixamo em pose T: o esqueleto de referência de todas as animações do Mixamo.
         const string MixamoReferencePath = Mixamo + "X Bot.fbx";
-        const string MetalSmoothPath = Root + "/Elena_MetalSmooth.png";
-        const string MaterialPath = Root + "/Materiais/Elena.mat";
         const string ControllerPath = Root + "/Elena.controller";
         const string MaskPath = Root + "/Elena_Tronco.mask";
         const string MarkMaterialPath = Root + "/Materiais/Elena_MarcaKur.mat";
@@ -108,68 +113,20 @@ namespace Nibiru.EditorTools
 
         // ---------- Texturas e material ----------
 
+        // A textura vem do Meshy com 8192 px. No jogo, 4096: sem normal nem metal, a memória fica
+        // menor que a dos 3 mapas de 2048 da Elena antiga, e os detalhes pintados aguentam a câmera perto.
         static void ConfigureTextures()
         {
-            if (!File.Exists(MetalSmoothPath))
-                BuildMetalSmooth();
-            SetTexture(Root + "/Elena_BaseColor.png", TextureImporterType.Default, true);
-            SetTexture(Root + "/Elena_Normal.png", TextureImporterType.NormalMap, false);
-            SetTexture(MetalSmoothPath, TextureImporterType.Default, false);
-        }
-
-        // O Lit do URP lê metal no canal R e lisura no A, num mapa só: A = 1 - rugosidade.
-        static void BuildMetalSmooth()
-        {
-            var metal = LoadRaw(Root + "/Elena_Metallic.png");
-            var rough = LoadRaw(Root + "/Elena_Roughness.png");
-            if (rough.width != metal.width || rough.height != metal.height)
-                rough = Resize(rough, metal.width, metal.height);
-            var m = metal.GetPixels32();
-            var r = rough.GetPixels32();
-            var result = new Color32[m.Length];
-            for (int i = 0; i < m.Length; i++)
-                result[i] = new Color32(m[i].r, m[i].r, m[i].r, (byte)(255 - r[i].r));
-            var output = new Texture2D(metal.width, metal.height, TextureFormat.RGBA32, false, true);
-            output.SetPixels32(result);
-            File.WriteAllBytes(MetalSmoothPath, output.EncodeToPNG());
-            Object.DestroyImmediate(metal);
-            Object.DestroyImmediate(rough);
-            Object.DestroyImmediate(output);
-            AssetDatabase.ImportAsset(MetalSmoothPath);
-        }
-
-        // Lê o PNG direto do disco, sem conversão de cor e sem mexer na importação.
-        static Texture2D LoadRaw(string path)
-        {
-            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false, true);
-            texture.LoadImage(File.ReadAllBytes(path));
-            return texture;
-        }
-
-        static Texture2D Resize(Texture2D source, int width, int height)
-        {
-            var rt = RenderTexture.GetTemporary(width, height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-            Graphics.Blit(source, rt);
-            var previous = RenderTexture.active;
-            RenderTexture.active = rt;
-            var result = new Texture2D(width, height, TextureFormat.RGBA32, false, true);
-            result.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-            RenderTexture.active = previous;
-            RenderTexture.ReleaseTemporary(rt);
-            Object.DestroyImmediate(source);
-            return result;
-        }
-
-        static void SetTexture(string path, TextureImporterType type, bool srgb)
-        {
-            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
-            if (importer.textureType == type && importer.sRGBTexture == srgb)
+            var importer = (TextureImporter)AssetImporter.GetAtPath(BaseColorPath);
+            if (importer.maxTextureSize == 4096 && importer.sRGBTexture)
                 return;
-            importer.textureType = type;
-            importer.sRGBTexture = srgb;
+            importer.textureType = TextureImporterType.Default;
+            importer.sRGBTexture = true;
+            importer.maxTextureSize = 4096;
             importer.SaveAndReimport();
         }
 
+        // O modelo novo só tem a textura de cor: sem normal e sem mapa de metal e lisura.
         static Material BuildMaterial()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(MaterialPath));
@@ -179,17 +136,33 @@ namespace Nibiru.EditorTools
                 material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
                 AssetDatabase.CreateAsset(material, MaterialPath);
             }
-            material.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Root + "/Elena_BaseColor.png"));
+            material.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(BaseColorPath));
             material.SetColor("_BaseColor", Color.white);
-            material.SetTexture("_BumpMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Root + "/Elena_Normal.png"));
-            material.EnableKeyword("_NORMALMAP");
-            material.SetTexture("_MetallicGlossMap", AssetDatabase.LoadAssetAtPath<Texture2D>(MetalSmoothPath));
-            material.EnableKeyword("_METALLICSPECGLOSSMAP");
-            material.SetFloat("_Smoothness", 1f);
+            material.SetFloat("_Metallic", 0f);
+            material.SetFloat("_Smoothness", 0.25f);
             // O AccuRig marca o material como de dois lados (mangas e gola mostram o avesso).
             material.SetFloat("_Cull", (float)UnityEngine.Rendering.CullMode.Off);
             EditorUtility.SetDirty(material);
             return material;
+        }
+
+        // ---------- Só o modelo ----------
+
+        // Troca a malha e o Avatar no prefab sem refazer o controlador nem as animações.
+        [MenuItem("Nibiru/Personagens/Trocar só o modelo da Elena")]
+        static void SwapModel()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogWarning("Saia do Play antes de trocar o modelo da Elena.");
+                return;
+            }
+            AssetDatabase.Refresh();
+            ConfigureTextures();
+            ConfigureModel(BuildMaterial());
+            BuildPrefab(AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath));
+            AssetDatabase.SaveAssets();
+            Debug.Log("Modelo da Elena trocado no prefab " + PrefabPath + ".");
         }
 
         // ---------- Importação ----------
@@ -209,8 +182,53 @@ namespace Nibiru.EditorTools
                 foreach (var original in renderer.sharedMaterials.Where(m => m != null && m != material))
                     importer.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), original.name), material);
             importer.SaveAndReimport();
+            OpenArms(importer);
             var avatar = AssetDatabase.LoadAllAssetsAtPath(ModelPath).OfType<Avatar>().FirstOrDefault();
             Debug.Log($"Avatar da Elena: {(avatar != null && avatar.isValid && avatar.isHuman ? "Humanoid válido" : "PROBLEMA no Humanoid")}");
+        }
+
+        // O modelo novo tem braços longos e coxas largas (calça e coldre): com os limites padrão, as
+        // mãos entram nas coxas. Encurtar só o "Arm Down-Up" para baixo (padrão -60°) deixa o braço
+        // caído mais aberto; mira, recarga e golpe, de braço erguido, não mudam.
+        static void OpenArms(ModelImporter importer)
+        {
+            var description = importer.humanDescription;
+            var human = description.human;
+            for (int i = 0; i < human.Length; i++)
+            {
+                HumanBodyBones bone;
+                if (human[i].humanName == nameof(HumanBodyBones.LeftUpperArm)) bone = HumanBodyBones.LeftUpperArm;
+                else if (human[i].humanName == nameof(HumanBodyBones.RightUpperArm)) bone = HumanBodyBones.RightUpperArm;
+                else continue;
+
+                Vector3 min = default, max = default;
+                for (int axis = 0; axis < 3; axis++)
+                {
+                    int muscle = HumanTrait.MuscleFromBone((int)bone, axis);
+                    min[axis] = HumanTrait.GetMuscleDefaultMin(muscle);
+                    max[axis] = HumanTrait.GetMuscleDefaultMax(muscle);
+                }
+                min.z = ArmDownLimit;
+                var limit = human[i].limit;
+                limit.useDefaultValues = false;
+                limit.min = min;
+                limit.max = max;
+                limit.center = Vector3.zero;
+                human[i].limit = limit;
+            }
+            // O mapeamento automático deixa de fora a ponta do polegar esquerdo (ossos que vêm sem peso no FBX).
+            var mapped = human.ToList();
+            AddIfMissing(mapped, "Left Thumb Intermediate", "CC_Base_L_Thumb2");
+            AddIfMissing(mapped, "Left Thumb Distal", "CC_Base_L_Thumb3");
+            description.human = mapped.ToArray();
+            importer.humanDescription = description;
+            importer.SaveAndReimport();
+        }
+
+        static void AddIfMissing(System.Collections.Generic.List<HumanBone> human, string humanName, string boneName)
+        {
+            if (human.Any(b => b.humanName == humanName)) return;
+            human.Add(new HumanBone { humanName = humanName, boneName = boneName, limit = new HumanLimit { useDefaultValues = true } });
         }
 
         // As animações do Mixamo baixadas sem pele não têm pose T: o avatar feito delas mesmas parte do

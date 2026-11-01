@@ -144,7 +144,7 @@ namespace Nibiru.EditorTools
         static void BuildElena()
         {
             var group = NewStage("Vitrine_Elena");
-            string model = CharactersRoot + "Elena/Elena.fbx";
+            string model = CharactersRoot + "ElenaNova/ElenaNova.fbx";
             var current = Model(model, group, "ATUAL (controlador)", -9f, 2.3f);
             AddSteps(current, CharactersRoot + "Elena/Elena.controller",
                 Speed("Atual: parada", 0f, 4f), Speed("Atual: andar", 1.7f, 4f), Speed("Atual: correr", 5.4f, 4f));
