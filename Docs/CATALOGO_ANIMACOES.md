@@ -16,7 +16,7 @@ Biblioteca bruta em `ArteFonte/Animacoes/` (fora de `Assets`, fora do Git, a Uni
 Lacuna resolvida: o dono baixou na `Avulsas` `X Bot@Sitting Idle`, `X Bot@Sitting Idle2` e `X Bot@Crouching Idle`. Medido no modelo da Elena, o `Sitting Idle` é de **cadeira** (quadril a 0,49 m do chão) e o **`Sitting Idle2` é sentado no chão** (quadril ao nível dos pés, cabeça a 0,52 m): é o usado. Antes disso, o que havia era:
 - `UAL1_Standard.fbx` (Universal Animation Library 1, `Unity/`) tem `Sitting_Idle_Loop`, `Sitting_Talking_Loop`, `Sitting_Enter`, `Sitting_Exit`, `Driving_Loop` e `Crouch_Idle_Loop`. Importa como Humanoid sem problema, mas o sentado é de **cadeira ou banco**: medido no modelo da Elena, o quadril fica a 0,45 m e o joelho a 0,45 m do chão, com os pés no chão. **Não é sentado no chão.**
 - `X Bot@Driving` e `X Bot@Entering Car` são sentados de banco de carro.
-- Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1.
+- Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1. **Não há agachada feminina.** O `Crouch_Idle_Loop` e o `Crouch_Fwd_Loop` do UAL1 foram testados na Elena em 1º/nov/2026 e descartados: fundos demais e de pernas abertas (quadril a 47 cm do chão, pés a 60 cm um do outro).
 
 **Origem dos pacotes:** as pastas `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` estão em `ArteFonte/Animacoes/Mixamo`, mas não constavam da lista de pacotes do projeto: **origem não confirmada, não usar até confirmação.** Nada delas foi usado.
 

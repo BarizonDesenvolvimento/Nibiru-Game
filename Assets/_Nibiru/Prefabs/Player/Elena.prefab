@@ -1091,7 +1091,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3722444144773467701}
+  - {fileID: 3628685681308203149}
   - {fileID: 4579137010929715870}
   - {fileID: 3401335159130718717}
   - {fileID: 7654201043574784810}
@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d31d4ae562c4a48b48998c186e38c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Player.PlayerAnimator
-  animator: {fileID: 7298342606609142863}
+  animator: {fileID: 7258538926771938039}
   motor: {fileID: 3110832709876994596}
   weapons: {fileID: 1265022158567877417}
   melee: {fileID: 4942451461779874155}
@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959e812cff99e2245911705ef949c68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Tablets.TransformationMark
-  animator: {fileID: 7298342606609142863}
+  animator: {fileID: 7258538926771938039}
   material: {fileID: 2100000, guid: 6b0afa49c83e54b41ae756f32892c2b8, type: 2}
   diameter: 0.075
   width: 0.018
@@ -4224,7 +4224,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
---- !u!1001 &3756703883926825438
+--- !u!1001 &3877906161916616550
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -4305,13 +4305,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
---- !u!4 &3722444144773467701 stripped
+--- !u!4 &3628685681308203149 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
-  m_PrefabInstance: {fileID: 3756703883926825438}
+  m_PrefabInstance: {fileID: 3877906161916616550}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &7298342606609142863 stripped
+--- !u!95 &7258538926771938039 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
-  m_PrefabInstance: {fileID: 3756703883926825438}
+  m_PrefabInstance: {fileID: 3877906161916616550}
   m_PrefabAsset: {fileID: 0}

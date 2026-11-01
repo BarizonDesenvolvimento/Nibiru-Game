@@ -674,7 +674,7 @@ BlendTree:
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
-    m_DirectBlendParameter: Blend
+    m_DirectBlendParameter: 
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 4061839508520268033, guid: 77e66a404c6baf14e97c0a00d4e86e5c, type: 3}
@@ -682,7 +682,7 @@ BlendTree:
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.7997429
     m_CycleOffset: 0
-    m_DirectBlendParameter: Blend
+    m_DirectBlendParameter: 
     m_Mirror: 0
   m_BlendParameter: Velocidade
   m_BlendParameterY: Blend

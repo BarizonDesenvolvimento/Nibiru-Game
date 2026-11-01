@@ -26,8 +26,10 @@ namespace Nibiru.EditorTools
         const string BaseColorPath = ModelRoot + "/ElenaNova_BaseColor.jpg";
         // Até onde cada braço desce no Avatar, em graus: o mais fechado que deixa as mãos fora das coxas
         // com a locomoção feminina (medido em 1º/nov/2026). O direito desce menos por causa do coldre.
-        const float LeftArmDownLimit = -45f;
-        const float RightArmDownLimit = -40f;
+        const float LeftArmDownLimit = -47f;
+        const float RightArmDownLimit = -43f;
+        // Máximo do "Forearm Stretch" (padrão 5°): o cotovelo fica levemente dobrado, e a mão passa à frente da coxa.
+        const float ForearmStretchLimit = -15f;
         const string MaterialPath = ModelRoot + "/Materiais/ElenaNova.mat";
         const string Mixamo = "Assets/_Nibiru/Art/Animacoes/Mixamo/";
         // Boneco do Mixamo em pose T: o esqueleto de referência de todas as animações do Mixamo.
@@ -73,8 +75,7 @@ namespace Nibiru.EditorTools
 
         // Parada, andar e correr vêm da Female Basic Locomotion (veja UseFemaleLocomotion). O resto não
         // tem versão feminina na biblioteca e é universal.
-        // O Mixamo não tem agachada parada: um quadro do andar furtivo com os dois pés apoiados.
-        static readonly Cut CrouchIdle = new("Agachada_Parada", "Sneak Walk", 17, 18, true, feet: true);
+        // O andar furtivo; a agachada parada é a Elena_Agachada_Parada da biblioteca (veja UseCrouch).
         static readonly Cut CrouchWalk = new("Agachada_Andando", "Sneak Walk", -1, -1, true, moving: true, feet: true);
         // Só o mergulho e a cambalhota, sem o levantar do fim.
         static readonly Cut Dodge = new("Esquiva", "Stand To Roll", 10, 50, false);
@@ -87,7 +88,7 @@ namespace Nibiru.EditorTools
         // Somado por cima do que ela estiver fazendo (camada aditiva): só o tranco do golpe.
         static readonly Cut Hurt = new("Dano", "Hit Reaction", 13, 60, false);
         static readonly Cut Death = new("Morte", "Standing React Death Backward", -1, -1, false, keepTravel: true);
-        static readonly Cut[] Cuts = { CrouchIdle, CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death };
+        static readonly Cut[] Cuts = { CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death };
 
         [MenuItem("Nibiru/Personagens/Montar Elena animada")]
         static void Build()
@@ -160,7 +161,9 @@ namespace Nibiru.EditorTools
             ConfigureTextures();
             ConfigureModel(BuildMaterial());
             var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
-            UseFemaleLocomotion(StandingTree(controller), AssetDatabase.LoadAssetAtPath<PlayerMovementSettings>(SettingsPath));
+            var settings = AssetDatabase.LoadAssetAtPath<PlayerMovementSettings>(SettingsPath);
+            UseFemaleLocomotion(LocomotionTree(controller, "EmPe"), settings);
+            UseCrouch(LocomotionTree(controller, "Agachada"), settings);
             EditorUtility.SetDirty(controller);
             BuildPrefab(controller);
             AssetDatabase.SaveAssets();
@@ -199,19 +202,23 @@ namespace Nibiru.EditorTools
             for (int i = 0; i < human.Length; i++)
             {
                 HumanBodyBones bone;
-                float downLimit;
-                if (human[i].humanName == nameof(HumanBodyBones.LeftUpperArm)) { bone = HumanBodyBones.LeftUpperArm; downLimit = LeftArmDownLimit; }
-                else if (human[i].humanName == nameof(HumanBodyBones.RightUpperArm)) { bone = HumanBodyBones.RightUpperArm; downLimit = RightArmDownLimit; }
+                if (human[i].humanName == nameof(HumanBodyBones.LeftUpperArm)) bone = HumanBodyBones.LeftUpperArm;
+                else if (human[i].humanName == nameof(HumanBodyBones.RightUpperArm)) bone = HumanBodyBones.RightUpperArm;
+                else if (human[i].humanName == nameof(HumanBodyBones.LeftLowerArm)) bone = HumanBodyBones.LeftLowerArm;
+                else if (human[i].humanName == nameof(HumanBodyBones.RightLowerArm)) bone = HumanBodyBones.RightLowerArm;
                 else continue;
 
                 Vector3 min = default, max = default;
                 for (int axis = 0; axis < 3; axis++)
                 {
                     int muscle = HumanTrait.MuscleFromBone((int)bone, axis);
+                    if (muscle < 0) continue;
                     min[axis] = HumanTrait.GetMuscleDefaultMin(muscle);
                     max[axis] = HumanTrait.GetMuscleDefaultMax(muscle);
                 }
-                min.z = downLimit;
+                if (bone == HumanBodyBones.LeftUpperArm) min.z = LeftArmDownLimit;
+                else if (bone == HumanBodyBones.RightUpperArm) min.z = RightArmDownLimit;
+                else max.z = ForearmStretchLimit;
                 var limit = human[i].limit;
                 limit.useDefaultValues = false;
                 limit.min = min;
@@ -341,17 +348,7 @@ namespace Nibiru.EditorTools
 
             var crouched = crouchBlend.CreateBlendTreeChild(1f);
             crouched.name = "Agachada";
-            Speeds(crouched,
-                (CrouchIdle, 0f),
-                (CrouchWalk, settings.crouchSpeed));
-            // A agachada parada de verdade (Crouching Idle), no lugar do quadro congelado do andar furtivo.
-            var crouchIdleClip = AnimationLibrary.Clip("Elena_Agachada_Parada");
-            if (crouchIdleClip != null)
-            {
-                var crouchChildren = crouched.children;
-                crouchChildren[0].motion = crouchIdleClip;
-                crouched.children = crouchChildren;
-            }
+            UseCrouch(crouched, settings);
 
             // Esquiva e golpe de faca: cada trecho toca no tempo exato da ação no jogo.
             OneShot(machine, locomotion, Dodge, PlayerAnimator.DodgeParam, settings.dodgeDuration, new Vector3(300f, 60f), 0.05f);
@@ -470,10 +467,23 @@ namespace Nibiru.EditorTools
             tree.children = children;
         }
 
-        static BlendTree StandingTree(AnimatorController controller)
+        static BlendTree LocomotionTree(AnimatorController controller, string name)
         {
             var locomotion = controller.layers[0].stateMachine.states.First(s => s.state.name == "Locomocao").state;
-            return ((BlendTree)locomotion.motion).children.Select(c => c.motion).OfType<BlendTree>().First(t => t.name == "EmPe");
+            return ((BlendTree)locomotion.motion).children.Select(c => c.motion).OfType<BlendTree>().First(t => t.name == name);
+        }
+
+        static void UseCrouch(BlendTree tree, PlayerMovementSettings settings)
+        {
+            tree.blendType = BlendTreeType.Simple1D;
+            tree.blendParameter = PlayerAnimator.SpeedParam;
+            tree.useAutomaticThresholds = false;
+            tree.children = new[]
+            {
+                new ChildMotion { motion = AnimationLibrary.Clip("Elena_Agachada_Parada"), threshold = 0f, timeScale = 1f },
+                new ChildMotion { motion = Clip(CrouchWalk), threshold = settings.crouchSpeed, timeScale = settings.crouchSpeed / NaturalSpeed(CrouchWalk) },
+            };
+            EditorUtility.SetDirty(tree);
         }
 
         // Parada, andar e correr femininos. O andar segue a regra de Speeds; a corrida natural (3,6 m/s)
