@@ -11,6 +11,8 @@ Situação: **confirmado** (lido no arquivo de licença ou nos termos), **a conf
 | Asset | Onde está | Origem | Licença | Situação |
 | --- | --- | --- | --- | --- |
 | Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono, no plano **Pro (pago)** em todos os modelos (resposta do dono em 26/out/2026) | Resumo dos termos do Meshy para planos pagos: o modelo é privado e pertence ao usuário, com uso comercial; atribuição não exigida. Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
+| Elena nova (malha e textura de cor; em teste, a antiga fica de reserva até a aprovação do dono) | `ArteFonte/Elena_Nova_Usar/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens/ElenaNova` | Gerada no **Meshy** (meshy.ai) pela conta do dono. **Plano a confirmar pelo dono** | A mesma dos outros modelos, se gerada no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano) |
+| Elena nova: imagens de referência | `ArteFonte/Elena_Nova_Usar/Referencias` | **Origem a confirmar pelo dono** (parecem imagens geradas por IA) | Só referência interna: não entram no build | A confirmar |
 | Ninsar: 19 animações | `ArteFonte/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática), plano Pro | A mesma do modelo | Confirmado (plano); termos: resumo |
 | Esqueletos com dedos (101 ossos) de todos os personagens acima | `ArteFonte/<Personagem>/2_Rig` | **AccuRig** (Reallusion), gratuito | Resumo: o personagem rigado pode ser usado em projetos comerciais | Resumo |
 | Ninsar: montagem, encaixe e scripts do Blender | `ArteFonte/Ninsar/3_Blender` | Feitos no projeto (Blender) | Próprios | Confirmado |
@@ -65,6 +67,10 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 | --- | --- | --- | --- |
 | Imagens de referência dos personagens e deuses (Elena em 3 estágios, Enki, Enlil, Ereshkigal, Irena 1979 e 2003, Kast, Lullu, Ninmah, Ninsar, Samir, Tom) | `Assets/_Nibiru/Art/Referencias` | **A confirmar** | Conferido em 26/out/2026: **nenhuma cena, prefab, material ou controlador usa essas imagens** e a pasta não fica em `Resources`, então elas não entram no build. Se forem de terceiros, continuam só como referência interna |
 | Imagens de referência de cada personagem | `ArteFonte/<Personagem>/Referencias` (e `Imagens De Referencia` da Ninsar) | **A confirmar** | Fora de `Assets`: nunca entram no build |
+
+## Declaração de uso de IA (para a página da Steam)
+
+Conteúdo gerado por IA que entra no jogo: os **modelos 3D e texturas dos personagens feitos no Meshy** (lista em "Personagens"), incluindo a Elena nova, e os objetos do Meshy registrados neste arquivo. A declaração da Steam precisa citar isso. O esqueleto vem do AccuRig (rig automático), e as animações, do Mixamo.
 
 ## Ferramentas (não entram no jogo)
 

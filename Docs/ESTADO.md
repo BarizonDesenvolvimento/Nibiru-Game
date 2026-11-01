@@ -25,7 +25,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **tela de slots do menu principal** (etapa A4b: Novo jogo e Carregar com 3 slots, estados vazio, ocupado, "demo concluída" e ilegível, apagar e sobrescrever com confirmação, "Continuar" pelo slot jogável mais recente e "Sair para o menu" na pausa) está pronta, testada pela ponte e **testada no Play pelo dono e aprovada em 26/out/2026. Etapa A (salvamento, arquivo, menus, mouse e proteção dos slots) concluída**. Veja "Tela de slots e menu principal (etapa A4b)".
 - O **mouse nos menus, o cursor e a proteção dos slots reais** (etapa A4c: passar o mouse move o foco, clique esquerdo ativa, direito volta, roda rola o Arquivo, botão `[Apagar]` em cada slot, confirmação e Opções clicáveis, cursor livre só nos menus; atalhos e situações de teste pedem confirmação antes de sobrescrever slot real e a execução automática nunca toca neles) está pronto e testado pela ponte (mouse 10 OK, salvamento 17 OK, teste geral 91 OK, hit-test nas 3 resoluções) e **aprovado pelo dono no Play em 26/out/2026**. Veja "Mouse nos menus e proteção dos slots reais (etapa A4c)".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
-- A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. Veja "Elena" em Personagens 3D.
+- A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. **Em 1º/nov/2026, o modelo foi trocado pela Elena nova** (`Art/Personagens/ElenaNova`), testada pela ponte e **esperando a aprovação do dono**; a antiga fica de reserva. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
 - Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador de elite está no posto dele, no passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
 - O **Lullu definitivo** (Meshy + AccuRig, com dedos, 2,10 m em pé) substituiu a cápsula no prefab `Prefabs/AI/Lullu`. Testado pela ponte; falta o teste do dono. Veja "Lullu" em Personagens 3D.
@@ -565,7 +565,7 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 
 | Personagem | Pasta | Altura | Situação |
 | --- | --- | --- | --- |
-| Elena Varga | `Elena` | 1,70 m | **No jogo** (prefab `Player/Elena`) |
+| Elena Varga | `Elena_Nova_Usar` (a antiga, de reserva, em `Elena`) | 1,70 m | **No jogo** (prefab `Player/Elena`), esperando a aprovação do dono |
 | Samir Haddad | `Samir` | 1,75 m | **No jogo** (prefab `Personagens/Samir`) |
 | Yusuf | `Yusuf` | 1,74 m | Importado (prefab `Personagens/Yusuf`, deitado); cápsula das cenas ainda não trocada |
 | Umm Karim | `UmmKarim` | 1,58 m | Importada (prefab `Personagens/UmmKarim`); cápsula das cenas ainda não trocada |
@@ -640,9 +640,31 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 
 ### Elena
 
+**Modelo novo (1º/nov/2026, esperando a aprovação do dono).** A pasta `Art/Personagens/Elena` continua com o modelo antigo, de reserva (FBX, texturas e material), e também com o que vale para os dois: `Elena.controller`, `Elena_Tronco.mask` e `Elena_MarcaKur.mat`. Para voltar ao antigo, reverta o commit da troca. Depois da aprovação, a parte antiga pode ser apagada.
+
+| | Antiga (reserva) | Nova (no jogo) |
+| --- | --- | --- |
+| Origem | `ArteFonte/Elena` | `ArteFonte/Elena_Nova_Usar` |
+| Triângulos | 19.112 | 39.406 (o dobro) |
+| Texturas | Cor, normal, metal e lisura | **Só cor** (8192 no arquivo, 4096 no jogo) |
+| Esqueleto | AccuRig, 101 ossos, raiz `RL_BoneRoot` | AccuRig, 101 ossos, raiz `root`; os outros 100 têm o mesmo nome |
+| Pose ao ligar a pele | T | A (61° abaixo), mas a Unity lê o FBX em pose T |
+| Altura e pivô | 1,70 m, pés na origem | 1,70 m, pés na origem |
+| Escala de importação | 1,787 | 1,701 |
+| Ossos no Humanoid | 52 | 52 (2 do polegar esquerdo mapeados à mão) |
+
+- **Só no Blender** o esqueleto novo aparece girado 90° e a malha deformada sai torta; na Unity está certo. Confira sempre na Unity.
+- **Mãos e coxas:** o modelo novo tem braços longos e calça larga com coldre, e nos limites padrão as mãos entravam nas coxas (até 14 cm). O `ElenaSetup` encurta o limite "Arm Down-Up" para baixo de -60° para **-30°** (`ArmDownLimit`). Com isso, o braço caído fica mais aberto, sem mudar a animação: mira, recarga e golpe mudam no máximo 1 cm. Sobra um toque de 0,2 cm no coldre, num quadro do andar. A folga da mão esquerda agachada é igual à da antiga (ela apoia a mão na perna).
+- **Coldre:** a malha nova já traz um coldre com pistola na coxa direita, e a pistola da mão continua sendo o bloco provisório.
+- **Menu novo: Nibiru > Personagens > Trocar só o modelo da Elena** refaz textura, material, importação e o filho "Modelo" do prefab, sem mexer no controlador nem nas animações. Fora do "Modelo", os 2.395 valores do prefab ficaram iguais (comparados antes e depois). Arma e faca seguem a mão direita pelo Humanoid, então não precisaram de ajuste. **A Elena não tem encaixe de lamparina:** as lamparinas são objetos das cenas.
+- A vitrine de animações da Elena (**Nibiru > Testes > Animações**) agora usa o modelo novo.
+- **Capturas e GIFs:** `Docs/Arte/Capturas/ElenaNova`.
+- **Testes pela ponte, com o modelo e o limite finais, um de cada vez:** teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**, com os slots reais iguais; teste do passo 10 **14 OK, 0 FALHOU**, incluindo o golpe pelas costas no líder e no atirador. No Play, com controle virtual: parada, andar, correr, agachar, golpe e mira. A morte apareceu na tela de morte, pela patrulha. Dano e recarga foram conferidos só pela pose, fora do Play.
+- **Falta decidir (dono):** física e movimento secundário ficam para o polimento (etapa B), não para esta troca. A locomoção feminina (`Female Basic Locomotion`) continua só na vitrine: a parada e o andar podem substituir os atuais depois, mas a corrida dela é lenta (3,6 m/s contra os 6 do jogo).
+
 O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
-- Modelo `Art/Personagens/Elena/Elena.fbx` (cópia de `ArteFonte/Elena/2_Rig/Elena.rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,787 (1,70 m), sem blendshapes.
-- Texturas `Elena_BaseColor/Normal/Metallic/Roughness.png` (cópias das PNG de `1_Meshy`). Material URP Lit `Materiais/Elena.mat`, de dois lados (como no AccuRig). Metal e lisura vão juntos em `Elena_MetalSmooth.png` (R = metal, A = 1 - rugosidade), gerado só se ainda não existir; para refazer, apague o arquivo e rode o menu.
+- Modelo `Art/Personagens/ElenaNova/ElenaNova.fbx` (cópia de `ArteFonte/Elena_Nova_Usar/2_Rig/Elena.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,701 (1,70 m), sem blendshapes.
+- Textura `ElenaNova_BaseColor.jpg` (cópia do JPG de `1_Meshy`). Material URP Lit `Materiais/ElenaNova.mat`, de dois lados (como no AccuRig), sem metal, com lisura 0,25.
 - Animações: avanço do clipe descartado (quem anda é o `PlayerMotor`), altura e giro na pose. A velocidade natural de cada andar e corrida é lida do próprio clipe.
 - Controlador `Elena.controller`. Camada base: "Locomocao" (em pé e agachada pelo `Agachar`, cada uma pela `Velocidade`), "Esquiva", "Golpe_Faca" e "Morte" (cada uma no tempo exato da ação do jogo). Camadas do tronco (`Elena_Tronco.mask`): "Mira", "Recarregar" (no tempo da recarga da pistola) e "Reacoes" (aditiva, peso 0,55: o tranco do dano por cima de tudo).
 - No prefab, o filho "Modelo" fica sob o "Jogador", com os pés no fundo do colisor. A faca provisória (`PivoFaca/Lamina`) virou uma lâmina curta.
