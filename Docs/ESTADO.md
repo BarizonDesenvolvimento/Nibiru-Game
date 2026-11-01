@@ -25,7 +25,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - A **tela de slots do menu principal** (etapa A4b: Novo jogo e Carregar com 3 slots, estados vazio, ocupado, "demo concluída" e ilegível, apagar e sobrescrever com confirmação, "Continuar" pelo slot jogável mais recente e "Sair para o menu" na pausa) está pronta, testada pela ponte e **testada no Play pelo dono e aprovada em 26/out/2026. Etapa A (salvamento, arquivo, menus, mouse e proteção dos slots) concluída**. Veja "Tela de slots e menu principal (etapa A4b)".
 - O **mouse nos menus, o cursor e a proteção dos slots reais** (etapa A4c: passar o mouse move o foco, clique esquerdo ativa, direito volta, roda rola o Arquivo, botão `[Apagar]` em cada slot, confirmação e Opções clicáveis, cursor livre só nos menus; atalhos e situações de teste pedem confirmação antes de sobrescrever slot real e a execução automática nunca toca neles) está pronto e testado pela ponte (mouse 10 OK, salvamento 17 OK, teste geral 91 OK, hit-test nas 3 resoluções) e **aprovado pelo dono no Play em 26/out/2026**. Veja "Mouse nos menus e proteção dos slots reais (etapa A4c)".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
-- A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. **Em 1º/nov/2026, o modelo foi trocado pela Elena nova** (`Art/Personagens/ElenaNova`), testada pela ponte e **esperando a aprovação do dono**; a antiga fica de reserva. Veja "Elena" em Personagens 3D.
+- A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. **Em 1º/nov/2026, o modelo foi trocado pela Elena nova** (`Art/Personagens/ElenaNova`), **testada e aprovada pelo dono no Play**; a cópia antiga saiu de `Assets`. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
 - Os **4 soldados da Fundação** (Soldado, Líder de esquadra, Atirador de elite e Piloto; Meshy + AccuRig, com dedos) substituíram as cápsulas no prefab `Prefabs/AI/Soldado` e em todas as cenas, com animações de fuzil do Mixamo (parado, patrulha, corrida, mira, tiro, recarga, dano e morte), fuzil provisório e a IA e os eventos de antes. O piloto vai sentado nos helicópteros; o atirador de elite está no posto dele, no passo 10. Testados e aprovados pelo dono. Veja "Soldados da Fundação" em Personagens 3D.
 - O **Lullu definitivo** (Meshy + AccuRig, com dedos, 2,10 m em pé) substituiu a cápsula no prefab `Prefabs/AI/Lullu`. Testado pela ponte; falta o teste do dono. Veja "Lullu" em Personagens 3D.
@@ -565,7 +565,7 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 
 | Personagem | Pasta | Altura | Situação |
 | --- | --- | --- | --- |
-| Elena Varga | `Elena_Nova_Usar` (a antiga, de reserva, em `Elena`) | 1,70 m | **No jogo** (prefab `Player/Elena`), esperando a aprovação do dono |
+| Elena Varga | `Elena_Nova_Usar` (a arte-fonte antiga segue em `Elena`) | 1,70 m | **No jogo** (prefab `Player/Elena`) |
 | Samir Haddad | `Samir` | 1,75 m | **No jogo** (prefab `Personagens/Samir`) |
 | Yusuf | `Yusuf` | 1,74 m | Importado (prefab `Personagens/Yusuf`, deitado); cápsula das cenas ainda não trocada |
 | Umm Karim | `UmmKarim` | 1,58 m | Importada (prefab `Personagens/UmmKarim`); cápsula das cenas ainda não trocada |
@@ -640,9 +640,9 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 
 ### Elena
 
-**Modelo novo (1º/nov/2026, esperando a aprovação do dono).** A pasta `Art/Personagens/Elena` continua com o modelo antigo, de reserva (FBX, texturas e material), e também com o que vale para os dois: `Elena.controller`, `Elena_Tronco.mask` e `Elena_MarcaKur.mat`. Para voltar ao antigo, reverta o commit da troca. Depois da aprovação, a parte antiga pode ser apagada.
+**Modelo novo (1º/nov/2026, aprovado pelo dono no Play).** O modelo antigo (FBX, texturas e material) foi apagado de `Art/Personagens/Elena`, depois de conferir que nada mais o usava; dá para recuperá-lo pelo histórico do Git, e a arte-fonte dele continua em `ArteFonte/Elena`. A pasta guarda só o que vale para o modelo novo: `Elena.controller`, `Elena_Tronco.mask` e `Elena_MarcaKur.mat`.
 
-| | Antiga (reserva) | Nova (no jogo) |
+| | Antiga (fora do jogo) | Nova (no jogo) |
 | --- | --- | --- |
 | Origem | `ArteFonte/Elena` | `ArteFonte/Elena_Nova_Usar` |
 | Triângulos | 19.112 | 39.406 (o dobro) |
