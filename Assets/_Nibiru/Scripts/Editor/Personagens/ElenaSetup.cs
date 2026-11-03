@@ -286,6 +286,9 @@ namespace Nibiru.EditorTools
                 Prepare(clip, cut);
                 clips.Add(clip);
             }
+            // Mantém os cortes de outros personagens no mesmo arquivo (o Samir usa o "Agachada_Parada" do Sneak Walk).
+            foreach (var other in importer.clipAnimations)
+                if (clips.All(c => c.name != other.name)) clips.Add(other);
             importer.clipAnimations = clips.ToArray();
             importer.SaveAndReimport();
         }
