@@ -12,7 +12,7 @@ namespace Nibiru.EditorTools
     /// <summary>
     /// Prévia da Ninsar: configura a importação (Humanoid), cria os materiais URP, um controlador com
     /// as animações do Meshy (traduzidas pelo Humanoid), o prefab e a cena Teste_Ninsar.
-    /// Os arquivos vêm do Blender (ArteFonte/Ninsar/3_Blender/Scripts/exportar_previa_unity.py).
+    /// Os arquivos vêm do Blender (ArteFonte/Personagens/Ninsar/3_Blender/Scripts/exportar_previa_unity.py).
     /// Pode rodar de novo: refaz controlador, prefab e cena; materiais existentes só são atualizados.
     /// Menu: Nibiru > Personagens > Montar prévia da Ninsar.
     /// </summary>

@@ -115,7 +115,7 @@ namespace Nibiru.EditorTools
         public static void ImportCharacter(string character, int maxTexture = 0)
         {
             string root = ArtRoot + character;
-            string source = Path.Combine(Application.dataPath, "..", "ArteFonte", character);
+            string source = Path.Combine(Application.dataPath, "..", "ArteFonte", "Personagens", character);
             Directory.CreateDirectory(root);
             string model = $"{root}/{character}.fbx";
             if (!File.Exists(model))
@@ -123,7 +123,7 @@ namespace Nibiru.EditorTools
                 string rig = Directory.GetFiles(source, character + ".Rig.fbx", SearchOption.AllDirectories).FirstOrDefault();
                 if (rig == null)
                 {
-                    Debug.LogError($"{character}: não achei {character}.Rig.fbx em ArteFonte/{character}.");
+                    Debug.LogError($"{character}: não achei {character}.Rig.fbx em ArteFonte/Personagens/{character}.");
                     return;
                 }
                 File.Copy(rig, model);
@@ -135,7 +135,7 @@ namespace Nibiru.EditorTools
                 string png = Directory.GetFiles(Path.Combine(source, "1_Meshy"), $"Meshy_AI_*_{suffix}.png").FirstOrDefault();
                 if (png == null)
                 {
-                    Debug.LogError($"{character}: falta a textura {name} (baixe de novo no Meshy para ArteFonte/{character}/1_Meshy).");
+                    Debug.LogError($"{character}: falta a textura {name} (baixe de novo no Meshy para ArteFonte/Personagens/{character}/1_Meshy).");
                     return;
                 }
                 File.Copy(png, target);
