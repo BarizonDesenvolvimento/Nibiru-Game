@@ -68,7 +68,7 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 
 ### Elena Varga
 
-- **Quem é:** 27 anos em 2003 (nasceu em 1976). Tinha 3 anos quando a mãe desapareceu, em 1979, e quase não tem lembranças dela: conhece Irena mais pelas fotos, pelos artigos e pelo que os outros contam.
+- **Quem é:** 26 anos em 2003 (nasceu em 1977). Tinha 2 anos quando a mãe desapareceu, em 1979, e quase não tem lembranças dela: conhece Irena mais pelas fotos, pelos artigos e pelo que os outros contam.
 - **No começo:** arqueóloga jovem e cética, que vive à sombra da mãe desaparecida e odeia teorias da conspiração.
 - **O segredo:** descende de Ziusudra e dos primeiros híbridos. A mãe, Irena, descobriu isso em 1979 e escondeu a filha da Fundação.
 - **A ferida:** acha que a mãe a abandonou. Sente falta de alguém de quem mal se lembra.
