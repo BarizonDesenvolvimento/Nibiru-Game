@@ -22,6 +22,8 @@ namespace Nibiru.Player
         public const string SeatedParam = "Sentada";
         public const string AimLayer = "Mira";
         public const string ReloadLayer = "Recarregar";
+        public const string IdleVariationParam = "VariacaoParada";
+        public const string IdleVariationLayer = "VariacaoParada";
 
         [SerializeField] Animator animator;
         [SerializeField] PlayerMotor motor;
@@ -53,6 +55,16 @@ namespace Nibiru.Player
         [Tooltip("Com a câmera mais perto que isto da cabeça ou do peito (encostada numa parede atrás da Elena), o corpo some e fica só a sombra.")]
         [SerializeField] float hideWhenCameraCloserThan = 0.45f;
 
+        [Header("Variações da parada")]
+        [Tooltip("Quantas variações de parada o controlador tem (camada VariacaoParada). 0 = nenhuma.")]
+        [SerializeField] int idleVariationCount;
+
+        [Tooltip("Depois de quantos segundos parada, mínimo e máximo, ela troca para uma variação.")]
+        [SerializeField] Vector2 idleVariationDelay = new(6f, 12f);
+
+        [Tooltip("Quanto tempo cada variação dura (segundos).")]
+        [SerializeField] float idleVariationDuration = 5f;
+
         [Header("Coice do tiro")]
         [Tooltip("Quanto o tronco e os braços sobem a cada tiro, em graus.")]
         [SerializeField] float recoilAngle = 9f;
@@ -68,7 +80,12 @@ namespace Nibiru.Player
         static readonly int HurtId = Animator.StringToHash(HurtParam);
         static readonly int DieId = Animator.StringToHash(DieParam);
 
-        int aimLayerIndex = -1, reloadLayerIndex = -1;
+        static readonly int IdleVariationId = Animator.StringToHash(IdleVariationParam);
+
+        int aimLayerIndex = -1, reloadLayerIndex = -1, idleLayerIndex = -1;
+        int currentVariation, lastVariation;
+        float idleWeight, idleTimer, idleNextDelay, variationTimer;
+        bool seated;
         float aimWeight, reloadWeight, recoil;
         bool wasDodging, wasAttacking, hidden;
         Transform spine, chest, neck, head, rightUpperArm, leftUpperArm, rightLowerArm, rightHand;
@@ -87,6 +104,8 @@ namespace Nibiru.Player
             if (animator == null) return;
             aimLayerIndex = animator.GetLayerIndex(AimLayer);
             reloadLayerIndex = animator.GetLayerIndex(ReloadLayer);
+            idleLayerIndex = animator.GetLayerIndex(IdleVariationLayer);
+            idleNextDelay = Random.Range(idleVariationDelay.x, idleVariationDelay.y);
             bodyRenderers = animator.GetComponentsInChildren<Renderer>(true);
             if (animator.isHuman)
             {
@@ -170,7 +189,55 @@ namespace Nibiru.Player
             bool aiming = weapons != null ? weapons.IsAiming : motor.Aiming;
             bool reloading = weapons != null && weapons.IsReloading;
             FadeLayers(aiming, reloading);
+
+            bool still = speed < 0.1f && motor.CrouchBlend < 0.05f && !aiming && !reloading && !attacking
+                && !motor.IsDodging && !seated;
+            UpdateIdleVariation(still);
         }
+
+        // Depois de alguns segundos parada, a camada do tronco troca para uma variação (braços cruzados etc.)
+        // e volta sozinha; qualquer ação ou movimento apaga a camada. Nunca repete a mesma em sequência.
+        void UpdateIdleVariation(bool still)
+        {
+            if (idleLayerIndex < 0 || idleVariationCount <= 0) return;
+            float dt = Time.deltaTime;
+            if (!still)
+            {
+                idleTimer = 0f;
+                if (currentVariation != 0) SetVariation(0);
+            }
+            else if (currentVariation == 0)
+            {
+                idleTimer += dt;
+                if (idleTimer >= idleNextDelay) SetVariation(NextVariation());
+            }
+            else
+            {
+                variationTimer += dt;
+                if (variationTimer >= idleVariationDuration) SetVariation(0);
+            }
+            idleWeight = Mathf.MoveTowards(idleWeight, still ? 1f : 0f, aimBlendSpeed * dt);
+            animator.SetLayerWeight(idleLayerIndex, idleWeight);
+        }
+
+        int NextVariation()
+        {
+            if (lastVariation == 0 || idleVariationCount == 1) return Random.Range(1, idleVariationCount + 1);
+            return 1 + (lastVariation - 1 + Random.Range(1, idleVariationCount)) % idleVariationCount;
+        }
+
+        void SetVariation(int variation)
+        {
+            if (variation != 0) lastVariation = variation;
+            currentVariation = variation;
+            variationTimer = 0f;
+            idleTimer = 0f;
+            idleNextDelay = Random.Range(idleVariationDelay.x, idleVariationDelay.y);
+            animator.SetInteger(IdleVariationId, variation);
+        }
+
+        /// <summary>Variação de parada em curso (0 = nenhuma). Para testes.</summary>
+        public int CurrentIdleVariation => currentVariation;
 
         void FadeLayers(bool aiming, bool reloading)
         {
@@ -235,6 +302,7 @@ namespace Nibiru.Player
         /// <summary>Senta no chão (a viagem na caçamba) ou levanta. Precisa do estado Sentada no controlador.</summary>
         public void SetSeated(bool seated)
         {
+            this.seated = seated;
             if (animator != null && HasParameter(Animator.StringToHash(SeatedParam))) animator.SetBool(SeatedParam, seated);
         }
 

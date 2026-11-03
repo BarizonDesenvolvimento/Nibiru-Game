@@ -1091,7 +1091,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7374615389016877071}
+  - {fileID: 1902000585586278568}
   - {fileID: 4579137010929715870}
   - {fileID: 3401335159130718717}
   - {fileID: 7654201043574784810}
@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d31d4ae562c4a48b48998c186e38c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Player.PlayerAnimator
-  animator: {fileID: 3510495759525425781}
+  animator: {fileID: 5513936052156979922}
   motor: {fileID: 3110832709876994596}
   weapons: {fileID: 1265022158567877417}
   melee: {fileID: 4942451461779874155}
@@ -1382,6 +1382,9 @@ MonoBehaviour:
   speedDamping: 0.08
   aimBlendSpeed: 8
   hideWhenCameraCloserThan: 0.45
+  idleVariationCount: 1
+  idleVariationDelay: {x: 6, y: 12}
+  idleVariationDuration: 5
   recoilAngle: 9
   recoilRecovery: 0.18
 --- !u!114 &7750119671527892710
@@ -1396,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959e812cff99e2245911705ef949c68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Tablets.TransformationMark
-  animator: {fileID: 3510495759525425781}
+  animator: {fileID: 5513936052156979922}
   material: {fileID: 2100000, guid: 6b0afa49c83e54b41ae756f32892c2b8, type: 2}
   diameter: 0.075
   width: 0.018
@@ -4224,7 +4227,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
---- !u!1001 &7051894720616173540
+--- !u!1001 &2157217667068061507
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -4305,13 +4308,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
---- !u!95 &3510495759525425781 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
-  m_PrefabInstance: {fileID: 7051894720616173540}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7374615389016877071 stripped
+--- !u!4 &1902000585586278568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
-  m_PrefabInstance: {fileID: 7051894720616173540}
+  m_PrefabInstance: {fileID: 2157217667068061507}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5513936052156979922 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: c07ce4f261bfbb44d960c897ff3f09b2, type: 3}
+  m_PrefabInstance: {fileID: 2157217667068061507}
   m_PrefabAsset: {fileID: 0}

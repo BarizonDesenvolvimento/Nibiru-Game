@@ -24,12 +24,14 @@ namespace Nibiru.EditorTools
         const string ModelRoot = "Assets/_Nibiru/Art/Personagens/ElenaNova";
         const string ModelPath = ModelRoot + "/ElenaNova.fbx";
         const string BaseColorPath = ModelRoot + "/ElenaNova_BaseColor.jpg";
-        // Até onde cada braço desce no Avatar, em graus: o mais fechado que deixa as mãos fora das coxas
-        // com a locomoção feminina (medido em 1º/nov/2026). O direito desce menos por causa do coldre.
-        const float LeftArmDownLimit = -47f;
-        const float RightArmDownLimit = -43f;
-        // Máximo do "Forearm Stretch" (padrão 5°): o cotovelo fica levemente dobrado, e a mão passa à frente da coxa.
-        const float ForearmStretchLimit = -15f;
+        // Até onde cada braço desce no Avatar, em graus (fotografado em 3/nov/2026). O esquerdo fica no padrão da
+        // Unity (-60°): braço junto do corpo, natural. O direito desce um pouco menos (-55°) por causa do coldre, que
+        // é parte da malha; a luva só toca a borda dele. Com -40/-36 os braços ficavam afastados, "de manequim".
+        const float LeftArmDownLimit = -60f;
+        const float RightArmDownLimit = -55f;
+        // Máximo do "Forearm Stretch": o padrão da Unity é +80° (faixa de -80 a +80). Um valor menor trava o
+        // antebraço dobrado (com -15° o cotovelo nunca passava de 40° de dobra: braço de manequim). Fica no padrão.
+        const float ForearmStretchLimit = 80f;
         const string MaterialPath = ModelRoot + "/Materiais/ElenaNova.mat";
         const string Mixamo = "Assets/_Nibiru/Art/Animacoes/Mixamo/";
         // Boneco do Mixamo em pose T: o esqueleto de referência de todas as animações do Mixamo.
@@ -195,7 +197,9 @@ namespace Nibiru.EditorTools
         // O modelo novo tem braços longos e coxas largas (calça e coldre): com os limites padrão, as
         // mãos entram nas coxas. Encurtar só o "Arm Down-Up" para baixo (padrão -60°) deixa o braço
         // caído um pouco mais aberto; mira, recarga e golpe, de braço erguido, quase não mudam.
-        static void OpenArms(ModelImporter importer)
+        static void OpenArms(ModelImporter importer) => OpenArms(importer, LeftArmDownLimit, RightArmDownLimit, ForearmStretchLimit);
+
+        internal static void OpenArms(ModelImporter importer, float leftDown, float rightDown, float forearmMax)
         {
             var description = importer.humanDescription;
             var human = description.human;
@@ -216,9 +220,9 @@ namespace Nibiru.EditorTools
                     min[axis] = HumanTrait.GetMuscleDefaultMin(muscle);
                     max[axis] = HumanTrait.GetMuscleDefaultMax(muscle);
                 }
-                if (bone == HumanBodyBones.LeftUpperArm) min.z = LeftArmDownLimit;
-                else if (bone == HumanBodyBones.RightUpperArm) min.z = RightArmDownLimit;
-                else max.z = ForearmStretchLimit;
+                if (bone == HumanBodyBones.LeftUpperArm) min.z = leftDown;
+                else if (bone == HumanBodyBones.RightUpperArm) min.z = rightDown;
+                else max.z = forearmMax;
                 var limit = human[i].limit;
                 limit.useDefaultValues = false;
                 limit.min = min;
@@ -315,6 +319,9 @@ namespace Nibiru.EditorTools
 
         // ---------- Controlador ----------
 
+        const string AnimationLibraryDestination = "Assets/_Nibiru/Art/Animacoes/Elena/";
+        static int IdleVariationCount;
+
         static AnimatorController BuildController()
         {
             var settings = AssetDatabase.LoadAssetAtPath<PlayerMovementSettings>(SettingsPath);
@@ -381,8 +388,35 @@ namespace Nibiru.EditorTools
                 stand.duration = 0.25f;
             }
 
-            // Mira e recarregar: só o tronco, braços, dedos e cabeça; o peso vem do PlayerAnimator.
+            // Variações da parada: só o tronco, braços e cabeça, por cima da parada de baixo (sem arrastar os pés);
+            // o PlayerAnimator escolhe a variação (parâmetro) e acende a camada só com a Elena parada.
             var mask = BuildUpperBodyMask();
+            var variations = UalIdleImport.Variations
+                .Select(v => AssetDatabase.LoadAssetAtPath<AnimationClip>(AnimationLibraryDestination + v.name + ".anim"))
+                .Where(c => c != null).ToList();
+            if (variations.Count > 0)
+            {
+                controller.AddParameter(PlayerAnimator.IdleVariationParam, AnimatorControllerParameterType.Int);
+                var variationMachine = AddLayer(controller, PlayerAnimator.IdleVariationLayer, mask, AnimatorLayerBlendingMode.Override, 0f);
+                var none = variationMachine.AddState("Nada");
+                variationMachine.defaultState = none;
+                for (int i = 0; i < variations.Count; i++)
+                {
+                    var state = variationMachine.AddState(variations[i].name, new Vector3(300f, 60f + 60f * i));
+                    state.motion = variations[i];
+                    var enterVariation = none.AddTransition(state);
+                    enterVariation.AddCondition(AnimatorConditionMode.Equals, i + 1, PlayerAnimator.IdleVariationParam);
+                    enterVariation.hasExitTime = false;
+                    enterVariation.duration = 0.5f;
+                    var leaveVariation = state.AddTransition(none);
+                    leaveVariation.AddCondition(AnimatorConditionMode.Equals, 0f, PlayerAnimator.IdleVariationParam);
+                    leaveVariation.hasExitTime = false;
+                    leaveVariation.duration = 0.5f;
+                }
+            }
+            IdleVariationCount = variations.Count;
+
+            // Mira e recarregar: só o tronco, braços, dedos e cabeça; o peso vem do PlayerAnimator.
             AddLayer(controller, PlayerAnimator.AimLayer, mask, AnimatorLayerBlendingMode.Override, 0f)
                 .AddState("Mira").motion = Clip(Aim);
             var pistol = AssetDatabase.LoadAssetAtPath<FirearmDefinition>(PistolPath);
@@ -579,6 +613,7 @@ namespace Nibiru.EditorTools
                 serialized.FindProperty("health").objectReferenceValue = player.GetComponent<Health>();
                 serialized.FindProperty("heldGun").objectReferenceValue = player.Find(GunChild);
                 serialized.FindProperty("heldKnife").objectReferenceValue = knife;
+                serialized.FindProperty("idleVariationCount").intValue = IdleVariationCount;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
 
                 // O agachar é da animação: o visual do agachar só desce câmera, arma e faca.
