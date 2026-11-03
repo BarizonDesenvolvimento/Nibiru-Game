@@ -65,7 +65,7 @@ Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, s
 - **A luta do Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano). A demo tem 3 poderes. Nomes: Lullu e Primeiro Servo. Sem XP nem nível.
 
 **Em aberto, decidir no ME1/ME7:**
-- **Botões dos ME (proposta do dono de 3/nov/2026, a confirmar no projeto do ME1 contra o mapa atual):** teclado **Q Eco, Z Sopro, X Égide** (a proposta era F e G; o F já é a faca, então valem Z e X). Controle: **LB Eco, LB+RB Sopro, LB+Y Égide** (LB como modificador, no estilo God of War; o RB sozinho continua sendo a faca). Ponto a resolver no ME1: com o LB como modificador, o Eco não pode disparar no aperto do LB (por exemplo, dispara ao soltar sem outro botão).
+- **Botões dos ME (proposta do dono de 3/nov/2026, a confirmar no projeto do ME1 contra o mapa atual):** teclado **Q Eco, Z Sopro, X Égide** (a proposta era F e G; o F já é a faca, então valem Z e X). Controle: **LB Eco, LB+RB Sopro, LB+Y Égide** (LB como modificador, no estilo God of War; o RB sozinho continua sendo a faca). **Regra do modificador (decisão do dono, 3/nov/2026):** o Eco dispara ao **soltar** o LB, e só se nenhum outro botão foi apertado enquanto o LB estava seguro (com o LB seguro, RB vira Sopro e Y vira Égide; soltar o LB depois disso não dispara o Eco).
 
   **Mapa completo de controles** (lido de `Data/Input/NibiruControles`, com a proposta em negrito):
 
@@ -722,7 +722,7 @@ A biblioteca inteira (pacotes do Mixamo e Universal Animation Library) fica em `
 - No Mixamo, o **X Bot é o boneco feminino**.
 - **Idles descartados para a Elena:** mão na cintura (bate no coldre e no colete), braços cruzados e Happy Idle.
 - **Pro Magic Pack, Magic Locomotion Pack e Scary Zombie Pack:** baixados do Mixamo pelo dono em 25/out/2026; origem confirmada, uso liberado.
-- **Gestures Pack Basic 2:** conferido em 3/nov/2026 que é o **mesmo download do Gestures Pack Basic, na X Bot** (mesmo esqueleto, mesmos quadros e as mesmas posições; só os metadados do arquivo mudam). Não é Y Bot. Nada foi apagado: falta o dono escolher qual pasta fica.
+- **Gestures Pack Basic 2:** era uma cópia idêntica do Gestures Pack Basic, na X Bot (conferido no Blender em 3/nov/2026). A pasta foi apagada (mandada para a Lixeira do Windows) a pedido do dono; fica o Gestures Pack Basic, de 25/out.
 - **A baixar pelo dono:** Breathing Idle, um idle de troca de peso, um Alert/Nervous, Rifle 8-Way Locomotion Pack, Female Locomotion Pack (se existir), injured walk e stumble.
 
 ### Animações da biblioteca
@@ -1175,7 +1175,7 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 - **Poço (passos 11 e 12):** o Selo de Kur no fundo da antecâmara; munição no patamar do meio; curativos da arena.
 - **Wadi e fuga (passos 14 e 15):** o rádio caído; a tabuleta enterrada no nicho do túnel (escolha "devolver").
 
-**Outros:** a cena tem um objeto `TMP_Lullu` inativo em (-500, 0, -500), que já existia antes desta tarefa (não mexido). Créditos dos 13 modelos novos registrados, com o plano do Tripo e do Meshy **a confirmar** para estes.
+**Outros:** a cena tem um objeto `TMP_Lullu` inativo em (-500, 0, -500), que já existia antes desta tarefa (não mexido). Créditos dos 13 modelos novos registrados: Tripo **Pro** e Meshy **Pro** (confirmado pelo dono em 3/nov/2026).
 
 ## Etapa B1v (Partes 0, 1, 2 e 4 concluídas; Parte 3 pendente): Git da ArteFonte, 6 personagens, área-vitrine e créditos
 

@@ -122,7 +122,7 @@ Os créditos do Tripo e do Meshy vencem em 30/11 (data externa do serviço, não
 
 A bolsa da câmera do Tom e os kits médicos são feitos no Blender, por script (decisão do dono, 3/nov/2026).
 
-**Plano usado nos 13 modelos novos (Tripo e Meshy):** a confirmar.
+**Plano usado nos 13 modelos novos:** Tripo **Pro** e Meshy **Pro** (pagos; confirmado pelo dono em 3/nov/2026).
 
 ## Feito pelo dono no Meshy (personagens)
 
