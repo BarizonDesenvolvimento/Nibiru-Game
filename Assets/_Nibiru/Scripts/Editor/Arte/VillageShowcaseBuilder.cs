@@ -33,8 +33,8 @@ namespace Nibiru.EditorTools
         };
 
         // Altura do pavio da lamparina do Tripo (impressa pelo script do Blender) e a da chama do blockout
-        // (VillageContent.NicheMark), que fica 3 cm acima dele: a vitrine desce a chama até o pavio.
-        const float WickHeight = 0.036f;
+        // (VillageContent.NicheMark), que fica acima dele: a vitrine desce a chama até o pavio. Lamparina de 22 cm.
+        const float WickHeight = 0.055f;
         const float BlockoutFlameHeight = 0.09f;
         const float FlameHalfHeight = 0.025f;
 

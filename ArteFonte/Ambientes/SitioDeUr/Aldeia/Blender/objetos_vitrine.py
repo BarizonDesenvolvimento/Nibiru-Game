@@ -11,7 +11,7 @@
 # Medidas (as do blockout, que ficam como colisor):
 #   altar 0,90 (x) x 1,00 (altura) x 0,60 (z), topo plano em y = 1,0 (a tabuleta e a lamparina assentam nele);
 #   poço com o anel da base no raio do cilindro do blockout (1,2 m) e o parapeito em 1,0 m de altura;
-#   lamparina com 15 cm de comprimento, bico para +z da Unity, pivô no chão embaixo do pavio.
+#   lamparina com 22 cm de comprimento, bico para +z da Unity, pivô no chão embaixo do pavio.
 #
 # Eixos: o FBX chega na Unity como (x, z, y) do Blender; o +z da Unity é o +y do Blender.
 
@@ -327,7 +327,7 @@ def lamparina(src, out_dir):
     report("lamparina bruta", bm)
     print("[lamparina] buracos fechados / pulados", fill_small_holes(bm, 0.05))
     mn, mx = bounds(bm)
-    s = 0.15 / (mx.y - mn.y)
+    s = 0.22 / (mx.y - mn.y)
     # O bico do Tripo aponta para -y do Blender; gira 180 graus para ele apontar para +z da Unity.
     for v in bm.verts:
         v.co = Vector((-v.co.x * s, -v.co.y * s, v.co.z * s))
@@ -355,7 +355,7 @@ def main():
     only = sys.argv[sys.argv.index("--") + 2:]
     jobs = {
         "altar": (altar, "Ambientes/Altar/1_Meshy/Altar_M1.fbx"),
-        "poco": (poco, "Ambientes/PoçoM9/1_Meshy/Poço.fbx"),
+        "poco": (poco, "Ambientes/PocoM9/1_Meshy/Poço.fbx"),
         "lamparina": (lamparina, "Objetos/LamparinaDeBarro/1_Meshy/Lamparina.fbx"),
     }
     for name, (fn, path) in jobs.items():
