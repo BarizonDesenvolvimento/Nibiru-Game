@@ -216,7 +216,7 @@ Gestos para conversas (Samir, NPCs, Elena).
 
 ## Gestures Pack Basic 2
 
-Pasta `Gestures Pack Basic 2`: os mesmos 15 gestos e o `X Bot.fbx` do Gestures Pack Basic, com **os mesmos nomes de arquivo, mas arquivos diferentes** (nenhum é idêntico byte a byte; conferido em 3/nov/2026). Falta o dono dizer o que muda (outro personagem no download, ou outras opções, como "In Place"). Sem uso.
+Pasta `Gestures Pack Basic 2`: os mesmos 15 gestos e o `X Bot.fbx` do Gestures Pack Basic. **Conferido no Blender em 3/nov/2026: é o mesmo download, na X Bot**, não na Y Bot: mesmo esqueleto (65 ossos, quadril a 1,043 m, malha `Beta_Surface`), mesmos quadros e as mesmas posições de quadril, cabeça e mãos, e o mesmo tamanho de arquivo. Os bytes mudam só nos metadados do arquivo (baixado em 3/nov; o primeiro, em 25/out). Nada foi apagado: falta o dono escolher qual pasta fica. Sem uso.
 
 ## Pistol_Handgun Locomotion Pack
 

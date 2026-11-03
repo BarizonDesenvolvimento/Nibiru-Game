@@ -73,7 +73,7 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 - **O segredo:** descende de Ziusudra e dos primeiros híbridos. A mãe, Irena, descobriu isso em 1979 e escondeu a filha da Fundação.
 - **A ferida:** acha que a mãe a abandonou. Sente falta de alguém de quem mal se lembra.
 - **Para onde pode ir:** humana que recusa a herança, deusa que a abraça, ou alguém que encontra um terceiro caminho.
-- **Roupa do modelo do jogo:** colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas (diverge do conceito antigo; veja "Perguntas abertas").
+- **Roupa:** colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas. O conceito segue o modelo do jogo (decisão do dono, 3/nov/2026; o conceito antigo dizia "camisa de linho"). Pendente: avaliar a semelhança com a Lara Croft antes da página "Em breve".
 - **Os poderes no corpo (conceito, aguardando teste de imagem):** "barro rachando": rachaduras de terracota fosca com luz de lápis-lazúli por baixo. No estágio 1, só na mão e no antebraço, e acesas só quando ela usa um poder.
 
 ### Dr. Aurelian Kast
@@ -162,11 +162,11 @@ Regras já aprovadas para a demo (região 1). A construção delas está no `Doc
 - **Égide de Enki.** Na Passagem dos Guardiões (passo 13), lida no **puzzle 2** (4 anéis); a pista vem das inscrições e da fita de Irena. Dura 8 s e tem recarga de 60 s. Dispara o **primeiro despertar**, antes do wadi: a Elena sente, mas não entende. A árvore aparece bloqueada, com glifos não traduzidos.
 - **A luta do Primeiro Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano).
 - **Puzzle do selo.** O Sopro e a Égide são lidos girando anéis. O jogo não pausa, o puzzle fica num lugar seguro e falhar não tem penalidade.
-- **Botões dos poderes (proposta, ainda não aprovada; decidir no projeto do ME1):** Q para o Eco, E para o Sopro e R para a Égide; no controle, LB, RB e LB+RB. Hoje o E já é Interagir, o R é Recarregar e o RB é a faca.
+- **Botões dos poderes (proposta, ainda não aprovada; confirmar no projeto do ME1):** teclado Q para o Eco, Z para o Sopro e X para a Égide (o F, da proposta, já é a faca). Controle: LB para o Eco, LB+RB para o Sopro e LB+Y para a Égide (LB como modificador; o RB sozinho continua sendo a faca).
 - **Em aberto (ME7):** o que a barra "Transformação %" vira com os despertares.
 - **Save.** Guarda os ME da Elena, a recarga restante de cada um e os despertares.
 
 ## Perguntas abertas
 
 - **Nacionalidade dos soldados da Fundação:** indefinida.
-- **Roupa da Elena:** o conceito antigo dizia "camisa de linho"; o modelo do jogo usa colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas. Proposta: o conceito passa a seguir o modelo. Falta o dono confirmar.
+- **Semelhança da Elena com a Lara Croft:** avaliar antes da página "Em breve".

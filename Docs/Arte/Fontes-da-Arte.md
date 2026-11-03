@@ -54,6 +54,8 @@ O que precisa de IA de geração é feito pelo dono, no **Tripo** (objetos) e no
 | Gerador simples | pendente |
 | **Holofote com tripé**, inclusive os que caem na arena | pendente |
 | Mesas, catre, cadeiras dobráveis e caixotes de madeira | pendente |
+| Bolsa vazia da câmera do Tom | pendente |
+| Kits médicos (3), com **cruz branca em fundo verde** (nada de cruz vermelha: é emblema protegido) | pendente |
 | Gaiolas de artefatos e mesas do laboratório de campo | pendente |
 | Fogueira (pedras e lenha; o fogo é efeito) | pendente |
 
@@ -99,7 +101,7 @@ O que precisa de IA de geração é feito pelo dono, no **Tripo** (objetos) e no
 | 1 | Fuzil dos soldados (AKM modernizado preto, red dot) | `Objetos/Fuzil` | no jogo |
 | 1 | Pistola Makarov | `Objetos/Pistola` | no jogo |
 | 1 | Faca de campo | `Objetos/Faca` | no jogo |
-| 1 | Tabuleta do Junco | `Objetos/TabuletaDeJunco` | no jogo |
+| 1 | Tabuleta do Junco (barro com borda de ouro; ao ser lida, acende em azul pelas rachaduras e inscrições, um efeito da Unity ainda pendente) | `Objetos/TabuletaDeJunco` | no jogo |
 | 2 | Rádio do acampamento (também o rádio de campanha e o rádio do wadi) | `Objetos/Radio` | no jogo |
 | 2 | Gravador com a fita de Irena | `Objetos/Gravador` | gerado no **Meshy**, não no Tripo (só prefab; a fita, o cassete, não tem modelo) |
 | 2 | Rolo de filme (um modelo, usado 3 vezes) | `Objetos/RoloFilme` | no jogo (gerado no **Meshy**) |
@@ -114,11 +116,13 @@ O que precisa de IA de geração é feito pelo dono, no **Tripo** (objetos) e no
 | 3 | Caminhão (cerco e acampamento) | — | pendente |
 | 3 | Guincho do Poço com cabine | — | pendente |
 
-**Fora do Tripo:** o holofote (Blender por script) e o painel das criaturas aladas (opcional, só se sobrar crédito).
+**Do Tripo faltam só:** o painel de relevo do deus, o painel do barco de junco, a caminhonete do Samir, o caminhão e o guincho. O painel das criaturas aladas é opcional (só se sobrar crédito). O holofote é feito no Blender, por script.
 
 Os créditos do Tripo e do Meshy vencem em 30/11 (data externa do serviço, não é meta do projeto).
 
-**A avaliar:** a bolsa da câmera do Tom e os kits médicos ainda não têm caminho escolhido (Blender por script ou Tripo).
+A bolsa da câmera do Tom e os kits médicos são feitos no Blender, por script (decisão do dono, 3/nov/2026).
+
+**Plano usado nos 13 modelos novos (Tripo e Meshy):** a confirmar.
 
 ## Feito pelo dono no Meshy (personagens)
 

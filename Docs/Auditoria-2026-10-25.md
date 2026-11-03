@@ -1,5 +1,7 @@
 # Auditoria da fatia vertical (Sítio de Ur), 25 de outubro de 2026
 
+**Registro histórico; as estimativas não são metas.**
+
 Comparação do roteiro (`Docs/Regiao-1-Sitio-de-Ur.md`) com o `Docs/ESTADO.md`, os scripts que montam a cena (`Scripts/Editor/Content`), os arquivos de dados e o código de runtime. A cena não foi aberta visualmente; os scripts de conteúdo a reconstroem, e ela foi conferida nas etapas anteriores. Nada foi implementado nesta auditoria.
 
 **Esforço:** P é até meio dia, M de 1 a 2 dias, G de 3 a 5 dias, GG mais de uma semana. Os dias são de trabalho com o Claude e incluem teste pela ponte, sem contar o teste do dono no Play.

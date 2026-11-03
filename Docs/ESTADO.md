@@ -65,7 +65,32 @@ Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, s
 - **A luta do Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano). A demo tem 3 poderes. Nomes: Lullu e Primeiro Servo. Sem XP nem nível.
 
 **Em aberto, decidir no ME1/ME7:**
-- **Botões dos ME (proposta, ainda não aprovada, a confirmar no projeto do ME1):** Q para o Eco, E para o Sopro e R para a Égide; no controle, LB, RB e LB+RB. **Atenção:** hoje o E já é Interagir, o R é Recarregar e o RB é a faca.
+- **Botões dos ME (proposta do dono de 3/nov/2026, a confirmar no projeto do ME1 contra o mapa atual):** teclado **Q Eco, Z Sopro, X Égide** (a proposta era F e G; o F já é a faca, então valem Z e X). Controle: **LB Eco, LB+RB Sopro, LB+Y Égide** (LB como modificador, no estilo God of War; o RB sozinho continua sendo a faca). Ponto a resolver no ME1: com o LB como modificador, o Eco não pode disparar no aperto do LB (por exemplo, dispara ao soltar sem outro botão).
+
+  **Mapa completo de controles** (lido de `Data/Input/NibiruControles`, com a proposta em negrito):
+
+  | Ação | Teclado e mouse | Controle |
+  | --- | --- | --- |
+  | Mover | WASD ou setas | Analógico esquerdo |
+  | Olhar | Mouse | Analógico direito |
+  | Correr | Shift esquerdo | Clique no analógico esquerdo |
+  | Esquivar | Espaço | B |
+  | Interagir | E | A |
+  | Faca (Atacar) | Clique esquerdo ou F | RB |
+  | Mirar | Botão direito | LT |
+  | Atirar | Clique esquerdo (mirando) | RT |
+  | Recarregar | R | X |
+  | Agachar | C ou Ctrl esquerdo | Clique no analógico direito |
+  | Eco do Abzu (Poder) | Q | LB |
+  | **Sopro de Enlil** | **Z** | **LB + RB** |
+  | **Égide de Enki** | **X** | **LB + Y** |
+  | Inventário | Tab ou I | Select |
+  | Navegar nos menus | WASD ou setas | D-pad ou analógico esquerdo |
+  | Confirmar | Enter ou E | A |
+  | Voltar | Esc ou Backspace | B |
+  | Pausa | Esc | Start |
+
+  Livres hoje no jogo: G, Z e X no teclado; Y e o D-pad no controle.
 - **A barra "Transformação %" do HUD (ME7):** o que ela vira com os despertares (some, vira contagem de despertares ou continua como barra).
 
 ## Onde estamos
@@ -697,7 +722,7 @@ A biblioteca inteira (pacotes do Mixamo e Universal Animation Library) fica em `
 - No Mixamo, o **X Bot é o boneco feminino**.
 - **Idles descartados para a Elena:** mão na cintura (bate no coldre e no colete), braços cruzados e Happy Idle.
 - **Pro Magic Pack, Magic Locomotion Pack e Scary Zombie Pack:** baixados do Mixamo pelo dono em 25/out/2026; origem confirmada, uso liberado.
-- **Gestures Pack Basic 2** registrado no catálogo.
+- **Gestures Pack Basic 2:** conferido em 3/nov/2026 que é o **mesmo download do Gestures Pack Basic, na X Bot** (mesmo esqueleto, mesmos quadros e as mesmas posições; só os metadados do arquivo mudam). Não é Y Bot. Nada foi apagado: falta o dono escolher qual pasta fica.
 - **A baixar pelo dono:** Breathing Idle, um idle de troca de peso, um Alert/Nervous, Rifle 8-Way Locomotion Pack, Female Locomotion Pack (se existir), injured walk e stumble.
 
 ### Animações da biblioteca
@@ -744,7 +769,7 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 - **Variações da parada (3/nov/2026): mecanismo pronto, sem nenhuma variação ligada.** Depois de 6 a 12 s parada, uma camada só do tronco (`VariacaoParada`, máscara `Elena_Tronco`, pernas intactas) troca para uma variação por uns 5 s e volta; qualquer movimento, mira, recarga, agachar, golpe, esquiva ou sentar apaga a camada. O `PlayerAnimator` sorteia sem repetir a anterior (`idleVariationCount`, `idleVariationDelay`, `idleVariationDuration`). A camada só nasce se a tabela `UalIdleImport.Variations` tiver clipes; hoje está **vazia**: os braços cruzados da UAL2 (`Idle_FoldArms_Loop`) **atravessavam o busto da Elena** (visto pelo dono no Play) e foram removidos, e o `Idle_Loop` da UAL1 é postura de luta. Para ligar, ponha os clipes na tabela e rode **Nibiru > Animações > Importar variações de parada da Elena (UAL)** e depois **Montar Elena animada** (o importador serve para FBX da UAL; para clipe do Mixamo, use `AnimationLibrary`). A biblioteca Mixamo só tem **um** idle feminino (o da Female Basic). Idles masculinos existentes e não usados: `Action Adventure Pack/idle (2)` a `(5)`, `Pro Melee Axe Pack/unarmed idle` e `unarmed idle looking ver. 1/2`. **Falta baixar no Mixamo 2 ou 3 idles neutros ou tensos de pessoa em pé (respirar, troca de peso, olhar em volta; prévia na X Bot), sem braços cruzados sobre o busto e sem mão na cintura.**
 - **Agachar (fica assim por enquanto, decisão do dono em 1º/nov/2026; depois ele traz outras animações):** continua `Elena_Agachada_Parada` e `Sneak Walk`. No Mixamo, a candidata é o par `Crouch Idle 01` e `Crouch Walk`, ainda a conferir (a miniatura parece segurar algo na mão); as `Female Crouch` são poses paradas e não servem para isso. **Não há agachada feminina na biblioteca.** Testado em 1º/nov/2026 e descartado: `Crouch_Idle_Loop` e `Crouch_Fwd_Loop` do UAL1, fundas demais na Elena (quadril a 47 cm do chão, pés a 60 cm um do outro); misturadas com a pose em pé, os pés afundam no chão (5 a 19 cm). Os agachares do Pro Rifle e do Pro Melee vêm com arma na mão; os do Pro Magic estão liberados desde 3/nov/2026 (origem confirmada), ainda não testados na Elena. A troca é só no `ElenaSetup.UseCrouch`.
 - **Coldre:** a malha nova já traz um coldre com pistola na coxa direita. A pistola da mão é a Makarov do Tripo, com a coronha na palma (3/nov/2026).
-- **Roupa real do modelo:** colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas. O conceito antigo dizia "camisa de linho": divergência registrada como pergunta aberta na Bíblia (proposta: o conceito passa a seguir o modelo).
+- **Roupa:** colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas. **O conceito passa a seguir o modelo** (decisão do dono em 3/nov/2026; o antigo dizia "camisa de linho"). **Pendente:** avaliar a semelhança com a Lara Croft antes da página "Em breve".
 - **Visual dos poderes no corpo (conceito "barro rachando", aguardando teste de imagem):** rachaduras de terracota fosca com luz de lápis-lazúli por baixo; no estágio 1, só na mão e no antebraço, e acesas só ao usar um poder. Idade: 26 anos em 2003. Pose parada final: braços -60/-55 (acima).
 - **Menu novo: Nibiru > Personagens > Trocar só o modelo da Elena** refaz textura, material, importação e o filho "Modelo" do prefab, sem mexer no controlador nem nas animações. Fora do "Modelo", os 2.395 valores do prefab ficaram iguais (comparados antes e depois). Arma e faca seguem a mão direita pelo Humanoid, então não precisaram de ajuste. **A Elena não tem encaixe de lamparina:** as lamparinas são objetos das cenas.
 - A vitrine de animações da Elena (**Nibiru > Testes > Animações**) agora usa o modelo novo.

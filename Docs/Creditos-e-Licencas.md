@@ -28,7 +28,7 @@ A biblioteca bruta fica em `ArteFonte/Animacoes` (fora do Git); só os clipes us
 | Clipes da biblioteca (Lullu, Primeiro Servo, criaturas, Elena básica, pegar, abrir, agachada, sentada, dirigir) | `Art/Animacoes/Criatura`, `Elena`, `Caminhonete` | Mixamo: `Not So Scary Zombie Pack`, `Creature Pack`, `Female Basic Locomotion Pack` e `Avulsas` | A mesma do Mixamo | Resumo |
 | Universal Animation Library 1 e 2 (Standard) | `ArteFonte/Animacoes/Universal Animation Library[Standard]` e `... 2[Standard]` | **Quaternius** (patreon.com/quaternius) | **CC0 1.0** (domínio público; atribuição não exigida, mas fica aqui por cortesia) | Confirmado (`License.txt`). Nenhum clipe em uso (o `Idle_FoldArms_Loop` foi testado e removido: atravessava o busto da Elena) |
 | Pro Magic Pack, Magic Locomotion Pack, Scary Zombie Pack | `ArteFonte/Animacoes/Mixamo/` | **Mixamo** (Adobe), baixados pelo dono em 25/out/2026 (confirmado na governança de 3/nov/2026) | A mesma do Mixamo | Confirmado (origem); termos: resumo. Uso liberado; nenhum clipe deles em uso ainda |
-| Gestures Pack Basic 2 | `ArteFonte/Animacoes/Mixamo/Gestures Pack Basic 2` | **Mixamo** (Adobe), pela conta do dono | A mesma do Mixamo | Resumo. Mesmos nomes do Gestures Pack Basic, arquivos diferentes; sem uso |
+| Gestures Pack Basic 2 | `ArteFonte/Animacoes/Mixamo/Gestures Pack Basic 2` | **Mixamo** (Adobe), pela conta do dono | A mesma do Mixamo | Resumo. Mesmo download do Gestures Pack Basic, na X Bot (só os metadados do arquivo mudam); sem uso |
 
 ## Ambientes (área-vitrine da Aldeia, B1v Parte 3)
 

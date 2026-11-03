@@ -91,7 +91,7 @@ Seis áreas ligadas, sem mundo aberto. O caminho principal é quase uma linha, m
 
 A sequência do começo ao fim. Cada passo vira um objetivo na tela.
 
-1. **Acordar.** A Elena acorda na barraca ao amanhecer, segurando uma tabuleta azul com escrita dourada que ela não lembra de ter pego. A tabuleta está morna. Uma voz sussurra uma palavra em sumério, e ela entende. *(Tutorial de movimento.)*
+1. **Acordar.** A Elena acorda na barraca ao amanhecer, segurando uma tabuleta de barro com borda de ouro e escrita cuneiforme que ela não lembra de ter pego. A tabuleta está morna. Uma voz sussurra uma palavra em sumério, e ela entende. *(Tutorial de movimento.)*
 2. **Procurar a equipe.** Ela encontra os corpos em círculo. Nenhum tem marca de tiro; alguns têm queimaduras em formas geométricas, como escrita. O corpo do Tom Becker não está lá; só a bolsa da câmera, vazia. *(Tutorial de interação. Começa a secundária "O que o Tom viu".)*
 3. **Responder ao rádio.** O Dr. Kast chama pelo rádio do acampamento, educado e aliviado: uma equipe de resgate chega em vinte minutos, e ela deve ficar onde está.
 4. **Ver o "resgate".** O helicóptero pousa. Do alto da elevação, a Elena vê os soldados executarem um trabalhador ferido que tinha voltado para o acampamento. Eles começam a procurar por ela.
@@ -184,7 +184,7 @@ A arena do chefe fica num andaime em vários níveis, iluminado por holofotes qu
 
 ### A primeira tabuleta: Tabuleta do Junco
 
-- **Aparência:** pedra azul de lápis-lazúli do tamanho de uma mão, com escrita cuneiforme em ouro que acende quando a Elena toca. É um **ME**, uma das tabuletas vivas dos Anunnaki: o que a Elena tocou na noite em que a equipe morreu. É lida sem puzzle, porque Enki lê através dela.
+- **Aparência (decisão do dono, 3/nov/2026, segue o modelo do jogo):** barro (terracota) do tamanho de uma mão, com borda de ouro e escrita cuneiforme. Ao ser lida, acende em azul lápis-lazúli pelas rachaduras e pelas inscrições, rimando com o poder da Elena ("barro rachando"). É um **ME**, uma das tabuletas vivas dos Anunnaki: o que a Elena tocou na noite em que a equipe morreu. É lida sem puzzle, porque Enki lê através dela.
 - **Texto (versão dos deuses):** o mito em que Enki, proibido de avisar os humanos sobre o Dilúvio, fala com Ziusudra através de uma parede de junco e o manda construir um barco. A tabuleta conta Enki como o salvador da humanidade.
 - **A pista escondida:** a última linha diz algo como "o barco leva a semente, e a semente um dia me levará". Quem prestar atenção já pode desconfiar da virada de Enki, como pede a Bíblia.
 - **Memória jogável (2 a 3 minutos):** o jogador vive como Ziusudra em Shuruppak, ao pôr do sol, numa cidade suméria viva e colorida, e caminha até a cabana de junco onde ouve a voz de Enki. É a mesma voz que sussurrou para a Elena no passo 1. É o primeiro gostinho do mundo antigo cheio de cor.
@@ -303,10 +303,10 @@ Em 20 de outubro de 2026, os 14 sistemas do Grupo 1 estão prontos e testados na
 | Mirar / atirar | Botão direito / clique esquerdo | LT / RT |
 | Recarregar | R | X / Quadrado |
 | Eco do Abzu | Q | LB / L1 |
-| Sopro de Enlil (proposta, a confirmar no ME1) | E | RB / R1 |
-| Égide de Enki (proposta, a confirmar no ME1) | R | LB + RB |
+| Sopro de Enlil (proposta, a confirmar no ME1) | Z | LB + RB |
+| Égide de Enki (proposta, a confirmar no ME1) | X | LB + Y |
 
-**Atenção na proposta dos poderes:** hoje o E já é Interagir, o R é Recarregar e o RB é a faca. Resolver no projeto do ME1.
+**Proposta dos poderes (3/nov/2026):** no teclado, Q, F e G; como o F já é a faca, ficam Z e X para o Sopro e a Égide. No controle, o LB é um modificador, no estilo God of War: LB sozinho é o Eco, LB+RB o Sopro e LB+Y a Égide; o RB sozinho continua sendo a faca. Confirmar no projeto do ME1, com o mapa completo de controles (no `ESTADO.md`, "Sistema dos ME").
 | Inventário | Tab ou I | Select |
 | Pausa | Esc | Start |
 

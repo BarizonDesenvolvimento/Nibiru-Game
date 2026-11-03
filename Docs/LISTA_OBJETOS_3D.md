@@ -164,7 +164,7 @@ Tudo em formas simples (`ShuruppakMemoryContent.cs`). A memória dura 2 a 3 minu
 | --- | --- | --- | --- | --- | --- |
 | **Tabuleta do Junco** (`Pedra`, `Linha_Ouro_*`) | Mão da Elena; lida no nicho (passo 8) | 1, 8 | Sim (herói) | Tripo (dono), lote 1 | no jogo |
 | **Faca de campo** (`Faca_De_Campo`, `Caixa_Faca`) | Caixa na barraca da Elena | 1 | Sim | Tripo (dono), lote 1 (a caixa: Blender por script) | no jogo |
-| **Bolsa vazia da câmera do Tom** (`Bolsa_Camera_Tom`) | Frente da barraca do Tom | 2 | Sim (inicia "O que o Tom viu") | Blender por script ou Tripo (dono) | a avaliar |
+| **Bolsa vazia da câmera do Tom** (`Bolsa_Camera_Tom`) | Frente da barraca do Tom | 2 | Sim (inicia "O que o Tom viu") | Blender por script | pendente |
 | **Corpos da equipe** | Pátio do acampamento | 2 | Sim | Meshy (dono) | gerado |
 | **Rádio do acampamento** (`Caixa_Radio`, `Aparelho_Radio`) | Mesa sob toldo | 3 | Sim (herói, luz vermelha) | Tripo (dono) | no jogo |
 | **Rolo de filme 1** (`Rolo_De_Filme_1`) | Atrás do caminhão | 2 | Sim | Meshy (dono) | no jogo |
@@ -198,7 +198,7 @@ Tudo em formas simples (`ShuruppakMemoryContent.cs`). A memória dura 2 a 3 minu
 | **Foto de Irena como item de inventário** | Tenda de comando | 10 | Opcional (hoje só tela de leitura) | Claude Code: plano com textura | pendente |
 | **Fotos do Tom** (item-chave, recompensa) | Fotógrafo da Aldeia, quarto escuro | 7, secundária | Sim, se "O que o Tom viu" entrar na demo | Claude Code: planos com textura | pendente |
 | **Fotógrafo / quarto escuro improvisado** | Aldeia | secundária | Opcional | Blender por script (quarto); Abu Faris: Meshy (dono) | pendente |
-| **Kit médico** (3 na região) | Espalhados | 5 a 12 | Opcional | Blender por script ou Tripo (dono) | a avaliar |
+| **Kit médico** (3 na região) | Espalhados | 5 a 12 | Opcional | Blender por script (cruz branca em fundo verde; nada de cruz vermelha) | pendente |
 | **Espingarda de cano duplo** e **cartuchos** (6) | Casa trancada da Aldeia | 7 | Opcional | Tripo (dono), lote 1 (cartuchos: Blender por script) | gerado (a espingarda, só prefab; entra no B6) |
 | **Pólvora, cápsulas, gaze, álcool** (crafting) | Região | — | Não (crafting fora da fatia) | — | — |
 | **Rádio do soldado ferido no wadi** | Wadi | 14 | Sim (dispara a escolha de facção) | Tripo (dono) (o mesmo modelo do rádio) | no jogo |
