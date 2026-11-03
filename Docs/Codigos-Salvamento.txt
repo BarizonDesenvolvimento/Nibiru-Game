@@ -199,7 +199,6 @@ cena aldeia.checkpoint_patio
 cena trincheiras.checkpoint_pistola
 cena trincheiras.checkpoint_entrada
 cena poco.checkpoint_depois_do_servo
-cena poco.municao_plataforma_oeste
 cena trincheiras.radio_de_campanha
 cena acampamento.faca_de_campo
 cena trincheiras.curativo_2
@@ -207,3 +206,10 @@ cena poco.lullu_sentinela
 cena poco.checkpoint_pe_da_descida
 cena poco.checkpoint_luta
 cena trincheiras.pistola_makarov
+cena suprimentos.kit_passagem
+cena suprimentos.kit_antecamara
+cena suprimentos.municao_base_conteiner
+cena suprimentos.kit_tenda_medica
+cena suprimentos.municao_poco_descida
+cena suprimentos.municao_passagem
+cena suprimentos.municao_aldeia_mesquita

@@ -1,6 +1,6 @@
 # Investigação: a Elena volta fora do ponto de retorno do pé da descida (Poço)
 
-Aberta em 3/nov/2026, na tarefa B2a/B2b (branch `b2-suprimentos-wip`). **Causa não encontrada.** Este arquivo reúne tudo o que foi medido, para continuar numa conversa só disso.
+Aberta em 3/nov/2026, na tarefa B2a/B2b (branch `b2-suprimentos-wip`). **Resolvida em 3/nov/2026** (veja "Causa e correção" no fim). O resto do arquivo é o registro do que foi medido antes da causa.
 
 ## O defeito
 
@@ -117,3 +117,13 @@ Então a sonda não reproduz o fluxo do teste. O teste faz outra coisa antes de 
 2. Colocar um log temporário na posição da Elena em `PlayerRespawn.Awake`, em `Start` e no primeiro `Update` do `PlayerMotor`, com e sem `Municao_Poco_Descida`.
 3. Rodar o teste do salvamento só até o checkpoint `poco.checkpoint_pe_da_descida` (hoje só roda inteiro) para ganhar tempo.
 4. Depois da correção: rodar de novo o salvamento, os passos 11, 12 e 13, o teste geral dos atalhos e a contagem (**Nibiru > Testes > Suprimentos**), atualizar o ESTADO e fazer o merge.
+
+## Causa e correção (3/nov/2026)
+
+**Causa.** Os pontos de retorno marcam o chão (onde o pé pisa), mas o `Jogador` fica no meio do corpo (cápsula de 2 m com o centro nele). O `PlayerRespawn.Awake` punha o centro no ponto: a cápsula nascia **1 m enterrada**, e o `CharacterController` a desenterrava no primeiro movimento. No chão plano só um colisor empurra, para cima, e ela sobe certa (o teste aceitava 1,5 m de diferença na altura, por isso nunca se viu). No pé da descida a cápsula atravessa o patamar fino e fica dentro de 4 colisores que empurram para lados diferentes (`Patamar_3` oeste 0,90 m, `Patamar_3_Base` cima 0,70, `Lance_3` sul 0,40, `Lance_4` leste 0,29). Quem ganha depende da **ordem dos colisores dentro da física**, que muda com tudo o que existe na cena.
+
+**A contradição.** A sonda e o teste partem de mundos diferentes (a sonda grava o mundo do começo do Acampamento; o teste, o do `Prepare` e do atalho), e um item a mais é só mais um colisor: tudo isso muda a ordem, e com ela o lado da saída. Prova no Play: o mesmo teletransporte no mesmo ponto deu 0,07 m ou 1,30 m (exatamente a posição da falha) só por desligar e religar um colisor do cenário; com o pé no ponto, 0,00 m sempre.
+
+**Por que o teletransporte no Play dava zero.** O `Time.timeScale` estava em 0 (a conversa do sussurro do começo pausa o tempo): o `PlayerMotor` move 0 m por quadro e nada era medido. Sonda de posição só vale com o tempo correndo.
+
+**Correção.** A posição salva passa a ser **onde o pé pisa**. O `Awake` põe o centro meia cápsula mais a folga de contato acima do ponto (1,05 m) e chama `Physics.SyncTransforms` (o `autoSyncTransforms` está desligado). `SaveCheckpointHere` grava o pé de onde a Elena está ("gravar aqui" e os testes). O teste do salvamento confere, em cada ponto de retorno, a cápsula livre onde ela nasce e o pé no chão do ponto; a nova checagem achou o `Kit_Antecamara` em cima do ponto da luta (0,28 m), que foi movido. Detalhes no `Docs/ESTADO.md`, seção "Munição, curativos e kits (etapa B2a/B2b)".
