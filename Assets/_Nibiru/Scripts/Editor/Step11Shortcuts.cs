@@ -35,7 +35,8 @@ namespace Nibiru.EditorTools
         static readonly Vector3 CorridorSpot = new Vector3(52f, 0f, 40f);
         static readonly Vector3 MouthSpot = new Vector3(45f, 0f, 64f);
         static readonly Vector3 ScaffoldSpot = new Vector3(41f, -3.5f, 79f);
-        static readonly Vector3 FootCheckpointSpot = new Vector3(49f, -10.5f, 71f);
+        // O ponto do checkpoint do pé da descida (em (49; 71) a Elena encostava no Poco_Canto_SE e era empurrada).
+        static readonly Vector3 FootCheckpointSpot = new Vector3(48.4f, -10.5f, 71.4f);
         static readonly Vector3 AfterLulluSpot = new Vector3(45f, -14f, 88f);
         // A área do flash começa em z = 89,9 e a Elena tem 0,5 m de raio: daqui ela fica 60 cm antes dela.
         internal static readonly Vector3 NearFlashSpot = new Vector3(45f, -14f, 88.8f);

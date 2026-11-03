@@ -58,7 +58,7 @@ namespace Nibiru.EditorTools.Content
             new Spot("Municao_Base_Conteiner", new Vector3(-1.5f, 0f, 19.4f), 4, false, -25f, "Canto opcional, atrás do contêiner norte da base"),
 
             // Kits médicos.
-            new Spot("Kit_Antecamara", new Vector3(46.6f, -14f, 82.6f), 1, true, 10f, "Antecâmara, a leste da plataforma oeste, antes do flash e da luta (fora do grupo da luta), a 1,6 m do ponto de retorno da luta"),
+            new Spot("Kit_Antecamara", new Vector3(38.7f, -14f, 82.9f), 1, true, 10f, "Antecâmara, no nicho do canto sudoeste (entre os blocos de canto e a frente da plataforma oeste), fora do caminho mas à vista de quem entra, antes do flash e da luta (fora do grupo da luta)"),
             new Spot("Kit_Tenda_Medica", new Vector3(-12.6f, 0f, 18.8f), 1, true, 40f, "Opcional: canto dos fundos da tenda médica da base"),
             new Spot("Kit_Passagem", new Vector3(32.5f, -3f, 132f), 1, true, -10f, "Perto do fim da passagem dos Guardiões, antes da seção final (wadi)"),
         };
