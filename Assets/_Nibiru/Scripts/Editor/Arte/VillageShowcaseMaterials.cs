@@ -35,6 +35,15 @@ namespace Nibiru.EditorTools
         public const string PalmTrunk = "M_Palmeira_Tronco_Discreta";
         public const string PalmCrown = "M_Palmeira_Copa_Discreta";
 
+        // Objetos do Tripo (etapa 5): a cor vem da textura do próprio objeto, reduzida pelo script do Blender
+        // (`ArteFonte/Ambientes/SitioDeUr/Aldeia/Blender/objetos_vitrine.py`), que deixa o FBX ao lado dela.
+        public const string ObjectFolder = Root + "Objetos/";
+        public const string Altar = "M_Altar_M1";
+        public const string Well = "M_Poco_M9";
+        public const string Lamp = "M_Lamparina";
+        public const string WellBrick = "M_Tijolo_Poco";
+        public const string WellWater = "M_Agua_Poco";
+
         // id do Poly Haven, resolução baixada, metros cobertos por uma repetição da textura.
         static readonly (string id, string res, float meters)[] Scanned =
         {
@@ -114,11 +123,36 @@ namespace Nibiru.EditorTools
             var flame = Material(Flame, "Universal Render Pipeline/Unlit");
             flame.SetColor("_BaseColor", new Color(4.0f, 2.1f, 0.7f));
 
+            BuildObjects();
             AssetDatabase.SaveAssets();
             Debug.Log("Vitrine da Aldeia: materiais criados em " + MaterialFolder);
         }
 
         // ---------- materiais ----------
+
+        /// <summary>Materiais do altar, do poço e da lamparina. O menu 2 chama sozinho se ainda não existirem.</summary>
+        public static void BuildObjects()
+        {
+            foreach (var (name, texture, size, smoothness) in new[]
+                     {
+                         (Altar, "Altar_M1_cor.jpg", 2048, 0.15f),
+                         (Well, "Poco_M9_cor.jpg", 2048, 0.15f),
+                         (Lamp, "Lamparina_cor.jpg", 1024, 0.25f),
+                     })
+            {
+                string path = ObjectFolder + texture;
+                if (Tex(path) == null)
+                {
+                    Debug.LogError($"Vitrine da Aldeia: falta {path} (rode o script objetos_vitrine.py no Blender).");
+                    continue;
+                }
+                ConfigureColor(path, size);
+                Lit(name, Color.white, 0f, smoothness).SetTexture("_BaseMap", Tex(path));
+            }
+            // Tijolo inteiro (sem o recorte do descascado) atrás do reboco do poço, e água escura no fundo.
+            Scan(WellBrick, "slumped_mortar_brick", "1k", 1f, Calibrated("slumped_mortar_brick", "1k", new Color(0.60f, 0.46f, 0.33f)));
+            Lit(WellWater, new Color(0.03f, 0.035f, 0.035f), 0f, 0.9f);
+        }
 
         static Material Scan(string name, string id, string res, float meters, Color tint, float smoothness = 0.6f)
         {

@@ -43,6 +43,8 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 | `blue_metal_plate` (chapa de metal, 1K; base do metal turquesa) | `.../Texturas/blue_metal_plate` | Poly Haven, polyhaven.com/a/blue_metal_plate (Rob Tuytel) | CC0 | Confirmado |
 | Tapete kilim, esteira de junco (cor e normal) | `.../Texturas/Proprias` | Gerados por script do projeto | Próprios | Confirmado |
 | Metal pintado (cinza) e mancha de reboco descascado | `.../Texturas/Proprias` | Gerados por script a partir de `blue_metal_plate` e `slumped_mortar_brick` (CC0) | Próprios (derivados de CC0) | Confirmado |
+| M1 (altar dos Guardiões), M9 (poço da Aldeia) e lamparina de barro: malha e textura de cor | Brutos em `ArteFonte/Ambientes/Altar/1_Meshy`, `ArteFonte/Ambientes/PoçoM9/1_Meshy` e `ArteFonte/Objetos/LamparinaDeBarro/1_Meshy` (fora do Git); cópias tratadas (buracos fechados, escala do jogo, cor em 2048 ou 1024 px) em `Art/Ambientes/SitioDeUr/Aldeia/Objetos`, pelo script `ArteFonte/Ambientes/SitioDeUr/Aldeia/Blender/objetos_vitrine.py` | Gerados no **Tripo** (tripo3d.ai, malha "Smart") pela conta do dono, em 3/nov/2026; o plano **Pro** foi o decidido em 1º/nov/2026 | Resumo dos termos do Tripo: nos planos pagos o modelo é privado e de uso comercial; no gratuito, público e sob CC BY 4.0 (pede atribuição). Conferir os termos atuais antes da página da Steam | A confirmar (plano usado nestes três) |
+| Faixa de tijolo do poço (atrás do reboco descascado) e água escura do fundo | Peças `Poco_M9_Base` e `Poco_M9_Agua` dentro de `Objetos/Poco_M9.fbx` | Feitas pelo mesmo script; o tijolo usa `slumped_mortar_brick` (CC0) | Próprios | Confirmado |
 
 ## Som, fonte e interface
 
@@ -70,13 +72,13 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 
 ## Declaração de uso de IA (para a página da Steam)
 
-Conteúdo gerado por IA que entra no jogo: os **modelos 3D e texturas dos personagens feitos no Meshy** (lista em "Personagens"), incluindo a Elena nova, e os objetos do Meshy registrados neste arquivo. A declaração da Steam precisa citar isso. O esqueleto vem do AccuRig (rig automático), e as animações, do Mixamo.
+Conteúdo gerado por IA que entra no jogo: os **modelos 3D e texturas dos personagens feitos no Meshy** (lista em "Personagens"), incluindo a Elena nova, e os objetos do Meshy e do **Tripo** registrados neste arquivo (por enquanto o altar, o poço e a lamparina da Aldeia). A declaração da Steam precisa citar isso. O esqueleto vem do AccuRig (rig automático), e as animações, do Mixamo.
 
 **Pendência antes da página "Em breve" da Steam:** avaliar a semelhança da Elena nova com a Lara Croft (rabo de cavalo, regata, coldre na coxa, pelo modelo e pelas referências) e, se for preciso, ajustar o visual. O dono decide.
 
 ## Ferramentas (não entram no jogo)
 
-Blender (GPL; não se aplica aos arquivos criados com ele), AccuRig, Meshy, ChatGPT (imagens de referência da Elena nova), Unity CLI e a ponte MCP.
+Blender (GPL; não se aplica aos arquivos criados com ele), AccuRig, Meshy, Tripo, ChatGPT (imagens de referência da Elena nova), Unity CLI e a ponte MCP.
 
 ## Como registrar um asset novo
 

@@ -24,14 +24,31 @@ namespace Nibiru.EditorTools
 
         static readonly string[] Models = { "Kit_CasaAltar", "Kit_Casa6", "Kit_CasasFundo", "Kit_ChaoAldeia" };
 
+        // Objetos do Tripo (`Objetos/`), com o pivô no centro do pé, no lugar das caixas do blockout (medidas iguais
+        // às delas). A lamparina não está aqui: ela vai para baixo da chama do nicho (veja PlaceLamp).
+        static readonly (string model, Vector3 position, float yaw)[] Objects =
+        {
+            ("Altar_M1", new Vector3(-47f, 0f, -31f), 0f),
+            ("Poco_M9", new Vector3(-55f, 0f, -22f), 0f),
+        };
+
+        // Altura do pavio da lamparina do Tripo (impressa pelo script do Blender) e a da chama do blockout
+        // (VillageContent.NicheMark), que fica 3 cm acima dele: a vitrine desce a chama até o pavio.
+        const float WickHeight = 0.036f;
+        const float BlockoutFlameHeight = 0.09f;
+        const float FlameHalfHeight = 0.025f;
+
         // Caixas do blockout cujo desenho a arte substitui (o colisor fica). Casa_1 a 5 são as do fundo dos
-        // enquadramentos; Casa_6 é a vizinha a leste da casa do altar.
+        // enquadramentos; Casa_6 é a vizinha a leste da casa do altar; Nicho_Guardioes é o altar e Poco_Agua, o poço.
         static readonly string[] Replaced =
         {
             "CasaAltar_Fundo", "CasaAltar_Oeste", "CasaAltar_Leste", "CasaAltar_Teto",
             "Casa_1", "Porta_1", "Casa_2", "Porta_2", "Casa_3", "Porta_3", "Casa_4", "Porta_4",
-            "Casa_5", "Porta_5", "Casa_6", "Porta_6",
+            "Casa_5", "Porta_5", "Casa_6", "Porta_6", "Nicho_Guardioes", "Poco_Agua",
         };
+
+        // Peças da lamparina do blockout em cima do nicho (Marca_Guardioes/Lamparina); a chama fica.
+        static readonly string[] LampPieces = { "Pires", "Bico" };
 
         // Peças que só trocam de material: a esteira do Yusuf e as palmeiras do pátio, que seguem em blockout,
         // mas com cores discretas (palmeira de verdade pede um pacote).
@@ -51,6 +68,8 @@ namespace Nibiru.EditorTools
         {
             { "Reboco", M.Plaster }, { "RebocoClaro", M.PlasterLight }, { "Madeira", M.Wood }, { "Metal", M.Metal },
             { "Esteira", M.Mat }, { "Piso", M.Floor }, { "Tijolo", M.Brick }, { "Chao", M.Ground },
+            { "Altar", M.Altar }, { "Poco", M.Well }, { "Lamparina", M.Lamp }, { "TijoloPoco", M.WellBrick },
+            { "Agua", M.WellWater },
         };
 
         [MenuItem("Nibiru/Arte/Vitrine da Aldeia/2. Montar vitrine na cena aberta")]
@@ -63,6 +82,8 @@ namespace Nibiru.EditorTools
             }
             if (M.Get(M.Plaster) == null)
                 M.Build();
+            else if (M.Get(M.Altar) == null)
+                M.BuildObjects();
 
             var old = GameObject.Find(RootName);
             if (old != null)
@@ -71,6 +92,11 @@ namespace Nibiru.EditorTools
 
             foreach (var model in Models)
                 Place(model, root.transform);
+            var objects = new GameObject("Objetos").transform;
+            objects.SetParent(root.transform, false);
+            foreach (var (model, position, yaw) in Objects)
+                Place(model, objects, M.ObjectFolder, false)?.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
+            PlaceLamp(objects);
 
             int hidden = SetBlockoutVisible(false);
             foreach (var (name, material) in Reskinned)
@@ -84,7 +110,7 @@ namespace Nibiru.EditorTools
             VillageShowcaseLighting.Build(root.transform);
 
             EditorSceneManager.MarkSceneDirty(root.scene);
-            Debug.Log($"Vitrine da Aldeia: montada ({Models.Length} modelos, {hidden} caixas do blockout escondidas). Salve a cena.");
+            Debug.Log($"Vitrine da Aldeia: montada ({Models.Length} modelos, {Objects.Length + 1} objetos, {hidden} caixas do blockout escondidas). Salve a cena.");
         }
 
         [MenuItem("Nibiru/Arte/Vitrine da Aldeia/Desfazer (volta o blockout)")]
@@ -94,19 +120,42 @@ namespace Nibiru.EditorTools
             if (old != null)
                 Object.DestroyImmediate(old);
             SetBlockoutVisible(true);
+            var flame = FindLampGroup()?.Find("Chama");
+            if (flame != null)
+                flame.localPosition = new Vector3(flame.localPosition.x, BlockoutFlameHeight, flame.localPosition.z);
             Debug.Log("Vitrine da Aldeia: desfeita. Para a esteira do Yusuf e as palmeiras voltarem ao material do blockout, rode o Blockout e o menu da Aldeia.");
             EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         }
 
-        static void Place(string model, Transform root)
+        // A lamparina vai em cima do nicho, com o pavio embaixo da chama do blockout; a chama desce até o pavio.
+        static void PlaceLamp(Transform parent)
         {
-            string path = ModelFolder + model + ".fbx";
-            ConfigureModel(path);
+            var group = FindLampGroup();
+            var flame = group != null ? group.Find("Chama") : null;
+            if (flame == null)
+            {
+                Debug.LogWarning("Vitrine da Aldeia: não achei Marca_Guardioes/Lamparina/Chama (rode o menu da Aldeia antes).");
+                return;
+            }
+            var lamp = Place("Lamparina", parent, M.ObjectFolder, false);
+            if (lamp == null)
+                return;
+            var wick = flame.position;
+            lamp.transform.SetPositionAndRotation(new Vector3(wick.x, group.position.y, wick.z), group.rotation);
+            flame.localPosition = new Vector3(flame.localPosition.x, WickHeight + FlameHalfHeight, flame.localPosition.z);
+        }
+
+        static Transform FindLampGroup() => Find("Marca_Guardioes")?.transform.Find("Lamparina");
+
+        static GameObject Place(string model, Transform root, string folder = ModelFolder, bool calculateNormals = true)
+        {
+            string path = folder + model + ".fbx";
+            ConfigureModel(path, calculateNormals);
             var asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (asset == null)
             {
-                Debug.LogError($"Vitrine da Aldeia: falta {path} (rode o kit do Blender).");
-                return;
+                Debug.LogError($"Vitrine da Aldeia: falta {path} (rode o kit do Blender ou o objetos_vitrine.py).");
+                return null;
             }
             var go = (GameObject)PrefabUtility.InstantiatePrefab(asset, root);
             PrefabUtility.UnpackPrefabInstance(go, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
@@ -125,20 +174,23 @@ namespace Nibiru.EditorTools
                 r.shadowCastingMode = suffix == "Tijolo" ? ShadowCastingMode.Off : ShadowCastingMode.On;
                 GameObjectUtility.SetStaticEditorFlags(r.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.ReflectionProbeStatic);
             }
+            return go;
         }
 
-        static void ConfigureModel(string path)
+        // As peças do kit recalculam as normais (40 graus); os objetos do Tripo trazem as suas, mais finas.
+        static void ConfigureModel(string path, bool calculateNormals)
         {
             var mi = AssetImporter.GetAtPath(path) as ModelImporter;
             if (mi == null)
                 return;
+            var normals = calculateNormals ? ModelImporterNormals.Calculate : ModelImporterNormals.Import;
             bool changed = mi.materialImportMode != ModelImporterMaterialImportMode.None || !mi.bakeAxisConversion
-                || mi.importNormals != ModelImporterNormals.Calculate || mi.importAnimation || mi.importCameras || mi.importLights;
+                || mi.importNormals != normals || mi.importAnimation || mi.importCameras || mi.importLights;
             if (!changed)
                 return;
             mi.materialImportMode = ModelImporterMaterialImportMode.None;
             mi.bakeAxisConversion = true;
-            mi.importNormals = ModelImporterNormals.Calculate;
+            mi.importNormals = normals;
             mi.normalSmoothingAngle = 40f;
             mi.importAnimation = false;
             mi.importCameras = false;
@@ -156,6 +208,18 @@ namespace Nibiru.EditorTools
                 if (r == null)
                 {
                     Debug.LogWarning($"Vitrine da Aldeia: não achei a caixa \"{name}\" do blockout.");
+                    continue;
+                }
+                r.enabled = visible;
+                count++;
+            }
+            var lamp = FindLampGroup();
+            foreach (var name in LampPieces)
+            {
+                var r = lamp?.Find(name)?.GetComponent<Renderer>();
+                if (r == null)
+                {
+                    Debug.LogWarning($"Vitrine da Aldeia: não achei a peça \"{name}\" da lamparina do blockout.");
                     continue;
                 }
                 r.enabled = visible;
