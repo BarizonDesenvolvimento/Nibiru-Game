@@ -956,8 +956,6 @@ Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 
 
 **Cronograma:** substituído pelo "Plano oficial (fases)" no topo deste arquivo, sem datas.
 
-**Calibração:** 1 "dia de trabalho com o Claude" ≈ 3 a 4 h do dono; 25 h por semana ≈ 6 a 8 dias.
-
 **Etapa B, tarefas em ordem:**
 
 | # | Tarefa |
