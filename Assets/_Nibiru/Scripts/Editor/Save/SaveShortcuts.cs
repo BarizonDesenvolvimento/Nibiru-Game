@@ -49,7 +49,7 @@ namespace Nibiru.EditorTools.Saving
             }
             if (!SlotGuard.Allow($"gravar aqui no slot {slot}", slot)) return false;
             SaveSlots.Attach(slot);
-            respawn.SaveCheckpoint(respawn.transform);
+            respawn.SaveCheckpointHere();
             Debug.Log($"Salvamento: gravado no slot {slot}, com a Elena em {respawn.transform.position}.\n{Describe(slot)}");
             return true;
         }

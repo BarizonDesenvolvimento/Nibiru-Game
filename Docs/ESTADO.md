@@ -2,7 +2,7 @@
 
 Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem precisar reler o histórico. Atualize este arquivo ao fim de cada etapa grande.
 
-Última atualização: 1º de novembro de 2026.
+Última atualização: 3 de novembro de 2026.
 
 ## Plano oficial (fases)
 
@@ -22,7 +22,8 @@ Este quadro vale acima de qualquer outra data ou nome de etapa neste arquivo.
 | --- | --- |
 | A1 a A4c (segundo líder e helicóptero, inscrição do Poço e 2º Lullu, Arquivo, salvamento, telas de slots, mouse e proteção dos slots) | A (feitas) |
 | B1 (pendências de checkpoint) | A (feita) |
-| B2a/B2b (munição, curativos e kits), B3 (Primeiro Servo), B4 (rádio de campanha), B6 (espingarda), B7 (textos da abertura e do fundo do menu) | A (conteúdo que falta para fechar o blockout) |
+| B2a/B2b (munição, curativos e kits; com a correção do ponto de retorno) | A (feita em 3/nov) |
+| B3 (Primeiro Servo), B4 (rádio de campanha), B6 (espingarda), B7 (textos da abertura e do fundo do menu) | A (conteúdo que falta para fechar o blockout) |
 | B5 (equilíbrio: helicóptero, 2º líder, sentinela, avenida, passada cronometrada) e as "pendências de equilíbrio (etapa B)" | B |
 | B1v (vitrine da Aldeia: Partes 0 a 4, M1, M9, M6, teste de 0,15 m e capturas) | C (arte adiantada; **não bloqueia a fase A**) |
 | "Fonte definitiva" (antiga etapa C) | C |
@@ -58,6 +59,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **salvamento em disco com 3 slots** (etapa A4a: gravar e carregar o último checkpoint, códigos permanentes, "Continuar" mínimo no menu principal) está pronto, testado pela ponte e **testado no Play pelo dono e aprovado em 26/out/2026** (as 10 situações de teste). A tela de slots fica para o A4b. Veja "Salvamento em disco, 3 slots (etapa A4a)".
 - A **tela de slots do menu principal** (etapa A4b: Novo jogo e Carregar com 3 slots, estados vazio, ocupado, "demo concluída" e ilegível, apagar e sobrescrever com confirmação, "Continuar" pelo slot jogável mais recente e "Sair para o menu" na pausa) está pronta, testada pela ponte e **testada no Play pelo dono e aprovada em 26/out/2026. Etapa A (salvamento, arquivo, menus, mouse e proteção dos slots) concluída**. Veja "Tela de slots e menu principal (etapa A4b)".
 - O **mouse nos menus, o cursor e a proteção dos slots reais** (etapa A4c: passar o mouse move o foco, clique esquerdo ativa, direito volta, roda rola o Arquivo, botão `[Apagar]` em cada slot, confirmação e Opções clicáveis, cursor livre só nos menus; atalhos e situações de teste pedem confirmação antes de sobrescrever slot real e a execução automática nunca toca neles) está pronto e testado pela ponte (mouse 10 OK, salvamento 17 OK, teste geral 91 OK, hit-test nas 3 resoluções) e **aprovado pelo dono no Play em 26/out/2026**. Veja "Mouse nos menus e proteção dos slots reais (etapa A4c)".
+- A **munição, os curativos e os kits médicos** (etapas B2a e B2b: 30 balas na região, nenhuma fixa na arena do Primeiro Servo, 6 garantidas antes da antecâmara, 3 kits) estão no mapa e testados pela ponte, junto com a **correção do ponto de retorno** (a Elena volta com o pé no ponto, não 1 m enterrada). Veja "Munição, curativos e kits (etapa B2a/B2b)".
 - A **Ninsar** tem uma prévia animada na Unity (corpo, saia e lança, sem manto), na cena `Teste_Ninsar`. O manto dela está pausado. Veja "Ninsar" em Personagens 3D.
 - A **Elena definitiva** (Meshy + AccuRig, com dedos, 1,70 m) substituiu a provisória no prefab `Prefabs/Player/Elena`, com animações do Mixamo: parada, andar, correr, agachar, rolar, mirar, tiro (coice), recarregar, faca, dano e morte. Testada pelo dono. **Em 1º/nov/2026, o modelo foi trocado pela Elena nova** (`Art/Personagens/ElenaNova`), **testada e aprovada pelo dono no Play**; a cópia antiga saiu de `Assets`. Veja "Elena" em Personagens 3D.
 - O **Samir definitivo** (Meshy + AccuRig, com dedos, 1,75 m) substituiu a cápsula em todos os lugares onde ele aparece (Aldeia, passos 6 a 9, e laboratório), com animações do Mixamo: parado, andar, correr, agachado, golpe de faca e 4 gestos de conversa. Testado e aprovado pelo dono. Veja "Samir" em Personagens 3D.
@@ -909,7 +911,7 @@ Pendências vistas na prévia (ainda não corrigidas):
 
 Menu **Nibiru > Testes > Teste geral dos atalhos (Elena na malha)** (`Scripts/Editor/ShortcutsCheck.cs`, uns 6 minutos). Roda **todos** os atalhos registrados em `TestShortcuts` (os novos entram sozinhos, sem mexer no teste), espera 2 s o mundo se arrumar (fechando conversas e telas de leitura) e observa 1,5 s: a Elena tem de estar com o pé a menos de 0,8 m da malha de navegação, apoiada no chão (`isGrounded`), viva, sem perder mais de 1 m de altura e acima de y = -30. Os atalhos da região rodam numa partida; os do laboratório (`elena.`, `soldados.` e `samir.laboratorio`), numa segunda, e no fim a região é reaberta. Resumo no Console: OK, FALHOU ou PULADO em cada atalho. Pulados, com o motivo: testes automáticos (`.teste`), vitrines e animações (chão sem malha), a viagem na caçamba (`passo15.meio_*`, `passo15.chegada`, `remedio.viagem_*`: trilho sem malha) e a memória de Shuruppak (`passo8.memoria`, `passo8.cabana`). Para pular outro, mude `SkipReason` no script.
 
-Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 e 9 do passo 11). Depois do Arquivo (A3): **84 OK, 0 FALHOU, 27 pulados**; depois da parte 2 (atalhos 8 e 9): **86 OK, 0 FALHOU, 27 pulados**. Depois do A4c (mouse e proteção dos slots): **91 OK, 0 FALHOU, 45 pulados**. Depois do salvamento (A4a): **87 OK, 0 FALHOU, 31 pulados** (o item a mais é o teste de códigos do salvamento, que agora roda no começo; os 4 pulados novos são o teste automático e os 3 "carregar o slot", que mexem nos arquivos de salvamento). Na primeira rodada achou um defeito real: o atalho `soldados.trincheiras` punha a Elena em (0, 0, -75), dentro do talude `Talude_H1_B`, e ela caía 119 m; agora nasce em (0, 0, -77,5).
+Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 e 9 do passo 11). Depois do Arquivo (A3): **84 OK, 0 FALHOU, 27 pulados**; depois da parte 2 (atalhos 8 e 9): **86 OK, 0 FALHOU, 27 pulados**. Depois do A4c (mouse e proteção dos slots): **91 OK, 0 FALHOU, 45 pulados**. Depois da B2a/B2b e da correção do ponto de retorno (3/nov): **95 OK, 0 FALHOU, 47 pulados**. Depois do salvamento (A4a): **87 OK, 0 FALHOU, 31 pulados** (o item a mais é o teste de códigos do salvamento, que agora roda no começo; os 4 pulados novos são o teste automático e os 3 "carregar o slot", que mexem nos arquivos de salvamento). Na primeira rodada achou um defeito real: o atalho `soldados.trincheiras` punha a Elena em (0, 0, -75), dentro do talude `Talude_H1_B`, e ela caía 119 m; agora nasce em (0, 0, -77,5).
 
 ## Como testar sozinho pela ponte MCP
 
@@ -947,7 +949,9 @@ Resultado de 26/out/2026: **78 OK, 0 FALHOU, 26 pulados** (já com os atalhos 8 
 | B6 | Espingarda (a primeira da ordem de corte) |
 | B7 | Textos da abertura e do fundo do menu (depende de decidir quem subiu a escada às 03h10) |
 
-**Regra de versão do salvamento (nova):** dados novos que **só acrescentam** entram como **campos opcionais na mesma versão**, com valor inicial quando faltam. **Versão igual** carrega; **versão mais antiga migra e carrega**; **versão mais nova ou desconhecida é ilegível**. Isso **substitui a regra "outra versão = ilegível"** descrita no A4a e no A4b (seções "Salvamento em disco, 3 slots" e "Tela de slots e menu principal"). **Só está registrada: o código continua com a regra antiga** (hoje qualquer versão diferente de 1 é ilegível); a implementação entra na **B2**.
+**Regra de versão do salvamento (nova):** dados novos que **só acrescentam** entram como **campos opcionais na mesma versão**, com valor inicial quando faltam. **Versão igual** carrega; **versão mais antiga migra e carrega**; **versão mais nova ou desconhecida é ilegível**. Isso **substitui a regra "outra versão = ilegível"** descrita no A4a e no A4b (seções "Salvamento em disco, 3 slots" e "Tela de slots e menu principal"). **Só está registrada: o código continua com a regra antiga** (hoje qualquer versão diferente de 1 é ilegível). A implementação **não foi feita na B2a/B2b** e fica para o **início da fase B**, junto com a convenção abaixo.
+
+**Convenção da posição salva (3/nov/2026):** a posição do checkpoint guardada no slot (`posicao`) é **onde o pé da Elena pisa** (o chão do ponto de retorno), não o centro do corpo. Quem carrega sobe meia cápsula mais a folga de contato (1,05 m). Essa convenção **precisa entrar na regra de versão do salvamento no início da fase B**. Slots antigos gravados com "gravar aqui" (que guardavam o centro do corpo) carregam uns 1,05 m acima e caem até o chão: medido, ela pousa em menos de 0,1 s, parada, sem dano. Não há migração (ainda não há saves de jogadores).
 
 ## Decisões de 25/out/2026 (depois da auditoria)
 
@@ -988,7 +992,7 @@ Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fo
 ## Pendências para o teste completo da fatia
 
 - **Remédio para Yusuf:** a recompensa (antibióticos, gastar um dos 2 curativos do mapa na Weiss) não mexe no combate, mas conferir no teste completo se os curativos fazem falta para quem os troca.
-- **Equilíbrio da luta do Primeiro Servo:** com pouca munição a luta fica impossível e na faca é difícil demais. Decidir entre munição na arena, faca mais forte contra o Servo atordoado ou munição mínima garantida antes da antecâmara.
+- **Equilíbrio da luta do Primeiro Servo:** com pouca munição a luta fica impossível e na faca é difícil demais. **Decidido na B2a (3/nov/2026):** nenhuma munição fixa na arena e **6 balas garantidas antes da antecâmara** (patamar do meio da descida do Poço). Falta conferir no teste completo se isso basta.
 
 ## Pendências da etapa B (polimento)
 
@@ -1029,6 +1033,26 @@ Na volta, o listener de `ChegouAAldeia` chama `PlaceAtPointAhead.PlaceSaved` ant
 1. **Fita:** Passo 13 > 8 (rampa, fita na 3ª linha). Veja que ela continua da 3ª linha. Morra (ou Esc e carregue o slot) no meio de uma fala: ela volta no começo dessa fala, não da primeira. Deixe a fita terminar, morra de novo: ela não toca outra vez.
 2. **Soldado:** Passo 8 > 6 (entrada sul) e 7 (entrada norte): o soldado caído e a cena do encontro estão lá, e não na entrada leste. Para o caminho real: entre na Aldeia por um lado que não seja o leste, vá até o pátio (ponto de retorno), morra e volte.
 3. **Poço:** Passo 11 > 4 (ponto de retorno do pé da descida). A Elena nasce no patamar sem ser empurrada; morra de novo e confira.
+
+## Munição, curativos e kits (etapa B2a/B2b, concluída em 3/nov/2026, testada pela ponte)
+
+**O que está na cena** (grupo `Conteudo_Suprimentos`, menu **Nibiru > Conteúdo > Posicionar munição e kits na cena aberta**, script `Scripts/Editor/Content/SuppliesContent.cs`; rode depois dos menus da Base, do Poço e da Aldeia):
+- **Munição: 30 balas na região** (18 no mapa, em 4 lotes, mais as 12 que o chefe de segurança e o líder das Trincheiras já dão). Lotes: **6 garantidas** no patamar do meio da descida do Poço (`Patamar_2`, antes da antecâmara), 4 na rampa da passagem dos Guardiões, 4 atrás da mesquita da Aldeia e 4 atrás do contêiner norte da base (cantos opcionais).
+- **Munição do Primeiro Servo fora da arena:** saiu a `Municao_Plataforma_Oeste` (8 balas). A luta não depende de bala (faca, tiros e o poder); o mínimo garantido são as 6 balas da descida, antes da antecâmara.
+- **Kits médicos: 3.** Um na antecâmara, antes do flash e da luta (fora do grupo da luta), um opcional nos fundos da tenda médica da base e um no fim da passagem dos Guardiões, antes do wadi. Os 4 curativos não mudaram (2 nas Trincheiras, 2 na arena).
+- **Regra nova:** nenhum item a menos de 1 m de um ponto de retorno (o colisor dele ficaria dentro da Elena ao voltar). Por isso o `Kit_Antecamara` saiu de (44,8; 83,2), a 0,28 m do ponto da luta, para (46,6; 82,6).
+
+**Teste de contagem:** **Nibiru > Testes > Suprimentos > Teste de contagem** (sem Play, só lê a cena): total de balas, nada na arena, mínimo antes da antecâmara, curativos, kits em cada momento, nada no grupo da luta, itens na malha, **nenhum item a menos de 1 m de um ponto de retorno** e códigos estáveis.
+
+**Correção do ponto de retorno (3/nov/2026).** A Elena voltava 1,3 m fora do `poco.checkpoint_pe_da_descida` ao carregar. Causa: os pontos de retorno marcam o chão, mas o `PlayerRespawn` punha ali o **centro** da cápsula, que nascia 1 m enterrada; a física a desenterrava para um lado que dependia da ordem dos colisores da cena (um item a mais, ou outro estado do mundo, mudava o resultado). Agora:
+- **Posição salva = onde o pé pisa** (veja "Convenção da posição salva" nas decisões da governança). O `PlayerRespawn.Awake` sobe 1,05 m (meia cápsula mais a folga) e chama `Physics.SyncTransforms` logo depois de ligar o `CharacterController` (o `autoSyncTransforms` está desligado no projeto).
+- `PlayerRespawn.SaveCheckpointHere` grava o pé de onde a Elena está agora; é o que usam o "gravar aqui" do menu de Salvamento e os roteiros de teste (`TestFlow`, Remédio, memória). `SaveCheckpoint(ponto)` continua para pontos no chão (checkpoints da cena e atalhos de passo).
+- O **teste do salvamento** confere, em cada um dos 19 pontos de retorno, além da distância na horizontal: a **cápsula livre** onde ela nasce (nada sólido dentro dela) e o **pé no chão do ponto** (menos de 0,15 m).
+- Registro completo em `Docs/Investigacao-Respawn-Poco.md`.
+
+**Aviso para testes:** **teste com `Time.timeScale = 0` não mede física.** Uma conversa aberta (como o sussurro do começo do Acampamento) pausa o tempo, o `PlayerMotor` move 0 m por quadro e qualquer sonda de posição dá "sem deslocamento". Sondas de posição devem rodar com o tempo correndo (confira o `Time.timeScale` junto com a posição).
+
+**Regressão (3/nov/2026), um teste por vez pelo `AutomatedRun`, conferindo no log novo o "terminou; slots reais iguais" de cada um:** salvamento **19 OK** (já com a cápsula livre e o pé no chão nos 19 pontos de retorno), passo 10 (14 OK), passo 11 (9), passo 12 (10), passo 13 (9), passo 14 (10), passo 15 (3), Remédio para Yusuf (8), Arquivo (6), O que o Tom viu (3), contagem de suprimentos (10) e teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Na primeira rodada do geral, o teste de códigos do salvamento acusou os 7 itens novos fora da lista de códigos conhecidos e o código da munição antiga da arena sumido: os novos entraram por **Nibiru > Salvamento > Criar registro e códigos**, e a linha `cena poco.municao_plataforma_oeste` saiu de `Docs/Codigos-Salvamento.txt` (item retirado de propósito na B2a). Depois, teste de códigos 8 OK e o geral de novo, verde. Falta o teste do dono no Play.
 
 ## Etapa B1v (Partes 0, 1, 2 e 4 concluídas; Parte 3 pendente): Git da ArteFonte, 6 personagens, área-vitrine e créditos
 

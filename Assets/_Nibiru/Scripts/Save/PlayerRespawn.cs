@@ -20,6 +20,9 @@ namespace Nibiru.Save
         Checkpoints.Data pending;
 
         // A posição muda no Awake, antes de qualquer Start, para a câmera já nascer atrás dela.
+        // A posição guardada é onde o pé pisa; o Jogador fica no meio do corpo. Pôr o centro no ponto enterrava
+        // a cápsula 1 m no chão, e a física a desenterrava para um lado que dependia da ordem dos colisores da cena
+        // (no pé da descida do Poço, 1,3 m para o lado).
         void Awake()
         {
             if (health == null) health = GetComponent<Health>();
@@ -31,9 +34,15 @@ namespace Nibiru.Save
             CharacterController controller = GetComponent<CharacterController>();
             bool wasEnabled = controller != null && controller.enabled;
             if (controller != null) controller.enabled = false;
-            transform.SetPositionAndRotation(pending.position, pending.rotation);
+            transform.SetPositionAndRotation(pending.position + Vector3.up * FeetToCenter(controller), pending.rotation);
             if (controller != null) controller.enabled = wasEnabled;
+            // O autoSyncTransforms está desligado: sem isto, a física só veria a posição nova no próximo passo.
+            Physics.SyncTransforms();
         }
+
+        /// <summary>Do pé ao Jogador: meia cápsula acima do centro dela, mais a folga de contato, para nascer sem tocar no chão.</summary>
+        static float FeetToCenter(CharacterController controller) =>
+            controller != null ? controller.height * 0.5f - controller.center.y + controller.skinWidth : 0f;
 
         // Vida e inventário no Start, depois que eles mesmos se prepararam no Awake.
         void Start()
@@ -47,18 +56,25 @@ namespace Nibiru.Save
         }
 
         /// <summary>
-        /// Guarda o estado atual como ponto de retorno, reaparecendo em spawnPoint, e grava uma cópia no slot da partida
-        /// (se houver um). checkpointId é o código do checkpoint (diz a área no resumo do slot).
+        /// Guarda o estado atual como ponto de retorno, reaparecendo com o pé em spawnPoint (um ponto no chão), e grava
+        /// uma cópia no slot da partida (se houver um). checkpointId é o código do checkpoint (diz a área no resumo do slot).
         /// </summary>
-        public void SaveCheckpoint(Transform spawnPoint, string checkpointId = null)
+        public void SaveCheckpoint(Transform spawnPoint, string checkpointId = null) =>
+            Save(spawnPoint.position, spawnPoint.eulerAngles.y, checkpointId);
+
+        /// <summary>Como <see cref="SaveCheckpoint"/>, reaparecendo onde a Elena está agora (guarda o ponto onde o pé pisa).</summary>
+        public void SaveCheckpointHere(string checkpointId = null) =>
+            Save(transform.position - Vector3.up * FeetToCenter(GetComponent<CharacterController>()), transform.eulerAngles.y, checkpointId);
+
+        void Save(Vector3 feet, float yaw, string checkpointId)
         {
             var (slots, keyItems) = inventory.CopyContents();
             Checkpoints.Save(new Checkpoints.Data
             {
                 sceneName = gameObject.scene.name,
                 checkpointId = checkpointId,
-                position = spawnPoint.position,
-                rotation = Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f),
+                position = feet,
+                rotation = Quaternion.Euler(0f, yaw, 0f),
                 health = health.Current,
                 slots = slots,
                 keyItems = keyItems,
