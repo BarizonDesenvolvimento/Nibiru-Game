@@ -10,13 +10,13 @@ Situação: **confirmado** (lido no arquivo de licença ou nos termos), **a conf
 
 | Asset | Onde está | Origem | Licença | Situação |
 | --- | --- | --- | --- | --- |
-| Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono, no plano **Pro (pago)** em todos os modelos (resposta do dono em 26/out/2026) | Resumo dos termos do Meshy para planos pagos: o modelo é privado e pertence ao usuário, com uso comercial; atribuição não exigida. Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
-| Elena nova (malha e textura de cor; aprovada pelo dono em 1º/nov/2026, substitui a antiga no jogo) | `ArteFonte/Elena_Nova_Usar/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens/ElenaNova` | Gerada no **Meshy** (meshy.ai) pela conta do dono. No plano **Pro** (confirmado pelo dono em 1º/nov/2026) | A mesma dos outros modelos, se gerada no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano) |
+| Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/Personagens/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono, no plano **Pro (pago)** em todos os modelos (resposta do dono em 26/out/2026) | Resumo dos termos do Meshy para planos pagos: o modelo é privado e pertence ao usuário, com uso comercial; atribuição não exigida. Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
+| Elena nova (malha e textura de cor; aprovada pelo dono em 1º/nov/2026, substitui a antiga no jogo) | `ArteFonte/Personagens/Elena_Nova_Usar/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens/ElenaNova` | Gerada no **Meshy** (meshy.ai) pela conta do dono. No plano **Pro** (confirmado pelo dono em 1º/nov/2026) | A mesma dos outros modelos, se gerada no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano) |
 | Elena nova: imagens de referência | `ArteFonte/Elena_Nova_Usar/Referencias` | Geradas no **ChatGPT**, pela conta do dono, em plano pago (confirmado pelo dono em 1º/nov/2026) | Termos da OpenAI. Só referência interna: não entram no build | Confirmado |
-| Ninsar: 19 animações | `ArteFonte/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática), plano Pro | A mesma do modelo | Confirmado (plano); termos: resumo |
+| Ninsar: 19 animações | `ArteFonte/Personagens/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática), plano Pro | A mesma do modelo | Confirmado (plano); termos: resumo |
 | Esqueletos com dedos (101 ossos) de todos os personagens acima | `ArteFonte/<Personagem>/2_Rig` | **AccuRig** (Reallusion), gratuito | Resumo: o personagem rigado pode ser usado em projetos comerciais | Resumo |
-| Ninsar: montagem, encaixe e scripts do Blender | `ArteFonte/Ninsar/3_Blender` | Feitos no projeto (Blender) | Próprios | Confirmado |
-| Ninsar: texturas do manto (`Ninsar_Tecido_Manto.png`, `Ninsar_Faixa_Bordado.png`) | `ArteFonte/Ninsar/Texturas` | Enviadas pelo dono | — | **A confirmar** (origem) |
+| Ninsar: montagem, encaixe e scripts do Blender | `ArteFonte/Personagens/Ninsar/3_Blender` | Feitos no projeto (Blender) | Próprios | Confirmado |
+| Ninsar: texturas do manto (`Ninsar_Tecido_Manto.png`, `Ninsar_Faixa_Bordado.png`) | `ArteFonte/Personagens/Ninsar/Texturas` | Enviadas pelo dono | — | **A confirmar** (origem) |
 
 ## Animações
 
@@ -46,6 +46,13 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 | M1 (altar dos Guardiões), M9 (poço da Aldeia) e lamparina de barro: malha e textura de cor | Brutos em `ArteFonte/Ambientes/Altar/1_Meshy`, `ArteFonte/Ambientes/PocoM9/1_Meshy` e `ArteFonte/Objetos/LamparinaDeBarro/1_Meshy` (fora do Git); cópias tratadas (buracos fechados, escala do jogo, cor em 2048 ou 1024 px) em `Art/Ambientes/SitioDeUr/Aldeia/Objetos`, pelo script `ArteFonte/Ambientes/SitioDeUr/Aldeia/Blender/objetos_vitrine.py` | Gerados no **Tripo** (tripo3d.ai, malha "Smart") pela conta do dono, em 3/nov/2026, no plano **Pro (pago)** (confirmado pelo dono em 3/nov/2026) | Resumo dos termos do Tripo: nos planos pagos o modelo é privado e de uso comercial; no gratuito, público e sob CC BY 4.0 (pede atribuição). Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
 | Faixa de tijolo do poço (atrás do reboco descascado) e água escura do fundo | Peças `Poco_M9_Base` e `Poco_M9_Agua` dentro de `Objetos/Poco_M9.fbx` | Feitas pelo mesmo script; o tijolo usa `slumped_mortar_brick` (CC0) | Próprios | Confirmado |
 
+## Objetos e ambientes do jogo (fora da vitrine)
+
+| O que é | Onde está | De onde veio | Licença e o que exige | Situação |
+| --- | --- | --- | --- | --- |
+| Fuzil (AKM preto com red dot), pistola Makarov, faca, espingarda de dois canos, Tabuleta do Junco, rádio de campanha, helicóptero e Selo de Kur: malha e textura de cor | Brutos em `ArteFonte/Objetos/<Nome>/1_Meshy` e `ArteFonte/Ambientes/<Nome>/1_Meshy` (fora do Git); cópias tratadas (escala real, triângulos no orçamento, cor em 2048 ou 1024 px) em `Art/Objetos/<Nome>` e `Art/Ambientes/<Nome>`, pelo script `ArteFonte/Objetos/objetos_jogo.py` | Gerados no **Tripo** (tripo3d.ai) pela conta do dono, em 3/nov/2026 (os materiais do FBX vêm com o prefixo `tripo_`) | O mesmo resumo dos termos do Tripo da tabela da vitrine (pago: privado e comercial; gratuito: CC BY 4.0, pede atribuição). Conferir os termos atuais antes da página da Steam | A confirmar (plano usado nestes oito) |
+| Antibióticos (frasco e caixa), caixa de munição, curativo, lata de filme 35 mm e gravador de fitas: malha e texturas (cor; nos quatro primeiros também normal, metal e aspereza) | Brutos em `ArteFonte/Objetos/<Nome>/1_Meshy` (fora do Git); cópias tratadas em `Art/Objetos/<Nome>`, pelo mesmo script | Gerados no **Meshy** (meshy.ai) pela conta do dono, em 3/nov/2026 (arquivos `Meshy_AI_...`) | A mesma dos personagens do Meshy, se gerados no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano usado nestes cinco) |
+
 ## Som, fonte e interface
 
 | Asset | Onde está | Origem | Licença | Situação |
@@ -72,7 +79,7 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 
 ## Declaração de uso de IA (para a página da Steam)
 
-Conteúdo gerado por IA que entra no jogo: os **modelos 3D e texturas dos personagens feitos no Meshy** (lista em "Personagens"), incluindo a Elena nova, e os objetos do Meshy e do **Tripo** registrados neste arquivo (por enquanto o altar, o poço e a lamparina da Aldeia). A declaração da Steam precisa citar isso. O esqueleto vem do AccuRig (rig automático), e as animações, do Mixamo.
+Conteúdo gerado por IA que entra no jogo: os **modelos 3D e texturas dos personagens feitos no Meshy** (lista em "Personagens"), incluindo a Elena nova, e os objetos do Meshy e do **Tripo** registrados neste arquivo (o altar, o poço e a lamparina da Aldeia, e os objetos e ambientes da tabela "Objetos e ambientes do jogo"). A declaração da Steam precisa citar isso. O esqueleto vem do AccuRig (rig automático), e as animações, do Mixamo.
 
 **Pendência antes da página "Em breve" da Steam:** avaliar a semelhança da Elena nova com a Lara Croft (rabo de cavalo, regata, coldre na coxa, pelo modelo e pelas referências) e, se for preciso, ajustar o visual. O dono decide.
 
