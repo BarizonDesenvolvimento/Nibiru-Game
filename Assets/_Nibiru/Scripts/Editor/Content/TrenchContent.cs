@@ -296,11 +296,12 @@ namespace Nibiru.EditorTools.Content
 
         static void BuildWeiss(Transform g)
         {
-            // No disco dourado do blockout, encostada na tenda médica, sentada e escondida.
-            var spot = new Vector3(-20f, 0f, -51.3f);
-            GameObject weiss = Prim(PrimitiveType.Capsule, g, "Dra_Weiss", spot + Vector3.up * 0.6f, new Vector3(0.5f, 0.6f, 0.5f), "BO_BrancoFundacao", 180f);
+            // Sentada e escondida, de costas para a face leste do Monte_Terra_1 (x = -19,5) e virada para leste, de
+            // onde a Elena chega. O disco do blockout (x = -20) fica dentro do monte: com o modelo, ela entrava nele.
+            var spot = new Vector3(-19.25f, 0f, -51.3f);
+            GameObject weiss = Prim(PrimitiveType.Capsule, g, "Dra_Weiss", spot + Vector3.up * 0.6f, new Vector3(0.5f, 0.6f, 0.5f), "BO_BrancoFundacao", 90f);
             UseModel(weiss, VillageTeamSetup.PrefabPath("DraWeiss"), spot.y);
-            Prim(PrimitiveType.Cube, g, "Mochila_Medica", spot + new Vector3(0.7f, 0.2f, 0.2f), new Vector3(0.4f, 0.4f, 0.25f), "BO_TurquesaFundacao", 15f);
+            Prim(PrimitiveType.Cube, g, "Mochila_Medica", spot + new Vector3(0.15f, 0.2f, 0.75f), new Vector3(0.4f, 0.4f, 0.25f), "BO_TurquesaFundacao", 15f);
 
             GameObject talk = Zone(g, "Falar_DraWeiss", spot + Vector3.up * 0.8f, new Vector3(1.4f, 1.6f, 1.4f));
             DialogueStarterOn(talk, dlg.draWeiss, "Falar com a mulher ferida", interactable: true);

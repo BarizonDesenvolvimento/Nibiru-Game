@@ -21,9 +21,9 @@ namespace Nibiru.EditorTools
         // Passo da missão Sobrevivente em que a Elena acabou de descansar no nicho (passo 7 concluído).
         const int ReadTabletStep = 12;
 
-        // Diante da Dra. Weiss (olhando para oeste, a leste da mochila dela), do Yusuf (olhando para oeste) e da mesa da tenda médica (para o norte).
-        // A Weiss fica atrás de uma tenda sólida: a Elena fala com ela por leste, ao lado da mochila.
-        internal static readonly Vector3 WeissFront = new Vector3(-18.4f, 0f, -51.2f);
+        // Diante da Dra. Weiss (olhando para oeste, na frente dela), do Yusuf (olhando para oeste) e da mesa da tenda médica (para o norte).
+        // A Weiss fica de costas para o Monte_Terra_1, virada para leste: a Elena fala com ela por leste.
+        internal static readonly Vector3 WeissFront = new Vector3(-17.7f, 0f, -51.3f);
         internal const float WeissYaw = 270f;
         internal static readonly Vector3 YusufFront = Step8Shortcuts.NicheSpot;
         internal static readonly Vector3 TentFront = new Vector3(-10f, 0f, 17.8f);

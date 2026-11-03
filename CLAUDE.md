@@ -25,7 +25,7 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 - Não edite arquivos .unity, .prefab ou .meta à mão.
 - Faça commits pequenos e frequentes, com mensagens em português.
 - Arquivos pesados (modelos, imagens, áudio, vídeo) vão pelo Git LFS, já configurado em `.gitattributes`. Nenhum arquivo fora do LFS pode passar de 100 MB (limite do GitHub).
-- Modelos 3D entram na Unity como FBX em `Assets/_Nibiru/Art/Personagens`; a arte-fonte de todos os personagens (.blend, rigs, referências) fica em `ArteFonte/<Personagem>/`, fora de `Assets`. Os arquivos brutos baixados do Meshy (`ArteFonte/*/1_Meshy`) ficam fora do Git, menos os que estão nas exceções do `.gitignore`.
+- Modelos 3D entram na Unity como FBX em `Assets/_Nibiru/Art/Personagens`; a arte-fonte de todos os personagens (.blend, rigs, referências) fica em `ArteFonte/Personagens/<Personagem>/`, fora de `Assets`. Objetos e cenário do Tripo e do Meshy ficam em `ArteFonte/Objetos/<Item>` e `ArteFonte/Ambientes/<Objeto>`. Os arquivos brutos baixados (`1_Meshy` de cada pasta) ficam fora do Git, menos os que estão nas exceções do `.gitignore`.
 - Animações vêm da biblioteca em `ArteFonte/Animacoes` (fora do Git e de `Assets`). Consulte `Docs/CATALOGO_ANIMACOES.md` antes de pedir ou baixar uma animação. Importe para `Assets` só as que forem usadas, como Humanoid.
 - Teste cada sistema no Play pela ponte MCP antes de pedir o teste do dono (o jeito está em `Docs/ESTADO.md`). Nunca recompile scripts com o Play ligado.
 - Um passo por vez: ao terminar um sistema, mostre o resultado e espere o dono testar no Play antes de seguir.
@@ -75,8 +75,9 @@ Assets/
     Art/            (assets próprios; Personagens/ com os modelos 3D em FBX, Animacoes/Mixamo/ com
                      as animações usadas e o X Bot de referência)
   ThirdParty/       (assets comprados ou baixados, sem modificar)
-ArteFonte/          (arte-fonte fora da Unity: uma pasta por personagem com Referencias, 1_Meshy e 2_Rig
-                     (rig do AccuRig com dedos); a Ninsar também tem 3_Blender; Animacoes/Mixamo/)
+ArteFonte/          (arte-fonte fora da Unity: Personagens/ com uma pasta por personagem com Referencias,
+                     1_Meshy e 2_Rig (rig do AccuRig com dedos; a Ninsar também tem 3_Blender); Objetos/ e
+                     Ambientes/ com Referencias e 1_Meshy; Animacoes/Mixamo/)
 Docs/
   GDD.md, Biblia.md, Regiao-1-Sitio-de-Ur.md, ESTADO.md
 ```

@@ -64,6 +64,15 @@ namespace Nibiru.EditorTools
             ("Porta_Selo_de_Kur", "SeloDeKur", new Vector3(0f, 180f, 0f), Depth.Front),
         };
 
+        // Deslocamento em metros do mundo depois de encostar no placeholder. O Selo tem 1,55 m de fundo e as folhas da
+        // porta ficam recuadas: rente à frente da porta do blockout, elas sumiam atrás da face da parede norte
+        // (z = 102). O lado leste da porta do blockout (x 47 a 48) fica dentro da Plataforma_Leste: o Selo vai 1 m
+        // para oeste para aparecer inteiro (o colisor da porta continua onde estava).
+        static readonly Dictionary<string, Vector3> Nudges = new Dictionary<string, Vector3>
+        {
+            { "Porta_Selo_de_Kur", new Vector3(-1f, 0f, -0.35f) },
+        };
+
         // Peças do blockout que somem junto com um placeholder simples (o colisor fica).
         static readonly (string owner, string piece)[] AlsoHidden = { ("Porta_Selo_de_Kur", "Selo_Ouro") };
 
@@ -184,6 +193,12 @@ namespace Nibiru.EditorTools
 
         // ---------- 2. armas nos personagens ----------
 
+        // Pistola da Elena: o PlayerAnimator põe o ArmaNaMao na mão direita mais (0; 0,02; 0,08), nos eixos do Jogador.
+        // Medido no clipe "Mira": a palma (entre o pulso e a base do dedo médio) fica em (-0,008; 0,033; 0,05) do pulso.
+        // O centro da coronha do modelo fica em (0; -0,078; -0,13) da ponta do cano: a ponta vai aqui, para a coronha
+        // cair na palma. O "Cano" (de onde sai o traço do tiro) vai junto, para a boca do cano de verdade.
+        static readonly Vector3 PistolMuzzleInHand = new Vector3(-0.008f, 0.091f, 0.10f);
+
         [MenuItem("Nibiru/Arte/Objetos e ambientes/2. Armas nos personagens (prefabs)")]
         public static void BuildWeapons()
         {
@@ -200,8 +215,9 @@ namespace Nibiru.EditorTools
                 bool changed = false;
                 foreach (var t in root.GetComponentsInChildren<Transform>(true).ToArray())
                 {
-                    // Só o que é deste prefab (o fuzil dos prefabs da IA vem de dentro do prefab do personagem).
-                    if (PrefabUtility.IsPartOfPrefabInstance(t.gameObject))
+                    // Só o que é deste prefab (o fuzil dos prefabs da IA vem de dentro do prefab do personagem); a arte
+                    // velha, já apagada pelo Attach, também fica de fora.
+                    if (t == null || PrefabUtility.IsPartOfPrefabInstance(t.gameObject))
                         continue;
                     string model = t.name switch
                     {
@@ -222,6 +238,11 @@ namespace Nibiru.EditorTools
                         tip = blade.localPosition + blade.localRotation * new Vector3(0f, 0f, blade.localScale.z / 2f);
                     else
                         continue;
+                    if (model == "Pistola" && muzzle != null)
+                    {
+                        tip = PistolMuzzleInHand;
+                        muzzle.localPosition = tip;
+                    }
                     var art = Attach(t, model);
                     if (art == null)
                         continue;
@@ -267,6 +288,8 @@ namespace Nibiru.EditorTools
                     art.transform.localRotation = Quaternion.Euler(euler);
                     art.transform.localScale = Unscaled(t, art.transform.localRotation);
                     Align(t, art, t.GetComponent<MeshFilter>().sharedMesh.bounds, depth);
+                    if (Nudges.TryGetValue(name, out var nudge))
+                        art.transform.position += nudge;
                     t.GetComponent<MeshRenderer>().enabled = false;
                     foreach (var (owner, piece) in AlsoHidden.Where(x => x.owner == name))
                     {

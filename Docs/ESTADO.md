@@ -39,7 +39,7 @@ Este quadro vale acima de qualquer outro nome de etapa neste arquivo. **Sem meta
 
 **Objetos da vitrine (decisões de 1º/nov/2026):** o **M1 (altar)** e o **M9 (poço)** são gerados no **Tripo Pro (objetos)**, não no Meshy (o Meshy fica para personagens). São arte adiantada da fase C (vitrine) e **não bloqueiam a fase A**. O teste de 0,15 m da vitrine fica para a fase C. Escala do M1: **1,00 × 0,90 × 0,60 m**.
 
-**Pastas dos objetos do Tripo (convenção real, 3/nov/2026):** cenário e peças fixas em `ArteFonte/Ambientes/<Objeto>` (ex.: `Altar`, `PocoM9`); itens e armas em `ArteFonte/Objetos/<Item>` (ex.: `LamparinaDeBarro`, `Espingarda`, `Fuzil`, `Pistola`, `Faca`, `TabeluteDeJunco`). Dentro de cada uma: `1_Meshy/` com o FBX bruto e a pasta `.fbm` da textura (o nome da pasta ficou `1_Meshy` mesmo vindo do Tripo; **fora do Git**, regra do `.gitignore`) e `Referencias/` (no Git). Nomes de pasta sem acento nem ç. A cópia tratada vai para `Assets` (a da Aldeia, em `Art/Ambientes/SitioDeUr/Aldeia/Objetos`), feita por script do Blender.
+**Pastas dos objetos do Tripo (convenção real, 3/nov/2026):** cenário e peças fixas em `ArteFonte/Ambientes/<Objeto>` (ex.: `Altar`, `PocoM9`); itens e armas em `ArteFonte/Objetos/<Item>` (ex.: `LamparinaDeBarro`, `Espingarda`, `Fuzil`, `Pistola`, `Faca`, `TabuletaDeJunco`). Dentro de cada uma: `1_Meshy/` com o FBX bruto e a pasta `.fbm` da textura (o nome da pasta ficou `1_Meshy` mesmo vindo do Tripo; **fora do Git**, regra do `.gitignore`) e `Referencias/` (no Git). Nomes de pasta sem acento nem ç. A cópia tratada vai para `Assets` (a da Aldeia, em `Art/Ambientes/SitioDeUr/Aldeia/Objetos`), feita por script do Blender.
 
 ## Sistema dos ME (Poderes Divinos)
 
@@ -92,7 +92,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O **Primeiro Servo definitivo** (Meshy + AccuRig, com dedos, 2,50 m em pé, máscara de ouro) está no prefab `Prefabs/AI/PrimeiroServo`, usado no passo 12 e no laboratório. Veja "Primeiro Servo" em Personagens 3D.
 - A secundária **"Remédio para Yusuf"** está completa em blockout (os dois caminhos, a entrega, o prazo, o lembrete e a pergunta do Samir na viagem), testada pela ponte e **testada no Play pelo dono e aprovada**. Veja "Secundária Remédio para Yusuf".
 - O final de **"O que o Tom viu"** (a Umm Karim leva a Elena a Abu Faris, que revela os filmes num quarto escuro; recompensa: o item "Fotos do Tom", código estável `fotos_do_tom`) está pronto em blockout, testado pela ponte e aprovado pelo dono no Play. Veja "Secundária O que o Tom viu: o final".
-- Os outros personagens (Yusuf, Umm Karim, Dra. Weiss e equipe morta) estão prontos na `ArteFonte` (falta ainda o Abu Faris, variação do aldeão base), com esqueleto e dedos, esperando a importação, um por conversa. Lista e alturas em Personagens 3D.
+- Todos os personagens prontos da `ArteFonte/Personagens` estão na Unity (falta ainda o Abu Faris, variação do aldeão base). Os objetos e ambientes do Tripo e do Meshy entraram em 3/nov/2026: veja "Arte da ArteFonte no jogo". Lista e alturas em Personagens 3D.
 
 **Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. As **animações da biblioteca** (`Docs/CATALOGO_ANIMACOES.md`) foram importadas para as criaturas (garra, investida, urro, golpe recebido e morte do Lullu e do Primeiro Servo) e para o Samir dirigindo (veja "Animações da biblioteca" abaixo), testadas pela ponte e **aprovadas pelo dono no Play** (vitrines das criaturas e da Elena, viagem do passo 15 com a Elena sentada e o Samir ao volante, passo 11 com o Lullu na caça e passo 12 com o Servo acordando e urrando). **O passo de importação de animações está aprovado.** O `zombie stand up` ficou importado e só na vitrine (nenhuma mecânica de surgimento pelas rachaduras por enquanto), e as pastas Pro Magic, Magic Locomotion e Scary Zombie seguem com **origem não confirmada, não usar até confirmação**. A Elena também já viaja sentada no chão da caçamba e tem agachada parada de verdade. Depois, importar os outros personagens (o kit comum já serve para eles). A Elena agora usa a locomoção feminina (veja "Elena").
 
@@ -619,7 +619,7 @@ Prefabs: `Prefabs/Player/Elena` (Elena + câmera + HUD + diálogos; use este em 
 
 ## Personagens 3D
 
-Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (imagem de referência), `1_Meshy/` (FBX e texturas PNG baixados do Meshy; fora do Git) e `2_Rig/` (FBX do AccuRig com esqueleto e dedos). Cada personagem entra na Unity numa conversa própria.
+Arte-fonte em `ArteFonte/Personagens/<Personagem>/` (desde 3/nov/2026; antes era `ArteFonte/<Personagem>/`), fora de `Assets`: `Referencias/` (imagem de referência), `1_Meshy/` (FBX e texturas PNG baixados do Meshy; fora do Git) e `2_Rig/` (FBX do AccuRig com esqueleto e dedos). Cada personagem entra na Unity numa conversa própria.
 
 **Como chegam (conferido em 25/10/2026, no Blender):** todos têm o esqueleto do AccuRig com 101 ossos (30 de dedo), pose T ou A, todos os vértices com peso e de 19 a 31 mil triângulos (bom para jogo). O Meshy entrega todos com cerca de **0,95 m**: a altura certa vem da escala de importação (tabela abaixo). No FBX do rig, a cor e o normal (4096) estão embutidos e só metal e rugosidade (2048) saem soltos; as PNG completas estão em `1_Meshy/` (os mesmos UVs; se sumirem, baixe de novo no Meshy).
 
@@ -627,17 +627,17 @@ Arte-fonte em `ArteFonte/<Personagem>/`, fora de `Assets`: `Referencias/` (image
 | --- | --- | --- | --- |
 | Elena Varga | `Elena_Nova_Usar` (a arte-fonte antiga segue em `Elena`) | 1,70 m | **No jogo** (prefab `Player/Elena`) |
 | Samir Haddad | `Samir` | 1,75 m | **No jogo** (prefab `Personagens/Samir`) |
-| Yusuf | `Yusuf` | 1,74 m | Importado (prefab `Personagens/Yusuf`, deitado); cápsula das cenas ainda não trocada |
-| Umm Karim | `UmmKarim` | 1,58 m | Importada (prefab `Personagens/UmmKarim`); cápsula das cenas ainda não trocada |
+| Yusuf | `Yusuf` | 1,74 m | **No jogo** (prefab `Personagens/Yusuf`, deitado na esteira da Aldeia) |
+| Umm Karim | `UmmKarim` | 1,58 m | **No jogo** (prefab `Personagens/UmmKarim`, Aldeia) |
 | Abu Faris | (variação do aldeão base, a criar) | — | Pendente de modelo: morador que tinha um estúdio de fotos em Nasiriyah; aparece só no quarto escuro de "O que o Tom viu" (hoje cápsula com o nome) |
-| Dra. Weiss | `DraWeiss` | 1,68 m | Pronto; pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (o `FingerWeightFix` corrige na importação) |
+| Dra. Weiss | `DraWeiss` | 1,68 m | **No jogo** (prefab `Personagens/DraWeiss`, sentada nas Trincheiras); pose A (braços 51° abaixo) e 4 ossos de dedo sem peso (o `FingerWeightFix` corrige na importação) |
 | Soldado da Contenção | `Soldado` | 1,82 m | **No jogo** (prefab `AI/Soldado`); o osso de dedo sem peso é corrigido na importação |
 | Líder de esquadra | `LiderDeEsquadra` | 1,80 m | **No jogo** (prefab `AI/Soldado_Lider`) |
 | Atirador de elite | `AtiradorDeElite` | 1,78 m | **No jogo** (prefab `AI/Soldado_Atirador`, com a IA trocada pela `SniperAI` no passo 10) |
 | Piloto | `Piloto` | 1,78 m | **No jogo** (prefab `Personagens/Piloto`, sentado nos helicópteros) |
-| Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | Pronto para importar |
-| Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Pronto (2 ossos de dedo sem peso) |
-| Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | Pronto para importar |
+| Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | Importado (prefab `Personagens/ArqueologoVeterano`, só o modelo); os corpos do círculo seguem em blockout (veja "Arte da ArteFonte no jogo") |
+| Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | Importada (prefab `Personagens/ArqueologaJovem`, só o modelo; 2 ossos de dedo sem peso) |
+| Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | **No jogo** como o corpo do trabalhador executado no heliponto (prefab `Personagens/TrabalhadorEscavacao_Morto`); o trabalhador ferido que anda antes segue em cápsula |
 | Lullu | `Lullu` | 2,10 m em pé | **No jogo** (prefab `AI/Lullu`); pose A (41°) e pernas longas de criatura. Curvado, a cabeça fica a uns 1,7 m |
 | Primeiro Servo | `PrimeiroServo` | 2,50 m | **No jogo** (prefab `AI/PrimeiroServo`); 4 ossos de dedo sem peso, corrigidos na importação |
 | Ninsar | `Ninsar` | 1,90 m | Prévia na Unity; manto pausado (Ato 2). Veja "Ninsar" abaixo |
@@ -1077,6 +1077,62 @@ Na volta, o listener de `ChegouAAldeia` chama `PlaceAtPointAhead.PlaceSaved` ant
 
 **Regressão (3/nov/2026), um teste por vez pelo `AutomatedRun`, conferindo no log novo o "terminou; slots reais iguais" de cada um:** salvamento **19 OK** (já com a cápsula livre e o pé no chão nos 19 pontos de retorno), passo 10 (14 OK), passo 11 (9), passo 12 (10), passo 13 (9), passo 14 (10), passo 15 (3), Remédio para Yusuf (8), Arquivo (6), O que o Tom viu (3), contagem de suprimentos (10) e teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Na primeira rodada do geral, o teste de códigos do salvamento acusou os 7 itens novos fora da lista de códigos conhecidos e o código da munição antiga da arena sumido: os novos entraram por **Nibiru > Salvamento > Criar registro e códigos**, e a linha `cena poco.municao_plataforma_oeste` saiu de `Docs/Codigos-Salvamento.txt` (item retirado de propósito na B2a). Depois, teste de códigos 8 OK e o geral de novo, verde. **Kit no canto (3/nov):** contagem 10 OK, salvamento 19 OK e passo 11 9 OK. O atalho **Passo 11 > 4** agora põe a Elena no ponto do checkpoint (48,4; 71,4): o ponto antigo do atalho, (49; 71), encostava no `Poco_Canto_SE` e a física a empurrava 0,6 m. Falta o teste do dono no Play.
 
+## Arte da ArteFonte no jogo (3/nov/2026, testada pela ponte; falta o teste do dono no Play)
+
+Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como **troca visual**: a arte é filho "Arte" do placeholder, que só tem o desenho desligado (colisor, scripts, gatilhos e posição ficam). Nenhum sistema novo (espingarda, rádio, munição, curativos e antibióticos seguem como eram).
+
+**Arrumação:** a arte-fonte dos personagens foi para `ArteFonte/Personagens/<Nome>` (166 renomeações, nada novo no LFS; `.gitignore` e `SoldiersSetup.ImportCharacter` seguem a pasta nova). Pastas renomeadas: `helicoptero` → `Helicoptero`, `selodekur` → `SeloDeKur`, `TabeluteDeJunco` → `TabuletaDeJunco`. Os brutos ficam em `1_Meshy/` (fora do Git); só `Referencias/` entra.
+
+**Como é feito:**
+- Script do Blender `ArteFonte/Objetos/objetos_jogo.py` (`blender -b --factory-startup -P ArteFonte/Objetos/objetos_jogo.py -- <pasta do projeto> [nomes]`): frente para +z, escala real, pivô no pé (armas na ponta do cano ou da lâmina), triângulos no orçamento (itens até 10 mil, armas até 20 mil, helicóptero e Selo até 50 mil) e texturas de até 2K (itens pequenos em 1K; os do Meshy também com normal e máscara do URP). Saída em `Art/Objetos/<Nome>` e `Art/Ambientes/<Nome>`.
+- Menus **Nibiru > Arte > Objetos e ambientes** (`Scripts/Editor/Arte/PropArtSetup.cs`): **1. Materiais e prefabs** (URP Lit; prefabs em `Prefabs/Objetos` e `Prefabs/Ambientes`), **2. Armas nos personagens (prefabs)**, **3. Trocar na cena aberta** e **Desfazer na cena aberta**. Menu **Nibiru > Personagens > Corpo do trabalhador na cena aberta** (`Scripts/Editor/Personagens/DeadWorkerSetup.cs`).
+- **Ordem, se o blockout ou o conteúdo forem refeitos:** menus de conteúdo → Vitrine da Aldeia > 2 → **Objetos e ambientes > 3** → **Corpo do trabalhador**. Depois dos menus da Elena, do Samir ou dos soldados: **Objetos e ambientes > 2**.
+
+| Item | Situação | Onde está / motivo |
+| --- | --- | --- |
+| Fuzil (AKM preto com red dot) | Na cena | Na mão do Soldado, do Líder de esquadra e do Atirador (o piloto não tem arma). O atirador de elite usa o mesmo fuzil (não há modelo de fuzil de precisão) |
+| Pistola Makarov | Na cena | Na mão da Elena (coronha na palma, medida no clipe "Mira"; o "Cano" do traço do tiro foi para a boca do cano real) e no corpo do chefe de segurança (Trincheiras) |
+| Faca | Na cena | Caixa da barraca da Elena, mão da Elena no golpe e faca do Samir |
+| Tabuleta do Junco | Na cena | No nicho da Aldeia (passo 8) e enterrada no nicho do túnel (passo 15) |
+| Rádio | Na cena | Acampamento, mesa da tenda de comando, rádio de campanha das Trincheiras e rádio caído do wadi (mesmo modelo, 40 cm) |
+| Caixa de munição | Na cena | Os 6 lotes de munição (12 cm) |
+| Curativo | Na cena | Os 4 curativos |
+| Rolo de filme | Na cena | Os 3 rolos do Tom (lata de 6 cm, escala real: mais difícil de ver que o cilindro de 12 cm) |
+| Antibióticos | Na cena | Tenda médica da base |
+| Espingarda | Só prefab | Sem placeholder na cena (entra no B6) |
+| Gravador | Só prefab | Sem placeholder na cena (a fita de Irena é a fita, não o gravador) |
+| Helicóptero | Na cena | Os 4 helicópteros (10 m; o rotor principal gira pelo Spinner do blockout; o rotor de cauda fica parado, preso ao corpo); o piloto foi para o banco da cabine do modelo (z 1,68 → 2,68) |
+| Selo de Kur | Na cena | Na porta da antecâmara (6 m de largura), 1 m a oeste e 0,35 m à frente da porta do blockout (veja os conflitos) |
+| SitioDeUr | Já estava | A pasta só tem o kit da vitrine da Aldeia, já na cena |
+| Personagens (ArqueologaJovem, ArqueologoVeterano, DraWeiss, LiderDeEsquadra, Ninsar, Piloto, TrabalhadorEscavacao) | Já estavam | Todos importados antes; a Ninsar segue como prévia (manto pausado) |
+| Corpo do trabalhador executado | Na cena | `TrabalhadorEscavacao_Morto`: deitado e parado (o clipe deitado do Yusuf congelado), no lugar da cápsula do heliponto |
+| Corpos da equipe (7, no círculo) | Pendente | O documento da região diz que estão **sentados em círculo, virados para a barraca da Elena**; o blockout tem caixas deitadas. Falta o dono decidir a pose (e são 3 modelos para 7 corpos) |
+| Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
+| Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
+
+**Ajustes pedidos pelo dono durante a tarefa:**
+- **Selo de Kur:** as folhas da porta ficavam atrás da face da parede norte (o modelo tem 1,55 m de fundo e a porta é recuada) e o lado leste entrava na `Plataforma_Leste` (x ≥ 47). Agora vai de x 41 a 47, com a frente em z 101,3 e a porta inteira à vista.
+- **Dra. Weiss:** o disco do blockout dela (x = -20) fica dentro do `Monte_Terra_1`, e o modelo entrava no monte. Agora fica sentada de costas para a face leste do monte (x = -19,25), virada para leste, com a mochila ao lado (`TrenchContent`; o ponto do atalho `RemedyShortcuts.WeissFront` foi para (-17,7; -51,3)).
+- **Pistola na mão da Elena:** antes ficava uns 12 cm à frente da mão (o deslocamento servia para a caixa provisória).
+
+**Conflitos de layout (para a fase B):**
+- **Porta do Selo de Kur:** a porta do blockout (x 42 a 48) invade a `Plataforma_Leste` (x 47 a 54) e é mais alta (7 m) que o Selo na largura dela (5,3 m). O colisor da porta ficou onde estava; a moldura do Selo passa 0,35 m à frente dele e 1 m a oeste, sem colisor (a Elena pode encostar um pouco na moldura).
+- **Corpos do círculo:** deitados no blockout, sentados no documento.
+
+**Testes (um por vez, conferindo "terminou; slots reais iguais" no log):** salvamento 19 OK, passo 10 (14), 11 (9), 12 (10), 13 (9), 14 (10), 15 (3), Remédio (8), Arquivo (6), Tom (3), contagem de suprimentos (10) e teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Hash dos slots reais igual em todos.
+
+**Para olhar no Play:**
+- **Acampamento (passo 1):** a faca na caixa da barraca; o rádio na caixa do lado de fora; o rolo de filme 1 atrás do caminhão.
+- **Resgate no Acampamento:** o helicóptero no heliponto (piloto na cabine, rotor girando) e, depois da execução, o corpo do trabalhador deitado.
+- **Trincheiras:** a Weiss sentada, encostada no monte de terra; a pistola no corpo do chefe de segurança; os 2 curativos e o rolo 2; o helicóptero que passa baixo.
+- **Qualquer combate:** a Elena mirando com a Makarov na mão; os soldados com o AKM.
+- **Aldeia (Passo 8 > 1):** a tabuleta no nicho; munição atrás da mesquita.
+- **Base (passo 10):** antibióticos na tenda médica, rádio na tenda de comando, rolo 3, munição atrás do contêiner norte e o helicóptero da passagem.
+- **Poço (passos 11 e 12):** o Selo de Kur no fundo da antecâmara; munição no patamar do meio; curativos da arena.
+- **Wadi e fuga (passos 14 e 15):** o rádio caído; a tabuleta enterrada no nicho do túnel (escolha "devolver").
+
+**Outros:** a cena tem um objeto `TMP_Lullu` inativo em (-500, 0, -500), que já existia antes desta tarefa (não mexido). Créditos dos 13 modelos novos registrados, com o plano do Tripo e do Meshy **a confirmar** para estes.
+
 ## Etapa B1v (Partes 0, 1, 2 e 4 concluídas; Parte 3 pendente): Git da ArteFonte, 6 personagens, área-vitrine e créditos
 
 Plano aprovado pelo dono em 26/out/2026, nesta ordem: Partes 0 + 1 → 4 → 2 (importação e vitrine, pausa para o Play; troca das cápsulas, pausa para o Play) → 3. Um commit por etapa; na Parte 2, push só depois do OK do dono no Play.
@@ -1132,7 +1188,7 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
    - **Capturas** (1920 x 1080, no Play pelo **Passo 8 > 1**, dentro de uma execução automática do `SlotGuard`, slots reais conferidos iguais nas duas partidas): `Docs/Arte/Capturas/VitrineAldeia/e5_1_patio`, `e5_2_limiar`, `e5_3_nicho_quente`, `e5_3_nicho_azul` (leitura da tabuleta disparada pela ponte), `e5_6_lamparina_perto` e `e5_7_poco`. As da etapa 4 ficaram, para comparar. Os rótulos das áreas do blockout (`Rotulo_1 · ACAMPAMENTO`...) usam um shader que desenha por cima das paredes e apareceram espelhados nos quadros 2 e 3; foram escondidos só durante as capturas (não é desta etapa).
    - **Teste:** geral dos atalhos depois da troca **95 OK, 0 FALHOU, 47 pulados**, slots reais iguais (hash conferido); rodado sozinho, depois das capturas.
    - **Regressão depois da lamparina de 22 cm (3/nov/2026)**, um teste por vez, saindo do Play e conferindo o "terminou; slots reais iguais" de cada um no log antes do seguinte: passo 10 (14 OK), 11 (9), 12 (10), 13 (9), 14 (10), 15 (3), Remédio (8), Arquivo (6), Tom (3) e geral dos atalhos (95 OK, 47 pulados), **0 FALHOU**. Atenção: os testes de passo só soltam a trava ao sair do Play; espere o resumo "..., teste automático:" e saia do Play antes do próximo.
-   - **Lote 1 do Tripo que fica só na ArteFonte** (cada um entra numa tarefa própria): `ArteFonte/Objetos/Espingarda` (entra no **B6**), `Fuzil` (`Fuzil_Soldados.fbx`, tipo AKM moderno com mira, decisão do dono), `Pistola` (`Pistola_Makarov.fbx`), `Faca` e `TabeluteDeJunco` (`Tabuletadejunco.fbx`), cada um com `1_Meshy` (fora do Git) e `Referencias`.
+   - **Lote 1 do Tripo** (espingarda, fuzil, pistola, faca e Tabuleta do Junco): entrou no jogo em 3/nov/2026, junto com os outros objetos; veja "Arte da ArteFonte no jogo".
 6. Teste da vitrine (0,15 m) e capturas finais. — **pendente**, para outra conversa.
 
 **Testes depois da etapa 4 (26/out/2026):** teste geral dos atalhos **94 OK, 0 FALHOU, 47 pulados**; teste do salvamento **19 OK, 0 FALHOU**; os dois rodados **um de cada vez**, com os slots reais conferidos iguais antes e depois.
