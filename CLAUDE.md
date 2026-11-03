@@ -29,6 +29,7 @@ O design completo (história, personagens, facções, regiões, sistemas, finais
 - Animações vêm da biblioteca em `ArteFonte/Animacoes` (fora do Git e de `Assets`). Consulte `Docs/CATALOGO_ANIMACOES.md` antes de pedir ou baixar uma animação. Importe para `Assets` só as que forem usadas, como Humanoid.
 - Teste cada sistema no Play pela ponte MCP antes de pedir o teste do dono (o jeito está em `Docs/ESTADO.md`). Nunca recompile scripts com o Play ligado.
 - Um passo por vez: ao terminar um sistema, mostre o resultado e espere o dono testar no Play antes de seguir.
+- Sem metas de data. Não proponha nem registre prazos ou cronograma; uma fase termina quando o marco é cumprido. Datas são assunto do dono.
 - Todo passo novo da missão ganha um menu de atalhos de teste em **Nibiru > Testes > Passo N**, como o do passo 8 (`Scripts/Editor/Step8Shortcuts.cs`): cada atalho liga o Play e põe a Elena num momento do passo, com o mundo como se ela tivesse jogado até ali. Teste os atalhos pela ponte e liste-os no `Docs/ESTADO.md` ao pedir o teste do dono.
 
 ## Textos e idiomas (localização)

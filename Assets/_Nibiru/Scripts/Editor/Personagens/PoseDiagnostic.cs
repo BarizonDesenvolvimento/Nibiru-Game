@@ -64,7 +64,7 @@ namespace Nibiru.EditorTools
         {
             var importer = (ModelImporter)AssetImporter.GetAtPath(ElenaModel);
             int n = 0;
-            foreach (var (l, r, f) in new[] { (-47f, -43f, 80f), (-52f, -48f, 80f), (-60f, -60f, 80f) })
+            foreach (var (l, r, f) in new[] { (-60f, -55f, 80f) })  // a pose real do jogo (ElenaSetup); a última configuração fica no Avatar
             {
                 ElenaSetup.OpenArms(importer, l, r, f);
                 string path = System.IO.Path.GetFullPath($"Temp/pose_parada_{n++}.png");
