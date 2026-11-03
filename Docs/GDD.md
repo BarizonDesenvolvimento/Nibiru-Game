@@ -123,8 +123,8 @@ O jogador explora uma região, enfrenta o que mora nela, encontra tabuletas e vo
 | Exploração | Áreas interligadas, atalhos que se abrem, caminhos que só um poder novo libera |
 | Combate | Armas de fogo com munição escassa, ataque corpo a corpo, esquiva. Poderes Anunnaki como alternativa |
 | Tabuletas | Item principal de progressão. Decifrar uma tabuleta dá um poder, uma memória e um pedaço da história |
-| Transformação | Barra de humano a divino. Mais divino = poderes mais fortes, mudança no visual e nas reações dos personagens |
-| RPG | Níveis, árvore de habilidades em três ramos (combate, furtividade, poderes), equipamentos com atributos |
+| Transformação | Barra de humano a divino. Mais divino = poderes mais fortes, mudança no visual e nas reações dos personagens. Como a barra se liga aos despertares ainda está em aberto (ME1/ME7 no `ESTADO.md`) |
+| RPG | Sem XP e sem níveis. A progressão vem dos **despertares**: a árvore de habilidades se abre por despertares (a forma da árvore se decide no ME7; a proposta antiga tinha três ramos: combate, furtividade, poderes). Equipamentos com atributos. Regras na Bíblia, "Regras da demo" |
 | Missões | Principais, secundárias e de facção, com consequências que aparecem mais tarde |
 | Diálogos | Escolhas de resposta que afetam reputação, aliados e finais |
 | Refúgio | Base central: aliados, loja, bancada de melhorias, quadro de missões |
@@ -157,7 +157,7 @@ Os segredos de cada região são planejados junto com ela. Os da região 1 ainda
 
 ## Finais
 
-O jogo tem cinco finais e um secreto, definidos pela facção aliada, pelo nível de transformação e pelos segredos descobertos.
+O jogo tem cinco finais e um secreto, definidos pela facção aliada, pelo grau de transformação e pelos segredos descobertos.
 
 | Final | O que acontece | Como chegar |
 | --- | --- | --- |

@@ -142,3 +142,14 @@ A história principal chega por cenas e diálogos; a profundidade vem do que o j
 - **Diálogos com escolhas.** Os aliados reagem ao que a Elena fez, lembram decisões antigas e mudam de atitude.
 
 Quem só segue a missão principal entende a história. Quem explora tudo entende o mundo, e só esse jogador chega ao final secreto.
+
+## Regras da demo
+
+Regras já aprovadas para a demo (região 1). A construção delas está no `Docs/ESTADO.md`, em "Sistema dos ME".
+
+- **Progressão.** Não existe XP nem nível. A Elena avança pelos **despertares**: a árvore de habilidades se abre por despertares, não por pontos.
+- **Servos.** Os servos dos deuses são **híbridos**. O Lullu e o Primeiro Servo são híbridos.
+- **Sopro de Enlil.** É a tabuleta que a Elena segura ao acordar. Ela o lê no Poço (puzzle 1, de 3 anéis), antes da luta com o Primeiro Servo. Muito eficaz contra Anunnaki, dano médio em híbridos e fraco contra humanos. Recarga de 90 s. A luta do Servo exige faca, tiros e o poder.
+- **Égide de Enki.** Obtida depois do Primeiro Servo (puzzle 2, de 4 anéis, com uma pista no ambiente). Dura 8 s e tem recarga de 60 s. Dispara o **primeiro despertar**: a Elena sente, mas não entende. A árvore aparece bloqueada, com glifos não traduzidos.
+- **Puzzle do selo.** Os ME são lidos girando anéis. O jogo não pausa, o puzzle fica num lugar seguro e falhar não tem penalidade.
+- **Save.** Guarda os ME da Elena, a recarga restante de cada um e os despertares.

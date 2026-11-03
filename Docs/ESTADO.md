@@ -39,6 +39,28 @@ Este quadro vale acima de qualquer outra data ou nome de etapa neste arquivo.
 
 **Objetos da vitrine (decisões de 1º/nov/2026):** o **M1 (altar)** e o **M9 (poço)** são gerados no **Tripo Pro (objetos)**, não no Meshy (o Meshy fica para personagens). São arte adiantada da fase C (vitrine) e **não bloqueiam a fase A**. O teste de 0,15 m da vitrine fica para a fase C. Escala do M1: **1,00 × 0,90 × 0,60 m**.
 
+## Sistema dos ME (Poderes Divinos)
+
+Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, seção "Regras da demo" (sem XP nem nível; Sopro de Enlil; Égide de Enki; despertares; o que o save guarda).
+
+**Regra:** cada tarefa começa com um **projeto em papel aprovado na governança**, antes de qualquer código. **Só o ME1 pode ser aberto agora**; as outras esperam a anterior e o próprio projeto aprovado. Tarefas marcadas **[Opus]** rodam no Opus.
+
+| # | Tarefa | Modelo | Depende de | Estado |
+| --- | --- | --- | --- | --- |
+| ME1 | **Dados e posse:** o que define um ME (dados em ScriptableObject) e como o jogador o possui | | — | **Pode abrir** (projeto em papel primeiro) |
+| ME2 | **Puzzle do selo:** anéis giratórios; o jogo **não pausa**; o puzzle fica em **lugar seguro**; falhar **não tem penalidade** | | ME1 | Fechada |
+| ME3 | **Sopro de Enlil:** puzzle 1 (3 anéis) no Poço, antes da luta do Servo; efeito por tipo de alvo; recarga de 90 s | **[Opus]** | ME1, ME2 | Fechada |
+| ME4 | **Égide de Enki:** puzzle 2 (4 anéis, pista no ambiente) depois do Servo; dura 8 s, recarga de 60 s | **[Opus]** | ME1, ME2, ME3 | Fechada |
+| ME5 | **Recarga e HUD** dos ME | | ME3, ME4 | Fechada |
+| ME6 | **Save:** os ME, a recarga restante e os despertares | **[Opus]** | ME1, ME5 e a regra de versão do save (backlog, início da fase B) | Fechada |
+| ME7 | **Despertar e árvore:** a Égide dispara o primeiro despertar; a árvore aparece bloqueada, com glifos não traduzidos | | ME4, ME6 | Fechada |
+| ME8 | **Regressão** de tudo o que os ME tocam | | ME1 a ME7 | Fechada |
+
+**Em aberto, decidir no ME1/ME7:**
+- **Botões dos ME.** O **Q já é do Eco do Abzu**; falta decidir as teclas e os botões do controle do Sopro e da Égide (e se o Eco continua no Q).
+- **A barra "Transformação %" do HUD:** o que ela vira com os despertares (some, vira contagem de despertares ou continua como barra).
+- **Conflito com a região 1 (achado ao registrar as regras):** `Docs/Regiao-1-Sitio-de-Ur.md` e o jogo já feito dizem que a tabuleta que a Elena segura ao acordar é a **Tabuleta do Junco**, lida no altar da Aldeia (passo 8), que dá o **Eco do Abzu** e sobe a transformação de 0 para 5; a escolha do wadi (passo 14) é sobre essa tabuleta, e o Primeiro Servo é atordoado pelo "primeiro poder". A regra nova diz que a tabuleta do despertar é o **Sopro de Enlil**, lida no Poço. Falta decidir no ME1 se são duas tabuletas (e qual delas ela segura ao acordar), o que acontece com o Eco do Abzu e com o passo 8, e sobre qual tabuleta é a escolha do wadi. O documento da região 1 não foi mudado.
+
 ## Onde estamos
 
 Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o Sítio de Ur.
@@ -1122,6 +1144,14 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 - **Os slots reais não foram restaurados nem apagados:** continuam com os dados falsos do incidente. O `save_3.json` tem data posterior (27/out, 08:12, mirante do Acampamento, tempo 5542 s): parece uma partida continuada a partir do slot falso (5525 s), não um cenário de teste.
 
 **Onde parou:** etapas 1 a 4 feitas e com commit (sem push). Próximo: o dono olha as capturas e gera no Meshy o M1 (altar) e o M9 (poço), e o M6 (bandeja) se sobrar crédito; depois a etapa 5. Ordem dos menus se o blockout ou a Aldeia forem refeitos: Blockout → Aldeia (e os outros de conteúdo) → **Vitrine da Aldeia > 2** (o 1 e o 3 só se mudar material ou céu).
+
+## Backlog
+
+**Início da fase B:**
+- **Regra de versão do save** **[Opus]**: implementar a regra decidida na governança de 26/out (campos novos opcionais na mesma versão; versão igual carrega, mais antiga migra e carrega, mais nova ou desconhecida é ilegível), junto com a **convenção da posição do pé** (3/nov) e os **campos dos ME** (os ME possuídos, a recarga restante e os despertares; veja ME6 em "Sistema dos ME"). Detalhes em "Decisões da governança de 26/out/2026".
+
+**Sem data:**
+- **Listar os 47 testes pulados** da regressão (teste geral dos atalhos: 95 OK, 0 FALHOU, 47 pulados) e o motivo de cada um.
 
 ## Próximos passos
 
