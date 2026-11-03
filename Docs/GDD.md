@@ -78,7 +78,7 @@ Três facções disputam a Elena, e a reputação com cada uma decide quais miss
 
 | Facção | O que é | Objetivo | O que oferece |
 | --- | --- | --- | --- |
-| **Fundação Enlil** | Culto milenar disfarçado de organização de preservação cultural. Soldados, cientistas, dinheiro | Acordar os Anunnaki | Armas modernas, tecnologia, acesso aos laboratórios |
+| **Fundação Enlil** | Culto milenar disfarçado de organização de preservação cultural. Força armada privada, cientistas, dinheiro | Acordar os Anunnaki | Armas modernas (fuzil padrão: tipo AKM modernizado, preto, com red dot), tecnologia, acesso aos laboratórios |
 | **Guardiões** | Ordem antiga que vigia os sítios desde a Suméria. Poucos, discretos, sábios | Manter os deuses dormindo para sempre | Conhecimento das tabuletas, rotas secretas, armas rituais |
 | **Despertos** | Híbridos que fugiram dos deuses. Vivem escondidos em Kur | Liberdade para os híbridos | Poderes híbridos, abrigo, aliados dentro da cidade |
 
@@ -122,7 +122,7 @@ O jogador explora uma região, enfrenta o que mora nela, encontra tabuletas e vo
 | --- | --- |
 | Exploração | Áreas interligadas, atalhos que se abrem, caminhos que só um poder novo libera |
 | Combate | Armas de fogo com munição escassa, ataque corpo a corpo, esquiva. Poderes Anunnaki como alternativa |
-| Tabuletas | Item principal de progressão. Decifrar uma tabuleta dá um poder, uma memória e um pedaço da história |
+| Tabuletas | Item principal de progressão. Decifrar uma tabuleta dá um poder, uma memória e um pedaço da história. A demo tem 3 poderes: Eco do Abzu (Tabuleta do Junco), Sopro de Enlil e Égide de Enki (regras na Bíblia, "Regras da demo") |
 | Transformação | Barra de humano a divino. Mais divino = poderes mais fortes, mudança no visual e nas reações dos personagens. Como a barra se liga aos despertares ainda está em aberto (ME1/ME7 no `ESTADO.md`) |
 | RPG | Sem XP e sem níveis. A progressão vem dos **despertares**: a árvore de habilidades se abre por despertares (a forma da árvore se decide no ME7; a proposta antiga tinha três ramos: combate, furtividade, poderes). Equipamentos com atributos. Regras na Bíblia, "Regras da demo" |
 | Missões | Principais, secundárias e de facção, com consequências que aparecem mais tarde |

@@ -4,7 +4,7 @@ Origem e licença de cada asset de terceiros usado no projeto. **Todo asset novo
 
 Situação: **confirmado** (lido no arquivo de licença ou nos termos), **a confirmar** (falta informação do dono) ou **resumo** (o que se sabe dos termos do serviço; conferir os termos atuais antes da página da Steam e do lançamento).
 
-Última conferência: 26 de outubro de 2026 (plano do Meshy confirmado: Pro).
+Última conferência: 3 de novembro de 2026 (plano do Meshy confirmado: Pro; origem dos pacotes Pro Magic, Magic Locomotion e Scary Zombie confirmada).
 
 ## Personagens (modelos 3D)
 
@@ -12,9 +12,9 @@ Situação: **confirmado** (lido no arquivo de licença ou nos termos), **a conf
 | --- | --- | --- | --- | --- |
 | Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Arqueólogo veterano, Arqueóloga jovem, Trabalhador da escavação, Lullu, Primeiro Servo e Ninsar (corpo, manto, saia e lança): malhas e texturas PBR | `ArteFonte/Personagens/<Personagem>/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens` | Gerados no **Meshy** (meshy.ai) pela conta do dono, no plano **Pro (pago)** em todos os modelos (resposta do dono em 26/out/2026) | Resumo dos termos do Meshy para planos pagos: o modelo é privado e pertence ao usuário, com uso comercial; atribuição não exigida. Conferir os termos atuais antes da página da Steam | Confirmado (plano); termos: resumo |
 | Elena nova (malha e textura de cor; aprovada pelo dono em 1º/nov/2026, substitui a antiga no jogo) | `ArteFonte/Personagens/Elena_Nova_Usar/1_Meshy` (fora do Git), cópias em `Assets/_Nibiru/Art/Personagens/ElenaNova` | Gerada no **Meshy** (meshy.ai) pela conta do dono. No plano **Pro** (confirmado pelo dono em 1º/nov/2026) | A mesma dos outros modelos, se gerada no Pro. Conferir os termos atuais antes da página da Steam | A confirmar (plano) |
-| Elena nova: imagens de referência | `ArteFonte/Elena_Nova_Usar/Referencias` | Geradas no **ChatGPT**, pela conta do dono, em plano pago (confirmado pelo dono em 1º/nov/2026) | Termos da OpenAI. Só referência interna: não entram no build | Confirmado |
+| Elena nova: imagens de referência | `ArteFonte/Personagens/Elena_Nova_Usar/Referencias` | Geradas no **ChatGPT**, pela conta do dono, em plano pago (confirmado pelo dono em 1º/nov/2026) | Termos da OpenAI. Só referência interna: não entram no build | Confirmado |
 | Ninsar: 19 animações | `ArteFonte/Personagens/Ninsar/2_Rig/Ninsar_Animacoes`, cópia em `Art/Personagens/Ninsar` | Meshy (animação automática), plano Pro | A mesma do modelo | Confirmado (plano); termos: resumo |
-| Esqueletos com dedos (101 ossos) de todos os personagens acima | `ArteFonte/<Personagem>/2_Rig` | **AccuRig** (Reallusion), gratuito | Resumo: o personagem rigado pode ser usado em projetos comerciais | Resumo |
+| Esqueletos com dedos (101 ossos) de todos os personagens acima | `ArteFonte/Personagens/<Personagem>/2_Rig` | **AccuRig** (Reallusion), gratuito | Resumo: o personagem rigado pode ser usado em projetos comerciais | Resumo |
 | Ninsar: montagem, encaixe e scripts do Blender | `ArteFonte/Personagens/Ninsar/3_Blender` | Feitos no projeto (Blender) | Próprios | Confirmado |
 | Ninsar: texturas do manto (`Ninsar_Tecido_Manto.png`, `Ninsar_Faixa_Bordado.png`) | `ArteFonte/Personagens/Ninsar/Texturas` | Enviadas pelo dono | — | **A confirmar** (origem) |
 
@@ -27,7 +27,8 @@ A biblioteca bruta fica em `ArteFonte/Animacoes` (fora do Git); só os clipes us
 | Clipes do Mixamo usados: Idle, WalkForward, Fast Run, Sneak Walk, Stand To Roll, Pistol Aim, Reloading, Stabbing, Hit Reaction, Standing React Death Backward, Talking 1 a 4, Walking, rifle aiming idle, rifle run, firing rifle, walking to dying e o boneco `X Bot` | `Art/Animacoes/Mixamo` | **Mixamo** (Adobe), pastas `Avulsas` e pacotes do Mixamo | Resumo: uso livre de royalties em projetos pessoais e comerciais, inclusive jogos; não se pode redistribuir os arquivos de animação soltos (só dentro do jogo) | Resumo |
 | Clipes da biblioteca (Lullu, Primeiro Servo, criaturas, Elena básica, pegar, abrir, agachada, sentada, dirigir) | `Art/Animacoes/Criatura`, `Elena`, `Caminhonete` | Mixamo: `Not So Scary Zombie Pack`, `Creature Pack`, `Female Basic Locomotion Pack` e `Avulsas` | A mesma do Mixamo | Resumo |
 | Universal Animation Library 1 e 2 (Standard) | `ArteFonte/Animacoes/Universal Animation Library[Standard]` e `... 2[Standard]` | **Quaternius** (patreon.com/quaternius) | **CC0 1.0** (domínio público; atribuição não exigida, mas fica aqui por cortesia) | Confirmado (`License.txt`). Nenhum clipe em uso (o `Idle_FoldArms_Loop` foi testado e removido: atravessava o busto da Elena) |
-| Pro Magic Pack, Magic Locomotion Pack, Scary Zombie Pack | `ArteFonte/Animacoes/Mixamo/` | Não confirmada | — | **Origem não confirmada: não usar.** Conferido em 26/out/2026: **nenhum uso** em `Assets` (nenhum arquivo deles foi copiado, comparando o conteúdo byte a byte; nenhum script, cena ou prefab os cita). Os dois nomes que coincidem (`X Bot` e `Standing React Death Backward`) vieram da pasta `Avulsas`, com conteúdo diferente do desses pacotes |
+| Pro Magic Pack, Magic Locomotion Pack, Scary Zombie Pack | `ArteFonte/Animacoes/Mixamo/` | **Mixamo** (Adobe), baixados pelo dono em 25/out/2026 (confirmado na governança de 3/nov/2026) | A mesma do Mixamo | Confirmado (origem); termos: resumo. Uso liberado; nenhum clipe deles em uso ainda |
+| Gestures Pack Basic 2 | `ArteFonte/Animacoes/Mixamo/Gestures Pack Basic 2` | **Mixamo** (Adobe), pela conta do dono | A mesma do Mixamo | Resumo. Mesmos nomes do Gestures Pack Basic, arquivos diferentes; sem uso |
 
 ## Ambientes (área-vitrine da Aldeia, B1v Parte 3)
 
@@ -75,7 +76,7 @@ Texturas do **Poly Haven** (polyhaven.com): todo o acervo é **CC0** (domínio p
 | Asset | Onde está | Origem | Situação |
 | --- | --- | --- | --- |
 | Imagens de referência dos personagens e deuses (Elena em 3 estágios, Enki, Enlil, Ereshkigal, Irena 1979 e 2003, Kast, Lullu, Ninmah, Ninsar, Samir, Tom) | `Assets/_Nibiru/Art/Referencias` | **A confirmar** | Conferido em 26/out/2026: **nenhuma cena, prefab, material ou controlador usa essas imagens** e a pasta não fica em `Resources`, então elas não entram no build. Se forem de terceiros, continuam só como referência interna |
-| Imagens de referência de cada personagem | `ArteFonte/<Personagem>/Referencias` (e `Imagens De Referencia` da Ninsar) | **A confirmar** | Fora de `Assets`: nunca entram no build |
+| Imagens de referência de cada personagem | `ArteFonte/Personagens/<Personagem>/Referencias` (e `Imagens De Referencia` da Ninsar) | **A confirmar** | Fora de `Assets`: nunca entram no build |
 
 ## Declaração de uso de IA (para a página da Steam)
 

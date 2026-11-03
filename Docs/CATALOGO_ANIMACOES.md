@@ -18,7 +18,12 @@ Lacuna resolvida: o dono baixou na `Avulsas` `X Bot@Sitting Idle`, `X Bot@Sittin
 - `X Bot@Driving` e `X Bot@Entering Car` são sentados de banco de carro.
 - Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1. **Não há agachada feminina.** O `Crouch_Idle_Loop` e o `Crouch_Fwd_Loop` do UAL1 foram testados na Elena em 1º/nov/2026 e descartados: fundos demais e de pernas abertas (quadril a 47 cm do chão, pés a 60 cm um do outro).
 
-**Origem dos pacotes:** as pastas `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` estão em `ArteFonte/Animacoes/Mixamo`, mas não constavam da lista de pacotes do projeto: **origem não confirmada, não usar até confirmação.** Nada delas foi usado.
+**Origem dos pacotes:** `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` foram **baixados do Mixamo pelo dono em 25/out/2026** (confirmado na governança de 3/nov/2026): **origem confirmada, uso liberado**. Ainda nada deles está em uso.
+
+**Decisões da governança (3/nov/2026):**
+- No Mixamo, o **X Bot é o boneco feminino**.
+- **Idles descartados para a Elena:** mão na cintura (bate no coldre e no colete), braços cruzados e Happy Idle.
+- **A baixar pelo dono:** Breathing Idle, um idle de troca de peso, um Alert/Nervous, Rifle 8-Way Locomotion Pack, Female Locomotion Pack (se existir), injured walk e stumble. Hoje nenhum deles está na biblioteca (o `weight shift` dos pacotes de gestos é um gesto de conversa, não um idle de troca de peso).
 
 ## Clipes em uso no jogo (importados)
 
@@ -209,6 +214,10 @@ Gestos para conversas (Samir, NPCs, Elena).
 | relieved sigh | suspiro de alívio |
 | weight shift | trocar o peso entre as pernas |
 
+## Gestures Pack Basic 2
+
+Pasta `Gestures Pack Basic 2`: os mesmos 15 gestos e o `X Bot.fbx` do Gestures Pack Basic, com **os mesmos nomes de arquivo, mas arquivos diferentes** (nenhum é idêntico byte a byte; conferido em 3/nov/2026). Falta o dono dizer o que muda (outro personagem no download, ou outras opções, como "In Place"). Sem uso.
+
 ## Pistol_Handgun Locomotion Pack
 
 | Arquivo | Movimento | Marca |
@@ -266,7 +275,7 @@ Combate corpo a corpo com machado; os "unarmed" servem sem arma.
 
 ## Pro Magic Pack
 
-**Origem não confirmada, não usar até confirmação.**
+Mixamo, baixado pelo dono em 25/out/2026; uso liberado.
 
 Magia e combate desarmado (poderes dos Anunnaki, fase futura).
 
@@ -289,7 +298,12 @@ Magia e combate desarmado (poderes dos Anunnaki, fase futura).
 
 ## Magic Locomotion Pack e Scary Zombie Pack
 
-**Origem não confirmada, não usar até confirmação.** Estão na pasta mas não constam da lista de pacotes do projeto; não foram catalogados clipe a clipe. (O "Not So Scary Zombie Pack", usado no Lullu, é outro pacote e consta da lista.)
+Mixamo, baixados pelo dono em 25/out/2026; uso liberado. (O "Not So Scary Zombie Pack", usado no Lullu, é outro pacote.)
+
+| Pacote | Arquivos |
+| --- | --- |
+| Magic Locomotion Pack | standing idle; Standing Walk Forward / Back / Left / Right; Standing Run Forward / Back / Left / Right; Standing Sprint Forward; Standing Turn Left 90 / Right 90; Standing Jump, Jump Running, Jump Running Landing, Land To Standing Idle |
+| Scary Zombie Pack | zombie idle, zombie walk, zombie run, zombie attack, zombie biting (2 versões), zombie neck bite, zombie scream, zombie crawl, running crawl, zombie death, zombie dying |
 
 ## Universal Animation Library (UAL1 e UAL2)
 

@@ -51,17 +51,22 @@ Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, s
 | --- | --- | --- | --- | --- |
 | ME1 | **Dados e posse:** o que define um ME (dados em ScriptableObject) e como o jogador o possui | | — | **Pode abrir** (projeto em papel primeiro) |
 | ME2 | **Puzzle do selo:** anéis giratórios; o jogo **não pausa**; o puzzle fica em **lugar seguro**; falhar **não tem penalidade** | | ME1 | Fechada |
-| ME3 | **Sopro de Enlil:** puzzle 1 (3 anéis) no Poço, antes da luta do Servo; efeito por tipo de alvo; recarga de 90 s | **[Opus]** | ME1, ME2 | Fechada |
-| ME4 | **Égide de Enki:** puzzle 2 (4 anéis, pista no ambiente) depois do Servo; dura 8 s, recarga de 60 s | **[Opus]** | ME1, ME2, ME3 | Fechada |
+| ME3 | **Sopro de Enlil:** selado na antecâmara do Poço, puzzle 1 (3 anéis) entre os passos 11 e 12, antes da luta do Servo; muito eficaz contra Anunnaki, médio contra híbridos, fraco contra humanos; recarga de 90 s | **[Opus]** | ME1, ME2 | Fechada |
+| ME4 | **Égide de Enki:** na Passagem dos Guardiões (passo 13), puzzle 2 (4 anéis; a pista vem das inscrições e da fita de Irena); dura 8 s, recarga de 60 s; dispara o primeiro despertar antes do wadi | **[Opus]** | ME1, ME2, ME3 | Fechada |
 | ME5 | **Recarga e HUD** dos ME | | ME3, ME4 | Fechada |
 | ME6 | **Save:** os ME, a recarga restante e os despertares | **[Opus]** | ME1, ME5 e a regra de versão do save (backlog, início da fase B) | Fechada |
 | ME7 | **Despertar e árvore:** a Égide dispara o primeiro despertar; a árvore aparece bloqueada, com glifos não traduzidos | | ME4, ME6 | Fechada |
 | ME8 | **Regressão** de tudo o que os ME tocam | | ME1 a ME7 | Fechada |
 
+**Decidido na governança (3/nov/2026), registrado na Bíblia ("Regras da demo"), no GDD e no `Docs/Regiao-1-Sitio-de-Ur.md`:**
+- **Tabuleta do Junco:** é a que a Elena segura ao acordar (o ME daquela noite). É lida no altar (passo 8) **sem puzzle**, porque Enki lê através dela, e dá o **Eco do Abzu**. A escolha do wadi (passo 14) é sobre ela. Isso fecha o conflito que este arquivo registrava (a regra antiga dizia que a tabuleta do despertar era o Sopro): **são três tabuletas**, e o passo 8 e o jogo já feito ficam como estão.
+- **Sopro de Enlil:** selado na antecâmara do Poço, lido no puzzle 1 entre os passos 11 e 12.
+- **Égide de Enki:** na Passagem dos Guardiões (passo 13), puzzle 2; dispara o primeiro despertar antes do wadi.
+- **A luta do Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano). A demo tem 3 poderes. Nomes: Lullu e Primeiro Servo. Sem XP nem nível.
+
 **Em aberto, decidir no ME1/ME7:**
-- **Botões dos ME.** O **Q já é do Eco do Abzu**; falta decidir as teclas e os botões do controle do Sopro e da Égide (e se o Eco continua no Q).
-- **A barra "Transformação %" do HUD:** o que ela vira com os despertares (some, vira contagem de despertares ou continua como barra).
-- **Conflito com a região 1 (achado ao registrar as regras):** `Docs/Regiao-1-Sitio-de-Ur.md` e o jogo já feito dizem que a tabuleta que a Elena segura ao acordar é a **Tabuleta do Junco**, lida no altar da Aldeia (passo 8), que dá o **Eco do Abzu** e sobe a transformação de 0 para 5; a escolha do wadi (passo 14) é sobre essa tabuleta, e o Primeiro Servo é atordoado pelo "primeiro poder". A regra nova diz que a tabuleta do despertar é o **Sopro de Enlil**, lida no Poço. Falta decidir no ME1 se são duas tabuletas (e qual delas ela segura ao acordar), o que acontece com o Eco do Abzu e com o passo 8, e sobre qual tabuleta é a escolha do wadi. O documento da região 1 não foi mudado.
+- **Botões dos ME (proposta, ainda não aprovada, a confirmar no projeto do ME1):** Q para o Eco, E para o Sopro e R para a Égide; no controle, LB, RB e LB+RB. **Atenção:** hoje o E já é Interagir, o R é Recarregar e o RB é a faca.
+- **A barra "Transformação %" do HUD (ME7):** o que ela vira com os despertares (some, vira contagem de despertares ou continua como barra).
 
 ## Onde estamos
 
@@ -94,7 +99,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 - O final de **"O que o Tom viu"** (a Umm Karim leva a Elena a Abu Faris, que revela os filmes num quarto escuro; recompensa: o item "Fotos do Tom", código estável `fotos_do_tom`) está pronto em blockout, testado pela ponte e aprovado pelo dono no Play. Veja "Secundária O que o Tom viu: o final".
 - Todos os personagens prontos da `ArteFonte/Personagens` estão na Unity (falta ainda o Abu Faris, variação do aldeão base). Os objetos e ambientes do Tripo e do Meshy entraram em 3/nov/2026: veja "Arte da ArteFonte no jogo". Lista e alturas em Personagens 3D.
 
-**Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. As **animações da biblioteca** (`Docs/CATALOGO_ANIMACOES.md`) foram importadas para as criaturas (garra, investida, urro, golpe recebido e morte do Lullu e do Primeiro Servo) e para o Samir dirigindo (veja "Animações da biblioteca" abaixo), testadas pela ponte e **aprovadas pelo dono no Play** (vitrines das criaturas e da Elena, viagem do passo 15 com a Elena sentada e o Samir ao volante, passo 11 com o Lullu na caça e passo 12 com o Servo acordando e urrando). **O passo de importação de animações está aprovado.** O `zombie stand up` ficou importado e só na vitrine (nenhuma mecânica de surgimento pelas rachaduras por enquanto), e as pastas Pro Magic, Magic Locomotion e Scary Zombie seguem com **origem não confirmada, não usar até confirmação**. A Elena também já viaja sentada no chão da caçamba e tem agachada parada de verdade. Depois, importar os outros personagens (o kit comum já serve para eles). A Elena agora usa a locomoção feminina (veja "Elena").
+**Os passos 1 a 15 estão todos aprovados pelo dono no Play.** O passo 12 segue com o equilíbrio da luta pendente para o teste completo da fatia. As **animações da biblioteca** (`Docs/CATALOGO_ANIMACOES.md`) foram importadas para as criaturas (garra, investida, urro, golpe recebido e morte do Lullu e do Primeiro Servo) e para o Samir dirigindo (veja "Animações da biblioteca" abaixo), testadas pela ponte e **aprovadas pelo dono no Play** (vitrines das criaturas e da Elena, viagem do passo 15 com a Elena sentada e o Samir ao volante, passo 11 com o Lullu na caça e passo 12 com o Servo acordando e urrando). **O passo de importação de animações está aprovado.** O `zombie stand up` ficou importado e só na vitrine (nenhuma mecânica de surgimento pelas rachaduras por enquanto), e as pastas Pro Magic, Magic Locomotion e Scary Zombie **foram baixadas do Mixamo pelo dono em 25/out/2026 (origem confirmada na governança de 3/nov/2026) e estão liberadas para uso**. A Elena também já viaja sentada no chão da caçamba e tem agachada parada de verdade. Depois, importar os outros personagens (o kit comum já serve para eles). A Elena agora usa a locomoção feminina (veja "Elena").
 
 ## Documentos
 
@@ -107,6 +112,9 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 | `Docs/Guia-MCP-Unity.md` | Como a Unity conversa com o Claude Code |
 | `Docs/Auditoria-2026-10-25.md` | Auditoria da fatia vertical: o que está pronto, provisório e falta, com esforço, mais as decisões depois dela |
 | `Docs/Creditos-e-Licencas.md` | Origem e licença de cada asset de terceiros (todo asset novo entra nele no mesmo commit) |
+| `Docs/Arte/Fontes-da-Arte.md` | De onde vem cada peça de arte (Blender por script, CC0, Unity, Tripo ou Meshy) e a situação de cada uma |
+| `Docs/LISTA_OBJETOS_3D.md` | Lista peça por peça da região 1, com Fonte e Situação |
+| `Docs/CATALOGO_ANIMACOES.md` | Tudo o que há na biblioteca de animações e o que está em uso |
 | `Docs/ESTADO.md` | Este arquivo |
 
 ## Cenas
@@ -685,6 +693,13 @@ A biblioteca inteira (pacotes do Mixamo e Universal Animation Library) fica em `
 - **Exceção, animações de fuzil:** giro "Original" em todas. Pela direção do corpo, o corpo fica de frente e o fuzil atravessado (cano 70° para a esquerda); no giro original elas andam reto e o fuzil fica só 27° à esquerda (postura de lado), compensado girando o tronco na mira.
 - No editor, sem câmera olhando, um Animator só mexe nos ossos em "Always Animate" (senão fica em pose T): ao medir poses por script, ligue isso antes.
 
+**Decisões da governança (3/nov/2026) sobre a biblioteca:**
+- No Mixamo, o **X Bot é o boneco feminino**.
+- **Idles descartados para a Elena:** mão na cintura (bate no coldre e no colete), braços cruzados e Happy Idle.
+- **Pro Magic Pack, Magic Locomotion Pack e Scary Zombie Pack:** baixados do Mixamo pelo dono em 25/out/2026; origem confirmada, uso liberado.
+- **Gestures Pack Basic 2** registrado no catálogo.
+- **A baixar pelo dono:** Breathing Idle, um idle de troca de peso, um Alert/Nervous, Rifle 8-Way Locomotion Pack, Female Locomotion Pack (se existir), injured walk e stumble.
+
 ### Animações da biblioteca
 
 Clipes importados da `ArteFonte/Animacoes` (fora do Git) para `Art/Animacoes/<Criatura|Elena|Caminhonete>/`, **só os usados**, com nome `Personagem_Movimento`. A tabela (de qual arquivo vem cada um, loop, cortes) e o `AssetPostprocessor` que os importa sempre igual (Humanoid, avatar do X Bot, Loop Time, raiz travada) ficam em `Scripts/Editor/Animacoes/AnimationLibrary.cs`; o mapeamento arquivo original → clipe está no `Docs/CATALOGO_ANIMACOES.md`. Menus **Nibiru > Animações**: "Importar clipes da biblioteca" e "Reimportar clipes (depois de mudar a tabela)".
@@ -695,7 +710,7 @@ Clipes importados da `ArteFonte/Animacoes` (fora do Git) para `Art/Animacoes/<Cr
 - **Importados e sem ligação** (nenhum evento do jogo serve): saída das rachaduras (`Lullu_Saida_Rachaduras`), pegar e abrir da Elena (o `PlayerInteractor` não tem evento de interação) e as viradas. Estão na vitrine.
 - **Elena:** em 1º/nov/2026, a parada, o andar e a corrida da Female Basic Locomotion passaram da vitrine para o controlador, a pedido do dono (veja "Elena"). A corrida é um trote de 3,6 m/s, tocado 1,67 vez mais rápido.
 - **Elena sentada:** `Elena_Sentada` (`X Bot@Sitting Idle2`, sentada no chão; o `Sitting Idle` é de cadeira e não foi usado). O `Elena.controller` ganhou o parâmetro e o estado `Sentada` (`PlayerAnimator.SetSeated`), que o `TruckRide` liga ao travar a Elena. No mesmo ajuste, o `TruckRide` passou a pôr a **raiz da Elena 1,05 m acima do ponto do banco** (antes os pés ficavam 1 m enterrados no chão da caçamba).
-- **Agachada parada:** `Elena_Agachada_Parada` (`X Bot@Crouching Idle`) substitui o quadro congelado do `Sneak Walk` na blend tree da agachada. É a única mudança no controlador aprovado, além da sentada; peça a vitrine 2 para conferir. As pastas Pro Magic, Magic Locomotion e Scary Zombie seguem sem origem confirmada e sem uso.
+- **Agachada parada:** `Elena_Agachada_Parada` (`X Bot@Crouching Idle`) substitui o quadro congelado do `Sneak Walk` na blend tree da agachada. É a única mudança no controlador aprovado, além da sentada; peça a vitrine 2 para conferir. As pastas Pro Magic, Magic Locomotion e Scary Zombie têm origem confirmada (Mixamo, baixadas pelo dono em 25/out/2026) e estão liberadas, ainda sem uso.
 
 **Como testar:** menu **Nibiru > Testes > Animações** (`Scripts/Editor/Animacoes/AnimationShortcuts.cs`):
 
@@ -710,11 +725,11 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 
 ### Elena
 
-**Modelo novo (1º/nov/2026, aprovado pelo dono no Play).** O modelo antigo (FBX, texturas e material) foi apagado de `Art/Personagens/Elena`, depois de conferir que nada mais o usava; dá para recuperá-lo pelo histórico do Git, e a arte-fonte dele continua em `ArteFonte/Elena`. A pasta guarda só o que vale para o modelo novo: `Elena.controller`, `Elena_Tronco.mask` e `Elena_MarcaKur.mat`.
+**Modelo novo (1º/nov/2026, aprovado pelo dono no Play).** O modelo antigo (FBX, texturas e material) foi apagado de `Art/Personagens/Elena`, depois de conferir que nada mais o usava; dá para recuperá-lo pelo histórico do Git, e a arte-fonte dele continua em `ArteFonte/Personagens/Elena`. A pasta guarda só o que vale para o modelo novo: `Elena.controller`, `Elena_Tronco.mask` e `Elena_MarcaKur.mat`.
 
 | | Antiga (fora do jogo) | Nova (no jogo) |
 | --- | --- | --- |
-| Origem | `ArteFonte/Elena` | `ArteFonte/Elena_Nova_Usar` |
+| Origem | `ArteFonte/Personagens/Elena` | `ArteFonte/Personagens/Elena_Nova_Usar` |
 | Triângulos | 19.112 | 39.406 (o dobro) |
 | Texturas | Cor, normal, metal e lisura | **Só cor** (8192 no arquivo, 4096 no jogo) |
 | Esqueleto | AccuRig, 101 ossos, raiz `RL_BoneRoot` | AccuRig, 101 ossos, raiz `root`; os outros 100 têm o mesmo nome |
@@ -727,8 +742,10 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 - **Locomoção feminina (pedido do dono, 1º/nov/2026):** parada, andar e correr agora vêm da `Female Basic Locomotion` (`Elena_Parada_Basic`, `_Andar_Basic`, `_Correr_Basic`), no lugar de `Idle`, `WalkForward` e `Fast Run`. **Regra: a Elena usa animação feminina sempre que existir na biblioteca.** Agachar, rolar, faca, mira, recarga, dano, morte e sentar não têm versão feminina e seguem universais. **Corrida comparada de lado:** a 6 m/s, o pé de apoio deveria recuar a 6 m/s; recua 5,7 na feminina em 1,67× (escolhida), 5,2 em 1,51× e 5,3 no `Fast Run` antigo. Sobra um escorregão pequeno (0,7 m/s em média). GIFs em `Docs/Arte/Capturas/ElenaNova/corrida`.
 - **Mãos e coxas e a pose parada (corrigido em 3/nov/2026).** O modelo novo tem braços longos e calça larga com coldre (o coldre é parte da malha, não um objeto separado). O `ElenaSetup` muda só o "Arm Down-Up" do Avatar: **braço esquerdo no padrão da Unity (-60°) e direito em -55°** (`LeftArmDownLimit`, `RightArmDownLimit`; o direito um pouco menos por causa do coldre: a luva só toca a borda dele). **O "Forearm Stretch" fica no padrão da Unity, -80° a +80°** (`ForearmStretchLimit = 80`). *Correção:* este arquivo dizia que o padrão do máximo era 5°; **estava errado, o padrão é +80°**, e o cotovelo só estica de verdade em +80° (músculo 1 = 0° de dobra, 0 = 80°, -1 = 160°). O limite de -15°, usado antes, travava o antebraço dobrado uns 40° o tempo todo (antebraços altos, "pose de manequim"). **Medido no idle feminino:** no X Bot (origem) braço 15° e cotovelo 18°; na Elena antes, braço 17° e cotovelo **40°**; agora braço **11°** e cotovelo **22°**. Fotografados e testados: -47/-43, -44/-40, -52/-48, -40/-36 (afastava os braços: "robótico", recusado pelo dono em 3/nov) e -60/-55 (escolhido, o mais natural). Medição e fotos: **Nibiru > Testes > Diagnóstico da pose parada**, **Curva do cotovelo**, **Varredura de limites** e **Fotos comparativas** (`Editor/Personagens/PoseDiagnostic.cs`; as fotos saem em `Temp/`; a medição "folga da mão na coxa" não é confiável, vale a foto). *Cuidado ao remontar:* o `ElenaSetup` reescrevia os cortes do `Sneak Walk.fbx` e apagava o `Agachada_Parada`, que o **Samir** usa (`SamirSetup`); corrigido em 3/nov para manter os cortes de outros personagens (o commit `4613b59` tinha levado a perda no `.meta`). Andar, correr e mira ficam parecidos com o X Bot (cotovelo no andar 39 a 71° contra 46°; na mira 77° contra 72°). **Decisão (3/nov/2026): -60/-55 no lugar da "pose A" (-47/-43) ou de -44/-40**, porque o coldre é fundido na malha (não dá para recuá-lo) e os limites mais fechados afastavam os braços do corpo. **Fotos:** `Docs/Arte/Capturas/ElenaNova/pose_parada/` (antes, -47/-43, -52/-48 e -60/-60; **`pose_real_-60_-55.png` é a pose real do jogo**). **Pendente (dono, 3/nov):** achou a pose ainda "masculinizada". O idle feminino do Mixamo é um só; para uma pose mais feminina (peso numa perna) faltam clipes novos, listados abaixo. **"Mão na cintura" está descartada de vez** (coldre fundido e colete).
 - **Variações da parada (3/nov/2026): mecanismo pronto, sem nenhuma variação ligada.** Depois de 6 a 12 s parada, uma camada só do tronco (`VariacaoParada`, máscara `Elena_Tronco`, pernas intactas) troca para uma variação por uns 5 s e volta; qualquer movimento, mira, recarga, agachar, golpe, esquiva ou sentar apaga a camada. O `PlayerAnimator` sorteia sem repetir a anterior (`idleVariationCount`, `idleVariationDelay`, `idleVariationDuration`). A camada só nasce se a tabela `UalIdleImport.Variations` tiver clipes; hoje está **vazia**: os braços cruzados da UAL2 (`Idle_FoldArms_Loop`) **atravessavam o busto da Elena** (visto pelo dono no Play) e foram removidos, e o `Idle_Loop` da UAL1 é postura de luta. Para ligar, ponha os clipes na tabela e rode **Nibiru > Animações > Importar variações de parada da Elena (UAL)** e depois **Montar Elena animada** (o importador serve para FBX da UAL; para clipe do Mixamo, use `AnimationLibrary`). A biblioteca Mixamo só tem **um** idle feminino (o da Female Basic). Idles masculinos existentes e não usados: `Action Adventure Pack/idle (2)` a `(5)`, `Pro Melee Axe Pack/unarmed idle` e `unarmed idle looking ver. 1/2`. **Falta baixar no Mixamo 2 ou 3 idles neutros ou tensos de pessoa em pé (respirar, troca de peso, olhar em volta; prévia na X Bot), sem braços cruzados sobre o busto e sem mão na cintura.**
-- **Agachar (fica assim por enquanto, decisão do dono em 1º/nov/2026; depois ele traz outras animações):** continua `Elena_Agachada_Parada` e `Sneak Walk`. No Mixamo, a candidata é o par `Crouch Idle 01` e `Crouch Walk`, ainda a conferir (a miniatura parece segurar algo na mão); as `Female Crouch` são poses paradas e não servem para isso. **Não há agachada feminina na biblioteca.** Testado em 1º/nov/2026 e descartado: `Crouch_Idle_Loop` e `Crouch_Fwd_Loop` do UAL1, fundas demais na Elena (quadril a 47 cm do chão, pés a 60 cm um do outro); misturadas com a pose em pé, os pés afundam no chão (5 a 19 cm). Os agachares do Pro Rifle e do Pro Melee vêm com arma na mão, e os do Pro Magic têm origem não confirmada. A troca é só no `ElenaSetup.UseCrouch`.
-- **Coldre:** a malha nova já traz um coldre com pistola na coxa direita, e a pistola da mão continua sendo o bloco provisório.
+- **Agachar (fica assim por enquanto, decisão do dono em 1º/nov/2026; depois ele traz outras animações):** continua `Elena_Agachada_Parada` e `Sneak Walk`. No Mixamo, a candidata é o par `Crouch Idle 01` e `Crouch Walk`, ainda a conferir (a miniatura parece segurar algo na mão); as `Female Crouch` são poses paradas e não servem para isso. **Não há agachada feminina na biblioteca.** Testado em 1º/nov/2026 e descartado: `Crouch_Idle_Loop` e `Crouch_Fwd_Loop` do UAL1, fundas demais na Elena (quadril a 47 cm do chão, pés a 60 cm um do outro); misturadas com a pose em pé, os pés afundam no chão (5 a 19 cm). Os agachares do Pro Rifle e do Pro Melee vêm com arma na mão; os do Pro Magic estão liberados desde 3/nov/2026 (origem confirmada), ainda não testados na Elena. A troca é só no `ElenaSetup.UseCrouch`.
+- **Coldre:** a malha nova já traz um coldre com pistola na coxa direita. A pistola da mão é a Makarov do Tripo, com a coronha na palma (3/nov/2026).
+- **Roupa real do modelo:** colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas. O conceito antigo dizia "camisa de linho": divergência registrada como pergunta aberta na Bíblia (proposta: o conceito passa a seguir o modelo).
+- **Visual dos poderes no corpo (conceito "barro rachando", aguardando teste de imagem):** rachaduras de terracota fosca com luz de lápis-lazúli por baixo; no estágio 1, só na mão e no antebraço, e acesas só ao usar um poder. Idade: 26 anos em 2003. Pose parada final: braços -60/-55 (acima).
 - **Menu novo: Nibiru > Personagens > Trocar só o modelo da Elena** refaz textura, material, importação e o filho "Modelo" do prefab, sem mexer no controlador nem nas animações. Fora do "Modelo", os 2.395 valores do prefab ficaram iguais (comparados antes e depois). Arma e faca seguem a mão direita pelo Humanoid, então não precisaram de ajuste. **A Elena não tem encaixe de lamparina:** as lamparinas são objetos das cenas.
 - A vitrine de animações da Elena (**Nibiru > Testes > Animações**) agora usa o modelo novo.
 - **Capturas e GIFs:** `Docs/Arte/Capturas/ElenaNova`.
@@ -736,7 +753,7 @@ Teste pela ponte: o teste automático passou inteiro; as vitrines foram vistas e
 - **Pendências:** física e movimento secundário ficam para o polimento (etapa B). **Antes da página "Em breve" da Steam:** avaliar a semelhança da Elena nova com a Lara Croft (veja `Docs/Creditos-e-Licencas.md`).
 
 O menu **Nibiru > Personagens > Montar Elena animada** (`Scripts/Editor/Personagens/ElenaSetup.cs`) refaz tudo (saia do Play antes):
-- Modelo `Art/Personagens/ElenaNova/ElenaNova.fbx` (cópia de `ArteFonte/Elena_Nova_Usar/2_Rig/Elena.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,701 (1,70 m), sem blendshapes.
+- Modelo `Art/Personagens/ElenaNova/ElenaNova.fbx` (cópia de `ArteFonte/Personagens/Elena_Nova_Usar/2_Rig/Elena.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,701 (1,70 m), sem blendshapes.
 - Textura `ElenaNova_BaseColor.jpg` (cópia do JPG de `1_Meshy`). Material URP Lit `Materiais/ElenaNova.mat`, de dois lados (como no AccuRig), sem metal, com lisura 0,25.
 - Animações: avanço do clipe descartado (quem anda é o `PlayerMotor`), altura e giro na pose. A velocidade natural de cada andar e corrida é lida do próprio clipe.
 - Controlador `Elena.controller`. Camada base: "Locomocao" (em pé e agachada pelo `Agachar`, cada uma pela `Velocidade`), "Esquiva", "Golpe_Faca" e "Morte" (cada uma no tempo exato da ação do jogo). Camadas do tronco (`Elena_Tronco.mask`): "Mira", "Recarregar" (no tempo da recarga da pistola) e "Reacoes" (aditiva, peso 0,55: o tranco do dano por cima de tudo).
@@ -781,7 +798,7 @@ A base dos atalhos (`TestShortcuts.Go`) agora aceita a cena: atalhos de outras c
 O modelo do Meshy **não tem túnica**: jaqueta, calça cargo, botas, lenço, bolsa e uma adaga curva no cinto (igual à referência). Jaqueta, bolsa e calça deformam bem andando e correndo; os pesos do AccuRig ficaram como vieram.
 
 O menu **Nibiru > Personagens > Montar Samir animado** (`Scripts/Editor/Personagens/SamirSetup.cs`) refaz tudo (saia do Play antes; rode antes o menu da Elena, porque o Samir usa os cortes dela):
-- Modelo `Art/Personagens/Samir/Samir.fbx` (cópia de `ArteFonte/Samir/2_Rig/Samir.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,835 (1,75 m).
+- Modelo `Art/Personagens/Samir/Samir.fbx` (cópia de `ArteFonte/Personagens/Samir/2_Rig/Samir.Rig.fbx`): Humanoid com dedos (52 ossos mapeados), escala de importação 1,835 (1,75 m).
 - Texturas `Samir_BaseColor/Normal/Metallic/Roughness.png` (cópias das PNG de `1_Meshy`) e `Samir_MetalSmooth.png` (gerado só se não existir). Material URP Lit `Materiais/Samir.mat`, de dois lados.
 - Controlador `Samir.controller`: "Locomocao" (em pé e agachado pelo `Agachar`, cada um pela `Velocidade`), "Golpe_Faca" (pelo gatilho `Golpe`) e "Conversa_1" a "Conversa_4" (Talking 1 a 4).
 - Prefab `Prefabs/Personagens/Samir`: o modelo, o `NpcAnimator` e uma faca provisória (cabo e lâmina), que só aparece na mão direita durante o golpe.
@@ -817,7 +834,7 @@ Pendências do Samir:
 ### Lullu
 
 O menu **Nibiru > Personagens > Montar Lullu animado** (`Scripts/Editor/Personagens/LulluSetup.cs`) refaz tudo (saia do Play antes; rode antes o menu da Elena, porque ele usa os cortes dela):
-- Copia da `ArteFonte/Lullu` o FBX do AccuRig (`2_Rig/Lullu.rig.fbx`) e as texturas do Meshy para `Art/Personagens/Lullu` (usa o `SoldiersSetup.ImportCharacter`, que agora é público). Humanoid com dedos (53 ossos), escala de importação 2,204 (2,10 m em pé), material URP de dois lados.
+- Copia da `ArteFonte/Personagens/Lullu` o FBX do AccuRig (`2_Rig/Lullu.rig.fbx`) e as texturas do Meshy para `Art/Personagens/Lullu` (usa o `SoldiersSetup.ImportCharacter`, que agora é público). Humanoid com dedos (53 ossos), escala de importação 2,204 (2,10 m em pé), material URP de dois lados.
 - Controlador `Lullu.controller`: "Locomocao" pela velocidade (parado = `Idle`, andar = `WalkForward`, correr = `Fast Run`, nas velocidades dos dados `Data/AI/Lullu`), "Golpe" (`Stabbing`, pelo gatilho), "Morte" (cai para trás) e a camada aditiva "Reacoes" (`Hit Reaction`, peso 0,6).
 - O **prefab é editado no lugar** (mesmo arquivo, então as cenas já pegam o modelo): `Lullu` (colisor, agente, vida, `LulluAI`, `LulluAnimator`) > `Corpo` (o "body" da IA, com o `EchoRevealable`; os pés ficam 1 m abaixo da raiz) > `Modelo`. Saíram os olhos e as faixas da cápsula.
 - `AI/LulluAnimator` (novo, a IA não mudou): lê o estado da `LulluAI` e a vida; passa a velocidade (pelo deslocamento), o golpe (entrando em Golpe ou Investida), o dano e a morte ao Animator. **Postura de criatura:** o modelo é em pé, então o tronco, o pescoço e a cabeça são dobrados para a frente por cima da animação (22°, 22°, -18°, -12°; mais fraco andando e correndo, `movingWeight`). **Pés no chão:** a estocada baixava o corpo e a sola entrava no chão; o `LulluAnimator` mede o tornozelo mais baixo a cada quadro e ergue o modelo o que faltar até a altura de repouso (no máximo 25 cm), sem mexer na animação. O golpe tem corte próprio (`Lullu_Golpe`, altura pelos pés). Morto, ele segura o `Corpo` de pé onde estava, porque a `LulluAI` tomba a raiz e a animação de morte já o deita.
@@ -829,13 +846,16 @@ O menu **Nibiru > Personagens > Montar Lullu animado** (`Scripts/Editor/Personag
 ### Primeiro Servo
 
 O menu **Nibiru > Personagens > Montar Primeiro Servo animado** (`Scripts/Editor/Personagens/PrimeiroServoSetup.cs`) refaz tudo (saia do Play antes; rode antes os menus da Elena e do Lullu):
-- Copia da `ArteFonte/PrimeiroServo` o FBX do AccuRig e as texturas do Meshy para `Art/Personagens/PrimeiroServo`. Humanoid com dedos, escala de importação 2,724 (2,50 m em pé); 4 ossos de dedo sem peso são corrigidos pelo `FingerWeightFix`. Na importação aparece um aviso amarelo "Rig Error / Avatar Rig Configuration mis-match": é do passo intermediário em que a escala ainda está sendo ajustada; o avatar final fica válido.
+- Copia da `ArteFonte/Personagens/PrimeiroServo` o FBX do AccuRig e as texturas do Meshy para `Art/Personagens/PrimeiroServo`. Humanoid com dedos, escala de importação 2,724 (2,50 m em pé); 4 ossos de dedo sem peso são corrigidos pelo `FingerWeightFix`. Na importação aparece um aviso amarelo "Rig Error / Avatar Rig Configuration mis-match": é do passo intermediário em que a escala ainda está sendo ajustada; o avatar final fica válido.
 - Controlador `PrimeiroServo.controller`: os mesmos estados e cortes do Lullu (montados pelo `LulluSetup`, agora reaproveitável), nas velocidades de `Data/AI/PrimeiroServo`.
 - Prefab `Prefabs/AI/PrimeiroServo`: na primeira vez, uma cópia do prefab do Lullu; depois, editado no lugar. Mesmo arranjo (`LulluAI`, `LulluAnimator`, `Corpo` > `Modelo`), com colisor de 0,55 x 2,2 m, os dados `PrimeiroServo` e a `FirstServantFight` (dados `PrimeiroServo_Luta`, sons do urro e da máscara, lascas de ouro). A postura encurvada é a mesma do Lullu.
 - No laboratório, o Primeiro Servo (antes o Lullu em escala 1,25) passa a ser este prefab, acordado desde o começo (campo "Awake On Start").
 - Animações novas (pacote do mutante): parado, andar, correr, golpe, investida e urro. Pendências: saída das rachaduras (clipe importado, sem evento que o use); a máscara não muda no modelo (as lascas são soltas).
 
 ### Soldados da Fundação
+
+Força armada privada da Fundação Enlil. Arma padrão: fuzil tipo AKM modernizado, preto, com red dot (já no jogo, modelo do Tripo). Nacionalidade: indefinida (pergunta aberta na Bíblia).
+
 
 O menu **Nibiru > Personagens > Montar soldados da Fundação** (`Scripts/Editor/Personagens/SoldiersSetup.cs`) refaz tudo (saia do Play antes; rode antes o menu da Elena, porque os soldados usam os cortes de recarga, dano e morte dela):
 - Copia da `ArteFonte`, se ainda não estiverem na Unity, o FBX do AccuRig (`<Nome>.Rig.fbx`) e as texturas PBR do Meshy (`1_Meshy`) para `Art/Personagens/<Nome>/`, e as animações de fuzil para `Art/Animacoes/Mixamo`. Importa como Humanoid com dedos, na altura da tabela, com material URP de dois lados (como o Samir).
@@ -894,7 +914,7 @@ Pendências dos soldados:
 
 ### Ninsar
 
-Arte-fonte em `ArteFonte/Ninsar/`:
+Arte-fonte em `ArteFonte/Personagens/Ninsar/`:
 
 | Pasta | O que tem | No Git? |
 | --- | --- | --- |
@@ -911,7 +931,7 @@ Os scripts refazem tudo do zero, nesta ordem (no terminal, de dentro de `3_Blend
 
 O `Ninsar_Final.blend` guarda essa versão vestida (o manto do Meshy encaixado fica só como referência). A pose de repouso continua a de braços abertos do AccuRig.
 
-**Manto da Ninsar pausado; o manto gerado por script não alcançou a referência. Alternativas: capa curta com capuz abaixado, roupa feita no Marvelous Designer ou artista 3D freelancer; as texturas em `ArteFonte/Ninsar/Texturas/Processadas` servem para qualquer uma.** O que foi tentado (scripts guardados como histórico):
+**Manto da Ninsar pausado; o manto gerado por script não alcançou a referência. Alternativas: capa curta com capuz abaixado, roupa feita no Marvelous Designer ou artista 3D freelancer; as texturas em `ArteFonte/Personagens/Ninsar/Texturas/Processadas` servem para qualquer uma.** O que foi tentado (scripts guardados como histórico):
 - `etapa2_manto_leve.py`: versão leve tirada do manto do Meshy. Falhou: a casca do Meshy é fina demais (cerca de 2 mm) para refazer a malha.
 - `etapa2_manto_novo.py`: manto longo feito como molde (malha de quadrados, cavas, UV planificada por painéis, simulação de tecido). Ficou com cara de saco reto.
 - `etapa2_manto_poncho.py`: capa-poncho com frente aberta, aba com franja nos ombros e capuz largo, simulada com os braços baixados (só na pose). Também não chegou à silhueta da referência.
@@ -1217,16 +1237,16 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 
 **Sem data:**
 - **Listar os 47 testes pulados** da regressão (teste geral dos atalhos: 95 OK, 0 FALHOU, 47 pulados) e o motivo de cada um.
+- **Letreiros das áreas do blockout** (`Rotulo_1 · ACAMPAMENTO`...) aparecem através das paredes (o shader desenha por cima).
 
 ## Próximos passos
 
-1. Teste do dono nas vitrines de animação (veja "Animações da biblioteca"); os passos 1 a 15 já foram aprovados pelo dono. Depois, o segundo líder e a passagem do helicóptero na base, a revelação dos filmes do Tom.
-2. Seguir área por área: Zigurate, Poço e Wadi.
-3. Pendências das Trincheiras: o rádio de campanha avisando onde estão as patrulhas (a tela de documentos e fitas já existe: veja "Arquivo de documentos e fitas (etapa A3)").
-4. Salvamento: o A4a e o A4b estão aprovados (etapa A concluída em 26/out, com o A4c: mouse e proteção dos slots); a tela de slots já existe. A pendência do soldado caído da Aldeia foi para "Pendências da etapa B (polimento)".
-5. Personagens 3D, um por conversa: Yusuf, Umm Karim, Dra. Weiss, equipe morta (arqueólogos e trabalhador, que também serve de Hassan) e Primeiro Servo, cada um com a altura da tabela e trocando a cápsula onde ele aparece (use o `CharacterSetupKit` e o `NpcAnimator`, como no Samir). Soldados: fuzil de verdade e as pendências em "Soldados da Fundação". Samir: pose de mão na faca e as outras pendências em "Samir". Elena: corrida mais atlética (conferir a Run Forward), agachada parada e tiro/recarga de pistola (lista em "Elena"). Ninsar: decidir o caminho do manto (veja as alternativas em Personagens 3D) e terminar saia, física e poses de mão.
-6. Versões simples do Grupo 2 (cenas, crafting; o save em disco está no A4a/A4b). O diário fica fora da demo (decisão de 25/out). A memória jogável já tem a versão simples. Localização parte 1 e a conclusão de "O que o Tom viu" (fotógrafo, quarto escuro, item "Fotos do Tom") estão na fila; veja "Decisões de 25/out/2026".
-7. Memória de Shuruppak: hoje em formas simples; trocar por arte de verdade, com som de cidade, rio e a voz, quando a fatia ganhar arte.
+Ordem da governança de 3/nov/2026, sem datas:
+1. **Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos). *Feito em grande parte em 3/nov/2026 (veja "Arte da ArteFonte no jogo"); falta a troca dos 7 corpos do círculo e o que ainda não foi gerado.*
+2. **Zoom da câmera com a roda do mouse** (projeto no papel antes).
+3. **Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).
+4. **Projeto em papel do ME1.**
+5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
 
 ### Como testar o passo 15
 

@@ -25,12 +25,14 @@ Documento para o Claude Code transformar o blockout da cena `Regiao1_SitioDeUr` 
 - Colisores: sempre **caixas e cápsulas simples** separadas da malha visual. Nunca colisor de malha em props decorativos.
 
 ### 0.4 De onde vem cada coisa
+
+**A tabela completa, item por item, está em `Docs/Arte/Fontes-da-Arte.md`** e vale acima desta seção. Regra: nada da Asset Store e nada pago.
 - **Kit modular de arquitetura** (paredes de barro, trincheiras, degraus do zigurate, andaimes, passarelas): feito no Blender por script, com UV para texturas repetíveis. O Meshy não serve para peças modulares que precisam encaixar.
-- **Props sólidos** (caixas, geradores, rádio, cerâmicas, ferramentas, jarros): Meshy com **remesh antes de baixar**, ou packs da Asset Store/Fab.
-- **Veículos** (caminhões, caminhonetes, helicóptero): packs prontos e só trocar as cores. Não gerar no Meshy.
+- **Props sólidos** (caixas, geradores, cerâmicas, ferramentas, jarros): Blender por script ou modelos CC0 (Poly Haven); os itens de mão e os "heróis" (rádio, armas, tabuleta) vêm do Tripo, gerados pelo dono.
+- **Veículos** (caminhões, caminhonetes, helicóptero): Tripo, gerados pelo dono. Não gerar no Meshy.
 - **Tecidos estáticos** (lonas de tenda, toldos, bandeiras): malha simples feita no Blender, com balanço leve por vento (shader ou osso), sem simulação de pano em tempo real.
 - **Terreno:** Unity Terrain com camadas pintadas; detalhes com decals.
-- **Vegetação:** palmeiras e arbustos de pack, com balanço por vento no shader.
+- **Vegetação:** pedras e rochas CC0 (Poly Haven); juncos, capim e arbustos em cartões de vegetação com textura CC0; palmeiras por script no Blender (tronco segmentado e folhas em cartões), a avaliar; se não convencerem, candidatas ao Tripo. Balanço por vento no shader.
 
 ### 0.5 Direção de arte da região
 - **Colorida e luminosa.** O terror vem do som, do silêncio e dos inimigos, não de escuridão. Nada de tudo cinza e marrom.
@@ -79,7 +81,7 @@ Primeiro lugar que o jogador vê. Tutorial de movimento, faca, exame de corpos, 
 | Gerador a diesel com cabos no chão | 2 | Um ainda ligado (som e fumaça leve) |
 | Antena de rádio em mastro com estais | 1 | Bom ponto de referência vertical |
 | Rádio de campanha sobre mesa | 1 | Herói: textura 2K, luz vermelha piscando quando chia |
-| Caminhão de expedição | 2 | Pack de veículo; um com a lona traseira rasgada |
+| Caminhão de expedição | 2 | Tripo (dono); um com a lona traseira rasgada |
 | Caminhonetes | 2 | Na beira, perto do heliponto |
 | Galões, tambores azuis, caixas de madeira e de plástico | 20–30 | Espalhados para dar vida e cobertura |
 | Peneiras em cavaletes, carrinhos de mão, pás, picaretas, baldes de borracha | 10–15 | Material de escavação |

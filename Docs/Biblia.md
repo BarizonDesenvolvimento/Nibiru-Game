@@ -73,6 +73,8 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 - **O segredo:** descende de Ziusudra e dos primeiros híbridos. A mãe, Irena, descobriu isso em 1979 e escondeu a filha da Fundação.
 - **A ferida:** acha que a mãe a abandonou. Sente falta de alguém de quem mal se lembra.
 - **Para onde pode ir:** humana que recusa a herança, deusa que a abraça, ou alguém que encontra um terceiro caminho.
+- **Roupa do modelo do jogo:** colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas (diverge do conceito antigo; veja "Perguntas abertas").
+- **Os poderes no corpo (conceito, aguardando teste de imagem):** "barro rachando": rachaduras de terracota fosca com luz de lápis-lazúli por baixo. No estágio 1, só na mão e no antebraço, e acesas só quando ela usa um poder.
 
 ### Dr. Aurelian Kast
 
@@ -107,6 +109,11 @@ Cada personagem principal tem um segredo que o jogador descobre tarde e uma muda
 
 - **Viva, em Kur, há 24 anos.** Ereshkigal a mantém presa porque ela é a única que sabe como lacrar o Ekur para sempre.
 - Aparece no Ato 2 como voz em gravações e no Ato 3 em pessoa. O reencontro é o coração emocional do jogo.
+
+## A força armada da Fundação
+
+- **Quem são:** a força armada privada da Fundação Enlil (os soldados de contenção, os líderes de esquadra, o atirador de elite e os pilotos).
+- **Arma padrão:** fuzil tipo AKM modernizado, preto, com mira red dot.
 
 ## Os Guardiões e os seus caminhos
 
@@ -149,7 +156,17 @@ Regras já aprovadas para a demo (região 1). A construção delas está no `Doc
 
 - **Progressão.** Não existe XP nem nível. A Elena avança pelos **despertares**: a árvore de habilidades se abre por despertares, não por pontos.
 - **Servos.** Os servos dos deuses são **híbridos**. O Lullu e o Primeiro Servo são híbridos.
-- **Sopro de Enlil.** É a tabuleta que a Elena segura ao acordar. Ela o lê no Poço (puzzle 1, de 3 anéis), antes da luta com o Primeiro Servo. Muito eficaz contra Anunnaki, dano médio em híbridos e fraco contra humanos. Recarga de 90 s. A luta do Servo exige faca, tiros e o poder.
-- **Égide de Enki.** Obtida depois do Primeiro Servo (puzzle 2, de 4 anéis, com uma pista no ambiente). Dura 8 s e tem recarga de 60 s. Dispara o **primeiro despertar**: a Elena sente, mas não entende. A árvore aparece bloqueada, com glifos não traduzidos.
-- **Puzzle do selo.** Os ME são lidos girando anéis. O jogo não pausa, o puzzle fica num lugar seguro e falhar não tem penalidade.
+- **Três poderes na demo:** Eco do Abzu, Sopro de Enlil e Égide de Enki, cada um num ME.
+- **Tabuleta do Junco (Eco do Abzu).** É a tabuleta que a Elena segura ao acordar: o ME que ela tocou naquela noite. É lida no altar dos Guardiões, na Aldeia (passo 8), **sem puzzle**, porque Enki lê através dela. Dá o **Eco do Abzu**. A escolha do wadi (passo 14) é sobre ela.
+- **Sopro de Enlil.** Selado na antecâmara do Poço e lido no **puzzle 1** (3 anéis), entre os passos 11 e 12, antes da luta com o Primeiro Servo. Muito eficaz contra Anunnaki, médio contra híbridos e fraco contra humanos. Recarga de 90 s.
+- **Égide de Enki.** Na Passagem dos Guardiões (passo 13), lida no **puzzle 2** (4 anéis); a pista vem das inscrições e da fita de Irena. Dura 8 s e tem recarga de 60 s. Dispara o **primeiro despertar**, antes do wadi: a Elena sente, mas não entende. A árvore aparece bloqueada, com glifos não traduzidos.
+- **A luta do Primeiro Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano).
+- **Puzzle do selo.** O Sopro e a Égide são lidos girando anéis. O jogo não pausa, o puzzle fica num lugar seguro e falhar não tem penalidade.
+- **Botões dos poderes (proposta, ainda não aprovada; decidir no projeto do ME1):** Q para o Eco, E para o Sopro e R para a Égide; no controle, LB, RB e LB+RB. Hoje o E já é Interagir, o R é Recarregar e o RB é a faca.
+- **Em aberto (ME7):** o que a barra "Transformação %" vira com os despertares.
 - **Save.** Guarda os ME da Elena, a recarga restante de cada um e os despertares.
+
+## Perguntas abertas
+
+- **Nacionalidade dos soldados da Fundação:** indefinida.
+- **Roupa da Elena:** o conceito antigo dizia "camisa de linho"; o modelo do jogo usa colete de lona aberto, regata, calça cargo, coldre na coxa direita, luvas sem dedos e botas. Proposta: o conceito passa a seguir o modelo. Falta o dono confirmar.

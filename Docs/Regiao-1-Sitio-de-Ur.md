@@ -98,16 +98,16 @@ A sequência do começo ao fim. Cada passo vira um objetivo na tela.
 5. **Fugir para as trincheiras.** Primeira furtividade. Pelo rádio dos soldados ouve-se a ordem: "a doutora, viva; o resto, não". No corpo do chefe de segurança da expedição, a Elena pega a pistola e pouca munição. *(Tutorial de combate.)*
 6. **Encontrar o Samir.** Um soldado encurrala a Elena e o Samir Haddad, o guia da expedição, o derruba com uma faca. Ele diz que os soldados não vieram resgatar ninguém e a leva para a Aldeia.
 7. **Chegar à Aldeia.** Sobreviventes escondidos: Yusuf, um jovem escavador ferido, e Umm Karim, a mulher mais velha da aldeia. O Samir mostra o nicho dos Guardiões, que serve de altar de salvamento. *(Começa a secundária "Remédio para Yusuf".)*
-8. **Decifrar a primeira tabuleta.** No altar, a Elena lê a tabuleta e vive uma memória jogável curta (veja "A primeira tabuleta"). Ela ganha o primeiro poder e uma marca azul na pele do pulso. O Samir viu tudo e está com a mão na faca. *(Diálogo com escolha, veja abaixo.)*
+8. **Decifrar a primeira tabuleta.** No altar, a Elena lê a Tabuleta do Junco, sem puzzle (Enki lê através dela), e vive uma memória jogável curta (veja "A primeira tabuleta"). Ela ganha o primeiro poder e uma marca azul na pele do pulso. O Samir viu tudo e está com a mão na faca. *(Diálogo com escolha, veja abaixo.)*
 9. **Plano de fuga.** A Fundação fecha as estradas. O Samir conhece uma passagem antiga dos Guardiões que sai do Poço para o wadi, fora do cerco. Para chegar ao Poço, é preciso passar pela base avançada no zigurate.
    - Da beira norte da Aldeia, os dois veem o cerco: um caminhão da Fundação fecha a estrada do norte com uma barreira e um guarda, um helicóptero pousa na base e uma patrulha passa a vigiar a faixa entre a Aldeia e o muro da base. O caminho norte para o Poço fica fechado.
    - O Samir conta da passagem: ela fica na antecâmara do Poço, atrás de uma parede com o barco de junco entalhado (a marca dos Guardiões), e sai no wadi, onde está a caminhonete dele.
    - Ele se separa da Elena: sozinho, passa pelos canais secos do sul até o wadi; com ela e a tabuleta acendendo, não passaria. Ele a espera na caminhonete. Lembra que o remédio do Yusuf está na tenda médica da base.
    - A Elena atravessa a estrada passando pela patrulha (furtividade) e contorna a ponta sul do muro para entrar na base.
 10. **Atravessar a base do zigurate.** Área aberta com várias rotas. Na tenda de comando: documentos da Fundação, entre eles um e-mail do Kast sobre "a filha de Irena", e uma foto de 1979 com a mãe da Elena ao lado de um homem jovem (o Kast, mas a Elena não reconhece). Ao sair, ela abre o portão que liga a base à Aldeia.
-11. **Descer o Poço.** Antecâmara, Selo de Kur rachado, brilho azul. A tabuleta pulsa e a Elena tem um flash da noite que esqueceu: só luz e mãos. Algo saiu pelas rachaduras naquela noite.
-12. **Sobreviver ao Primeiro Servo.** Chefe da região: um Lullu antigo, com máscara de ouro e olhos de lápis-lazúli, que caça pelo som. *(Usa esquiva e o primeiro poder.)*
-13. **A passagem dos Guardiões.** A entrada fica atrás da parede com o barco de junco, na antecâmara. Túnel estreito com marcas dos Guardiões. Aqui está a primeira fita de Irena, gravada em 1979: ela passou por esta mesma passagem.
+11. **Descer o Poço.** Antecâmara, Selo de Kur rachado, brilho azul. A tabuleta pulsa e a Elena tem um flash da noite que esqueceu: só luz e mãos. Algo saiu pelas rachaduras naquela noite. Na antecâmara está selado o **Sopro de Enlil**: a Elena o lê no puzzle 1 (3 anéis), entre este passo e a luta.
+12. **Sobreviver ao Primeiro Servo.** Chefe da região: um Lullu antigo, com máscara de ouro e olhos de lápis-lazúli, que caça pelo som. *(Usa esquiva, faca, tiros, o Eco do Abzu, que atordoa, e o Sopro de Enlil, que causa dano.)*
+13. **A passagem dos Guardiões.** A entrada fica atrás da parede com o barco de junco, na antecâmara. Túnel estreito com marcas dos Guardiões. Aqui está a primeira fita de Irena, gravada em 1979: ela passou por esta mesma passagem. Aqui também está a **Égide de Enki**, lida no puzzle 2 (4 anéis); a pista vem das inscrições e da fita de Irena. Ela dispara o primeiro despertar, antes do wadi.
 14. **O wadi.** Na saída, a tempestade de areia chega. O Kast fala pelo rádio de um soldado: os moradores da Aldeia estão cercados. **Primeira escolha de facção** (veja abaixo).
 15. **Fuga.** A Elena e o Samir partem na caminhonete, dentro da tempestade laranja, rumo a Tell Amar. Entrada no diário, e fim da fatia.
 
@@ -171,7 +171,9 @@ A arena do chefe fica num andaime em vários níveis, iluminado por holofotes qu
 
 | Item | Onde | Para que serve |
 | --- | --- | --- |
-| Tabuleta do Junco | Mão da Elena, desde o começo | A primeira tabuleta (veja abaixo) |
+| Tabuleta do Junco | Mão da Elena, desde o começo | A primeira tabuleta (veja abaixo); a escolha do wadi é sobre ela |
+| Sopro de Enlil (ME) | Selado na antecâmara do Poço | Puzzle 1 (3 anéis), entre os passos 11 e 12. Muito eficaz contra Anunnaki, médio contra híbridos, fraco contra humanos; recarga de 90 s |
+| Égide de Enki (ME) | Passagem dos Guardiões (passo 13) | Puzzle 2 (4 anéis), com a pista das inscrições e da fita de Irena. Dura 8 s, recarga de 60 s; dispara o primeiro despertar |
 | Rádio de campanha | Corpo de soldado, Trincheiras | Ouvir a Fundação. Às vezes avisa onde estão as patrulhas |
 | Rolos de filme do Tom (3) | Acampamento, Trincheiras, base do zigurate | Secundária "O que o Tom viu" |
 | Antibióticos | Tenda médica ou Dra. Weiss | Secundária "Remédio para Yusuf" |
@@ -182,7 +184,7 @@ A arena do chefe fica num andaime em vários níveis, iluminado por holofotes qu
 
 ### A primeira tabuleta: Tabuleta do Junco
 
-- **Aparência:** pedra azul de lápis-lazúli do tamanho de uma mão, com escrita cuneiforme em ouro que acende quando a Elena toca. É um **ME**, uma das tabuletas vivas dos Anunnaki.
+- **Aparência:** pedra azul de lápis-lazúli do tamanho de uma mão, com escrita cuneiforme em ouro que acende quando a Elena toca. É um **ME**, uma das tabuletas vivas dos Anunnaki: o que a Elena tocou na noite em que a equipe morreu. É lida sem puzzle, porque Enki lê através dela.
 - **Texto (versão dos deuses):** o mito em que Enki, proibido de avisar os humanos sobre o Dilúvio, fala com Ziusudra através de uma parede de junco e o manda construir um barco. A tabuleta conta Enki como o salvador da humanidade.
 - **A pista escondida:** a última linha diz algo como "o barco leva a semente, e a semente um dia me levará". Quem prestar atenção já pode desconfiar da virada de Enki, como pede a Bíblia.
 - **Memória jogável (2 a 3 minutos):** o jogador vive como Ziusudra em Shuruppak, ao pôr do sol, numa cidade suméria viva e colorida, e caminha até a cabana de junco onde ouve a voz de Enki. É a mesma voz que sussurrou para a Elena no passo 1. É o primeiro gostinho do mundo antigo cheio de cor.
@@ -282,7 +284,7 @@ A pergunta para cada sistema: sem ele, a hora de jogo do Sítio de Ur ainda func
 | Esconderijos | Ficam de fora; agachar atrás de caixas já basta | Armários, mato alto e afins |
 | Crafting | Fica de fora. A munição e os curativos aparecem prontos no cenário | Combinar recursos em munição, cura e itens rituais |
 | Menu de opções | Só sensibilidade da câmera e inverter eixo | Gráficos, áudio, controles e acessibilidade |
-| Níveis e árvore de habilidades | Ficam de fora da fatia | O RPG completo do GDD |
+| Árvore de habilidades | Sem XP nem nível. Aparece bloqueada, com glifos não traduzidos, no primeiro despertar (a Égide, antes do wadi) | A árvore aberta pelos despertares (regras na Bíblia, "Regras da demo") |
 
 ## Andamento
 
@@ -301,6 +303,10 @@ Em 20 de outubro de 2026, os 14 sistemas do Grupo 1 estão prontos e testados na
 | Mirar / atirar | Botão direito / clique esquerdo | LT / RT |
 | Recarregar | R | X / Quadrado |
 | Eco do Abzu | Q | LB / L1 |
+| Sopro de Enlil (proposta, a confirmar no ME1) | E | RB / R1 |
+| Égide de Enki (proposta, a confirmar no ME1) | R | LB + RB |
+
+**Atenção na proposta dos poderes:** hoje o E já é Interagir, o R é Recarregar e o RB é a faca. Resolver no projeto do ME1.
 | Inventário | Tab ou I | Select |
 | Pausa | Esc | Start |
 
@@ -322,7 +328,8 @@ A cena `Regiao1_SitioDeUr` tem o mapa em formas simples, com as seis áreas na o
 - **Data:** abril de 2003, semanas depois da invasão.
 - **Ligação com a região 2:** a região termina com a fuga para Tell Amar. A descida sob o zigurate fica para o fim do Ato 1, no Templo de Enki. O resumo do Ato 1 no GDD foi corrigido para isso.
 - **A execução no passo 4:** aparece de longe. Dispara quando a Elena chega ao mirante da elevação; se ela não for, acontece depois de um tempo e é só ouvida (helicóptero e tiro). O jogador não consegue impedir: a Elena não sai do acampamento antes da cena.
-- **Nomes:** ficam os propostos (Yusuf, Umm Karim, Dra. Hannah Weiss, Lullu, Primeiro Servo, Tabuleta do Junco, Eco do Abzu).
+- **Nomes:** ficam os propostos (Yusuf, Umm Karim, Dra. Hannah Weiss, Lullu, Primeiro Servo, Tabuleta do Junco, Eco do Abzu, Sopro de Enlil, Égide de Enki).
+- **Poderes da demo (governança, 3/nov/2026):** três, nas regras da Bíblia ("Regras da demo"). A Tabuleta do Junco dá o Eco; o Sopro é lido no Poço e a Égide na passagem.
 
 ## Perguntas ainda abertas
 
