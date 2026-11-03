@@ -235,10 +235,7 @@ namespace Nibiru.EditorTools
         {
             PlayerMotor motor = Motor();
             int old = motor.GetInstanceID();
-            var point = new GameObject("Teste_Retorno").transform;
-            point.SetPositionAndRotation(motor.transform.position, motor.transform.rotation);
-            motor.GetComponent<PlayerRespawn>().SaveCheckpoint(point);
-            Object.Destroy(point.gameObject);
+            motor.GetComponent<PlayerRespawn>().SaveCheckpointHere();
             Checkpoints.Restart(RegionSceneName);
             yield return new Until(() => Motor() != null && Motor().GetInstanceID() != old, 30f, "a cena recarregar");
             yield return new Delay(1.5f);

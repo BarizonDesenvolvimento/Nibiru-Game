@@ -140,6 +140,10 @@ namespace Nibiru.EditorTools.Saving
                 // Um colisor em cima do ponto empurraria a Elena (foi assim no pé da descida do Poço): 0,15 m de tolerância.
                 Vector3 now = Motor().transform.position;
                 Check(Near(now, saved.position, 0.15f), $"{code}: a Elena deveria voltar ao ponto do checkpoint {saved.position}, está em {now} ({new Vector2(now.x - saved.position.x, now.z - saved.position.z).magnitude:0.00} m do ponto)");
+                // Ela nasce com a cápsula livre (enterrada, a física a empurraria para um lado qualquer) e fica com o pé no chão do ponto.
+                Check(FreeAt(saved.position, out string touching), $"{code}: a Elena nasceria dentro de {touching}");
+                float ground = GroundUnder(saved.position), feet = Motor().GetComponent<CharacterController>().bounds.min.y;
+                Check(Mathf.Abs(feet - ground) < 0.15f, $"{code}: o pé da Elena deveria estar no chão do ponto (y {ground:0.00}), está em y {feet:0.00}");
                 Check(Vector3.Distance(Motor().transform.position, deathPosition) < 0.05f, $"{code}: posição ao carregar x ao morrer: {Motor().transform.position} x {deathPosition}");
                 Check(SaveSlots.CurrentSlot == 1, $"{code}: o slot da partida deveria ser o 1");
                 Check(Mathf.Abs(PlayTime.Seconds - savedTime) < 1f, $"{code}: o tempo jogado deveria voltar com o slot");
@@ -416,7 +420,7 @@ namespace Nibiru.EditorTools.Saving
             yield return new Delay(1f);
             SaveSlots.Attach(1);
             PlayerRespawn respawn = Object.FindFirstObjectByType<PlayerRespawn>();
-            respawn.SaveCheckpoint(respawn.transform, "memoria_shuruppak.teste");
+            respawn.SaveCheckpointHere("memoria_shuruppak.teste");
             SaveSlots.WriteCurrent();
             Check(File.ReadAllText(SaveSlots.PathOf(1)) == before, "dentro da memória o slot não deveria mudar");
 
@@ -941,6 +945,26 @@ namespace Nibiru.EditorTools.Saving
             Checkpoint cp = Cp(code);
             Transform point = (Transform)typeof(Checkpoint).GetField("spawnPoint", Any).GetValue(cp);
             return point != null ? point.position : cp.transform.position;
+        }
+
+        // A cápsula da Elena com o pé em feet, como o PlayerRespawn a põe ao voltar; touching diz em que ela encosta.
+        static bool FreeAt(Vector3 feet, out string touching)
+        {
+            CharacterController c = Motor().GetComponent<CharacterController>();
+            Vector3 bottom = feet + Vector3.up * (c.skinWidth + c.radius), top = bottom + Vector3.up * (c.height - 2f * c.radius);
+            string[] hits = Physics.OverlapCapsule(bottom, top, c.radius - 0.02f, ~0, QueryTriggerInteraction.Ignore)
+                .Where(h => h.GetComponentInParent<PlayerMotor>() == null).Select(h => h.name).ToArray();
+            touching = string.Join(", ", hits);
+            return hits.Length == 0;
+        }
+
+        // Altura do chão logo abaixo do ponto (NaN se não houver chão até 3 m abaixo).
+        static float GroundUnder(Vector3 point)
+        {
+            float best = float.NaN;
+            foreach (RaycastHit hit in Physics.RaycastAll(point + Vector3.up * 0.5f, Vector3.down, 3.5f, ~0, QueryTriggerInteraction.Ignore))
+                if (hit.collider.GetComponentInParent<PlayerMotor>() == null && (float.IsNaN(best) || hit.point.y > best)) best = hit.point.y;
+            return best;
         }
 
         // O ponto de retorno fica no chão e o centro da Elena, uns 1,05 m acima dele.

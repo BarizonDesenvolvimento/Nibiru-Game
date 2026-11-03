@@ -49,16 +49,16 @@ namespace Nibiru.EditorTools.Content
 
         public static readonly Spot[] Spots =
         {
-            // Munição: 6 garantidas no patamar do meio da descida (antes da antecâmara; perto do ponto de retorno do pé da
-            // descida o colisor do item deslocava a Elena ao voltar dele), 4 na passagem dos Guardiões,
+            // Munição: 6 garantidas no patamar do meio da descida (antes da antecâmara), 4 na passagem dos Guardiões,
             // 4 atrás da mesquita da Aldeia e 4 atrás do contêiner norte da base (cantos opcionais).
+            // Nenhum item a menos de 1 m de um ponto de retorno: o colisor dele ficaria dentro da Elena ao voltar.
             new Spot("Municao_Poco_Descida", new Vector3(49.5f, -7.2f, 79.6f), 6, false, 20f, "Patamar do meio da descida do Poço (Patamar_2), longe dos pontos de retorno e do alcance do Lullu"),
             new Spot("Municao_Passagem", new Vector3(31.6f, -6.5f, 124f), 4, false, -15f, "Rampa da passagem dos Guardiões, antes do wadi"),
             new Spot("Municao_Aldeia_Mesquita", new Vector3(-64f, 0f, -8.6f), 4, false, 35f, "Canto opcional, atrás da mesquita"),
             new Spot("Municao_Base_Conteiner", new Vector3(-1.5f, 0f, 19.4f), 4, false, -25f, "Canto opcional, atrás do contêiner norte da base"),
 
             // Kits médicos.
-            new Spot("Kit_Antecamara", new Vector3(44.8f, -14f, 83.2f), 1, true, 10f, "Antecâmara, a leste da plataforma oeste, antes do flash e da luta (fora do grupo da luta)"),
+            new Spot("Kit_Antecamara", new Vector3(46.6f, -14f, 82.6f), 1, true, 10f, "Antecâmara, a leste da plataforma oeste, antes do flash e da luta (fora do grupo da luta), a 1,6 m do ponto de retorno da luta"),
             new Spot("Kit_Tenda_Medica", new Vector3(-12.6f, 0f, 18.8f), 1, true, 40f, "Opcional: canto dos fundos da tenda médica da base"),
             new Spot("Kit_Passagem", new Vector3(32.5f, -3f, 132f), 1, true, -10f, "Perto do fim da passagem dos Guardiões, antes da seção final (wadi)"),
         };
