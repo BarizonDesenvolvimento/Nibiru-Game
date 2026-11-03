@@ -44,7 +44,7 @@ Seis áreas ligadas, sem mundo aberto. O caminho principal é quase uma linha, m
 - **O que é:** o acampamento da equipe, numa elevação ao sul do sítio. Barracas, geradores, mesas de triagem de cerâmica, dois caminhões e uma antena de rádio.
 - **Papel:** prólogo e tutorial (andar, correr, esquivar, interagir). Primeiros mistérios.
 - **Visual:** amanhecer dourado, lonas laranja e verdes batendo ao vento, fumaça fina de uma fogueira apagada.
-- **Clima de terror:** silêncio quase total. Só o vento, as lonas e um rádio chiando. Os corpos da equipe estão sentados em círculo, todos virados para a barraca da Elena.
+- **Clima de terror:** silêncio quase total. Só o vento, as lonas e um rádio chiando. Os corpos da equipe estão deitados em círculo, mortos (decisão do dono em 3/nov/2026; antes este texto dizia "sentados, virados para a barraca da Elena").
 - **Tempo:** 8 a 10 minutos.
 
 ### 2. Trincheiras da escavação

@@ -1106,7 +1106,7 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | SitioDeUr | Já estava | A pasta só tem o kit da vitrine da Aldeia, já na cena |
 | Personagens (ArqueologaJovem, ArqueologoVeterano, DraWeiss, LiderDeEsquadra, Ninsar, Piloto, TrabalhadorEscavacao) | Já estavam | Todos importados antes; a Ninsar segue como prévia (manto pausado) |
 | Corpo do trabalhador executado | Na cena | `TrabalhadorEscavacao_Morto`: deitado e parado (o clipe deitado do Yusuf congelado), no lugar da cápsula do heliponto |
-| Corpos da equipe (7, no círculo) | Pendente | O documento da região diz que estão **sentados em círculo, virados para a barraca da Elena**; o blockout tem caixas deitadas. Falta o dono decidir a pose (e são 3 modelos para 7 corpos) |
+| Corpos da equipe (7, no círculo) | Pendente | **Decidido pelo dono (3/nov/2026): deitados**, como no blockout (foram mortos); o documento da região foi corrigido. Falta trocar as 7 caixas pelos modelos deitados e parados, como o corpo do trabalhador (são 3 modelos para 7 corpos) |
 | Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
 | Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
 
@@ -1117,7 +1117,6 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 
 **Conflitos de layout (para a fase B):**
 - **Porta do Selo de Kur:** a porta do blockout (x 42 a 48) invade a `Plataforma_Leste` (x 47 a 54) e é mais alta (7 m) que o Selo na largura dela (5,3 m). O colisor da porta ficou onde estava; a moldura do Selo passa 0,35 m à frente dele e 1 m a oeste, sem colisor (a Elena pode encostar um pouco na moldura).
-- **Corpos do círculo:** deitados no blockout, sentados no documento.
 
 **Testes (um por vez, conferindo "terminou; slots reais iguais" no log):** salvamento 19 OK, passo 10 (14), 11 (9), 12 (10), 13 (9), 14 (10), 15 (3), Remédio (8), Arquivo (6), Tom (3), contagem de suprimentos (10) e teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Hash dos slots reais igual em todos.
 
