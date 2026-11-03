@@ -198,15 +198,14 @@ namespace Nibiru.EditorTools.Content
 
         // ---------- Durante a luta ----------
 
-        // Ponto de retorno da boca da antecâmara e uns poucos recursos nos andaimes.
+        // Ponto de retorno da boca da antecâmara e uns poucos curativos nos andaimes. Sem munição fixa na arena
+        // (decisão da B2a): a luta tem de poder ser vencida com faca, tiros e poder, sem depender de bala. A munição
+        // garantida fica antes da antecâmara (veja SuppliesContent).
         static Save.Checkpoint BuildFightGroup(Transform g)
         {
             Checkpoint(g, "Checkpoint_Luta", FightCheckpointCenter, new Vector3(3f, 3f, 1f), FightCheckpointSpawn, 0f);
 
-            var ammo = Load<ItemDefinition>("Items/Municao9mm");
             var bandage = Load<ItemDefinition>("Items/Curativo");
-            GameObject rounds = Prim(PrimitiveType.Cube, g, "Municao_Plataforma_Oeste", new Vector3(38.5f, -10.95f, 88.6f), new Vector3(0.16f, 0.1f, 0.1f), "BO_TurquesaFundacao", 30f);
-            Pickup(rounds, ammo, 8, null);
             GameObject bandage1 = Prim(PrimitiveType.Cube, g, "Curativo_Plataforma_Leste", new Vector3(50.5f, -9.96f, 100.6f), new Vector3(0.18f, 0.08f, 0.12f), "BO_BrancoFundacao", -20f);
             Pickup(bandage1, bandage, 1, null);
             GameObject bandage2 = Prim(PrimitiveType.Cube, g, "Curativo_Boca_Antecamara", new Vector3(51f, -13.96f, 82.2f), new Vector3(0.18f, 0.08f, 0.12f), "BO_BrancoFundacao", 15f);
