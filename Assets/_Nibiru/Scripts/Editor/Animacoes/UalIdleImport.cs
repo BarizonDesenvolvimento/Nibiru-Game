@@ -21,8 +21,9 @@ namespace Nibiru.EditorTools
         /// <summary>arquivo-fonte, clipe dentro do FBX, nome do .anim em Assets.</summary>
         public static readonly (string source, string clip, string name)[] Variations =
         {
-            // Só os braços cruzados entrou: o "Idle_Loop" da UAL1 é uma postura de luta, de pernas abertas.
-            (Ual2, "Armature|Idle_FoldArms_Loop", "Elena_Parada_Var_BracosCruzados"),
+            // Vazio de propósito (3/nov/2026). Descartados: o "Idle_Loop" da UAL1 (postura de luta, pernas abertas) e o
+            // "Idle_FoldArms_Loop" da UAL2 (braços cruzados: os braços atravessam o busto da Elena, visto pelo dono).
+            // Sem nenhuma variação o ElenaSetup não cria a camada VariacaoParada.
         };
 
         [MenuItem("Nibiru/Animações/Listar clipes de parada da UAL (Console)")]
