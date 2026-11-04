@@ -49,6 +49,12 @@ namespace Nibiru.Combat
             public FirearmDefinition firearm;
             public GameObject model;
             public Transform muzzle;
+
+            [Tooltip("Onde a mão direita segura a arma (cabo). Posição e giro em relação à arma na mão da Elena.")]
+            public Transform rightGrip;
+
+            [Tooltip("Onde a mão esquerda apoia a arma (guarda-mão, ou a frente do cabo da pistola). Vazio = a mão esquerda segue a animação.")]
+            public Transform leftGrip;
         }
 
         [Tooltip("Um modelo por arma, dentro do objeto da arma na mão. Só o da arma equipada fica visível.")]
@@ -83,6 +89,10 @@ namespace Nibiru.Combat
 
         /// <summary>Trocando de arma (sem atirar nem recarregar até acabar).</summary>
         public bool IsSwapping => Time.time < swapEndTime;
+        /// <summary>Cabo (mão direita) e apoio (mão esquerda) da arma equipada, ou nulos.</summary>
+        public Transform RightGrip { get; private set; }
+        public Transform LeftGrip { get; private set; }
+
         public int LoadedRounds => Equipped != null && loaded.TryGetValue(Equipped, out int n) ? n : 0;
         public int ReserveRounds => Equipped != null ? inventory.CountOf(Equipped.ammoItem) : 0;
 
@@ -213,7 +223,10 @@ namespace Nibiru.Combat
                 if (entry.model == null) continue;
                 bool mine = entry.firearm == Equipped;
                 entry.model.SetActive(mine);
-                if (mine && entry.muzzle != null) muzzle = entry.muzzle;
+                if (!mine) continue;
+                if (entry.muzzle != null) muzzle = entry.muzzle;
+                RightGrip = entry.rightGrip;
+                LeftGrip = entry.leftGrip;
             }
         }
 

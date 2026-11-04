@@ -22,6 +22,9 @@ namespace Nibiru.Player
         public const string SeatedParam = "Sentada";
         public const string AimLayer = "Mira";
         public const string ReloadLayer = "Recarregar";
+        public const string AimLongLayer = "MiraLonga";
+        public const string ReloadLongLayer = "RecarregarLonga";
+        public const string ReloadLongParam = "RecarregandoLonga";
         public const string IdleVariationParam = "VariacaoParada";
         public const string IdleVariationLayer = "VariacaoParada";
 
@@ -45,6 +48,13 @@ namespace Nibiru.Player
 
         [Tooltip("Opcional: a faca (provisória) vai para a mão direita durante o golpe, apontando como o antebraço.")]
         [SerializeField] Transform heldKnife;
+
+        [Header("Mão esquerda na arma (B6)")]
+        [Tooltip("Quanto a mão esquerda é levada ao ponto de apoio da arma enquanto ela mira (0 a 1).")]
+        [SerializeField, Range(0f, 1f)] float leftHandGripWeight = 1f;
+
+        [Tooltip("Para onde o cotovelo esquerdo aponta, em relação ao corpo (x = direita, y = cima, z = frente): para baixo e para fora.")]
+        [SerializeField] Vector3 leftElbowHint = new(-0.35f, -0.3f, 0.1f);
 
         [Tooltip("Suaviza a velocidade passada ao Animator (segundos).")]
         [SerializeField] float speedDamping = 0.08f;
@@ -82,13 +92,15 @@ namespace Nibiru.Player
 
         static readonly int IdleVariationId = Animator.StringToHash(IdleVariationParam);
 
-        int aimLayerIndex = -1, reloadLayerIndex = -1, idleLayerIndex = -1;
+        static readonly int ReloadLongId = Animator.StringToHash(ReloadLongParam);
+
+        int aimLayerIndex = -1, reloadLayerIndex = -1, idleLayerIndex = -1, aimLongLayerIndex = -1, reloadLongLayerIndex = -1;
         int currentVariation, lastVariation;
         float idleWeight, idleTimer, idleNextDelay, variationTimer;
         bool seated;
-        float aimWeight, reloadWeight, recoil;
+        float aimWeight, reloadWeight, aimLongWeight, reloadLongWeight, recoil;
         bool wasDodging, wasAttacking, hidden;
-        Transform spine, chest, neck, head, rightUpperArm, leftUpperArm, rightLowerArm, rightHand;
+        Transform spine, chest, neck, head, rightUpperArm, leftUpperArm, rightLowerArm, rightHand, leftLowerArm, leftHand;
         Renderer[] bodyRenderers;
 
         /// <summary>True se o controlador tem a queda de morte (o PlayerDeathHandler então não tomba o corpo).</summary>
@@ -104,6 +116,8 @@ namespace Nibiru.Player
             if (animator == null) return;
             aimLayerIndex = animator.GetLayerIndex(AimLayer);
             reloadLayerIndex = animator.GetLayerIndex(ReloadLayer);
+            aimLongLayerIndex = animator.GetLayerIndex(AimLongLayer);
+            reloadLongLayerIndex = animator.GetLayerIndex(ReloadLongLayer);
             idleLayerIndex = animator.GetLayerIndex(IdleVariationLayer);
             idleNextDelay = Random.Range(idleVariationDelay.x, idleVariationDelay.y);
             bodyRenderers = animator.GetComponentsInChildren<Renderer>(true);
@@ -117,6 +131,8 @@ namespace Nibiru.Player
                 leftUpperArm = animator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
                 rightLowerArm = animator.GetBoneTransform(HumanBodyBones.RightLowerArm);
                 rightHand = animator.GetBoneTransform(HumanBodyBones.RightHand);
+                leftLowerArm = animator.GetBoneTransform(HumanBodyBones.LeftLowerArm);
+                leftHand = animator.GetBoneTransform(HumanBodyBones.LeftHand);
             }
         }
 
@@ -239,13 +255,31 @@ namespace Nibiru.Player
         /// <summary>Variação de parada em curso (0 = nenhuma). Para testes.</summary>
         public int CurrentIdleVariation => currentVariation;
 
+        /// <summary>Quanto a pose de mira (de pistola ou de arma longa) está ligada, de 0 a 1. O IK das mãos usa isto.</summary>
+        public float AimWeight => Mathf.Max(aimWeight, aimLongWeight);
+
+        /// <summary>Quanto a camada de recarga (qualquer arma) está ligada, de 0 a 1.</summary>
+        public float ReloadWeight => Mathf.Max(reloadWeight, reloadLongWeight);
+
+        /// <summary>A arma equipada é de pose longa (espingarda).</summary>
+        bool LongHold => weapons != null && weapons.Equipped != null && weapons.Equipped.holdStyle == HoldStyle.Longa;
+
         void FadeLayers(bool aiming, bool reloading)
         {
             float step = aimBlendSpeed * Time.deltaTime;
-            aimWeight = Mathf.MoveTowards(aimWeight, aiming ? 1f : 0f, step);
-            reloadWeight = Mathf.MoveTowards(reloadWeight, reloading ? 1f : 0f, step);
+            bool longHold = LongHold;
+            aimWeight = Mathf.MoveTowards(aimWeight, aiming && !longHold ? 1f : 0f, step);
+            reloadWeight = Mathf.MoveTowards(reloadWeight, reloading && !longHold ? 1f : 0f, step);
+            aimLongWeight = Mathf.MoveTowards(aimLongWeight, aiming && longHold ? 1f : 0f, step);
+            reloadLongWeight = Mathf.MoveTowards(reloadLongWeight, reloading && longHold ? 1f : 0f, step);
             if (aimLayerIndex >= 0) animator.SetLayerWeight(aimLayerIndex, aimWeight);
             if (reloadLayerIndex >= 0) animator.SetLayerWeight(reloadLayerIndex, reloadWeight);
+            if (aimLongLayerIndex >= 0) animator.SetLayerWeight(aimLongLayerIndex, aimLongWeight);
+            if (reloadLongLayerIndex >= 0)
+            {
+                animator.SetLayerWeight(reloadLongLayerIndex, reloadLongWeight);
+                animator.SetBool(ReloadLongId, reloading && longHold);
+            }
         }
 
         // Depois da animação: endireita o tronco ao mirar (agachada, a pose dobra o corpo para a
@@ -253,11 +287,12 @@ namespace Nibiru.Player
         void LateUpdate()
         {
             Vector3 right = transform.right;
-            if (aimWeight > 0f && spine != null && neck != null)
+            float aimTotal = AimWeight;
+            if (aimTotal > 0f && spine != null && neck != null)
             {
                 Vector3 torsoUp = Vector3.ProjectOnPlane(neck.position - spine.position, right);
                 float lean = Vector3.SignedAngle(torsoUp, Vector3.up, right);
-                spine.rotation = Quaternion.AngleAxis(lean * aimWeight, right) * spine.rotation;
+                spine.rotation = Quaternion.AngleAxis(lean * aimTotal, right) * spine.rotation;
             }
 
             // Coice: o peito e os braços sobem de uma vez e voltam aos poucos.
@@ -273,7 +308,11 @@ namespace Nibiru.Player
             }
 
             if (heldGun != null && rightHand != null && heldGun.gameObject.activeInHierarchy)
-                heldGun.SetPositionAndRotation(rightHand.position + transform.rotation * heldGunOffset, transform.rotation);
+            {
+                PlaceHeldGun();
+                ReachLeftHand();
+            }
+            else LeftHandWeight = 0f;
 
             if (heldKnife != null && rightHand != null && rightLowerArm != null && heldKnife.gameObject.activeInHierarchy)
             {
@@ -283,6 +322,69 @@ namespace Nibiru.Player
 
             HideIfCameraTooClose();
         }
+
+        // A arma vai para a mão direita pelo ponto de cabo (Grip_Direita) do modelo: o cabo cai na mão e o giro do cabo diz para onde
+        // o cano aponta (sem giro, o cano aponta para a frente do corpo). Sem ponto de cabo, o deslocamento fixo de antes.
+        void PlaceHeldGun()
+        {
+            Quaternion body = transform.rotation;
+            Vector3 handPoint = rightHand.position + body * heldGunOffset;
+            Transform grip = weapons != null ? weapons.RightGrip : null;
+            if (grip == null)
+            {
+                heldGun.SetPositionAndRotation(handPoint, body);
+                return;
+            }
+            Vector3 gripLocalPosition = heldGun.InverseTransformPoint(grip.position);
+            Quaternion gripLocalRotation = Quaternion.Inverse(heldGun.rotation) * grip.rotation;
+            Quaternion gunRotation = body * Quaternion.Inverse(gripLocalRotation);
+            heldGun.SetPositionAndRotation(handPoint - gunRotation * gripLocalPosition, gunRotation);
+        }
+
+        // Mão esquerda no apoio da arma (guarda-mão): resolvido aqui, depois de tudo (animação, endireitar o tronco, coice, arma na mão),
+        // porque o IK do Animator roda antes do ajuste do tronco e a mão sobrava a uns 25 cm do guarda-mão. É o cálculo de dois ossos:
+        // o cotovelo fica no plano do ombro, do alvo e da dica, e a mão não gira (a pose da animação manda no pulso).
+        void ReachLeftHand()
+        {
+            Transform grip = weapons != null ? weapons.LeftGrip : null;
+            float weight = grip != null ? leftHandGripWeight * AimWeight * (1f - ReloadWeight) : 0f;
+            LeftHandWeight = weight;
+            if (weight <= 0.001f || leftUpperArm == null || leftLowerArm == null || leftHand == null) return;
+
+            Quaternion upperBefore = leftUpperArm.rotation;
+            Quaternion lowerBefore = leftLowerArm.rotation;
+            Vector3 shoulder = leftUpperArm.position;
+            Vector3 elbow = leftLowerArm.position;
+            Vector3 wrist = leftHand.position;
+            Vector3 target = grip.position;
+            float upperLength = Vector3.Distance(shoulder, elbow);
+            float lowerLength = Vector3.Distance(elbow, wrist);
+            Vector3 toTarget = target - shoulder;
+            float distance = Mathf.Clamp(toTarget.magnitude, 0.05f, upperLength + lowerLength - 0.001f);
+            Vector3 direction = toTarget.normalized;
+            Vector3 pole = Vector3.ProjectOnPlane(transform.rotation * leftElbowHint, direction);
+            if (pole.sqrMagnitude < 0.0001f) return;
+            pole.Normalize();
+
+            // Lei dos cossenos: o ângulo no ombro entre a direção do alvo e o braço.
+            float cosAngle = Mathf.Clamp((upperLength * upperLength + distance * distance - lowerLength * lowerLength) / (2f * upperLength * distance), -1f, 1f);
+            float sinAngle = Mathf.Sqrt(1f - cosAngle * cosAngle);
+            Vector3 newElbow = shoulder + direction * (upperLength * cosAngle) + pole * (upperLength * sinAngle);
+
+            leftUpperArm.rotation = Quaternion.FromToRotation(elbow - shoulder, newElbow - shoulder) * leftUpperArm.rotation;
+            Vector3 newWrist = leftHand.position;
+            Vector3 reach = distance >= upperLength + lowerLength - 0.002f ? direction * (upperLength + lowerLength) : target - shoulder;
+            leftLowerArm.rotation = Quaternion.FromToRotation(newWrist - leftLowerArm.position, shoulder + reach - leftLowerArm.position) * leftLowerArm.rotation;
+
+            if (weight < 0.999f)
+            {
+                leftUpperArm.rotation = Quaternion.Slerp(upperBefore, leftUpperArm.rotation, weight);
+                leftLowerArm.rotation = Quaternion.Slerp(lowerBefore, leftLowerArm.rotation, weight);
+            }
+        }
+
+        /// <summary>Peso da mão esquerda no apoio da arma neste quadro (para os testes).</summary>
+        public float LeftHandWeight { get; private set; }
 
         // A câmera encostada numa parede atrás da Elena fica dentro da cabeça: aí só a sombra aparece.
         void HideIfCameraTooClose()

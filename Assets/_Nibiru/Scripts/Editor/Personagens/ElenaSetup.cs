@@ -90,7 +90,16 @@ namespace Nibiru.EditorTools
         // Somado por cima do que ela estiver fazendo (camada aditiva): só o tranco do golpe.
         static readonly Cut Hurt = new("Dano", "Hit Reaction", 13, 60, false);
         static readonly Cut Death = new("Morte", "Standing React Death Backward", -1, -1, false, keepTravel: true);
-        static readonly Cut[] Cuts = { CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death };
+        // Arma longa (espingarda, B6): a pose de mira de duas mãos e a recarga do Basic Shooter Pack. O arquivo é copiado da biblioteca
+        // pelo menu "Elena: camadas da arma longa (B6)" (ou ao montar a Elena). A recarga é cortada em CortesDaRecarga (um cartucho por volta).
+        public const string LongAimFile = "Rifle Aim Idle";
+        public const string LongReloadFile = "Rifle Reloading";
+        static readonly Cut AimLong = new("MiraLonga", LongAimFile, -1, -1, true);
+        // Um cartucho por volta: a mão esquerda sai do guarda-mão (quadro 12), vai à cartucheira, volta ao ferrolho e insere (quadro ~59) e
+        // retorna ao guarda-mão (quadro 69). Medido na posição da mão em relação ao peito (Basic Shooter Pack, 30 quadros por segundo).
+        static readonly Cut ReloadLong = new("RecarregarLonga", LongReloadFile, 12, 69, true);
+        const float LongReloadInsertPhase = 0.82f;
+        static readonly Cut[] Cuts = { CrouchWalk, Dodge, Aim, Reload, Slash, Hurt, Death, AimLong, ReloadLong };
 
         [MenuItem("Nibiru/Personagens/Montar Elena animada")]
         static void Build()
@@ -100,6 +109,8 @@ namespace Nibiru.EditorTools
                 Debug.LogWarning("Saia do Play antes de montar a Elena.");
                 return;
             }
+            CopyFromLibrary(LongAimFile, "Basic Shooter Pack/rifle aiming idle");
+            CopyFromLibrary(LongReloadFile, "Basic Shooter Pack/reloading");
             AssetDatabase.Refresh();
             ConfigureTextures();
             var material = BuildMaterial();
@@ -427,6 +438,7 @@ namespace Nibiru.EditorTools
             var reloadClip = Clip(Reload);
             reload.motion = reloadClip;
             reload.speed = reloadClip.length / pistol.reloadTime;
+            AddLongGunLayers(controller, mask);
 
             // Dano: aditivo, por cima de tudo; fica num estado vazio até levar um golpe. Com peso 1 o
             // tranco do Mixamo joga a cabeça para trás demais.
@@ -448,6 +460,86 @@ namespace Nibiru.EditorTools
 
             EditorUtility.SetDirty(controller);
             return controller;
+        }
+
+        // Camadas da arma longa (espingarda): mesma máscara do tronco, peso dado pelo PlayerAnimator conforme a arma equipada.
+        static void AddLongGunLayers(AnimatorController controller, AvatarMask mask)
+        {
+            // Refaz as camadas da arma longa (o menu pode rodar de novo depois de mudar os cortes ou os tempos).
+            for (int i = controller.layers.Length - 1; i >= 0; i--)
+                if (controller.layers[i].name == PlayerAnimator.AimLongLayer || controller.layers[i].name == PlayerAnimator.ReloadLongLayer)
+                    controller.RemoveLayer(i);
+            if (controller.parameters.All(p => p.name != PlayerAnimator.ReloadLongParam))
+                controller.AddParameter(PlayerAnimator.ReloadLongParam, AnimatorControllerParameterType.Bool);
+            AddLayer(controller, PlayerAnimator.AimLongLayer, mask, AnimatorLayerBlendingMode.Override, 0f)
+                .AddState("MiraLonga").motion = Clip(AimLong);
+
+            // Recarga cartucho a cartucho: a volta (tirar da cartucheira e inserir) repete a cada cartucho, no ritmo do PlayerWeapons
+            // (abrir, depois um cartucho por reloadRoundTime). O estado reinicia ao entrar, com a fase ajustada para o cartucho
+            // entrar na arma no momento em que o PlayerWeapons o conta.
+            var machine = AddLayer(controller, PlayerAnimator.ReloadLongLayer, mask, AnimatorLayerBlendingMode.Override, 0f);
+            var none = machine.AddState("Nada");
+            machine.defaultState = none;
+            var loop = machine.AddState("RecarregarLonga", new Vector3(300f, 60f));
+            var clip = Clip(ReloadLong);
+            var shotgun = AssetDatabase.LoadAssetAtPath<FirearmDefinition>("Assets/_Nibiru/Data/Combat/Espingarda.asset");
+            float open = shotgun != null ? shotgun.reloadOpenTime : 0.5f;
+            float round = shotgun != null ? shotgun.reloadRoundTime : 0.8f;
+            loop.motion = clip;
+            loop.speed = clip.length / round;
+            loop.cycleOffset = Mathf.Repeat(LongReloadInsertPhase - open / round, 1f);
+            var enter = none.AddTransition(loop);
+            enter.AddCondition(AnimatorConditionMode.If, 0f, PlayerAnimator.ReloadLongParam);
+            enter.hasExitTime = false;
+            enter.duration = 0f;
+            var leave = loop.AddTransition(none);
+            leave.AddCondition(AnimatorConditionMode.IfNot, 0f, PlayerAnimator.ReloadLongParam);
+            leave.hasExitTime = false;
+            leave.duration = 0f;
+
+            // Sem "IK Pass": a mão esquerda é levada à arma pelo PlayerAnimator, depois do ajuste do tronco (o IK do Animator roda antes).
+            var layers = controller.layers;
+            for (int i = 0; i < layers.Length; i++) layers[i].iKPass = false;
+            controller.layers = layers;
+        }
+
+        static void CopyFromLibrary(string name, string libraryPath)
+        {
+            string to = Mixamo + name + ".fbx";
+            if (File.Exists(to)) return;
+            string from = AnimationLibrary.Library + libraryPath + ".fbx";
+            if (!File.Exists(from))
+            {
+                Debug.LogError("Elena: animação não encontrada na biblioteca: " + from);
+                return;
+            }
+            File.Copy(from, to);
+        }
+
+        [MenuItem("Nibiru/Personagens/Elena: camadas da arma longa (B6)")]
+        static void LongGunMenu()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogWarning("Saia do Play antes.");
+                return;
+            }
+            CopyFromLibrary(LongAimFile, "Basic Shooter Pack/rifle aiming idle");
+            CopyFromLibrary(LongReloadFile, "Basic Shooter Pack/reloading");
+            AssetDatabase.Refresh();
+            var mixamoAvatar = ConfigureMixamoReference();
+            foreach (string file in new[] { AimLong.file, ReloadLong.file })
+                ConfigureAnimations(file, mixamoAvatar);
+            var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
+            if (controller == null)
+            {
+                Debug.LogError("Elena: falta o controlador. Rode Nibiru > Personagens > Montar Elena animada.");
+                return;
+            }
+            AddLongGunLayers(controller, AssetDatabase.LoadAssetAtPath<AvatarMask>(MaskPath));
+            EditorUtility.SetDirty(controller);
+            AssetDatabase.SaveAssets();
+            Debug.Log("Elena: camadas MiraLonga e RecarregarLonga no controlador.");
         }
 
         // Um estado que entra pelo gatilho (de qualquer estado) e volta sozinho para a locomoção.

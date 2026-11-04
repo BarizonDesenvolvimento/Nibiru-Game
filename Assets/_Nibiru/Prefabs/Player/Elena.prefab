@@ -221,6 +221,8 @@ Transform:
   - {fileID: 1053006446280341647}
   - {fileID: 740701557741797590}
   - {fileID: 3591755370785857428}
+  - {fileID: 6435135102830666067}
+  - {fileID: 2436132505080088584}
   m_Father: {fileID: 3401335159130718717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1041377750708208636
@@ -365,6 +367,8 @@ Transform:
   m_Children:
   - {fileID: 4615327235231103465}
   - {fileID: 4431230907327584645}
+  - {fileID: 3066232440173407225}
+  - {fileID: 5893378871589341816}
   m_Father: {fileID: 3401335159130718717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1762824972252637955
@@ -657,6 +661,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Dialogue.DialogueRunner
   input: {fileID: 8282052060555257985}
+--- !u!1 &2309681496926208211
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5893378871589341816}
+  m_Layer: 0
+  m_Name: Grip_Esquerda
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5893378871589341816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309681496926208211}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.02, y: -0.055, z: 0.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5016315278451835552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2641766794558647434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,9 +1398,13 @@ MonoBehaviour:
   - firearm: {fileID: 11400000, guid: fb333045abf35d54a90cce85ce5a4d9d, type: 2}
     model: {fileID: 918284770709951070}
     muzzle: {fileID: 740701557741797590}
+    rightGrip: {fileID: 6435135102830666067}
+    leftGrip: {fileID: 2436132505080088584}
   - firearm: {fileID: 11400000, guid: dadc544dd397d9b4e9ad244de041b61c, type: 2}
     model: {fileID: 1425928708140943068}
     muzzle: {fileID: 4431230907327584645}
+    rightGrip: {fileID: 3066232440173407225}
+    leftGrip: {fileID: 5893378871589341816}
   melee: {fileID: 0}
   tracer: {fileID: 7246886305363863940}
   impactMaterial: {fileID: 2100000, guid: f52fc70cb11b71d41a54911d88f97086, type: 2}
@@ -1453,8 +1492,10 @@ MonoBehaviour:
   melee: {fileID: 4942451461779874155}
   health: {fileID: 6428204035040108469}
   heldGun: {fileID: 3401335159130718717}
-  heldGunOffset: {x: 0, y: 0.02, z: 0.08}
+  heldGunOffset: {x: -0.008, y: 0.033, z: 0.05}
   heldKnife: {fileID: 4579137010929715870}
+  leftHandGripWeight: 1
+  leftElbowHint: {x: -0.35, y: -0.3, z: 0.1}
   speedDamping: 0.08
   aimBlendSpeed: 8
   hideWhenCameraCloserThan: 0.45
@@ -1666,6 +1707,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4478443397933364488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6435135102830666067}
+  m_Layer: 0
+  m_Name: Grip_Direita
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6435135102830666067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478443397933364488}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.008, y: 0.013, z: -0.03}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 197769980352635479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4541314019868524835
 GameObject:
   m_ObjectHideFlags: 0
@@ -3173,6 +3245,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7263429082809468425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3066232440173407225}
+  m_Layer: 0
+  m_Name: Grip_Direita
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3066232440173407225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263429082809468425}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5016315278451835552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7384881985878788073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3827,6 +3930,37 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
+--- !u!1 &8536481364078378465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2436132505080088584}
+  m_Layer: 0
+  m_Name: Grip_Esquerda
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2436132505080088584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8536481364078378465}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.045, y: 0, z: -0.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 197769980352635479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8585861069697510924
 GameObject:
   m_ObjectHideFlags: 0

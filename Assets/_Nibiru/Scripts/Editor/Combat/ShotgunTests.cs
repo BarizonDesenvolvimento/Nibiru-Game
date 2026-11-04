@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Nibiru.AI;
 using Nibiru.Combat;
+using Nibiru.EditorTools.Cameras;
 using Nibiru.Interaction;
 using Nibiru.Inventory;
 using Nibiru.Localization;
@@ -15,6 +16,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using InputMouse = UnityEngine.InputSystem.Mouse;
 using static Nibiru.EditorTools.TestFlow;
 using static Nibiru.EditorTools.TestShortcuts;
 using Object = UnityEngine.Object;
@@ -48,6 +50,7 @@ namespace Nibiru.EditorTools.Weapons
         static ShotgunTests()
         {
             Register("armas.teste", Begin);
+            Register("armas.empunhadura.teste", BeginGrip);
             Register("armas.casa", () => House(withKey: true));
             Register("armas.casa_sem_chave", () => House(withKey: false));
             Register("armas.soldados", () => RemedyShortcuts.Base(new Vector3(-19.5f, 0f, 3f), 45f, GiveKit,
@@ -55,6 +58,8 @@ namespace Nibiru.EditorTools.Weapons
             Register("armas.lullu", () => Step11Shortcuts.Begin(new[] { "ChegouABocaDoPoco", "DesceuOPoco" }, 23, Step11Shortcuts.NearFlashSpot, 0f,
                 "Armas (B6): um passo antes do flash, com o Lullu vivo, a pistola e a espingarda. O Lullu cambaleia com o tiro (não cai).",
                 thenAlso: GiveKit));
+            Register("armas.empunhadura_espingarda", () => Inspect("Espingarda"));
+            Register("armas.empunhadura_pistola", () => Inspect("Pistola"));
             Register("armas.servo", () => Step11Shortcuts.Begin(Step12Shortcuts.Woke, Step12Shortcuts.FightStep, Step12Shortcuts.FightSpot, 0f,
                 "Armas (B6): no ponto de retorno da luta, com a espingarda. O Primeiro Servo leva o dano (um quarto) e nunca cambaleia.",
                 thenAlso: GiveKit));
@@ -74,6 +79,15 @@ namespace Nibiru.EditorTools.Weapons
 
         [MenuItem(MenuRoot + "5. Luta do Primeiro Servo, com a espingarda", priority = 5)]
         static void Menu5() => Go("armas.servo");
+
+        [MenuItem(MenuRoot + "7. Conferir empunhadura: espingarda (mira parada + câmera livre)", priority = 7)]
+        static void Menu7() => Go("armas.empunhadura_espingarda");
+
+        [MenuItem(MenuRoot + "8. Conferir empunhadura: pistola (mira parada + câmera livre)", priority = 8)]
+        static void Menu8() => Go("armas.empunhadura_pistola");
+
+        [MenuItem(MenuRoot + "9. Empunhadura: teste automático (resumo no Console)", priority = 102)]
+        static void RunGrip() => Go("armas.empunhadura.teste");
 
         [MenuItem(MenuRoot + "6. Teste automático (resumo no Console)", priority = 101)]
         static void Run() => Go("armas.teste");
@@ -117,6 +131,30 @@ namespace Nibiru.EditorTools.Weapons
             });
         }
 
+        static InputMouse inspectMouse;
+
+        // Põe a Elena mirando com a arma pedida, congela o jogo e liga a câmera livre com os controles dela ligados (para a pose continuar):
+        // é a ferramenta para ajustar os pontos de encaixe a olho. Não clique com o botão esquerdo (atira).
+        static void Inspect(string weapon)
+        {
+            RemedyShortcuts.Base(new Vector3(-19.5f, 0f, 3f), 45f, () =>
+            {
+                GiveKit();
+                After(1f, () =>
+                {
+                    W().Equip(Gun(weapon));
+                    if (inspectMouse == null) inspectMouse = InputSystem.AddDevice<InputMouse>("MouseDeConferencia");
+                    InputSystem.QueueStateEvent(inspectMouse, new MouseState().WithButton(MouseButton.Right));
+                    After(2.5f, () =>
+                    {
+                        FreeCameraCheck.KeepControls = true;
+                        FreeCameraCheck.Enable();
+                        Debug.Log($"Conferência: a Elena mira com {weapon}, o jogo está parado e a câmera livre ligada (WASD, E sobe, Q desce, Shift acelera, mouse gira). Não clique com o botão esquerdo. Para sair: Nibiru > Testes > Câmera livre (conferência).");
+                    });
+                });
+            }, "Armas (B6): conferência da empunhadura.");
+        }
+
         // ---------- Teste automático ----------
 
         static void Begin()
@@ -143,6 +181,140 @@ namespace Nibiru.EditorTools.Weapons
                 ("Salvamento: arma equipada, cartucho no pente e na reserva voltam do checkpoint e do slot", SaveAndSlot),
                 ("Limpeza: tira os aparelhos de teste e apaga a pasta do teste", Cleanup),
             });
+        }
+
+        // ---------- Empunhadura (B6) ----------
+
+        static InputMouse gripMouse;
+
+        static void BeginGrip()
+        {
+            folder = SaveStorage.TestFolder("Teste_Empunhadura");
+            SaveStorage.DeleteTestFolder(folder);
+            SaveSlots.UseFolder(folder);
+            Loc.SetLanguage("pt-BR", false);
+            realKeyboard = Keyboard.current;
+            keyboard = InputSystem.AddDevice<Keyboard>("TecladoDeTesteEmpunhadura");
+            gripMouse = InputSystem.AddDevice<InputMouse>("MouseDeTesteEmpunhadura");
+
+            Start("Empunhadura (B6), teste automático", new List<(string, Func<IEnumerator>)>
+            {
+                ("Mirando, a mão direita fica no cabo e a esquerda no apoio, na pistola e na espingarda", GripHands),
+                ("Sem mirar, a mão esquerda volta à animação (peso 0)", GripRelease),
+                ("Trocar de arma troca a camada de mira (curta para a pistola, longa para a espingarda) e o modelo na mão", GripLayers),
+                ("Recarga da espingarda: camada longa, o parâmetro liga e a mão esquerda segue a animação; a pistola usa a camada curta", GripReload),
+                ("Limpeza: tira os aparelhos de teste e apaga a pasta do teste", GripCleanup),
+            });
+        }
+
+        static PlayerAnimator Pa() => Object.FindFirstObjectByType<PlayerAnimator>();
+
+        static Animator ModelAnimator() => Pa().GetComponentInChildren<Animator>();
+
+        static float LayerWeight(string layer) => ModelAnimator().GetLayerWeight(ModelAnimator().GetLayerIndex(layer));
+
+        static IEnumerator HoldAim(bool on)
+        {
+            InputSystem.QueueStateEvent(gripMouse, on ? new MouseState().WithButton(MouseButton.Right) : new MouseState());
+            yield return new Delay(1.6f);
+        }
+
+        static IEnumerator GripHands()
+        {
+            yield return ArmedInVillage();
+            foreach (string name in new[] { "Pistola", "Espingarda" })
+            {
+                W().Equip(Gun(name));
+                yield return new Delay(0.7f);
+                yield return HoldAim(true);
+                PlayerWeapons weapons = W();
+                Check(weapons.IsAiming && Pa().AimWeight > 0.95f, $"{name}: deveria estar mirando com a pose toda: {Pa().AimWeight:0.00}");
+                Animator animator = ModelAnimator();
+                float right = Vector3.Distance(animator.GetBoneTransform(HumanBodyBones.RightHand).position, weapons.RightGrip.position);
+                float left = Vector3.Distance(animator.GetBoneTransform(HumanBodyBones.LeftHand).position, weapons.LeftGrip.position);
+                Check(right < 0.10f, $"{name}: a mão direita deveria estar no cabo (até 10 cm): {right * 100:0.0} cm");
+                Check(left < 0.12f, $"{name}: a mão esquerda deveria estar no apoio (até 12 cm): {left * 100:0.0} cm");
+                Check(Pa().LeftHandWeight > 0.95f, $"{name}: o peso da mão esquerda deveria ser cheio: {Pa().LeftHandWeight:0.00}");
+                yield return HoldAim(false);
+            }
+        }
+
+        static IEnumerator GripRelease()
+        {
+            yield return ArmedInVillage();
+            W().Equip(Gun("Espingarda"));
+            yield return new Delay(0.7f);
+            yield return HoldAim(true);
+            Check(Pa().LeftHandWeight > 0.9f, "mirando, a mão esquerda deveria estar no apoio");
+            yield return HoldAim(false);
+            Check(!W().IsAiming && Pa().AimWeight < 0.05f, $"sem mirar a pose deveria sair: {Pa().AimWeight:0.00}");
+            Check(Pa().LeftHandWeight < 0.01f, $"sem mirar a mão esquerda deveria voltar à animação: {Pa().LeftHandWeight:0.00}");
+        }
+
+        static IEnumerator GripLayers()
+        {
+            yield return ArmedInVillage();
+            PlayerWeapons weapons = W();
+            weapons.Equip(Gun("Espingarda"));
+            yield return new Delay(0.7f);
+            yield return HoldAim(true);
+            Check(LayerWeight(PlayerAnimator.AimLongLayer) > 0.95f && LayerWeight(PlayerAnimator.AimLayer) < 0.05f,
+                $"com a espingarda a camada longa deveria mandar: longa {LayerWeight(PlayerAnimator.AimLongLayer):0.00}, curta {LayerWeight(PlayerAnimator.AimLayer):0.00}");
+            Transform shotgunModel = weapons.RightGrip != null ? weapons.RightGrip.parent : null;
+            Check(shotgunModel != null && shotgunModel.name == "Modelo_Espingarda" && shotgunModel.gameObject.activeInHierarchy, "o modelo da espingarda deveria estar na mão");
+
+            weapons.Equip(Gun("Pistola"));
+            yield return new Delay(1.6f);
+            Check(LayerWeight(PlayerAnimator.AimLayer) > 0.95f && LayerWeight(PlayerAnimator.AimLongLayer) < 0.05f,
+                $"com a pistola a camada curta deveria mandar: curta {LayerWeight(PlayerAnimator.AimLayer):0.00}, longa {LayerWeight(PlayerAnimator.AimLongLayer):0.00}");
+            Transform pistolModel = weapons.RightGrip != null ? weapons.RightGrip.parent : null;
+            Check(pistolModel != null && pistolModel.name == "Modelo_Pistola" && pistolModel.gameObject.activeInHierarchy, "o modelo da pistola deveria estar na mão");
+            Check(shotgunModel != null && !shotgunModel.gameObject.activeSelf, "o modelo da espingarda deveria sumir da mão");
+            yield return HoldAim(false);
+        }
+
+        static IEnumerator GripReload()
+        {
+            yield return ArmedInVillage();
+            PlayerWeapons weapons = W();
+            FirearmDefinition shotgun = Gun("Espingarda"), pistol = Gun("Pistola");
+            weapons.Equip(shotgun);
+            yield return new Delay(0.7f);
+            SetLoaded(shotgun, 0);
+            SetReserve("Cartucho", 4);
+            yield return KeyTap(Key.R);
+            yield return new Delay(0.9f);
+            Check(weapons.IsReloading, "a recarga deveria estar em curso");
+            Check(LayerWeight(PlayerAnimator.ReloadLongLayer) > 0.9f && LayerWeight(PlayerAnimator.ReloadLayer) < 0.05f,
+                $"a camada longa deveria tocar: longa {LayerWeight(PlayerAnimator.ReloadLongLayer):0.00}, curta {LayerWeight(PlayerAnimator.ReloadLayer):0.00}");
+            Check(ModelAnimator().GetBool(PlayerAnimator.ReloadLongParam), "o parâmetro da recarga longa deveria estar ligado");
+            Check(Pa().LeftHandWeight < 0.15f, $"na recarga a mão esquerda deveria seguir a animação: {Pa().LeftHandWeight:0.00}");
+            yield return new Delay(2.0f);
+            Check(!weapons.IsReloading && weapons.LoadedRounds == 2, $"depois de 2,9 s os 2 cartuchos deveriam estar dentro: {weapons.LoadedRounds}");
+            yield return new Delay(0.6f);
+            Check(LayerWeight(PlayerAnimator.ReloadLongLayer) < 0.05f && !ModelAnimator().GetBool(PlayerAnimator.ReloadLongParam), "a camada longa deveria sair ao acabar");
+
+            weapons.Equip(pistol);
+            yield return new Delay(0.7f);
+            SetLoaded(pistol, 2);
+            yield return KeyTap(Key.R);
+            yield return new Delay(0.7f);
+            Check(weapons.IsReloading && LayerWeight(PlayerAnimator.ReloadLayer) > 0.9f && LayerWeight(PlayerAnimator.ReloadLongLayer) < 0.05f,
+                "a pistola deveria usar a camada de recarga curta");
+        }
+
+        static IEnumerator GripCleanup()
+        {
+            Check(SaveStorage.RealFingerprint() == AutomatedRun.StartFingerprint, "os slots reais não deveriam mudar durante o teste");
+            foreach (InputDevice device in new InputDevice[] { keyboard, gripMouse })
+                if (device != null) InputSystem.RemoveDevice(device);
+            keyboard = null;
+            gripMouse = null;
+            if (realKeyboard != null) realKeyboard.MakeCurrent();
+            SaveSlots.UseFolder(null);
+            SaveSlots.Detach();
+            if (folder != null && folder.EndsWith("Teste_Empunhadura")) SaveStorage.DeleteTestFolder(folder);
+            yield break;
         }
 
         // ---------- Ajudas ----------

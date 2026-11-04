@@ -7,6 +7,13 @@ namespace Nibiru.Combat
     /// Uma arma de fogo (pistola, espingarda...). Cada arma é um arquivo destes em Data/Combat,
     /// ligado ao item da arma e ao item de munição que ela usa.
     /// </summary>
+    /// <summary>Como a Elena segura a arma: decide a animação de mira e de recarga (a pistola e a espingarda são de duas mãos, com poses diferentes).</summary>
+    public enum HoldStyle
+    {
+        Pistola,
+        Longa,
+    }
+
     [CreateAssetMenu(menuName = "Nibiru/Combate/Arma de Fogo", fileName = "NovaArma")]
     public class FirearmDefinition : ScriptableObject
     {
@@ -89,6 +96,10 @@ namespace Nibiru.Combat
 
         [Tooltip("Quanto tempo o alvo derrubado leva para levantar (segundos).")]
         [Min(0f)] public float knockdownTime = 1.5f;
+
+        [Header("Empunhadura (B6)")]
+        [Tooltip("Pistola: pose de mira e recarga da pistola. Longa: pose de arma de duas mãos (espingarda).")]
+        public HoldStyle holdStyle = HoldStyle.Pistola;
 
         [Header("Som")]
         public AudioClip fireSound;

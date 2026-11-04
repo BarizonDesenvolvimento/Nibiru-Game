@@ -34,6 +34,8 @@ namespace Nibiru.EditorTools.Cameras
         static bool savedCursorVisible;
         static PlayerInputReader reader;
         static bool savedGameplayEnabled;
+        static Animator elenaAnimator;
+        static AnimatorUpdateMode savedUpdateMode;
 
         /// <summary>
         /// Para conferir poses: ligada ANTES de <see cref="Enable"/>, deixa os controles do jogador ligados (o jogo continua parado), para a
@@ -98,6 +100,13 @@ namespace Nibiru.EditorTools.Cameras
 
             // Sem os controles do jogador, o mouse e as teclas não mexem na Elena nem no CameraRig.
             if (reader != null && !KeepControls) reader.SetGameplayEnabled(false);
+            // Mantendo os controles (conferir a pose de mira), a animação da Elena segue o tempo real: o jogo parado não a congela.
+            elenaAnimator = KeepControls && reader != null ? reader.GetComponentInChildren<Animator>() : null;
+            if (elenaAnimator != null)
+            {
+                savedUpdateMode = elenaAnimator.updateMode;
+                elenaAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            }
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -120,6 +129,8 @@ namespace Nibiru.EditorTools.Cameras
             if (cameraObject != null) UnityEngine.Object.DestroyImmediate(cameraObject);
             cameraObject = null;
             if (!EditorApplication.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode) return;
+            if (elenaAnimator != null) elenaAnimator.updateMode = savedUpdateMode;
+            elenaAnimator = null;
             Time.timeScale = savedTimeScale;
             Cursor.lockState = savedLock;
             Cursor.visible = savedCursorVisible;

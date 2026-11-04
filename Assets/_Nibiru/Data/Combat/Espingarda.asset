@@ -36,4 +36,5 @@ MonoBehaviour:
   knockdownRange: 3
   knockdownPellets: 6
   knockdownTime: 1.5
+  holdStyle: 1
   fireSound: {fileID: 8300000, guid: df59054fd0225714fa51851bbd62a5df, type: 3}

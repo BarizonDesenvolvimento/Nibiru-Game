@@ -2,6 +2,7 @@ using System.Linq;
 using Nibiru.Combat;
 using Nibiru.EditorTools.Audio;
 using Nibiru.Inventory;
+using Nibiru.Player;
 using Nibiru.Quests;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -98,6 +99,7 @@ namespace Nibiru.EditorTools.Content
             gun.recoil = 7f;
             gun.noiseRadius = 45f;
             gun.slot = 2;
+            gun.holdStyle = HoldStyle.Longa;
             gun.swapTime = 0.4f;
             gun.falloffStart = 5f;
             gun.minDamageFactor = 0.35f;
@@ -157,27 +159,53 @@ namespace Nibiru.EditorTools.Content
                         child.SetParent(pistolGroup, false);
                 }
                 Transform pistolMuzzle = pistolGroup.Find("Cano");
+                // Pontos de encaixe da pistola: o cabo cai onde a palma já ficava (medido no clipe de mira) e a mão esquerda apoia do lado
+                // esquerdo (a pose de mira já é de duas mãos). Só são criados se faltarem: o dono ajusta a olho com a câmera livre.
+                Transform pistolRight = EnsureGrip(pistolGroup, "Grip_Direita", new Vector3(-0.008f, 0.013f, -0.03f));
+                Transform pistolLeft = EnsureGrip(pistolGroup, "Grip_Esquerda", new Vector3(-0.045f, 0.0f, -0.02f));
 
                 // Espingarda: o modelo do Tripo (a ponta do cano é a origem do prefab) e um cano para o rastro do tiro.
+                // Espingarda: o modelo do Tripo (a ponta do cano é a origem do prefab) e um cano para o rastro do tiro. Se o grupo já existe
+                // (rodar o menu de novo), fica como está, com os pontos de encaixe que o dono ajustou.
                 Transform shotgunGroup = hand.Find("Modelo_Espingarda");
-                if (shotgunGroup != null) Object.DestroyImmediate(shotgunGroup.gameObject);
-                shotgunGroup = new GameObject("Modelo_Espingarda").transform;
-                shotgunGroup.SetParent(hand, false);
-                var art = (GameObject)PrefabUtility.InstantiatePrefab(shotgunArt, shotgunGroup);
-                art.name = "Arte";
-                art.transform.localPosition = new Vector3(0f, 0.07f, 0.72f);
-                art.transform.localRotation = Quaternion.identity;
-                var shotgunMuzzle = new GameObject("Cano").transform;
-                shotgunMuzzle.SetParent(shotgunGroup, false);
-                shotgunMuzzle.localPosition = new Vector3(0f, 0.07f, 0.73f);
+                Transform shotgunMuzzle;
+                if (shotgunGroup == null)
+                {
+                    shotgunGroup = new GameObject("Modelo_Espingarda").transform;
+                    shotgunGroup.SetParent(hand, false);
+                    var art = (GameObject)PrefabUtility.InstantiatePrefab(shotgunArt, shotgunGroup);
+                    art.name = "Arte";
+                    art.transform.localPosition = new Vector3(0f, 0.07f, 0.72f);
+                    art.transform.localRotation = Quaternion.identity;
+                    shotgunMuzzle = new GameObject("Cano").transform;
+                    shotgunMuzzle.SetParent(shotgunGroup, false);
+                    shotgunMuzzle.localPosition = new Vector3(0f, 0.07f, 0.73f);
+                    shotgunGroup.gameObject.SetActive(false);
+                }
+                else shotgunMuzzle = shotgunGroup.Find("Cano");
+                // Cabo (a empunhadura atrás do gatilho) e guarda-mão da espingarda, a partir das medidas do modelo (1,15 m, ponta na origem).
+                Transform shotgunRight = EnsureGrip(shotgunGroup, "Grip_Direita", new Vector3(0f, 0.0f, -0.06f));
+                Transform shotgunLeft = EnsureGrip(shotgunGroup, "Grip_Esquerda", new Vector3(-0.02f, -0.055f, 0.17f));
                 shotgunGroup.gameObject.SetActive(false);
 
                 var serialized = new SerializedObject(weapons);
                 SerializedProperty list = serialized.FindProperty("models");
                 list.arraySize = 2;
-                Fill(list.GetArrayElementAtIndex(0), pistol, pistolGroup.gameObject, pistolMuzzle);
-                Fill(list.GetArrayElementAtIndex(1), shotgun, shotgunGroup.gameObject, shotgunMuzzle);
+                Fill(list.GetArrayElementAtIndex(0), pistol, pistolGroup.gameObject, pistolMuzzle, pistolRight, pistolLeft);
+                Fill(list.GetArrayElementAtIndex(1), shotgun, shotgunGroup.gameObject, shotgunMuzzle, shotgunRight, shotgunLeft);
                 serialized.ApplyModifiedPropertiesWithoutUndo();
+
+                // A arma vai ao cabo, que cai na palma da mão direita (medida no clipe de mira de pistola).
+                var animatorScript = root.GetComponentInChildren<PlayerAnimator>(true);
+                if (animatorScript != null)
+                {
+                    var animatorSerialized = new SerializedObject(animatorScript);
+                    animatorSerialized.FindProperty("heldGunOffset").vector3Value = new Vector3(-0.008f, 0.033f, 0.05f);
+                    animatorSerialized.ApplyModifiedPropertiesWithoutUndo();
+                    // O componente HandGripIK (IK do Animator) foi trocado pelo cálculo no PlayerAnimator; sai do prefab.
+                    Animator modelAnimator = animatorScript.GetComponentInChildren<Animator>(true);
+                    if (modelAnimator != null) GameObjectUtility.RemoveMonoBehavioursWithMissingScript(modelAnimator.gameObject);
+                }
 
                 PrefabUtility.SaveAsPrefabAsset(root, ElenaPrefab);
                 Debug.Log("Espingarda: modelos da pistola e da espingarda ligados no prefab da Elena.");
@@ -188,8 +216,21 @@ namespace Nibiru.EditorTools.Content
             }
         }
 
-        static void Fill(SerializedProperty element, FirearmDefinition firearm, GameObject model, Transform muzzle)
+        // Cria o ponto de encaixe se ainda não existir (os valores que o dono ajustar ficam).
+        static Transform EnsureGrip(Transform group, string name, Vector3 localPosition)
         {
+            Transform grip = group.Find(name);
+            if (grip != null) return grip;
+            grip = new GameObject(name).transform;
+            grip.SetParent(group, false);
+            grip.localPosition = localPosition;
+            return grip;
+        }
+
+        static void Fill(SerializedProperty element, FirearmDefinition firearm, GameObject model, Transform muzzle, Transform rightGrip, Transform leftGrip)
+        {
+            element.FindPropertyRelative("rightGrip").objectReferenceValue = rightGrip;
+            element.FindPropertyRelative("leftGrip").objectReferenceValue = leftGrip;
             element.FindPropertyRelative("firearm").objectReferenceValue = firearm;
             element.FindPropertyRelative("model").objectReferenceValue = model;
             element.FindPropertyRelative("muzzle").objectReferenceValue = muzzle;
