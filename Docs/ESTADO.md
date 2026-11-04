@@ -141,6 +141,7 @@ Fase 3 do plano (construir a base), indo para a fatia vertical da região 1, o S
 | `Docs/Arte/Fontes-da-Arte.md` | De onde vem cada peça de arte (Blender por script, CC0, Unity, Tripo ou Meshy) e a situação de cada uma |
 | `Docs/LISTA_OBJETOS_3D.md` | Lista peça por peça da região 1, com Fonte e Situação |
 | `Docs/CATALOGO_ANIMACOES.md` | Tudo o que há na biblioteca de animações e o que está em uso |
+| `Docs/Plano-ME1-Dados-Posse-Controles.md` | Projeto em papel do ME1 (aguarda aprovação) |
 | `Docs/ESTADO.md` | Este arquivo |
 
 ## Cenas
@@ -1415,7 +1416,7 @@ Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
 2. **Zoom da câmera: FECHADO (testado no Play em 4/nov).** A roda real falhou na primeira tentativa (o Input System entrega 1 por clique, o código esperava 120); corrigido, retestado pela ponte e confirmado pelo dono no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. ~~**Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).~~ **Feito em 4/nov/2026** (veja a etapa 6 da "Área-vitrine da Aldeia").
-4. **Projeto em papel do ME1.**
+4. **Projeto em papel do ME1:** escrito em 4/nov/2026 em `Docs/Plano-ME1-Dados-Posse-Controles.md` (dados dos poderes, posse, campo `poderes` do save, mapa de controles final com o zoom no D-pad, opções para a barra de transformação e testes). **Aguarda aprovação**; nada implementado.
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
 
 ### Como testar o passo 15
