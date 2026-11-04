@@ -3,6 +3,7 @@ using Nibiru.Player;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering.Universal;
 using InputMouse = UnityEngine.InputSystem.Mouse;
 
@@ -35,6 +36,7 @@ namespace Nibiru.EditorTools.Cameras
         static PlayerInputReader reader;
         static bool savedGameplayEnabled;
         static Animator elenaAnimator;
+        static InputMouse aimMouse;
         static AnimatorUpdateMode savedUpdateMode;
 
         /// <summary>
@@ -107,6 +109,12 @@ namespace Nibiru.EditorTools.Cameras
                 savedUpdateMode = elenaAnimator.updateMode;
                 elenaAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             }
+            // Para a Elena continuar mirando, um mouse virtual segura o botão direito (reaperta a cada quadro: o botão não fica apertado sozinho).
+            if (KeepControls)
+            {
+                aimMouse = InputSystem.AddDevice<InputMouse>("MouseDeMiraDaConferencia");
+                InputSystem.QueueStateEvent(aimMouse, new MouseState().WithButton(MouseButton.Right));
+            }
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -129,6 +137,8 @@ namespace Nibiru.EditorTools.Cameras
             if (cameraObject != null) UnityEngine.Object.DestroyImmediate(cameraObject);
             cameraObject = null;
             if (!EditorApplication.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode) return;
+            if (aimMouse != null) InputSystem.RemoveDevice(aimMouse);
+            aimMouse = null;
             if (elenaAnimator != null) elenaAnimator.updateMode = savedUpdateMode;
             elenaAnimator = null;
             Time.timeScale = savedTimeScale;
@@ -147,8 +157,8 @@ namespace Nibiru.EditorTools.Cameras
         static void OnInputUpdate()
         {
             if (cameraObject == null) return;
-            InputMouse mouse = InputMouse.current;
-            if (mouse != null) pendingMouse += mouse.delta.ReadValue();
+            foreach (InputDevice device in InputSystem.devices)
+                if (device is InputMouse mouse && mouse != aimMouse) pendingMouse += mouse.delta.ReadValue();
 
             // As teclas são lidas aqui, na atualização da entrada do jogo: o Input System guarda o estado do jogo e o do editor em
             // separado, e lendo no EditorApplication.update as teclas apertadas na tela do jogo apareciam como soltas.
@@ -175,6 +185,8 @@ namespace Nibiru.EditorTools.Cameras
             if (reader != null && !KeepControls && reader.GameplayEnabled) reader.SetGameplayEnabled(false);
             if (Time.timeScale != 0f) Time.timeScale = 0f;
             if (Cursor.lockState != CursorLockMode.Locked) Cursor.lockState = CursorLockMode.Locked;
+
+            if (aimMouse != null) InputSystem.QueueStateEvent(aimMouse, new MouseState().WithButton(MouseButton.Right));
 
             double now = EditorApplication.timeSinceStartup;
             float dt = (float)Math.Min(now - lastTime, 0.1);

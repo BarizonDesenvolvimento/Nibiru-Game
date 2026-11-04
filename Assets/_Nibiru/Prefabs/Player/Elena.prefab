@@ -686,7 +686,7 @@ Transform:
   m_GameObject: {fileID: 2309681496926208211}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: -0.055, z: 0.17}
+  m_LocalPosition: {x: 0, y: 0.015, z: 0.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1496,6 +1496,8 @@ MonoBehaviour:
   heldKnife: {fileID: 4579137010929715870}
   leftHandGripWeight: 1
   leftElbowHint: {x: -0.35, y: -0.3, z: 0.1}
+  leftHandRotationWeight: 1
+  leftPalmFlip: 0
   speedDamping: 0.08
   aimBlendSpeed: 8
   hideWhenCameraCloserThan: 0.45

@@ -185,7 +185,7 @@ namespace Nibiru.EditorTools.Content
                 else shotgunMuzzle = shotgunGroup.Find("Cano");
                 // Cabo (a empunhadura atrás do gatilho) e guarda-mão da espingarda, a partir das medidas do modelo (1,15 m, ponta na origem).
                 Transform shotgunRight = EnsureGrip(shotgunGroup, "Grip_Direita", new Vector3(0f, 0.0f, -0.06f));
-                Transform shotgunLeft = EnsureGrip(shotgunGroup, "Grip_Esquerda", new Vector3(-0.02f, -0.055f, 0.17f));
+                Transform shotgunLeft = EnsureGrip(shotgunGroup, "Grip_Esquerda", new Vector3(0f, 0.015f, 0.32f));
                 shotgunGroup.gameObject.SetActive(false);
 
                 var serialized = new SerializedObject(weapons);

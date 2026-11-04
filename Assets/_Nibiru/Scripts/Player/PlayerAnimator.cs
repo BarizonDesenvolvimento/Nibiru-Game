@@ -56,6 +56,12 @@ namespace Nibiru.Player
         [Tooltip("Para onde o cotovelo esquerdo aponta, em relação ao corpo (x = direita, y = cima, z = frente): para baixo e para fora.")]
         [SerializeField] Vector3 leftElbowHint = new(-0.35f, -0.3f, 0.1f);
 
+        [Tooltip("Quanto o pulso esquerdo gira para a mão ficar aberta sob o guarda-mão, com os dedos para a frente do cano (0 a 1).")]
+        [SerializeField, Range(0f, 1f)] float leftHandRotationWeight = 1f;
+
+        [Tooltip("Inverte o lado da palma, se a mão esquerda ficar com as costas para cima.")]
+        [SerializeField] bool leftPalmFlip;
+
         [Tooltip("Suaviza a velocidade passada ao Animator (segundos).")]
         [SerializeField] float speedDamping = 0.08f;
 
@@ -100,7 +106,7 @@ namespace Nibiru.Player
         bool seated;
         float aimWeight, reloadWeight, aimLongWeight, reloadLongWeight, recoil;
         bool wasDodging, wasAttacking, hidden;
-        Transform spine, chest, neck, head, rightUpperArm, leftUpperArm, rightLowerArm, rightHand, leftLowerArm, leftHand;
+        Transform spine, chest, neck, head, rightUpperArm, leftUpperArm, rightLowerArm, rightHand, leftLowerArm, leftHand, leftMiddle, leftThumb;
         Renderer[] bodyRenderers;
 
         /// <summary>True se o controlador tem a queda de morte (o PlayerDeathHandler então não tomba o corpo).</summary>
@@ -133,6 +139,8 @@ namespace Nibiru.Player
                 rightHand = animator.GetBoneTransform(HumanBodyBones.RightHand);
                 leftLowerArm = animator.GetBoneTransform(HumanBodyBones.LeftLowerArm);
                 leftHand = animator.GetBoneTransform(HumanBodyBones.LeftHand);
+                leftMiddle = animator.GetBoneTransform(HumanBodyBones.LeftMiddleProximal);
+                leftThumb = animator.GetBoneTransform(HumanBodyBones.LeftThumbProximal);
             }
         }
 
@@ -376,10 +384,34 @@ namespace Nibiru.Player
             Vector3 reach = distance >= upperLength + lowerLength - 0.002f ? direction * (upperLength + lowerLength) : target - shoulder;
             leftLowerArm.rotation = Quaternion.FromToRotation(newWrist - leftLowerArm.position, shoulder + reach - leftLowerArm.position) * leftLowerArm.rotation;
 
+            // Pulso: a mão fica aberta sob o guarda-mão, com a palma para cima e os dedos apontando para a frente do cano.
+            Quaternion handBefore = leftHand.rotation;
+            if (leftMiddle != null && leftThumb != null && leftHandRotationWeight > 0f)
+            {
+                Vector3 fingers = (leftMiddle.position - leftHand.position).normalized;
+                Vector3 thumb = (leftThumb.position - leftHand.position).normalized;
+                Vector3 palm = Vector3.Cross(fingers, thumb).normalized;
+                if (leftPalmFlip) palm = -palm;
+                Vector3 barrel = grip.parent != null ? grip.rotation * Vector3.forward : transform.forward;
+                Vector3 wantedFingers = barrel;
+                Vector3 wantedPalm = Vector3.up;
+                Quaternion alignFingers = Quaternion.FromToRotation(fingers, wantedFingers);
+                Vector3 palmAfter = alignFingers * palm;
+                Vector3 flatWanted = Vector3.ProjectOnPlane(wantedPalm, wantedFingers);
+                Vector3 flatPalm = Vector3.ProjectOnPlane(palmAfter, wantedFingers);
+                if (flatWanted.sqrMagnitude > 0.0001f && flatPalm.sqrMagnitude > 0.0001f)
+                {
+                    Quaternion alignPalm = Quaternion.FromToRotation(flatPalm, flatWanted);
+                    Quaternion solved = alignPalm * alignFingers * handBefore;
+                    leftHand.rotation = Quaternion.Slerp(handBefore, solved, leftHandRotationWeight);
+                }
+            }
+
             if (weight < 0.999f)
             {
                 leftUpperArm.rotation = Quaternion.Slerp(upperBefore, leftUpperArm.rotation, weight);
                 leftLowerArm.rotation = Quaternion.Slerp(lowerBefore, leftLowerArm.rotation, weight);
+                leftHand.rotation = Quaternion.Slerp(handBefore, leftHand.rotation, weight);
             }
         }
 
