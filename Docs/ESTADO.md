@@ -1156,7 +1156,7 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
 | Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
 
-## Zoom da câmera (4/nov/2026, testado pela ponte e pelo nível 2; falta o teste do dono no Play)
+## Zoom da câmera (4/nov/2026, FECHADO: testado pela ponte, pelo nível 2 e pelo dono no Play)
 
 Projeto, decisões e riscos em `Docs/Plano-Zoom-da-Camera.md` (com a seção "O que mudou na implementação"). Resumo: a roda do mouse aproxima (para a frente) ou afasta a câmera de ombro, de **1,8 m a 4,0 m** (padrão 2,5 m), **0,25 m por clique**, com amortecimento. Valores no Inspector, em `Data/Camera/CameraJogador` (grupo "Zoom"). A mira ignora o zoom (1,6 m) e volta à distância escolhida; a colisão com paredes continua mandando (o zoom só muda a distância desejada). A roda não faz zoom em diálogo, leitura, pausa, Arquivo, inventário, morte, memória jogável nem na viagem de caminhonete. A distância é preferência do jogador (`GameOptions`, chave `Nibiru.Opcoes.DistanciaCamera`, em metros, limitada à faixa na leitura; grava 1 s depois de parar a roda e ao pausar), **não** entra no save de slot. Nas **Opções** há a linha "Distância da câmera" (‹ valor ›, 0,25 m por seta; teclado, mouse e controle), ligada ao mesmo valor da roda.
 - **Roda real (4/nov):** o primeiro teste do dono no Play mostrou que o zoom não respondia. Causa: o Input System normaliza a roda para ±1 por clique (padrão do projeto) e o código dividia por 120; o teste mandava 120 e não via. Agora `PlayerCameraController.WheelUnitsPerNotch` lê a configuração (1, ou 120 se a faixa da plataforma estiver mantida) e o teste manda um clique de valor 1, como a roda de verdade.
@@ -1413,7 +1413,7 @@ Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corr
 
 Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
-2. **Zoom da câmera:** implementado e testado (nível 2); a roda real não funcionou no Play do dono em 4/nov (o Input System entrega 1 por clique, o código esperava 120): corrigido e retestado pela ponte, aguardando novo teste no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
+2. **Zoom da câmera: FECHADO (testado no Play em 4/nov).** A roda real falhou na primeira tentativa (o Input System entrega 1 por clique, o código esperava 120); corrigido, retestado pela ponte e confirmado pelo dono no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. ~~**Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).~~ **Feito em 4/nov/2026** (veja a etapa 6 da "Área-vitrine da Aldeia").
 4. **Projeto em papel do ME1.**
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
