@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Nibiru.Cameras;
 using Nibiru.Documents;
 using Nibiru.Localization;
 using Nibiru.Player;
@@ -49,8 +50,17 @@ namespace Nibiru.UI
                 default: return "Sair do jogo";
             }
         }
-        const int OptionItemCount = 5;
+        const int OptionItemCount = 6;
         const float SensitivityStep = 0.1f;
+
+        // Linhas das Opções: 0 mouse, 1 controle, 2 inverter, 3 distância da câmera, 4 idioma, 5 voltar. As cinco primeiras ajustam com ‹ ›.
+        const int CameraRow = 3;
+        const int LanguageRow = 4;
+        const int BackRow = 5;
+        const int AdjustableRows = 5;
+        const float FallbackCameraMin = 1.8f;
+        const float FallbackCameraMax = 4f;
+        const float FallbackCameraStep = 0.25f;
         const string Gold = "#E8C46A";
         const string Muted = "#9AA0AA";
 
@@ -230,7 +240,7 @@ namespace Nibiru.UI
                 pointerAction = true;
                 try
                 {
-                    if (page == Page.Opcoes && row < 4) ClickOption(row, pointer.position);
+                    if (page == Page.Opcoes && row < AdjustableRows) ClickOption(row, pointer.position);
                     else Activate();
                 }
                 finally
@@ -278,7 +288,7 @@ namespace Nibiru.UI
         public bool TryGetOptionHalf(int row, int direction, out Rect rect)
         {
             rect = default;
-            if (page != Page.Opcoes || !rowLines.TryGetValue(row, out int line) || row >= 4) return false;
+            if (page != Page.Opcoes || !rowLines.TryGetValue(row, out int line) || row >= AdjustableRows) return false;
             if (!TextLines.TryGetSpan(content, line, optionBefore[row], optionGroup[row], out Rect group)) return false;
             rect = direction < 0 ? Rect.MinMaxRect(group.xMin, group.yMin, group.center.x, group.yMax) : Rect.MinMaxRect(group.center.x, group.yMin, group.xMax, group.yMax);
             return true;
@@ -446,8 +456,8 @@ namespace Nibiru.UI
                 return;
             }
 
-            if (selected == 2 || selected == 3) AdjustOption(1);
-            else if (selected == 4) ShowPage(Page.Principal, 1);
+            if (selected == 2 || selected == LanguageRow) AdjustOption(1);
+            else if (selected == BackRow) ShowPage(Page.Principal, 1);
         }
 
         /// <summary>Pede confirmação (o foco começa em "Cancelar") e, confirmado, volta ao menu principal com o estado limpo.</summary>
@@ -472,13 +482,39 @@ namespace Nibiru.UI
                 case 0: GameOptions.MouseSensitivity = Round(GameOptions.MouseSensitivity + direction * SensitivityStep); break;
                 case 1: GameOptions.GamepadSensitivity = Round(GameOptions.GamepadSensitivity + direction * SensitivityStep); break;
                 case 2: GameOptions.InvertY = !GameOptions.InvertY; break;
-                case 3: NextLanguage(direction); break;
+                case CameraRow: AdjustCameraDistance(direction); break;
+                case LanguageRow: NextLanguage(direction); break;
                 default: return;
             }
             Refresh();
         }
 
         static float Round(float value) => Mathf.Round(value * 10f) / 10f;
+
+        // Distância da câmera: a mesma do zoom da roda. Com a câmera na cena, quem manda é o controlador (reflete a roda na hora);
+        // sem ela, mexe só na preferência guardada.
+        PlayerCameraController cameraController;
+
+        PlayerCameraController CameraController()
+        {
+            if (cameraController == null) cameraController = FindFirstObjectByType<PlayerCameraController>();
+            return cameraController;
+        }
+
+        /// <summary>A distância da câmera mostrada nas Opções, em metros (a mesma do zoom da roda).</summary>
+        public float CameraDistanceNow()
+        {
+            PlayerCameraController camera = CameraController();
+            if (camera != null) return camera.ZoomTarget;
+            return GameOptions.CameraDistanceClamped(FallbackCameraMin, FallbackCameraMax, 2.5f);
+        }
+
+        void AdjustCameraDistance(int direction)
+        {
+            PlayerCameraController camera = CameraController();
+            if (camera != null) camera.SetZoomTarget(camera.ZoomTarget + direction * camera.Settings.zoomMetersPerNotch);
+            else GameOptions.CameraDistance = Mathf.Clamp(CameraDistanceNow() + direction * FallbackCameraStep, FallbackCameraMin, FallbackCameraMax);
+        }
 
         // Troca o idioma dos textos (esquerda e direita, ou confirmar). Os textos fixos do menu ainda são em português:
         // eles entram na tradução na parte 2 da localização.
@@ -521,8 +557,10 @@ namespace Nibiru.UI
                 AppendOption("Sensibilidade do mouse      ", $"{GameOptions.MouseSensitivity:0.0}", 0);
                 AppendOption("Sensibilidade do controle   ", $"{GameOptions.GamepadSensitivity:0.0}", 1);
                 AppendOption("Inverter eixo vertical      ", GameOptions.InvertY ? "Sim" : "Não", 2);
-                AppendOption("Idioma                      ", Localization.Loc.DisplayName(Localization.Loc.Language), 3);
-                AppendItem("Voltar", 4);
+                AppendOption(Loc.Get("ui.opcoes.distancia_camera", "Distância da câmera").PadRight(26) + " ",
+                    string.Format(Loc.Get("ui.opcoes.distancia_camera.valor", "{0} m"), CameraDistanceNow().ToString("0.00")), CameraRow);
+                AppendOption("Idioma                      ", Localization.Loc.DisplayName(Localization.Loc.Language), LanguageRow);
+                AppendItem("Voltar", BackRow);
             }
 
             if (page != Page.Arquivo) builder.AppendLine();

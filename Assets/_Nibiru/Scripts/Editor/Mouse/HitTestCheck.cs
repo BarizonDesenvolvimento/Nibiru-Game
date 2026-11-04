@@ -106,7 +106,7 @@ namespace Nibiru.EditorTools.Mouse
                 Object.Destroy(tex);
 
                 string[] lines = content.text.Split((char)10);
-                for (int row = 0; row < 4; row++)
+                for (int row = 0; row < 5; row++)
                 {
                     bool bandOk = pause.TryGetRowRect(row, out Rect band);
                     bool leftOk = pause.TryGetOptionHalf(row, -1, out Rect leftHalf);

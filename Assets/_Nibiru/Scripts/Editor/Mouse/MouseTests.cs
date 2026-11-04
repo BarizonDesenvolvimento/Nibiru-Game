@@ -185,7 +185,7 @@ namespace Nibiru.EditorTools.Mouse
 
             Check(pause.ScreenText.Contains("‹") && pause.ScreenText.Contains("›"), "a linha das opções deveria mostrar as setas ‹ valor ›");
 
-            pause.PointerStep(Click(RowCenter(pause, 4)));
+            pause.PointerStep(Click(RowCenter(pause, 5)));
             Check(pause.PageName == "Principal", "clicar em Voltar deveria voltar à pausa");
             pause.PointerStep(RightClick(new Vector2(2f, 2f)));
             Check(!pause.IsOpen, "o clique direito deveria fechar a pausa");

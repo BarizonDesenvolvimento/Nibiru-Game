@@ -440,6 +440,8 @@
   "ui.menu.sair": "Sair do jogo",
   "ui.menu.voltar": "Voltar",
   "ui.pausa.sair_menu": "Sair para o menu",
+  "ui.opcoes.distancia_camera": "Distância da câmera",
+  "ui.opcoes.distancia_camera.valor": "{0} m",
   "ui.radio.helicoptero_base_avistou": "Rádio: \"Aqui é o Falcão. Alvo no pátio da base, mandando a posição!\"",
   "ui.slots.apagar": "Apagar",
   "ui.slots.aviso_nao_carrega": "Este slot não pode ser carregado. Você pode apagá-lo.",
