@@ -218,3 +218,8 @@ poder poder.egide_de_enki
 poder poder.sopro_de_enlil
 poder poder.teste_poder_vaga_2
 poder poder.teste_poder_vaga_3
+item chave_da_casa
+evento AbriuACasaTrancada
+cena espingarda.espingarda_casa
+cena espingarda.municao_cartuchos_casa
+cena espingarda.porta_trancada

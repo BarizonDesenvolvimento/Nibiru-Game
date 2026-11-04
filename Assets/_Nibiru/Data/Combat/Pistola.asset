@@ -24,3 +24,16 @@ MonoBehaviour:
   reloadTime: 1.4
   recoil: 1.5
   noiseRadius: 25
+  slot: 1
+  swapTime: 0.4
+  falloffStart: 0
+  minDamageFactor: 1
+  reloadPerRound: 0
+  reloadOpenTime: 0.5
+  reloadRoundTime: 0.8
+  staggerRange: 0
+  staggerTime: 0.8
+  knockdownRange: 0
+  knockdownPellets: 6
+  knockdownTime: 1.5
+  fireSound: {fileID: 0}

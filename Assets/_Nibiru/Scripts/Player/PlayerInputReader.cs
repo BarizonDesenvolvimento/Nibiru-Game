@@ -55,6 +55,9 @@ namespace Nibiru.Player
         InputAction powerModifier;
         InputAction power3Combo;
         InputAction zoomPad;
+        InputAction weapon1;
+        InputAction weapon2;
+        InputAction weaponSwapPad;
         InputAction toggleInventory;
         InputAction navigate;
         InputAction confirm;
@@ -230,6 +233,44 @@ namespace Nibiru.Player
         }
         public string BackButtonLabel => ButtonLabel(back);
 
+        /// <summary>
+        /// Troca de arma pedida neste quadro: teclas 1 e 2 vão direto à arma do lugar 1 ou 2 (devolve 1 ou 2);
+        /// 0 = nada. Pode ser lido várias vezes no mesmo quadro.
+        /// </summary>
+        public int WeaponSlotPressed
+        {
+            get
+            {
+                if (!combatEnabled || !gameplayEnabled) return 0;
+                if (weapon1.WasPressedThisFrame()) return 1;
+                if (weapon2.WasPressedThisFrame()) return 2;
+                return 0;
+            }
+        }
+
+        bool swapPadWasDown;
+        int swapPadFrame = -1;
+        int swapPadStep;
+
+        /// <summary>
+        /// D-pad do controle: -1 (esquerda, arma anterior) ou +1 (direita, próxima) uma vez por toque, 0 nada.
+        /// Na diagonal com cima ou baixo (zoom), vale só o zoom. Pode ser lido várias vezes no mesmo quadro.
+        /// </summary>
+        public int WeaponCycleStep
+        {
+            get
+            {
+                if (swapPadFrame == Time.frameCount) return swapPadStep;
+                swapPadFrame = Time.frameCount;
+                swapPadStep = 0;
+                float axis = combatEnabled && gameplayEnabled ? weaponSwapPad.ReadValue<float>() : 0f;
+                bool down = Mathf.Abs(axis) > 0.5f;
+                if (down && !swapPadWasDown && Mathf.Abs(zoomPad.ReadValue<float>()) < 0.5f) swapPadStep = axis > 0f ? 1 : -1;
+                swapPadWasDown = down;
+                return swapPadStep;
+            }
+        }
+
         string ButtonLabel(InputAction action) =>
             action.GetBindingDisplayString(InputBinding.MaskByGroup(UsingGamepad ? GamepadGroup : KeyboardMouseGroup));
 
@@ -255,6 +296,9 @@ namespace Nibiru.Player
             powerModifier = map.FindAction("ModificadorPoderes", throwIfNotFound: true);
             power3Combo = map.FindAction("Poder3Combo", throwIfNotFound: true);
             zoomPad = map.FindAction("ZoomCamera", throwIfNotFound: true);
+            weapon1 = map.FindAction("Arma1", throwIfNotFound: true);
+            weapon2 = map.FindAction("Arma2", throwIfNotFound: true);
+            weaponSwapPad = map.FindAction("TrocarArmaPad", throwIfNotFound: true);
 
             uiMap = actions.FindActionMap("Interface", throwIfNotFound: true);
             toggleInventory = uiMap.FindAction("Inventario", throwIfNotFound: true);

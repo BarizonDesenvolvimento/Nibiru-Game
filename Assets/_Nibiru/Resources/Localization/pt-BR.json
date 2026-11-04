@@ -104,7 +104,7 @@
   "dlg.Aldeia_UmmKarimFilmes.f1": "Umm Karim, você conhece alguém que saiba revelar filme? Achei três rolos da câmera do Tom.",
   "dlg.Aldeia_UmmKarimFilmes.f2": "Abu Faris, aqui do lado. Ele tinha um estúdio em Nasiriyah. Venha, eu levo a senhora.",
   "dlg.Aldeia_UmmKarimFria.u1": "(Ela não levanta o rosto.) A senhora prometeu. Eu esperei. Não tenho mais nada para dizer.",
-  "dlg.Aldeia_UmmKarimGrata.u1": "Ele dorme sem tremer. Que Deus a guarde, doutora. A casa é sua.",
+  "dlg.Aldeia_UmmKarimGrata.u1": "Ele dorme sem tremer. Que Deus a guarde, doutora. Fique com a chave da casa trancada do meu marido, na aldeia: o que ele deixou lá agora é seu.",
   "dlg.Aldeia_YusufEspera.y1": "(Ele treme de febre.) Está tão quente... ou tão frio. Não sei mais.",
   "dlg.Aldeia_YusufMelhor.y1": "A febre baixou, doutora. Mas aquela respiração debaixo das pedras... eu ainda ouço.",
   "dlg.Base_AFoto.e1": "(Ela fica um tempo olhando a foto. Tinha dois anos quando a mãe sumiu. Conhece aquele riso das fotos lá de casa, e de mais nenhum lugar.)",
@@ -320,6 +320,8 @@
   "item.RoloDeFilmeDoTom.name": "Rolo de filme do Tom",
   "item.TabuletaDoJunco.desc": "Pedra de lápis-lazúli com escrita em ouro. Está morna.",
   "item.TabuletaDoJunco.name": "Tabuleta do Junco",
+  "item.ChaveDaCasa.name": "Chave da casa trancada",
+  "item.ChaveDaCasa.desc": "Chave de ferro, pesada e escura. Abre a casa trancada do marido da Umm Karim, na aldeia.",
   "memory.Memoria_Ziusudra.character": "Ziusudra",
   "memory.Memoria_Ziusudra.place": "Shuruppak, antes do Dilúvio",
   "power.EcoDoAbzu.desc": "Um pulso silencioso que mostra inimigos através das paredes e acende marcas escondidas por alguns segundos.",
@@ -472,5 +474,11 @@
   "ui.slots.titulo_carregar": "CARREGAR",
   "ui.slots.titulo_novo": "NOVO JOGO",
   "ui.slots.vazio": "Vazio",
-  "ui.tabuleta.transformacao": "Transformação +{0}"
+  "ui.tabuleta.transformacao": "Transformação +{0}",
+  "ui.weapons.equipped": "{0} equipada",
+  "ui.weapons.no_slot": "Sem arma neste lugar",
+  "ui.weapons.no_other": "Sem outra arma",
+  "ui.interact.porta_abrir": "Abrir a porta",
+  "ui.interact.porta_trancada": "Porta trancada",
+  "ui.interact.porta_trancada_aviso": "Está trancada."
 }

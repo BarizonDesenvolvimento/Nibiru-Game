@@ -1458,8 +1458,42 @@ Referência anterior: 3/nov/2026, teste geral **95 OK, 0 FALHOU, 47 pulados**.
 | Remédio para Yusuf, Weiss, Trincheiras | Secundárias > Remédio para Yusuf > 15. Teste automático | ~3 min |
 | Arquivo de documentos e fitas | Arquivo (A3) > 7. Teste automático | ~1 min |
 | Munição, curativos e kits | Suprimentos > Teste de contagem | segundos |
+| Armas (troca, recarga, dano, casa trancada, reação dos inimigos) | **Armas (B6) > 6. Teste automático** (10 cenários) | ~8 min |
 
 Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corrija na próxima regressão completa, medindo pelo relógio.
+
+## B6: a espingarda (4/nov/2026, testada pela ponte; espera o teste do dono no Play)
+
+Plano aprovado em `Docs/Plano-B6-Espingarda.md` (decisões do dono de 4/nov/2026 no topo).
+
+**O que existe**
+- **Dados** (`Data/Combat/Espingarda`, preenchidos por **Nibiru > Conteúdo > Povoar a espingarda (B6) na cena aberta**, `Scripts/Editor/Content/ShotgunContent.cs`): 2 no cano, 8 projéteis × 16, dispersão 5°, alcance 14 m, dano cheio até 5 m e caindo até 35% aos 14 m, 0,4 s entre os canos, ruído 45, coice 7. `FirearmDefinition` ganhou: lugar da troca (`slot`: pistola 1, espingarda 2), tempo de troca (0,4 s), queda de dano, recarga cartucho a cartucho (0,5 s para abrir + 0,8 s por cartucho), alcances de cambaleio (6 m, 0,8 s) e de queda (3 m, 6 projéteis, 1,5 s) e o som do tiro (`Art/Audio/Provisorio/Espingarda_Tiro.wav`, sintetizado).
+- **`PlayerWeapons`:** troca por **1/2** (teclado) e **D-pad esquerda/direita** (controle; ação nova no `NibiruControles.inputactions`: `Arma1`, `Arma2`, `TrocarArmaPad`; na diagonal com o zoom vale só o zoom); troca também mirando (a mira não cai, mas não atira durante os 0,4 s); recarga interrompida por esquiva, faca e tiro (com cartucho no cano) sem perder o que já entrou; a pistola continua com o pente inteiro (cancelar não gasta). Um modelo por arma na mão da Elena (`Modelo_Pistola`, `Modelo_Espingarda` dentro de `ArmaNaMao`, ligados no prefab pelo mesmo menu; a posição da espingarda na mão é aproximada e pode precisar de ajuste a olho).
+- **`HitReactor`** (`Combat/HitReactor.cs`, criado sozinho no inimigo): soldados e atirador de elite **cambaleiam** (até 6 m) e **caem** (até 3 m com 6 ou mais projéteis); o Lullu **só cambaleia**; o Primeiro Servo **leva o dano** (×0,25 dele) e **nunca reage**. As IAs (`SoldierAI`, `SniperAI`, `LulluAI`) ganharam `ReactionLock` (param enquanto o inimigo reage). A reação é **provisória**: o modelo se inclina e é empurrado para trás, sem animação própria.
+- **Casa trancada** (`Conteudo_CasaTrancada`): no lugar do bloco `Casa_8` da Aldeia (a placa `Porta_8` do blockout também some), porta no lado leste, mesa com a **espingarda** e **4 cartuchos** (+ 2 no cano = **6 na região**; nenhum inimigo larga cartucho). A porta (`LockedDoor`, `Inventory/LockedDoor.cs`) abre com a **Chave da casa trancada** (item-chave `chave_da_casa`), que a **Umm Karim dá** quando o Yusuf recebe os antibióticos (`ItemGiver`, ouvindo o evento `EntregouAntibioticos`). Abrir gasta a chave e dispara `AbriuACasaTrancada` (a porta continua aberta ao voltar do checkpoint). Quem deixa o Yusuf morrer não recebe a chave: a espingarda fica fora de alcance (opcional, como na Região). O marcador `Casa_Trancada_Espingarda` do blockout (em `Casa_5`) não foi usado, porque `Casa_5` tem a arte da casa por cima; a casa é a `Casa_8`.
+- **Textos novos:** `item.ChaveDaCasa.*`, `ui.weapons.*`, `ui.interact.porta_*` no `pt-BR.json`; a fala `dlg.Aldeia_UmmKarimGrata.u1` ganhou a menção à chave.
+- **Save:** nada mudou no formato (arma equipada, pente por código e a bolsa já eram guardados); sem conversão de save antigo. Registro de códigos refeito (13 itens, 94 eventos).
+
+**Achados a olhar no teste do dono**
+- Um soldado tem 100 PV e 6 projéteis valem 96: a **queda** de soldado só aparece com exatamente 6 acertos a até 3 m, porque com 7 ou 8 ele morre. De 3 a 6 m (ou em um soldado ferido de outro jeito) o **cambaleio** é o que se vê. Se o dono quiser a queda mais presente, subir o número de projéteis exigido ou tirar um pouco de dano nas distâncias curtas é ajuste de equilíbrio da fase B.
+- Falta animação de espingarda do Mixamo (mira, andar mirando, recarga em loop, trocar de arma). Hoje a Elena usa a pose da pistola.
+
+**Testes de nível 2 (4/nov/2026, um por vez, com "slots reais iguais" conferido em cada um; regressão completa não rodada):** Armas (B6) 10 OK; Salvamento automático 19 OK, códigos OK, proteção dos slots OK; Mouse 5 OK; Poderes automático 18 OK e dados 18 OK; Zoom 14 OK; Localização 14 OK; Suprimentos OK; Remédio para Yusuf 8 OK; O que o Tom viu 4 OK; Passo 10 14 OK, Passo 11 9 OK, Passo 12 10 OK; **teste geral dos atalhos 107 OK, 0 FALHOU, 50 pulados** (eram 102 e 49 na última regressão; os 5 atalhos novos da espingarda entraram e o `armas.teste` é um dos pulados).
+- **Nibiru > Testes > Armas (B6) > 6. Teste automático** (10 cenários, **todos OK**, ~8 min): casa trancada e chave, pegar e contar os 6 cartuchos, troca por 1/2 e D-pad (também mirando, menu bloqueando, RB faca), dano por distância (espingarda e pistola), recarga interrompida, soldado, Lullu, Primeiro Servo, salvamento (checkpoint e slot).
+- **Roteiro curto para o dono (Nibiru > Testes > Armas (B6))**, todos com a Elena invencível:
+  1. **Diante da casa trancada, sem a chave:** aperte E na porta ("Porta trancada"/"Está trancada.").
+  2. **Diante da casa trancada, com a chave:** abra, pegue a espingarda e os 4 cartuchos da mesa; **2** equipa a espingarda, **1** a pistola (D-pad esquerda/direita no controle); mire (botão direito) e atire: de perto o estrondo derruba; **R** recarrega cartucho a cartucho (tiro, esquiva ou faca interrompem).
+  3. **Entrada da base:** soldados; de 3 a 6 m eles cambaleiam, de perto o tiro mata.
+  4. **Diante do Lullu:** ele cambaleia (não cai).
+  5. **Luta do Primeiro Servo:** ele leva o dano e não cambaleia.
+  Para ver a chave sendo dada: jogue a secundária do Remédio para Yusuf até entregar os antibióticos.
+
+**Pendências de arte vistas pelo dono (4/nov/2026, ainda não feitas):**
+- **Caminhonete:** a Elena sentada atravessa a malha da caminhonete (faltam as animações de sentado e de dirigir); conferir se o Samir está ao volante na viagem (pode ser só o atalho de teste da viagem, que não monta a escolha do wadi).
+- **Helicópteros:** sem vidro nas laterais e a frente é uma malha escura que não deixa ver o piloto; a **cabeça do piloto sai do helicóptero** (a escala está errada: se o piloto estiver certo, o helicóptero precisa crescer).
+- **Vidro transparente** nos caminhões, no carro (caminhonete) e no helicóptero, para parecer natural.
+- **Tamanhos pequenos para ver de longe:** o **curativo** e a **caixa de munição** no mapa.
+- **Kit médico:** ainda **não foi gerado** (o dono precisa gerar no Tripo).
 
 ## Backlog
 
@@ -1467,6 +1501,7 @@ Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corr
 - **Regra de versão do save** **[Opus]**: implementar a regra decidida na governança de 26/out (campos novos opcionais na mesma versão; versão igual carrega, mais antiga migra e carrega, mais nova ou desconhecida é ilegível), junto com a **convenção da posição do pé** (3/nov) e os **campos dos ME** (os ME possuídos, a recarga restante e os despertares; veja ME6 em "Sistema dos ME"). Detalhes em "Decisões da governança de 26/out/2026".
 
 **Sem data:**
+- **Física de roupa e cabelo** (a túnica do Primeiro Servo parece rígida ao correr e cair): montagem na fase C, depois dos modelos finais (avaliar Magica Cloth 2 para roupas largas e spring bones para cabelo, testando num personagem antes); ajuste fino na fase D.
 - **Listar os 47 testes pulados** da regressão (teste geral dos atalhos: 95 OK, 0 FALHOU, 47 pulados) e o motivo de cada um.
 - **Letreiros das áreas do blockout** (`Rotulo_1 · ACAMPAMENTO`...) aparecem através das paredes (o shader desenha por cima).
 
@@ -1477,7 +1512,7 @@ Ordem da governança de 3/nov/2026, sem datas:
 2. **Zoom da câmera: FECHADO (testado no Play em 4/nov).** A roda real falhou na primeira tentativa (o Input System entrega 1 por clique, o código esperava 120); corrigido, retestado pela ponte e confirmado pelo dono no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. ~~**Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).~~ **Feito em 4/nov/2026** (veja a etapa 6 da "Área-vitrine da Aldeia").
 4. ~~**ME1.**~~ **FECHADO em 4/nov/2026** (plano A do LB escolhido pelo dono; regressão completa OK; veja "ME1: dados, posse e controles").
-5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
+5. Depois, a rota: **ME1 → B6 (espingarda, pronta e testada pela ponte; falta o teste do dono) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
 
 ### Como testar o passo 15
 

@@ -16,11 +16,24 @@ MonoBehaviour:
   weaponItem: {fileID: 11400000, guid: 0a4e6cc9e9410304dae740f90b1ab8cf, type: 2}
   ammoItem: {fileID: 11400000, guid: 14380211a56f24745a323057d322542e, type: 2}
   magazineSize: 2
-  damagePerPellet: 14
+  damagePerPellet: 16
   pellets: 8
-  spread: 6
-  range: 20
+  spread: 5
+  range: 14
   fireInterval: 0.4
   reloadTime: 2.2
-  recoil: 5
-  noiseRadius: 35
+  recoil: 7
+  noiseRadius: 45
+  slot: 2
+  swapTime: 0.4
+  falloffStart: 5
+  minDamageFactor: 0.35
+  reloadPerRound: 1
+  reloadOpenTime: 0.5
+  reloadRoundTime: 0.8
+  staggerRange: 6
+  staggerTime: 0.8
+  knockdownRange: 3
+  knockdownPellets: 6
+  knockdownTime: 1.5
+  fireSound: {fileID: 8300000, guid: df59054fd0225714fa51851bbd62a5df, type: 3}

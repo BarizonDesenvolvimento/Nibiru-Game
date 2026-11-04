@@ -1,6 +1,17 @@
 # Plano B6: a espingarda
 
-Projeto em papel, 4/nov/2026. **Tarefa de sistema. Nada de código foi escrito; espera a aprovação do dono.**
+Projeto em papel, 4/nov/2026. **Tarefa de sistema. APROVADO pelo dono em 4/nov/2026, com as 5 recomendações abaixo.**
+
+## Decisões do dono (4/nov/2026)
+
+1. A **Umm Karim dá a chave da casa** como recompensa do *Remédio para Yusuf*.
+2. **6 cartuchos na região inteira**, contando os 2 do cano; soldado não larga cartucho.
+3. **Números novos:** 8×16, cheio até 5 m, caindo até 35% aos 14 m, ruído 45. Ajuste fino na fase B.
+4. **Derrubada e cambaleio entram agora** (humanos: cambaleio e queda; Lullu: só cambaleio).
+5. **Trocar de arma mirando é permitido**, depois da animação de 0,4 s.
+6. **Esclarecimento: o Primeiro Servo LEVA DANO da espingarda normalmente** (pelo multiplicador dele); só não cambaleia nem cai, como os chefes de Resident Evil. Isso corrige a frase "inútil de propósito" do item 2: a luta continua sem *depender* de bala, mas o cartucho conta (a queima-roupa tira 32 por tiro dos 750 PV, ×0,25 do multiplicador do Servo).
+
+Se o texto abaixo contradisser esta lista, vale a lista.
 Fontes: `Docs/ESTADO.md` (B6, "Troca de arma", "Munição, curativos e kits"), `Docs/Regiao-1-Sitio-de-Ur.md` (tabela de armas), `Docs/GDD.md` (combate com munição escassa) e o código atual (`PlayerWeapons`, `FirearmDefinition`, `Espingarda.asset`).
 
 ## O que já existe
@@ -97,3 +108,13 @@ Nada disso é perigoso para o resto do jogo: soldados têm 100 PV, a Elena 100, 
 3. **Os números do item 7** (8 × 16, alcance 14 m, queda a partir de 5 m, ruído 45)? Recomendação: aprovar e acertar no teste de equilíbrio da fase B.
 4. **Derrubada e cambaleio** em soldados (e só cambaleio no Lullu) entram agora ou ficam para a fase B? Recomendação: entram agora, porque o "empurrão" é o que faz a espingarda parecer espingarda; exige uma pequena interface de reação a golpe nos soldados e no Lullu.
 5. **Trocar de arma mirando** é permitido? Recomendação: sim (como no RE4 Remake e TLOU II), mas só depois da animação de 0,4 s.
+
+## Como ficou (4/nov/2026)
+
+Implementado como no plano, com estes detalhes de execução:
+- A casa trancada é a **`Casa_8`** da Aldeia (o bloco e a placa `Porta_8` do blockout saem; a casa nova tem porta no lado leste). O marcador `Casa_Trancada_Espingarda` do blockout, em `Casa_5`, não foi usado porque `Casa_5` tem a arte da casa por cima.
+- A chave sai do evento `EntregouAntibioticos` (`ItemGiver` na raiz `Conteudo_CasaTrancada`); quem deixa o Yusuf morrer não a recebe.
+- O Primeiro Servo é reconhecido pela luta (`FirstServantFight`) por cima da `LulluAI`, e por isso não reage; ele leva o dano pelo multiplicador dele (0,25).
+- **A queda de soldado só aparece com 6 acertos exatos:** 6 × 16 = 96 deixa o soldado vivo, e 7 ou mais o matam (100 PV). Fica para o equilíbrio da fase B decidir se a queda precisa de ajuste.
+- Falta a animação de espingarda do Mixamo; a reação dos inimigos é provisória (modelo inclinado e empurrado).
+- Detalhes, menus, testes e roteiro do dono: `Docs/ESTADO.md`, seção "B6: a espingarda".

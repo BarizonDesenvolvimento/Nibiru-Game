@@ -120,9 +120,13 @@ namespace Nibiru.AI
             EnterPatrol();
         }
 
+        /// <summary>Ligado pelo HitReactor enquanto o inimigo cambaleia ou está no chão: a IA para.</summary>
+        public bool ReactionLock { get; set; }
+
         void Update()
         {
             if (CurrentState == State.Morto) return;
+            if (ReactionLock) return;
             if (tracer != null && tracer.enabled && Time.time >= tracerHideTime) tracer.enabled = false;
 
             if (CurrentState != State.Combate && perception.PlayerAlive && perception.Awareness >= 1f)

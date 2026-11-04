@@ -130,9 +130,13 @@ namespace Nibiru.AI
             if (CurrentState == State.Vagando) Enter(State.Vagando);
         }
 
+        /// <summary>Ligado pelo HitReactor enquanto o inimigo cambaleia ou está no chão: a IA para.</summary>
+        public bool ReactionLock { get; set; }
+
         void Update()
         {
             if (CurrentState == State.Morto) return;
+            if (ReactionLock) return;
             UpdatePose();
 
             switch (CurrentState)

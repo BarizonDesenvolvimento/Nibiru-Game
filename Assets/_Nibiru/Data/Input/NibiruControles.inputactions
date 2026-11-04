@@ -148,6 +148,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Arma1",
+                    "type": "Button",
+                    "id": "8557b260-5ea2-49d5-942f-14cf891bb7e2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Arma2",
+                    "type": "Button",
+                    "id": "7f953748-b874-4afe-8271-dd4bc772ed42",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TrocarArmaPad",
+                    "type": "Value",
+                    "id": "e6fb0adb-e22b-419f-b443-1d278f3fa786",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -588,6 +615,61 @@
                     "processors": "",
                     "groups": "Controle",
                     "action": "ZoomCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "9a02ab0f-1d75-4faa-9e26-63e2441bf282",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Arma1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27a85411-130d-4637-82be-499ee6f2fb96",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Arma2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "DPad",
+                    "id": "19244493-f495-46ee-b122-a7fe4edb6250",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TrocarArmaPad",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "209d8bfc-91f6-4b97-b235-f5da9175534c",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "TrocarArmaPad",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "7a9e155c-40d7-4312-8a11-262bc887bdc0",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "TrocarArmaPad",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

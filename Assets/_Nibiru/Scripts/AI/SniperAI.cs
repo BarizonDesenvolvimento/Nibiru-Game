@@ -109,9 +109,13 @@ namespace Nibiru.AI
             if (perception.Player != null) playerHealth = perception.Player.GetComponent<Health>();
         }
 
+        /// <summary>Ligado pelo HitReactor enquanto o inimigo cambaleia ou está no chão: a IA para.</summary>
+        public bool ReactionLock { get; set; }
+
         void Update()
         {
             if (CurrentState == SoldierAI.State.Morto) return;
+            if (ReactionLock) return;
             if (tracer != null && tracer.enabled && Time.time >= tracerHideTime) tracer.enabled = false;
 
             if (CurrentState != SoldierAI.State.Combate && perception.PlayerAlive && perception.Awareness >= 1f)

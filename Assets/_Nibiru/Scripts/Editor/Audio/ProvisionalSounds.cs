@@ -17,6 +17,7 @@ namespace Nibiru.EditorTools.Audio
         public const string Folder = "Assets/_Nibiru/Art/Audio/Provisorio";
         public const string Helicopter = Folder + "/Helicoptero_Loop.wav";
         public const string Gunshot = Folder + "/Tiro.wav";
+        public const string ShotgunShot = Folder + "/Espingarda_Tiro.wav";
         public const string RadioStatic = Folder + "/Radio_Chiado_Loop.wav";
         public const string LaserWarning = Folder + "/Mira_Aviso.wav";
         public const string GateOpening = Folder + "/Portao_Abrindo.wav";
@@ -45,6 +46,7 @@ namespace Nibiru.EditorTools.Audio
             Directory.CreateDirectory(Folder);
             Write(Helicopter, overwrite, MakeHelicopter);
             Write(Gunshot, overwrite, MakeGunshot);
+            Write(ShotgunShot, overwrite, MakeShotgunShot);
             Write(RadioStatic, overwrite, MakeRadioStatic);
             Write(LaserWarning, overwrite, MakeLaserWarning);
             Write(GateOpening, overwrite, MakeGateOpening);
@@ -110,6 +112,28 @@ namespace Nibiru.EditorTools.Audio
                 samples[i] = crack + boom + echo * 0.5f;
             }
             return Normalize(samples, 0.95f);
+        }
+
+        // Espingarda: estalo mais grave e longo que o da pistola (provisório).
+        static float[] MakeShotgunShot()
+        {
+            var random = new System.Random(31);
+            var samples = new float[(int)(Rate * 2.4f)];
+            float body = 0f, tail = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float t = (float)i / Rate;
+                float white = (float)(random.NextDouble() * 2 - 1);
+                body += (white - body) * 0.08f;
+                tail += (white - tail) * 0.03f;
+
+                float crack = white * Mathf.Exp(-t / 0.008f);
+                float boom = body * 4.5f * Mathf.Exp(-t / 0.16f) + Mathf.Sin(2 * Mathf.PI * 52f * t) * Mathf.Exp(-t / 0.2f) * 0.9f;
+                float echoT = t - 0.22f;
+                float echo = echoT > 0f ? tail * 5f * Mathf.Exp(-echoT / 0.7f) * Mathf.Clamp01(echoT / 0.06f) : 0f;
+                samples[i] = crack + boom + echo * 0.55f;
+            }
+            return Normalize(samples, 1f);
         }
 
         // Chiado de rádio: ruído na faixa da voz, com volume que oscila e estalos de vez em quando.
