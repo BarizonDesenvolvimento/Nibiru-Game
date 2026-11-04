@@ -77,15 +77,14 @@ namespace Nibiru.EditorTools.Cameras
             yield return new Delay(3.5f);
         }
 
-        // Aperta as teclas na ferramenta (o teclado virtual do Input System perde a tecla entre os quadros; a leitura do teclado de
-        // verdade fica para o teste do dono) e espera o tempo pedido em tempo do editor, porque o tempo do jogo está parado.
+        // Aperta as teclas no teclado virtual (como um teclado de verdade, a tecla fica apertada até soltar) e espera o tempo pedido em
+        // tempo do editor, porque o tempo do jogo está parado.
         static IEnumerator Fly(float seconds, params Key[] keys)
         {
-            FreeCameraCheck.SimulatedKeys.Clear();
-            foreach (Key key in keys) FreeCameraCheck.SimulatedKeys.Add(key);
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys));
             yield return new Delay(seconds);
-            FreeCameraCheck.SimulatedKeys.Clear();
-            yield return Frames(2);
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return Frames(3);
         }
 
         static Transform Cam() => FreeCameraCheck.FreeCamera.transform;

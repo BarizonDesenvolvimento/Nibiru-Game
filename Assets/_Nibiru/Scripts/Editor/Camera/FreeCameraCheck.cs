@@ -98,6 +98,7 @@ namespace Nibiru.EditorTools.Cameras
 
             lastTime = EditorApplication.timeSinceStartup;
             pendingMouse = Vector2.zero;
+            held.Clear();
             InputSystem.onAfterUpdate -= OnInputUpdate;
             InputSystem.onAfterUpdate += OnInputUpdate;
             EditorApplication.update -= Tick;
@@ -120,22 +121,26 @@ namespace Nibiru.EditorTools.Cameras
             reader = null;
         }
 
-        /// <summary>Só para o teste automático: teclas tratadas como apertadas (o teclado virtual do Input System perde a tecla entre os quadros).</summary>
-        internal static readonly System.Collections.Generic.HashSet<Key> SimulatedKeys = new System.Collections.Generic.HashSet<Key>();
+        static readonly System.Collections.Generic.HashSet<Key> held = new System.Collections.Generic.HashSet<Key>();
+        static readonly Key[] FlightKeys = { Key.W, Key.A, Key.S, Key.D, Key.E, Key.Q, Key.LeftShift, Key.RightShift };
 
-        static bool Pressed(Key key)
-        {
-            if (SimulatedKeys.Contains(key)) return true;
-            // Qualquer teclado conectado vale.
-            foreach (InputDevice device in InputSystem.devices)
-                if (device is Keyboard keyboard && keyboard[key].isPressed) return true;
-            return false;
-        }
+        static bool Pressed(Key key) => held.Contains(key);
 
         static void OnInputUpdate()
         {
+            if (cameraObject == null) return;
             InputMouse mouse = InputMouse.current;
-            if (mouse != null && cameraObject != null) pendingMouse += mouse.delta.ReadValue();
+            if (mouse != null) pendingMouse += mouse.delta.ReadValue();
+
+            // As teclas são lidas aqui, na atualização da entrada do jogo: o Input System guarda o estado do jogo e o do editor em
+            // separado, e lendo no EditorApplication.update as teclas apertadas na tela do jogo apareciam como soltas.
+            held.Clear();
+            foreach (InputDevice device in InputSystem.devices)
+            {
+                if (device is not Keyboard keyboard) continue;
+                foreach (Key key in FlightKeys)
+                    if (keyboard[key].isPressed) held.Add(key);
+            }
         }
 
         static void Tick()
