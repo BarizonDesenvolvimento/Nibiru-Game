@@ -12,10 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3890230773982144a5ddfa2f3178a46, type: 3}
   m_Name: EcoDoAbzu
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.EchoPowerDefinition
-  displayName: Eco do Abzu
-  description: "Um pulso silencioso que mostra inimigos atrav\xE9s das paredes e
-    acende marcas escondidas por alguns segundos."
+  id: poder.eco_do_abzu
+  nameKey: power.EcoDoAbzu.name
+  descriptionKey: power.EcoDoAbzu.desc
+  hintKey: power.EcoDoAbzu.hint
+  displayName: 
+  description: 
+  icon: {fileID: 0}
+  slot: 1
   cooldown: 12
+  duration: 0
+  usableWhileAiming: 1
+  usableWhileCrouched: 1
+  usableWhileReloading: 1
   radius: 18
   revealDuration: 6
   expandTime: 0.6

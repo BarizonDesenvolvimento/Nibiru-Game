@@ -1,4 +1,6 @@
 using System.Text;
+using Nibiru.Localization;
+using Nibiru.Powers;
 using Nibiru.Quests;
 using Nibiru.UI;
 using UnityEngine;
@@ -50,15 +52,18 @@ namespace Nibiru.Tablets
                 tablet.MarkDeciphered();
                 if (tablet.grantsPower != null)
                 {
-                    tablet.grantsPower.Unlock();
-                    footer.Append("<color=").Append(Gold).Append(">Novo poder: ").Append(tablet.grantsPower.displayName).Append("</color>");
-                    if (!string.IsNullOrEmpty(tablet.grantsPower.description))
-                        footer.Append("\n<size=24>").Append(tablet.grantsPower.description).Append("</size>");
+                    PowerBook.Grant(tablet.grantsPower);
+                    footer.Append("<color=").Append(Gold).Append('>')
+                        .Append(string.Format(Loc.Get("ui.poder.novo", "Novo poder: {0}"), tablet.grantsPower.LocalizedName)).Append("</color>");
+                    string description = tablet.grantsPower.LocalizedDescription;
+                    if (!string.IsNullOrEmpty(description))
+                        footer.Append("\n<size=24>").Append(description).Append("</size>");
                 }
                 if (tablet.transformationGain > 0)
                 {
                     Transformation.Add(tablet.transformationGain);
-                    footer.Append("\n<size=24>Transformação +").Append(tablet.transformationGain).Append("</size>");
+                    footer.Append("\n<size=24>")
+                        .Append(string.Format(Loc.Get("ui.tabuleta.transformacao", "Transformação +{0}"), tablet.transformationGain)).Append("</size>");
                 }
                 StoryEvents.Raise(tablet.raiseOnDecipher);
             }

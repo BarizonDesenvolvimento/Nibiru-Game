@@ -9,6 +9,7 @@ using Nibiru.Inventory;
 using Nibiru.Localization;
 using Nibiru.Memories;
 using Nibiru.Quests;
+using Nibiru.Powers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
@@ -439,6 +440,12 @@ namespace Nibiru.Save
             return firearm.Id;
         }
 
+        /// <summary>Só para os testes: o "mundo" de um snapshot no mesmo texto que vai para o arquivo do slot.</summary>
+        public static string WorldToJson(WorldState.Snapshot world) => JsonConvert.SerializeObject(ToFile(world), Formatting.Indented);
+
+        /// <summary>Só para os testes: lê o "mundo" do texto do arquivo, com as mesmas regras do carregamento (inclui a conversão de arquivo antigo).</summary>
+        public static WorldState.Snapshot WorldFromJson(string json) => FromFile(JsonConvert.DeserializeObject<WorldFile>(json));
+
         static WorldFile ToFile(WorldState.Snapshot world)
         {
             SaveRegistry registry = SaveRegistry.Instance;
@@ -453,6 +460,10 @@ namespace Nibiru.Save
                 quests = new SortedDictionary<string, string>(),
                 // Campo opcional (mesma versão): só entra quando há valores.
                 sceneValues = world.sceneValues.Count > 0 ? new SortedDictionary<string, int>(world.sceneValues) : null,
+                // ME1 (mesma versão 1): sempre gravados, mesmo vazios; a falta deles indica um arquivo de antes do ME1.
+                powers = world.powers.OrderBy(p => p, StringComparer.Ordinal).ToList(),
+                powerCooldowns = new SortedDictionary<string, float>(world.powerCooldowns, StringComparer.Ordinal),
+                awakenings = world.awakenings.OrderBy(a => a, StringComparer.Ordinal).ToList(),
             };
             foreach (KeyValuePair<string, int> pair in world.questSteps)
             {
@@ -494,15 +505,55 @@ namespace Nibiru.Save
                 if (quest == null) throw new InvalidDataException($"missão desconhecida \"{code}\"");
                 failed.Add(quest.Id);
             }
+            var events = new HashSet<string>(file.events ?? new List<string>());
+            (HashSet<string> powers, Dictionary<string, float> cooldowns) = PowersFromFile(file, events, registry);
             return new WorldState.Snapshot(
                 new Dictionary<string, int>(file.pickups ?? new SortedDictionary<string, int>()),
                 new HashSet<string>(file.checkpoints ?? new List<string>()),
-                new HashSet<string>(file.events ?? new List<string>()),
+                events,
                 questSteps,
                 failed,
                 new Dictionary<string, int>(file.reputation ?? new SortedDictionary<string, int>()),
                 file.transformation,
-                new Dictionary<string, int>(file.sceneValues ?? new SortedDictionary<string, int>()));
+                new Dictionary<string, int>(file.sceneValues ?? new SortedDictionary<string, int>()),
+                powers,
+                cooldowns,
+                new HashSet<string>(file.awakenings ?? new List<string>()));
+        }
+
+        /// <summary>
+        /// Os poderes e as recargas do arquivo. Arquivo de antes do ME1 (sem "poderes"): a posse vem dos eventos antigos
+        /// "Poder:" + nome do arquivo, que saem dos eventos; sem eles, nenhum poder. Sem "recargaDosPoderes": tudo pronto.
+        /// Código de poder desconhecido deixa o slot ilegível; recarga inválida vira 0 e nunca passa da recarga do poder.
+        /// </summary>
+        static (HashSet<string> powers, Dictionary<string, float> cooldowns) PowersFromFile(WorldFile file, HashSet<string> events, SaveRegistry registry)
+        {
+            var powers = new HashSet<string>();
+            if (file.powers != null)
+            {
+                foreach (string code in file.powers)
+                {
+                    if (registry.Power(code) == null) throw new InvalidDataException($"poder desconhecido \"{code}\"");
+                    powers.Add(code);
+                }
+            }
+            else
+            {
+                foreach (PowerDefinition power in registry.powers)
+                {
+                    if (power == null || !events.Remove(power.LegacyEventId)) continue;
+                    powers.Add(power.Id);
+                }
+            }
+
+            var cooldowns = new Dictionary<string, float>();
+            foreach (KeyValuePair<string, float> pair in file.powerCooldowns ?? new SortedDictionary<string, float>())
+            {
+                PowerDefinition power = registry.Power(pair.Key) ?? throw new InvalidDataException($"poder desconhecido \"{pair.Key}\" na recarga");
+                float left = float.IsNaN(pair.Value) || float.IsInfinity(pair.Value) ? 0f : Mathf.Clamp(pair.Value, 0f, power.cooldown);
+                if (left > 0f) cooldowns[pair.Key] = left;
+            }
+            return (powers, cooldowns);
         }
 
         static Checkpoints.Data ToCheckpoint(SaveFile file, WorldState.Snapshot world)
@@ -608,6 +659,12 @@ namespace Nibiru.Save
             [JsonProperty("itensPegos")] public SortedDictionary<string, int> pickups;
             [JsonProperty("checkpointsAtivados")] public List<string> checkpoints;
             [JsonProperty("valoresDaCena", NullValueHandling = NullValueHandling.Ignore)] public SortedDictionary<string, int> sceneValues;
+            /// <summary>ME1. Null = arquivo de antes do ME1 (a posse vem dos eventos "Poder:*").</summary>
+            [JsonProperty("poderes")] public List<string> powers;
+            /// <summary>ME1. Código do poder → segundos de jogo restantes. Null = tudo pronto.</summary>
+            [JsonProperty("recargaDosPoderes")] public SortedDictionary<string, float> powerCooldowns;
+            /// <summary>ME1 (preenchido no ME7). Null = nenhum.</summary>
+            [JsonProperty("despertares")] public List<string> awakenings;
         }
     }
 }

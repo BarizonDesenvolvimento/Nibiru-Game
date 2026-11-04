@@ -46,7 +46,7 @@ namespace Nibiru.EditorTools.Localization
             Result(report, "Nenhum campo ainda com o texto antigo no arquivo (rode a extração)",
                 fields.Where(f => !f.identity && !string.IsNullOrEmpty(f.getLegacy())).Select(f => f.where));
 
-            Result(report, "Chaves seguem a convenção (dlg., doc., tape., item., quest., tablet., memory., spk.)",
+            Result(report, "Chaves seguem a convenção (dlg., doc., tape., item., quest., tablet., memory., power., spk.)",
                 fields.Where(f => !string.IsNullOrEmpty(f.getKey()) && !f.getKey().StartsWith(f.suggestedKey.Substring(0, f.suggestedKey.IndexOf('.') + 1))).Select(f => $"{f.getKey()} ({f.where})"));
 
             Result(report, "Nenhuma chave serve a dois campos (exceto o nome de quem fala, que é compartilhado)",

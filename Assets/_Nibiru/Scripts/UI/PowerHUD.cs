@@ -24,7 +24,7 @@ namespace Nibiru.UI
             string state = left > 0f
                 ? $"<color={Muted}>recarregando {Mathf.CeilToInt(left)}s</color>"
                 : $"[{input.PowerButtonLabel}] pronto";
-            label.text = $"<color={Lapis}>{echo.Power.displayName.ToUpperInvariant()}</color>   {state}";
+            label.text = $"<color={Lapis}>{echo.Power.LocalizedName.ToUpperInvariant()}</color>   {state}";
         }
     }
 }

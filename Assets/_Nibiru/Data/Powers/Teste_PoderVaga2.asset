@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc10dd9f9d27aa49bf583211d241f3b, type: 3}
+  m_Name: Teste_PoderVaga2
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Testes.TestPowerDefinition
+  id: poder.teste_poder_vaga_2
+  nameKey: power.Teste_PoderVaga2.name
+  descriptionKey: power.Teste_PoderVaga2.desc
+  hintKey: power.Teste_PoderVaga2.hint
+  displayName: 
+  description: 
+  icon: {fileID: 0}
+  slot: 2
+  cooldown: 3
+  duration: 0
+  usableWhileAiming: 1
+  usableWhileCrouched: 1
+  usableWhileReloading: 1

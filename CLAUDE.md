@@ -50,6 +50,7 @@ Todo texto que o jogador vê **nasce com chave**, em pt-BR e en (o inglês pode 
 | Missão | `quest.<Nome>.name`, `quest.<Nome>.<s1, s2...>` |
 | Tabuleta | `tablet.<Nome>.name`, `.text` |
 | Memória | `memory.<Nome>.character`, `.place` |
+| Poder (ME) | `power.<Nome>.name`, `.desc`, `.hint` (a dica pode ter `{0}` para o botão) |
 | Texto fixo do código ou da cena (parte 2) | `ui.<área>.<nome>` |
 
 **Códigos permanentes:** cada fala, resposta (`c1`...), linha de fita (`l1`...) e passo de missão (`s1`...) tem um código próprio que **nunca muda, nunca se repete e nunca é reaproveitado**. Inserir ou tirar itens não mexe nas chaves dos outros (o código novo é o maior número usado mais um). O teste **Nibiru > Testes > Localização > Teste de chaves e códigos** acusa código vazio ou repetido, chave sem texto, texto antigo ainda no arquivo, chave usada por dois campos e o inglês com chave que não existe no pt-BR.

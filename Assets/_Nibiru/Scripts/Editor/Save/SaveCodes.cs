@@ -8,6 +8,7 @@ using Nibiru.Documents;
 using Nibiru.Factions;
 using Nibiru.Inventory;
 using Nibiru.Localization;
+using Nibiru.Powers;
 using Nibiru.Quests;
 using Nibiru.Save;
 using UnityEditor;
@@ -42,8 +43,8 @@ namespace Nibiru.EditorTools.Saving
             int assigned = AssignMissingCodes();
             SaveRegistry registry = BuildRegistry();
             int added = AppendKnownCodes();
-            Debug.Log($"Salvamento: {assigned} códigos novos em itens, armas e missões; registro com {registry.items.Count} itens, " +
-                $"{registry.firearms.Count} armas e {registry.quests.Count} missões; {added} códigos novos na lista de códigos conhecidos.");
+            Debug.Log($"Salvamento: {assigned} códigos novos em itens, armas, missões e poderes; registro com {registry.items.Count} itens, " +
+                $"{registry.firearms.Count} armas, {registry.quests.Count} missões e {registry.powers.Count} poderes; {added} códigos novos na lista de códigos conhecidos.");
         }
 
         static int AssignMissingCodes()
@@ -67,6 +68,12 @@ namespace Nibiru.EditorTools.Saving
                 EditorUtility.SetDirty(quest);
                 count++;
             }
+            foreach (PowerDefinition power in Assets<PowerDefinition>().Where(p => string.IsNullOrEmpty(p.id)))
+            {
+                power.id = "poder." + Snake(power.name);
+                EditorUtility.SetDirty(power);
+                count++;
+            }
             AssetDatabase.SaveAssets();
             return count;
         }
@@ -84,6 +91,7 @@ namespace Nibiru.EditorTools.Saving
             registry.items = Assets<ItemDefinition>().OrderBy(i => i.name).ToList();
             registry.firearms = Assets<FirearmDefinition>().OrderBy(f => f.name).ToList();
             registry.quests = Assets<QuestDefinition>().OrderBy(q => q.name).ToList();
+            registry.powers = Assets<PowerDefinition>().OrderBy(p => p.name).ToList();
             EditorUtility.SetDirty(registry);
             AssetDatabase.SaveAssets();
             return registry;
@@ -134,22 +142,26 @@ namespace Nibiru.EditorTools.Saving
             List<ItemDefinition> items = Assets<ItemDefinition>();
             List<FirearmDefinition> firearms = Assets<FirearmDefinition>();
             List<QuestDefinition> quests = Assets<QuestDefinition>();
+            List<PowerDefinition> powers = Assets<PowerDefinition>();
 
-            Result("Todo item, arma e missão tem código (o campo, não o nome do arquivo)",
+            Result("Todo item, arma, missão e poder tem código (o campo, não o nome do arquivo)",
                 items.Where(i => string.IsNullOrEmpty(i.id)).Select(i => $"item {i.name}")
                     .Concat(firearms.Where(f => string.IsNullOrEmpty(f.id)).Select(f => $"arma {f.name}"))
-                    .Concat(quests.Where(q => string.IsNullOrEmpty(q.stableId)).Select(q => $"missão {q.name}")));
+                    .Concat(quests.Where(q => string.IsNullOrEmpty(q.stableId)).Select(q => $"missão {q.name}"))
+                    .Concat(powers.Where(p => string.IsNullOrEmpty(p.id)).Select(p => $"poder {p.name}")));
 
             List<(string category, string code, string line, string owner)> current = CurrentCodes();
             Result("Nenhum código repetido (por categoria)",
                 current.GroupBy(c => c.line).Where(g => g.Count() > 1).Select(g => $"{g.Key} ({string.Join(", ", g.Select(c => c.owner))})"));
 
             var registry = AssetDatabase.LoadAssetAtPath<SaveRegistry>(RegistryPath);
-            Result("O registro (Resources/Save/Registro) tem todo item, arma e missão",
+            Result("O registro (Resources/Save/Registro) tem todo item, arma, missão e poder",
                 registry == null ? new[] { "o registro não existe" } :
                 items.Where(i => !registry.items.Contains(i)).Select(i => $"item {i.name}")
                     .Concat(firearms.Where(f => !registry.firearms.Contains(f)).Select(f => $"arma {f.name}"))
                     .Concat(quests.Where(q => !registry.quests.Contains(q)).Select(q => $"missão {q.name}"))
+                    .Concat(powers.Where(p => !registry.powers.Contains(p)).Select(p => $"poder {p.name}"))
+                    .Concat(registry.powers.Where(p => p == null).Select(_ => "poder vazio no registro"))
                     .Concat(registry.items.Where(i => i == null).Select(_ => "item vazio no registro"))
                     .Concat(registry.firearms.Where(f => f == null).Select(_ => "arma vazia no registro"))
                     .Concat(registry.quests.Where(q => q == null).Select(_ => "missão vazia no registro")));
@@ -175,7 +187,7 @@ namespace Nibiru.EditorTools.Saving
                 Loc.Has(SaveSlots.AreaKey(SaveSlots.DefaultArea)) ? new string[0] : new[] { SaveSlots.AreaKey(SaveSlots.DefaultArea) });
 
             int checkpoints = SceneCodes(RegionScenePath).Count(c => c.isCheckpoint);
-            report.AppendLine($"INFO  {current.Count} códigos ({items.Count} itens, {firearms.Count} armas, {quests.Count} missões, " +
+            report.AppendLine($"INFO  {current.Count} códigos ({items.Count} itens, {firearms.Count} armas, {quests.Count} missões, {powers.Count} poderes, " +
                 $"{current.Count(c => c.category == "evento")} eventos, {current.Count(c => c.category == "cena")} objetos da região, {checkpoints} deles checkpoints); " +
                 $"{known.Count} na lista de códigos conhecidos.");
             return (ok, report.ToString());
@@ -193,6 +205,7 @@ namespace Nibiru.EditorTools.Saving
 
             foreach (ItemDefinition item in Assets<ItemDefinition>()) Add("item", item.id, item.name);
             foreach (FirearmDefinition firearm in Assets<FirearmDefinition>()) Add("arma", firearm.id, firearm.name);
+            foreach (PowerDefinition power in Assets<PowerDefinition>()) Add("poder", power.id, power.name);
             foreach (QuestDefinition quest in Assets<QuestDefinition>())
             {
                 Add("missao", quest.stableId, quest.name);

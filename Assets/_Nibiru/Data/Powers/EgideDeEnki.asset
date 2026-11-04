@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d396e0ba1e0ffd40b08f7e813bccba0, type: 3}
+  m_Name: EgideDeEnki
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.AegisPowerDefinition
+  id: poder.egide_de_enki
+  nameKey: power.EgideDeEnki.name
+  descriptionKey: power.EgideDeEnki.desc
+  hintKey: power.EgideDeEnki.hint
+  displayName: 
+  description: 
+  icon: {fileID: 0}
+  slot: 3
+  cooldown: 60
+  duration: 8
+  usableWhileAiming: 1
+  usableWhileCrouched: 1
+  usableWhileReloading: 1

@@ -101,6 +101,14 @@ namespace Nibiru.EditorTools
         /// <paramref name="setup"/> pode mexer em mais coisas do mundo (reputação, por exemplo).
         /// Depois de recarregar, chama <paramref name="then"/> (opcional).
         /// </summary>
+        /// <summary>Dá um poder pelo código permanente (poder.*), para os atalhos montarem o mundo.</summary>
+        public static void GrantPower(string code)
+        {
+            Nibiru.Powers.PowerDefinition power = SaveRegistry.Instance != null ? SaveRegistry.Instance.Power(code) : null;
+            if (power == null) Debug.LogError($"Atalho de teste: o poder {code} não está no registro (Nibiru > Salvamento > Criar registro e códigos).");
+            else Nibiru.Powers.PowerBook.Grant(power);
+        }
+
         public static void StartFrom(IEnumerable<string> events, (string quest, int step)[] quests, int transformation,
             Vector3 spawn, float yaw, Action then = null, Action setup = null)
         {
@@ -115,6 +123,8 @@ namespace Nibiru.EditorTools
             SaveSlots.Detach();
             WorldState.Clear();
             foreach (string id in events) WorldState.MarkStoryEvent(id);
+            // Listas antigas com "Poder:<arquivo>" viram posse de verdade (ME1).
+            Nibiru.Powers.PowerBook.ConvertLegacyEvents();
             foreach (var (quest, step) in quests) WorldState.SetQuestStep(quest, step);
             WorldState.Transformation = transformation;
             setup?.Invoke();

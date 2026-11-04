@@ -17,17 +17,18 @@ namespace Nibiru.EditorTools
     {
         const string MenuRoot = "Nibiru/Testes/Passo 9/";
 
-        // Depois do passo 8: a tabuleta decifrada (o poder e a marca) e a conversa com o Samir.
+        // Depois do passo 8: a tabuleta decifrada (a marca; o poder é dado em Start) e a conversa com o Samir.
         static readonly string[] Step8Events =
         {
             "TocouATabuleta", "EntrouNaMemoriaDeZiusudra", "AParedeDeJuncoFalou", "OuviuAParedeDeJunco",
-            "DecifrouTabuletaDoJunco", "Tabuleta:TabuletaDoJunco", "Poder:EcoDoAbzu", "ConversouSobreATabuleta",
+            "DecifrouTabuletaDoJunco", "Tabuleta:TabuletaDoJunco", "ConversouSobreATabuleta",
         };
 
         // Passos da missão Sobrevivente: "Siga o Samir até a beira da aldeia" e "Passe pela patrulha...".
         const int FollowSamirStep = 15;
         internal const int CrossRoadStep = 16;
         const int TransformationAfterTablet = 5;
+        internal const string EchoCode = "poder.eco_do_abzu";
 
         // Um pouco ao sul da beira da aldeia, olhando para o norte: ao andar, a Elena entra na cena do cerco.
         static readonly Vector3 BeforeLookoutSpot = new Vector3(-46f, 0f, -1f);
@@ -97,6 +98,7 @@ namespace Nibiru.EditorTools
                 TransformationAfterTablet, spawn, yaw, then,
                 setup: () =>
                 {
+                    GrantPower(EchoCode);
                     if (!revealed) Save.WorldState.SetReputation("Guardioes", 5);
                     extraSetup?.Invoke();
                 });

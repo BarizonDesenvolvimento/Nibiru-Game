@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Nibiru.Combat;
 using Nibiru.Inventory;
+using Nibiru.Powers;
 using Nibiru.Quests;
 using UnityEngine;
 
 namespace Nibiru.Save
 {
     /// <summary>
-    /// Registro central do salvamento: liga cada código permanente (item, arma, missão) ao arquivo de dados.
+    /// Registro central do salvamento: liga cada código permanente (item, arma, missão, poder) ao arquivo de dados.
     /// O arquivo de salvamento guarda só os códigos; ao carregar, este registro devolve o arquivo certo.
     /// Fica em Resources/Save/Registro; refeito por Nibiru > Salvamento > Criar registro e códigos.
     /// Eventos e facções não entram aqui: o código deles é o nome do arquivo, e o salvamento os grava como texto.
@@ -20,6 +21,7 @@ namespace Nibiru.Save
         public List<ItemDefinition> items = new List<ItemDefinition>();
         public List<FirearmDefinition> firearms = new List<FirearmDefinition>();
         public List<QuestDefinition> quests = new List<QuestDefinition>();
+        public List<PowerDefinition> powers = new List<PowerDefinition>();
 
         static SaveRegistry instance;
 
@@ -39,6 +41,8 @@ namespace Nibiru.Save
         public ItemDefinition Item(string code) => items.Find(i => i != null && i.Id == code);
 
         public FirearmDefinition Firearm(string code) => firearms.Find(f => f != null && f.Id == code);
+
+        public PowerDefinition Power(string code) => powers.Find(p => p != null && p.Id == code);
 
         public QuestDefinition QuestByCode(string code) => quests.Find(q => q != null && q.StableId == code);
 

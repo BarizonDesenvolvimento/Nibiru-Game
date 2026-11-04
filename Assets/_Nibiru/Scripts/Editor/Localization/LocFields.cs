@@ -4,7 +4,9 @@ using System.Linq;
 using Nibiru.Dialogue;
 using Nibiru.Documents;
 using Nibiru.Inventory;
+using Nibiru.Localization;
 using Nibiru.Memories;
+using Nibiru.Powers;
 using Nibiru.Quests;
 using Nibiru.Tablets;
 using UnityEditor;
@@ -112,6 +114,7 @@ namespace Nibiru.EditorTools.Localization
             foreach (var quest in Assets<QuestDefinition>()) Collect(quest, fields, false);
             foreach (var tablet in Assets<TabletDefinition>()) Collect(tablet, fields, false);
             foreach (var memory in Assets<MemoryDefinition>()) Collect(memory, fields, false);
+            foreach (var power in Assets<PowerDefinition>()) Collect(power, fields, false);
             return fields;
         }
 
@@ -196,6 +199,15 @@ namespace Nibiru.EditorTools.Localization
                         () => tablet.nameKey, v => tablet.nameKey = v, () => tablet.displayName, v => tablet.displayName = v, () => tablet.LocalizedName);
                     Add(fields, includeEmpty, tablet, $"tablet:{tablet.name}:text", tablet.name + " (texto)", $"tablet.{tablet.name}.text", false, true,
                         () => tablet.textKey, v => tablet.textKey = v, () => tablet.text, v => tablet.text = v, () => tablet.LocalizedText);
+                    break;
+
+                case PowerDefinition power:
+                    Add(fields, includeEmpty, power, $"power:{power.name}:name", power.name + " (nome)", $"power.{power.name}.name", false, true,
+                        () => power.nameKey, v => power.nameKey = v, () => power.displayName, v => power.displayName = v, () => power.LocalizedName);
+                    Add(fields, includeEmpty, power, $"power:{power.name}:desc", power.name + " (descrição)", $"power.{power.name}.desc", false, true,
+                        () => power.descriptionKey, v => power.descriptionKey = v, () => power.description, v => power.description = v, () => power.LocalizedDescription);
+                    Add(fields, includeEmpty, power, $"power:{power.name}:hint", power.name + " (dica)", $"power.{power.name}.hint", false, false,
+                        () => power.hintKey, v => power.hintKey = v, () => null, null, () => Loc.Get(power.hintKey));
                     break;
 
                 case MemoryDefinition memory:

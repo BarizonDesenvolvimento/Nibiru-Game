@@ -213,3 +213,8 @@ cena suprimentos.kit_tenda_medica
 cena suprimentos.municao_poco_descida
 cena suprimentos.municao_passagem
 cena suprimentos.municao_aldeia_mesquita
+poder poder.eco_do_abzu
+poder poder.egide_de_enki
+poder poder.sopro_de_enlil
+poder poder.teste_poder_vaga_2
+poder poder.teste_poder_vaga_3
