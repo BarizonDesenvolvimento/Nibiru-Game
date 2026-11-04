@@ -1067,6 +1067,10 @@ Convenção de chaves, códigos permanentes, regra de tags de cor e `{0}` e a fo
 - **Remédio para Yusuf:** a recompensa (antibióticos, gastar um dos 2 curativos do mapa na Weiss) não mexe no combate, mas conferir no teste completo se os curativos fazem falta para quem os troca.
 - **Equilíbrio da luta do Primeiro Servo:** com pouca munição a luta fica impossível e na faca é difícil demais. **Decidido na B2a (3/nov/2026):** nenhuma munição fixa na arena e **6 balas garantidas antes da antecâmara** (patamar do meio da descida do Poço). Falta conferir no teste completo se isso basta.
 
+- **Pendência do dono (arte, 4/nov/2026):** a Tabuleta do Junco e a pedra do deus Anunnaki têm pequenas falhas na malha; o dono corrige no Blender (normais ou buracos); depois, reimportar como tarefa leve.
+
+**Lote de documentação de 4/nov/2026 (tarefa leve, sem mexer em `Assets/`):** pendência de arte acima registrada; a linha "Calibração" pedida para remover não existe neste arquivo (nada a tirar); plano do B6 escrito em `Docs/Plano-B6-Espingarda.md`, aguardando aprovação do dono.
+
 ## Pendências da etapa B (polimento)
 
 - **Mouse nas telas que ainda não têm (etapa D):** mouse nas escolhas de diálogo, no inventário e na tela de morte (hoje só teclado e controle, com o cursor preso). A tela de Opções com mais itens também entra na etapa D.
