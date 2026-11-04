@@ -302,11 +302,12 @@ Em 20 de outubro de 2026, os 14 sistemas do Grupo 1 estão prontos e testados na
 | Faca | Clique esquerdo ou F | RB / R1 |
 | Mirar / atirar | Botão direito / clique esquerdo | LT / RT |
 | Recarregar | R | X / Quadrado |
-| Eco do Abzu | Q | LB / L1 |
-| Sopro de Enlil (proposta, a confirmar no ME1) | Z | LB + RB |
-| Égide de Enki (proposta, a confirmar no ME1) | X | LB + Y |
+| Eco do Abzu | Q | LB / L1 (toque; dispara ao soltar) |
+| Sopro de Enlil | Z (ou Mouse 4) | LB + RB |
+| Égide de Enki | X (ou Mouse 5) | LB + Y |
+| Zoom da câmera | Roda do mouse | D-pad cima / baixo |
 
-**Proposta dos poderes (3/nov/2026):** no teclado, Q, F e G; como o F já é a faca, ficam Z e X para o Sopro e a Égide. No controle, o LB é um modificador, no estilo God of War: LB sozinho é o Eco, LB+RB o Sopro e LB+Y a Égide; o RB sozinho continua sendo a faca. Confirmar no projeto do ME1, com o mapa completo de controles (no `ESTADO.md`, "Sistema dos ME").
+**Botões dos poderes (aprovados no ME1, 4/nov/2026):** no teclado, Q, Z e X. No controle, o LB é um modificador, no estilo God of War: LB tocado e solto é o Eco (segurar mais de 0,5 s e soltar não dispara), LB+RB o Sopro e LB+Y a Égide; o RB sozinho continua sendo a faca. O plano B (Eco no Y sozinho) fica como configuração no código, até o dono escolher num controle de verdade. A tabela completa por contexto está em `Docs/Plano-ME1-Dados-Posse-Controles.md`.
 | Inventário | Tab ou I | Select |
 | Pausa | Esc | Start |
 

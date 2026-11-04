@@ -162,8 +162,10 @@ Regras já aprovadas para a demo (região 1). A construção delas está no `Doc
 - **Égide de Enki.** Na Passagem dos Guardiões (passo 13), lida no **puzzle 2** (4 anéis); a pista vem das inscrições e da fita de Irena. Dura 8 s e tem recarga de 60 s. Dispara o **primeiro despertar**, antes do wadi: a Elena sente, mas não entende. A árvore aparece bloqueada, com glifos não traduzidos.
 - **A luta do Primeiro Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano).
 - **Puzzle do selo.** O Sopro e a Égide são lidos girando anéis. O jogo não pausa, o puzzle fica num lugar seguro e falhar não tem penalidade.
-- **Botões dos poderes (proposta, ainda não aprovada; confirmar no projeto do ME1):** teclado Q para o Eco, Z para o Sopro e X para a Égide (o F, da proposta, já é a faca). Controle: LB para o Eco, LB+RB para o Sopro e LB+Y para a Égide (LB como modificador; o RB sozinho continua sendo a faca).
-- **Em aberto (ME7):** o que a barra "Transformação %" vira com os despertares.
+- **Botões dos poderes (aprovados no ME1, 4/nov/2026):** teclado Q para o Eco, Z para o Sopro e X para a Égide (o F é a faca). Controle: LB tocado e solto para o Eco, LB+RB para o Sopro e LB+Y para a Égide (LB como modificador; o RB sozinho continua sendo a faca e, com o LB seguro, nunca vira faca). O dono ainda escolhe, num controle de verdade, entre esse plano e o plano B (Eco no Y sozinho). Detalhes em `Docs/Plano-ME1-Dados-Posse-Controles.md`.
+- **Sem custo por uso:** o único limite de um poder é a recarga, contada só em tempo de jogo (não anda com o jogo pausado, em menus nem no inventário). Na demo a Elena não perde nem descarta ME.
+- **Transformação (decidido no ME1, 4/nov/2026):** o valor continua por dentro (finais e reações) e a barra sai do HUD; no lugar dela, a marca no pulso cresce e, no fim da demo, o estado aparece em palavras (ME7 e fase C).
+- **Despertares:** a demo tem um, disparado ao ler a Égide (passo 13), antes do wadi; o total do jogo completo está em aberto. A árvore tem três ramos (combate, furtividade, poderes) e na demo aparece inteira, com os nós bloqueados.
 - **Save.** Guarda os ME da Elena, a recarga restante de cada um e os despertares.
 
 ## Perguntas abertas

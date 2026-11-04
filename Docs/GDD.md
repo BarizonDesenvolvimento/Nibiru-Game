@@ -123,7 +123,7 @@ O jogador explora uma região, enfrenta o que mora nela, encontra tabuletas e vo
 | Exploração | Áreas interligadas, atalhos que se abrem, caminhos que só um poder novo libera |
 | Combate | Armas de fogo com munição escassa, ataque corpo a corpo, esquiva. Poderes Anunnaki como alternativa |
 | Tabuletas | Item principal de progressão. Decifrar uma tabuleta dá um poder, uma memória e um pedaço da história. A demo tem 3 poderes: Eco do Abzu (Tabuleta do Junco), Sopro de Enlil e Égide de Enki (regras na Bíblia, "Regras da demo") |
-| Transformação | Barra de humano a divino. Mais divino = poderes mais fortes, mudança no visual e nas reações dos personagens. Como a barra se liga aos despertares ainda está em aberto (ME1/ME7 no `ESTADO.md`) |
+| Transformação | Barra de humano a divino. Mais divino = poderes mais fortes, mudança no visual e nas reações dos personagens. Decidido no ME1 (4/nov/2026): o valor continua por dentro e a barra sai do HUD; a transformação aparece na marca do pulso, que cresce, e em palavras no fim da demo (ME7 e fase C). Os despertares são outra coisa: vêm de eventos da história (o primeiro, ao ler a Égide) |
 | RPG | Sem XP e sem níveis. A progressão vem dos **despertares**: a árvore de habilidades se abre por despertares (a forma da árvore se decide no ME7; a proposta antiga tinha três ramos: combate, furtividade, poderes). Equipamentos com atributos. Regras na Bíblia, "Regras da demo" |
 | Missões | Principais, secundárias e de facção, com consequências que aparecem mais tarde |
 | Diálogos | Escolhas de resposta que afetam reputação, aliados e finais |

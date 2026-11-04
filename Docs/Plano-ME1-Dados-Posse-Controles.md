@@ -391,3 +391,17 @@ Respostas do dono, trazidas do documento de design. Valem acima das seções 2 a
 3. Etapa 3: os dois atalhos do LB para o dono, documentação completa. Testes, commit e push.
 4. Teste do dono no Play, com a escolha do LB.
 5. Regressão completa (nível 3) para fechar o ME1. **Não roda antes do passo 4.**
+
+## 7. O que mudou na implementação (4/nov/2026)
+
+Tudo como na seção 6, com estes ajustes:
+
+- **Códigos dos poderes de teste:** `poder.teste_poder_vaga_2` e `poder.teste_poder_vaga_3` (o gerador de códigos separa o número: "Vaga2" vira "vaga_2"). Já estão na lista de códigos permanentes.
+- **Onde fica a regra do LB:** no `PlayerInputReader` (`EvaluatePowerButtons`, uma vez por quadro), usando as ações do mapa (`ModificadorPoderes`, `Atacar` vindo do controle e `Poder3Combo`), e não a opção global do Input System. "Outro botão" é qualquer botão do mesmo controle (A, B, X, gatilhos, Start, Select, L3, R3, D-pad); mexer os analógicos não cancela.
+- **Plano B como configuração:** campo `ecoScheme` do `PlayerInputReader` no prefab da Elena (padrão: plano A). Os atalhos do LB trocam o esquema só para aquele atalho (`SchemeOverride`, que todo outro atalho zera e que some ao sair do Play).
+- **Rótulos dos botões:** `PlayerInputReader.PowerSlotLabel` (teclado: só a primeira tecla, "Z" e não "Z | Mouse 4"; controle: "LB", "LB + RB", "LB + Y" ou "Y" no plano B).
+- **Recarga e duração:** a recarga fica no `WorldState` (por código), contada pelo `PlayerPowers` com `Time.deltaTime`; a duração (estado "ativo", para a Égide) fica só na memória do `PlayerPowers` e não vai para o save.
+- **Atraso medido do Eco ao soltar o LB:** ~20 ms num toque de 6 quadros do controle virtual (o atraso real é a duração do toque do dedo; o dono mede no atalho).
+- **HUD:** o `PowerHUD` de texto passou a mostrar uma linha por poder possuído (os de teste não aparecem nele), com textos com chave.
+- **Atalhos do LB:** na etapa 2, junto com os controles (os testes usam a mesma montagem), e não na 3. Lugar: o nicho da Aldeia, logo depois da tabuleta (calmo), e não a antecâmara.
+- **Teste automático:** 18 cenários em vez de 16 (entraram a tabuleta dando o Eco e a recarga só em tempo de jogo); ~50 s.

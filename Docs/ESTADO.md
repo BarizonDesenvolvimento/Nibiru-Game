@@ -64,10 +64,10 @@ Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, s
 - **Égide de Enki:** na Passagem dos Guardiões (passo 13), puzzle 2; dispara o primeiro despertar antes do wadi.
 - **A luta do Servo** usa faca, tiros, o Eco (atordoa) e o Sopro (dano). A demo tem 3 poderes. Nomes: Lullu e Primeiro Servo. Sem XP nem nível.
 
-**Em aberto, decidir no ME1/ME7:**
-- **Botões dos ME (proposta do dono de 3/nov/2026, a confirmar no projeto do ME1 contra o mapa atual):** teclado **Q Eco, Z Sopro, X Égide** (a proposta era F e G; o F já é a faca, então valem Z e X). Controle: **LB Eco, LB+RB Sopro, LB+Y Égide** (LB como modificador, no estilo God of War; o RB sozinho continua sendo a faca). **Regra do modificador (decisão do dono, 3/nov/2026):** o Eco dispara ao **soltar** o LB, e só se nenhum outro botão foi apertado enquanto o LB estava seguro (com o LB seguro, RB vira Sopro e Y vira Égide; soltar o LB depois disso não dispara o Eco).
+**Decidido no ME1 (aprovação de 4/nov/2026; detalhes em `Docs/Plano-ME1-Dados-Posse-Controles.md`):**
+- **Botões dos ME (aprovados; implementados na etapa 2 do ME1):** teclado **Q Eco, Z Sopro, X Égide** (a proposta era F e G; o F já é a faca, então valem Z e X). Controle: **LB Eco, LB+RB Sopro, LB+Y Égide** (LB como modificador, no estilo God of War; o RB sozinho continua sendo a faca). **Regra do modificador (decisão do dono, 3/nov/2026):** o Eco dispara ao **soltar** o LB, e só se nenhum outro botão foi apertado enquanto o LB estava seguro (com o LB seguro, RB vira Sopro e Y vira Égide; soltar o LB depois disso não dispara o Eco).
 
-  **Mapa completo de controles** (lido de `Data/Input/NibiruControles`, com a proposta em negrito):
+  **Mapa completo de controles** (lido de `Data/Input/NibiruControles`; em negrito, o que o ME1 acrescentou):
 
   | Ação | Teclado e mouse | Controle |
   | --- | --- | --- |
@@ -81,18 +81,21 @@ Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, s
   | Atirar | Clique esquerdo (mirando) | RT |
   | Recarregar | R | X |
   | Agachar | C ou Ctrl esquerdo | Clique no analógico direito |
-  | Eco do Abzu (Poder) | Q | LB |
-  | **Sopro de Enlil** | **Z** | **LB + RB** |
-  | **Égide de Enki** | **X** | **LB + Y** |
+  | Eco do Abzu | Q | **LB tocado e solto** (até 0,5 s; plano B: Y sozinho) |
+  | **Sopro de Enlil** | **Z ou Mouse 4** | **LB + RB** |
+  | **Égide de Enki** | **X ou Mouse 5** | **LB + Y** |
+  | **Zoom da câmera** | Roda | **D-pad cima / baixo** |
+  | **Troca de arma (reservado, B6)** | **1, 2** | **D-pad esquerda / direita** |
   | Inventário | Tab ou I | Select |
   | Navegar nos menus | WASD ou setas | D-pad ou analógico esquerdo |
   | Confirmar | Enter ou E | A |
   | Voltar | Esc ou Backspace | B |
   | Pausa | Esc | Start |
 
-  Livres hoje no jogo: G, Z e X no teclado; Y e o D-pad no controle.
-- **Atalho de zoom no controle (pendência do ME1):** hoje o zoom da câmera só tem a roda do mouse e a opção "Distância da câmera" nas Opções (que serve ao controle). Decidir no mapa final se o controle ganha um botão (a roda não está no mapa de controles de propósito).
-- **A barra "Transformação %" do HUD (ME7):** o que ela vira com os despertares (some, vira contagem de despertares ou continua como barra).
+  Livres hoje no jogo: G e 3 a 9 no teclado (1 e 2 reservados para o B6); nada livre no controle fora das combinações do LB com A, B e X (que hoje fazem a ação normal e cancelam o Eco).
+- **Zoom no controle (resolvido no ME1):** D-pad para cima aproxima e para baixo afasta, 0,25 m por toque (a roda continua lida direto do mouse).
+- **A barra "Transformação %" do HUD (decidido; implementação no ME7):** o valor continua por dentro e a barra sai do HUD; a marca no pulso que cresce e o estado em palavras no fim da demo ficam para o ME7 e a fase C. Até lá a barra continua na tela.
+- **HUD com um ícone e um anel de recarga por ME:** entra no **ME5**. O ME1 deixou o HUD de texto (uma linha por poder).
 
 ## Onde estamos
 
@@ -1166,7 +1169,7 @@ Projeto, decisões e riscos em `Docs/Plano-Zoom-da-Camera.md` (com a seção "O 
 - **Controle:** sem atalho (pendência do ME1, veja "Em aberto, decidir no ME1/ME7").
 - **Opções com uma linha a mais:** a página Opções ganhou uma linha, então **Voltar passou da linha 4 para a 5** e o Idioma para a 4 (o teste do Mouse e o `HitTestCheck` foram ajustados).
 
-## ME1: dados, posse e controles (4/nov/2026, em andamento)
+## ME1: dados, posse e controles (4/nov/2026: etapas 1 a 3 feitas e testadas pela ponte; falta o teste do dono no Play e a regressão completa)
 
 Projeto, decisões da aprovação e riscos em `Docs/Plano-ME1-Dados-Posse-Controles.md` (a seção 6, "Decisões da aprovação", vale acima do resto). Três etapas, com commit e push a cada uma; depois, o teste do dono com a escolha do LB e só então a regressão completa.
 
@@ -1190,6 +1193,21 @@ Projeto, decisões da aprovação e riscos em `Docs/Plano-ME1-Dados-Posse-Contro
 - **D-pad esquerda e direita e as teclas 1 e 2:** reservados para a troca de arma do B6 (nada ligado ainda).
 - **Atalhos do teste do LB** (**Nibiru > Testes > Poderes**, `Scripts/Editor/Powers/PowerShortcuts.cs`): **1. Teste do LB: plano A (Eco ao soltar o LB)** e **2. Teste do LB: plano B (Eco no Y sozinho)**. Os dois põem a Elena no nicho da Aldeia, logo depois da tabuleta, com a pistola, o Eco e dois poderes de teste nas vagas 2 e 3, e um quadro no canto da tela que mostra o esquema, há quanto tempo o LB está seguro, o último poder que saiu e quantos milissegundos depois do botão ele saiu. O esquema escolhido vale só para aquele atalho (qualquer outro atalho volta ao do prefab).
 - **Testes da etapa 2:** **Nibiru > Testes > Poderes > Teste automático** (`Scripts/Editor/Powers/PowerTests.cs`, controle, teclado e mouse virtuais, **~50 s**): **18 OK** (a tabuleta dá o Eco uma vez, com o rodapé com chave; checkpoint guarda o Eco e a recarga; recarga só em tempo de jogo; LB ao soltar, nunca ao apertar, com o atraso medido: **~20 ms** num toque de 6 quadros; LB+RB e LB+Y sem faca nem Eco; RB sozinho é faca; LB+B esquiva e cancela; LB seguro 0,7 s não dispara e 0,3 s dispara; mirando; teclado e Mouse 4 e 5; poder que ela não tem; recarga bloqueia; diálogo, pausa, inventário e leitura bloqueiam; zoom no D-pad; plano B; memória e viagem sem poder). Teste de dados agora **18 OK** (confere também o `PlayerPowers` no prefab e que não sobrou efeito de teste nele). Nível 2: Localização 14 OK; Animações 377 verificações OK; Mouse **10 OK** (na primeira rodada 1 falha, "pausa aberta pelo teclado: o cursor deveria ficar escondido até o mouse mexer", que não voltou na segunda: o mouse de verdade se mexeu durante o teste, como a roda no teste do zoom); Zoom 14 OK; Passo 11 9 OK; Passo 12 10 OK; teste geral dos atalhos **102 OK, 0 FALHOU, 49 pulados** (+2 OK: os dois atalhos do LB; +1 pulado: `poderes.teste`). "Slots reais iguais" em cada um. O atalho do plano B foi conferido pela ponte (esquema, os três poderes nas vagas e o HUD).
+
+**Etapa 3: atalhos do dono e documentação (feita).** Os dois atalhos do LB conferidos pela ponte (plano A e plano B: esquema certo, Eco e os poderes de teste nas vagas 2 e 3, pistola equipada, quadro na tela). Documentação: este arquivo, o plano (seção 7, "O que mudou na implementação"), a Bíblia e a Região 1 (botões aprovados), o GDD (transformação) e a tabela de chaves do `CLAUDE.md` (`power.*`). Sem código novo nesta etapa, então não houve teste novo.
+
+**Como testar o ME1 no Play (roteiro do dono):**
+
+| # | Atalho ou lugar | O que fazer | O que deve acontecer |
+| --- | --- | --- | --- |
+| 1 | **Poderes > 1. Teste do LB: plano A** (com um controle de verdade) | Toque no LB e solte; segure o LB e aperte RB; segure o LB e aperte Y; RB sozinho; segure o LB mais de meio segundo e solte; segure o LB e aperte B; mire (LT) e toque no LB | O quadro no canto mostra cada poder que saiu e o atraso. Eco **ao soltar** o LB; LB+RB = "Poder de teste (vaga 2)" sem facada; LB+Y = "vaga 3"; RB sozinho = facada; LB seguro mais de 0,5 s = nada; LB+B = esquiva sem Eco; mirando, o Eco sai. Sinta se o atraso do Eco incomoda |
+| 2 | **Poderes > 2. Teste do LB: plano B** | Y sozinho; LB sozinho; LB+RB; LB+Y | Y sozinho = Eco **na hora**; LB sozinho não faz nada; as combinações iguais ao plano A |
+| 3 | Escolha | Diga qual plano fica (A ou B) | Eu ponho o escolhido no campo `ecoScheme` do prefab da Elena e rodo a regressão completa |
+| 4 | **Modo livre > 1. Modo livre: começar na Aldeia** (tem o Eco e a pistola) | No teclado: Q; no controle: D-pad para cima e para baixo | Q solta o Eco (o HUD mostra "recarregando"); o D-pad aproxima e afasta a câmera de 0,25 m em 0,25 m; mirando, o D-pad não mexe no zoom |
+| 5 | Pausa com o Eco recarregando | Solte o Eco, abra a pausa por uns 10 s, feche | A recarga não andou enquanto a pausa estava aberta |
+| 6 | **Passo 8 > 1. No nicho, pronto para ler a tabuleta** | Leia a tabuleta | O rodapé diz "Novo poder: Eco do Abzu" e "Transformação +5", como antes |
+
+O HUD dos poderes continua de texto (o com ícone e anel de recarga é do ME5). A barra de transformação continua na tela até o ME7.
 
 ## Modo livre (4/nov/2026, testado pela ponte; falta o teste do dono no Play)
 
@@ -1442,7 +1460,7 @@ Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
 2. **Zoom da câmera: FECHADO (testado no Play em 4/nov).** A roda real falhou na primeira tentativa (o Input System entrega 1 por clique, o código esperava 120); corrigido, retestado pela ponte e confirmado pelo dono no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. ~~**Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).~~ **Feito em 4/nov/2026** (veja a etapa 6 da "Área-vitrine da Aldeia").
-4. **Projeto em papel do ME1:** escrito em 4/nov/2026 em `Docs/Plano-ME1-Dados-Posse-Controles.md` (dados dos poderes, posse, campo `poderes` do save, mapa de controles final com o zoom no D-pad, opções para a barra de transformação e testes). **Aguarda aprovação**; nada implementado.
+4. **ME1:** projeto aprovado em 4/nov/2026 e as etapas 1 a 3 feitas e testadas pela ponte (veja "ME1: dados, posse e controles"). **Falta:** o teste do dono no Play, com a escolha do LB (os dois atalhos de **Nibiru > Testes > Poderes**), e depois a **regressão completa (nível 3)** para fechar o ME1.
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
 
 ### Como testar o passo 15
