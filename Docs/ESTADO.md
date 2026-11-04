@@ -1169,7 +1169,7 @@ Mesmo método (menus **Objetos e ambientes > 1** e **3**, `PropArtSetup.BuildBat
 | Relevo do deus Anunnaki | parede norte da antecâmara, a oeste do Selo (x 39,6) | 2,4 x 3,9 m |
 | Relevo das criaturas aladas | parede norte, a leste do Selo, sobre a plataforma (x 49,6) | 3,8 x 1,9 m |
 
-- **Relevos (pedido do dono no Play: "pouco visíveis"):** ficaram maiores, saem 25 cm da parede (sem colisor), têm brilho próprio quente (emissão = a própria textura) e uma luz quente (`Luz_Relevo`) à frente de cada um.
+- **Relevos (pedido do dono no Play: "pouco visíveis"):** ficaram maiores, saem 25 cm da parede (sem colisor) e têm uma luz quente (`Luz_Relevo`, intensidade 6, alcance 9 m) à frente de cada um; nova foto de cada um em `Capturas/Lote3/`. **Sem emissão no material:** emissão própria só para efeitos Anunnaki (azul lápis-lazúli); a iluminação definitiva dos relevos fica para a fase C.
 - **Malha de navegação** refeita uma vez; os 4 pontos de encontro OK.
 - **Só prefab (sem lugar definido):** Espingarda e Gravador, como antes.
 - **Pendências:** a vista do Samir ao volante pela janela traseira (vidro escuro do modelo); caminhões e caminhonete não andam além do que já andavam; a vitrine de um caminhão parado no cerco não foi vista no Play.

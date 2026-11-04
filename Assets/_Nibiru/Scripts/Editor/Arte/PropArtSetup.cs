@@ -167,15 +167,11 @@ namespace Nibiru.EditorTools
                 m.SetFloat("_Smoothness", 1f);
                 m.EnableKeyword("_METALLICSPECGLOSSMAP");
             }
-            // Relevos da antecâmara e da passagem ficam em pedra escura: um brilho próprio quente (a própria cor do relevo)
-            // faz o desenho aparecer, como o mundo dos Anunnaki, que tem luz própria.
-            if (name.StartsWith("Painel"))
-            {
-                m.EnableKeyword("_EMISSION");
-                m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
-                m.SetTexture("_EmissionMap", m.GetTexture("_BaseMap"));
-                m.SetColor("_EmissionColor", new Color(0.55f, 0.45f, 0.34f));
-            }
+            // Sem emissão: pedra não brilha sozinha. Brilho próprio é só dos efeitos Anunnaki (azul lápis-lazúli).
+            // Os relevos ganham luz pela Luz_Relevo, à frente de cada um.
+            m.DisableKeyword("_EMISSION");
+            m.SetTexture("_EmissionMap", null);
+            m.SetColor("_EmissionColor", Color.black);
             EditorUtility.SetDirty(m);
             return m;
         }
@@ -503,8 +499,8 @@ namespace Nibiru.EditorTools
             var lamp = lightGo.AddComponent<Light>();
             lamp.type = LightType.Point;
             lamp.color = new Color(1f, 0.78f, 0.5f);
-            lamp.intensity = 3f;
-            lamp.range = 7f;
+            lamp.intensity = 6f;
+            lamp.range = 9f;
             lamp.shadows = LightShadows.None;
         }
 
