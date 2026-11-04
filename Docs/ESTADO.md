@@ -1400,7 +1400,7 @@ Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corr
 
 Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
-2. **Zoom da câmera com a roda do mouse** (projeto no papel antes).
+2. **Zoom da câmera com a roda do mouse:** projeto no papel pronto, aguardando aprovação (`Docs/Plano-Zoom-da-Camera.md`).
 3. **Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).
 4. **Projeto em papel do ME1.**
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
