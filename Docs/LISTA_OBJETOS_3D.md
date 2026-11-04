@@ -47,7 +47,7 @@ Todos são gerados pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cen
 | `Fogueira` | Cilindro baixo | Centro do pátio | Não essencial | Blender por script + efeito da Unity | pendente |
 | `Heliponto` | Disco branco | Abaixo da elevação (passo 4) | Sim | Blender por script (pintura e cones) | pendente |
 | `Ponto_Inicio_Elena` | Marcador | Dentro da `Tenda_Elena` | Sim (só ponto lógico, não é modelo) | Lógico, sem modelo | — |
-| Corpos da equipe (7) | Cápsulas/formas de conteúdo | Pátio (passo 2) | Sim (3 modelos: veterano, jovem, trabalhador; já na ArteFonte) | Meshy (dono) (arqueólogo veterano, arqueóloga jovem, trabalhador) | gerado |
+| Corpos da equipe (7) | Cápsulas/formas de conteúdo | Pátio (passo 2) | Sim (3 modelos: veterano, jovem, trabalhador; já na ArteFonte) | Meshy (dono) (arqueólogo veterano, arqueóloga jovem, trabalhador) | no jogo |
 | `Trabalhador_Ferido` (Hassan) | Cápsula | Executado no passo 4 | Sim (usa o modelo do trabalhador) | Meshy (dono) | gerado |
 | `Catre` | Cubo | Dentro da `Tenda_Elena` | Não essencial | Blender por script | pendente |
 | `Caixotes_Mirante_1`, `_2` | Cubos de madeira | Mirante nordeste (cobertura) | Não essencial | Blender por script | pendente |
@@ -165,7 +165,7 @@ Tudo em formas simples (`ShuruppakMemoryContent.cs`). A memória dura 2 a 3 minu
 | **Tabuleta do Junco** (`Pedra`, `Linha_Ouro_*`) | Mão da Elena; lida no nicho (passo 8) | 1, 8 | Sim (herói) | Tripo (dono), lote 1 | no jogo |
 | **Faca de campo** (`Faca_De_Campo`, `Caixa_Faca`) | Caixa na barraca da Elena | 1 | Sim | Tripo (dono), lote 1 (a caixa: Blender por script) | no jogo |
 | **Bolsa vazia da câmera do Tom** (`Bolsa_Camera_Tom`) | Frente da barraca do Tom | 2 | Sim (inicia "O que o Tom viu") | Blender por script | pendente |
-| **Corpos da equipe** | Pátio do acampamento | 2 | Sim | Meshy (dono) | gerado |
+| **Corpos da equipe** | Pátio do acampamento | 2 | Sim | Meshy (dono) | no jogo |
 | **Rádio do acampamento** (`Caixa_Radio`, `Aparelho_Radio`) | Mesa sob toldo | 3 | Sim (herói, luz vermelha) | Tripo (dono) | no jogo |
 | **Rolo de filme 1** (`Rolo_De_Filme_1`) | Atrás do caminhão | 2 | Sim | Meshy (dono) | no jogo |
 | **Rolo de filme 2** (`Rolo_De_Filme_2`) | Canto nordeste das Trincheiras | 5 | Sim | Meshy (dono) | no jogo |
@@ -221,6 +221,6 @@ Tudo em formas simples (`ShuruppakMemoryContent.cs`). A memória dura 2 a 3 minu
 
 ## 5. Observações
 
-- Os modelos dos arqueólogos e do trabalhador já estão na Unity (prefabs em `Prefabs/Personagens`). O corpo do trabalhador executado já usa o modelo; os 7 corpos do círculo seguem em blockout, **deitados** (decisão do dono em 3/nov/2026), esperando a troca. O Tom e o Abu Faris ainda não têm modelo.
+- Os modelos dos arqueólogos e do trabalhador já estão na Unity (prefabs em `Prefabs/Personagens`). O corpo do trabalhador executado e os 7 corpos do círculo (**deitados**, decisão do dono em 3/nov/2026) já usam os modelos (3/nov/2026; prefabs `Personagens/EquipeMorta_*`). As queimaduras geométricas ficam para a fase C. O Tom e o Abu Faris ainda não têm modelo.
 - A lista de itens-chave do `Docs/Regiao-1-Sitio-de-Ur.md` prevê 5 documentos da Fundação e 3 inscrições; hoje há 2 documentos e nenhuma inscrição implementada.
 - Esta lista não confere a cena aberta na Unity; vem dos scripts e dos documentos. Se algum objeto foi mudado à mão na cena (o que o projeto evita), ele pode divergir.

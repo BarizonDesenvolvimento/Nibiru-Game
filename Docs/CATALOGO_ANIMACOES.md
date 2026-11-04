@@ -18,7 +18,7 @@ Lacuna resolvida: o dono baixou na `Avulsas` `X Bot@Sitting Idle`, `X Bot@Sittin
 - `X Bot@Driving` e `X Bot@Entering Car` são sentados de banco de carro.
 - Agachar: na `Avulsas` só há `Sneak Walk` (já usado, com um quadro parado como "agachada parada") e `X Bot@Walk Crouching Right`. Há "Crouch Idle" no Pro Magic Pack, no Pro Melee Axe Pack e no UAL1. **Não há agachada feminina.** O `Crouch_Idle_Loop` e o `Crouch_Fwd_Loop` do UAL1 foram testados na Elena em 1º/nov/2026 e descartados: fundos demais e de pernas abertas (quadril a 47 cm do chão, pés a 60 cm um do outro).
 
-**Origem dos pacotes:** `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` foram **baixados do Mixamo pelo dono em 25/out/2026** (confirmado na governança de 3/nov/2026): **origem confirmada, uso liberado**. Ainda nada deles está em uso.
+**Origem dos pacotes:** `Pro Magic Pack`, `Magic Locomotion Pack` e `Scary Zombie Pack` foram **baixados do Mixamo pelo dono em 25/out/2026** (confirmado na governança de 3/nov/2026): **origem confirmada, uso liberado**. Em uso: só as mortes Backward e Forward do Pro Magic, para posar a equipe morta.
 
 **Decisões da governança (3/nov/2026):**
 - No Mixamo, o **X Bot é o boneco feminino**.
@@ -53,6 +53,13 @@ Tabela única: `Scripts/Editor/Animacoes/AnimationLibrary.cs`. Os FBX vão para 
 | Elena_Sentada | Avulsas/X Bot@Sitting Idle2 | loop | não | Elena sentada no chão da caçamba (estado `Sentada` do `Elena.controller`, ligado pelo `TruckRide`) |
 | Elena_Agachada_Parada | Avulsas/X Bot@Crouching Idle | loop | não | agachada parada da Elena (no lugar do quadro congelado do `Sneak Walk`) |
 | Samir_Dirigindo | Avulsas/X Bot@Driving | loop | não | Samir ao volante na caminhonete (estado `Dirigindo` do `Samir.controller`) |
+| EquipeMorta_Costas | Pro Magic Pack/Standing React Death Backward | uma vez | — | último quadro: corpo de costas (só o trabalhador; o veterano deita na mochila e a jovem no cabelo) |
+| EquipeMorta_Brucos | Pro Magic Pack/Standing React Death Forward | uma vez | — | último quadro: corpo de bruços |
+| EquipeMorta_Brucos2 | Pro Rifle Pack/death crouching headshot front | uma vez | — | último quadro: outro de bruços |
+| EquipeMorta_Lado2 | Pro Rifle Pack/death from the front | uma vez | — | último quadro: de lado (sobre o esquerdo) |
+| EquipeMorta_Lado3 | Pro Rifle Pack/death from the back | uma vez | — | último quadro: de lado (sobre o esquerdo) |
+
+**Poses da equipe morta (3/nov/2026):** os clipes `EquipeMorta_*` só posam os 7 corpos do círculo no editor (`TeamBodiesSetup`); a pose fica gravada no prefab e nenhum controlador os usa. Conferido no último quadro: as "Standing React Death Left" e "Right" do Pro Magic terminam de costas e de bruços (nenhuma de lado), e a "death from right" do Pro Rifle deixa o peito no ar (braço embaixo).
 
 **Importados e sem ligação, porque nenhum evento ou estado do jogo serve:** `Lullu_Saida_Rachaduras` (nada no jogo faz criatura surgir das rachaduras: o Servo acorda no lugar, urrando); `Elena_Pegar` e `Elena_Abrir` (o `PlayerInteractor` não tem evento de interação a que ligar); as viradas da Elena. Estão na vitrine **Nibiru > Testes > Animações**.
 

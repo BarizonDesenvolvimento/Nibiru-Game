@@ -129,7 +129,7 @@ A bolsa da câmera do Tom e os kits médicos são feitos no Blender, por script 
 | Personagem | Situação |
 | --- | --- |
 | Elena, Samir, Yusuf, Umm Karim, Dra. Weiss, Soldado, Líder de esquadra, Atirador de elite, Piloto, Lullu, Primeiro Servo | no jogo |
-| Arqueólogo veterano, arqueóloga jovem, trabalhador da escavação (equipe morta) | gerados; o corpo do trabalhador executado já está no jogo, os 7 corpos do círculo esperam a troca |
+| Arqueólogo veterano, arqueóloga jovem, trabalhador da escavação (equipe morta) | no jogo: o corpo do trabalhador executado e os 7 corpos do círculo (deitados, poses do Mixamo; prefabs `EquipeMorta_*`) |
 | Ninsar | prévia na Unity (cena `Teste_Ninsar`); manto pausado |
 | Tom | pendente |
 | Povo de Shuruppak (menina, pescador, Ziusudra), se sobrar crédito | pendente |
