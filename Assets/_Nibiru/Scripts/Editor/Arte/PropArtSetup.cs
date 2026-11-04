@@ -362,7 +362,8 @@ namespace Nibiru.EditorTools
 
         // ---------- lote 3: caminhonete, guincho, holofotes e painéis de relevo ----------
 
-        const float ReliefProtrude = 0.25f; // quanto o relevo sai da parede (sem colisor)
+        // Só a luz usa isto: ela fica onde estava quando o painel saía 25 cm da parede (o dono aprovou essa luz).
+        const float ReliefProtrude = 0.25f;
 
         static int BuildBatch3(Transform[] all)
         {
@@ -465,8 +466,9 @@ namespace Nibiru.EditorTools
             return art;
         }
 
-        /// <summary>Gira o painel (yaw 90 = face para +x; 180 = face para -z), põe as costas dentro da parede (a face sai
-        /// ReliefProtrude da parede) e centra o painel em `wall` (x ou z da parede; y é o centro vertical).</summary>
+        /// <summary>Gira o painel (yaw 90 = face para +x; 180 = face para -z) e encosta as costas dele na superfície da parede
+        /// (`wall` = x ou z da superfície; o painel inteiro fica à frente dela: sem atravessar e sem flutuar). Centra o painel
+        /// no outro eixo horizontal e põe o centro vertical em `wall.y`. Escala e giro não mudam.</summary>
         static void PlaceRelief(GameObject art, float yaw, Vector3 wall)
         {
             art.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
@@ -479,15 +481,20 @@ namespace Nibiru.EditorTools
                 else b.Encapsulate(r.bounds);
             }
             var offset = new Vector3(0f, wall.y - b.center.y, 0f);
+            var lightOffset = offset; // onde o painel ficava antes (a luz continua lá)
             if (Mathf.Abs(Mathf.Sin(yaw * Mathf.Deg2Rad)) > 0.5f)
             {
-                offset.x = wall.x + ReliefProtrude - b.max.x;
+                offset.x = wall.x - b.min.x; // costas (lado de -x) rentes à parede
                 offset.z = wall.z - b.center.z;
+                lightOffset.x = wall.x + ReliefProtrude - b.max.x;
+                lightOffset.z = offset.z;
             }
             else
             {
-                offset.z = wall.z - ReliefProtrude - b.min.z;
+                offset.z = wall.z - b.max.z; // costas (lado de +z) rentes à parede
                 offset.x = wall.x - b.center.x;
+                lightOffset.z = wall.z - ReliefProtrude - b.min.z;
+                lightOffset.x = offset.x;
             }
             art.transform.position = offset;
 
@@ -495,7 +502,7 @@ namespace Nibiru.EditorTools
             var facing = art.transform.rotation * Vector3.forward;
             var lightGo = new GameObject("Luz_Relevo");
             lightGo.transform.SetParent(art.transform, true);
-            lightGo.transform.position = b.center + offset + facing * 1.8f;
+            lightGo.transform.position = b.center + lightOffset + facing * 1.8f;
             var lamp = lightGo.AddComponent<Light>();
             lamp.type = LightType.Point;
             lamp.color = new Color(1f, 0.78f, 0.5f);
