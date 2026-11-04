@@ -259,17 +259,15 @@ namespace Nibiru.EditorTools.Content
 
         static void BuildCircle(Transform g)
         {
-            // Mesmas posições dos corpos do blockout; aqui só entram as áreas de "Examinar".
-            for (int i = 0; i < 7; i++)
+            // Mesmos lugares dos corpos do blockout (CampCircle); aqui só entram as áreas de "Examinar".
+            for (int n = 1; n <= CampCircle.BodyCount; n++)
             {
-                float angle = i * Mathf.PI * 2f / 7f;
-                var pos = new Vector3(Mathf.Cos(angle) * 3.2f, Top + 0.4f, -112f + Mathf.Sin(angle) * 3.2f);
-                GameObject zone = Zone(g, $"Examinar_Corpo_{i + 1}", pos, new Vector3(0.9f, 0.8f, 2.2f), -angle * Mathf.Rad2Deg + 90f);
+                GameObject zone = Zone(g, $"Examinar_Corpo_{n}", CampCircle.BodyPlace(n) + Vector3.up * 0.4f, new Vector3(0.9f, 0.8f, 2.2f), CampCircle.BodyYaw(n));
                 DialogueStarterOn(zone, dlg.corpos, "Examinar", interactable: true);
             }
 
-            // A bolsa fica na frente da barraca do Tom (Tenda_Equipe_2).
-            GameObject bag = Prim(PrimitiveType.Cube, g, "Bolsa_Camera_Tom", new Vector3(4.4f, Top + 0.15f, -117.4f), new Vector3(0.4f, 0.3f, 0.25f), "BO_VerdeOliva", 20f);
+            // A bolsa fica no lugar vazio do Tom no círculo, largada no chão, como se alguém tivesse estado ali.
+            GameObject bag = Prim(PrimitiveType.Cube, g, "Bolsa_Camera_Tom", CampCircle.BagPosition + Vector3.up * 0.15f, new Vector3(0.4f, 0.3f, 0.25f), "BO_VerdeOliva", CampCircle.BagYaw);
             DialogueStarterOn(bag, dlg.bolsaDoTom, "Examinar a bolsa", interactable: true);
 
             // Primeiro rolo de filme, atrás do caminhão.

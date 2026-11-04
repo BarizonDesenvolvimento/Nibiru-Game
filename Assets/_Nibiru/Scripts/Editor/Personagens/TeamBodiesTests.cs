@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nibiru.Dialogue;
+using Nibiru.EditorTools.Content;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +10,8 @@ using UnityEngine.SceneManagement;
 namespace Nibiru.EditorTools
 {
     /// <summary>
-    /// Teste dos 7 corpos da equipe no círculo do Acampamento (TeamBodiesSetup). Não liga o Play e não mexe em
+    /// Teste dos corpos da equipe no círculo do Acampamento (TeamBodiesSetup e CampCircle): 3 corpos, um de cada modelo, e o
+    /// lugar vazio do Tom só com a bolsa. Não liga o Play e não mexe em
     /// salvamento: só lê a cena aberta (Regiao1_SitioDeUr). Resumo no Console.
     /// Menu: Nibiru > Testes > Personagens > Teste dos corpos da equipe (resumo no Console).
     /// </summary>
@@ -55,22 +57,35 @@ namespace Nibiru.EditorTools
                 return;
             }
 
-            // Distribuição e variedade.
-            var counts = bodies.GroupBy(b => b.shortName).ToDictionary(g => g.Key, g => g.Count());
-            Result(counts.GetValueOrDefault("Trabalhador") == 3 && counts.GetValueOrDefault("Veterano") == 2 && counts.GetValueOrDefault("Jovem") == 2,
-                "distribuição 3/2/2", string.Join(", ", counts.Select(c => $"{c.Key} {c.Value}")));
-            int combos = bodies.Select(b => b.PrefabName).Distinct().Count();
-            Result(combos == bodies.Length, "nenhuma combinação de modelo e pose se repete", $"{combos} combinações em {bodies.Length} corpos");
-            var categories = bodies.Select(b => b.Category).Distinct().ToArray();
-            Result(categories.Length >= 3, "pelo menos 3 tipos de pose", string.Join(", ", categories));
-            var clash = new List<string>();
-            for (int i = 0; i < bodies.Length; i++)
+            // 3 corpos, um de cada modelo, 3 tipos de pose, sem o tom empoeirado de antes.
+            var models = bodies.Select(b => b.shortName).Distinct().OrderBy(s => s).ToArray();
+            Result(bodies.Length == CampCircle.BodyCount && models.SequenceEqual(new[] { "Jovem", "Trabalhador", "Veterano" }),
+                "3 corpos, um de cada modelo", string.Join(", ", bodies.Select(b => $"{b.Placeholder} {b.shortName}")));
+            var categories = bodies.Select(b => b.Category).Distinct().OrderBy(s => s).ToArray();
+            Result(categories.SequenceEqual(new[] { "Brucos", "Costas", "Lado" }), "3 tipos de pose (de costas, de lado e de bruços)", string.Join(", ", categories));
+            var dusty = found.Values.SelectMany(f => f.visual.GetComponentsInChildren<Renderer>(true))
+                .SelectMany(r => r.sharedMaterials).Where(m => m != null && m.name.EndsWith("_Poeira")).Select(m => m.name).Distinct().ToArray();
+            Result(dusty.Length == 0, "sem o tom empoeirado", dusty.Length == 0 ? "materiais originais" : "ainda usa " + string.Join(", ", dusty));
+
+            // Nada sobrando de quando eram 7.
+            var leftovers = Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Where(t => t.gameObject.scene.IsValid() && (Extra(t.name, "Corpo_") || Extra(t.name, "Examinar_Corpo_")))
+                .Select(t => t.name).OrderBy(s => s).ToArray();
+            Result(leftovers.Length == 0, "nenhum corpo nem área de \"Examinar\" sobrando", leftovers.Length == 0 ? "só os 3" : string.Join(", ", leftovers));
+
+            // Cada corpo no seu lugar do círculo.
+            foreach (var b in bodies)
             {
-                var a = bodies[i];
-                var n = bodies[(i + 1) % bodies.Length];
-                if (a.shortName == n.shortName || a.Category == n.Category) clash.Add($"{a.index}-{n.index}");
+                float off = Flat(found[b.index].owner.transform.position - CampCircle.BodyPlace(b.index)).magnitude;
+                Result(off < 0.05f, $"{b.Placeholder} no lugar do círculo", $"a {off * 100:F0} cm do lugar ({CampCircle.BodyAngles[b.index - 1]:F0}°)");
             }
-            Result(clash.Count == 0, "vizinhos com modelo e tipo de pose diferentes", clash.Count == 0 ? "todos" : "repetem: " + string.Join(", ", clash));
+
+            // O lugar vazio do Tom: só a bolsa, nenhum corpo perto.
+            GameObject bagAtPlace = Find("Bolsa_Camera_Tom", t => t.GetComponent<DialogueStarter>() != null);
+            float bagOff = bagAtPlace != null ? Flat(bagAtPlace.transform.position - CampCircle.TomPlace).magnitude : float.MaxValue;
+            float nearest = found.Values.Min(f => Flat(f.owner.transform.position - CampCircle.TomPlace).magnitude);
+            Result(bagOff <= 0.6f && nearest >= 1.5f, "lugar vazio do Tom só com a bolsa",
+                $"bolsa a {bagOff:F2} m do lugar (máx. 0,6), corpo mais perto a {nearest:F2} m (mín. 1,5)");
 
             foreach (var b in bodies)
             {
@@ -128,6 +143,11 @@ namespace Nibiru.EditorTools
             report.AppendLine(TeamBodiesSetup.MeetingPointsReport());
             Debug.Log($"Corpos da equipe, teste ({(failed == 0 ? $"{passed} OK" : $"{passed} OK, {failed} FALHOU")}):\n" + report);
         }
+
+        static bool Extra(string name, string prefix) =>
+            name.StartsWith(prefix) && int.TryParse(name.Substring(prefix.Length), out int n) && n > CampCircle.BodyCount;
+
+        static Vector3 Flat(Vector3 v) => new Vector3(v.x, 0f, v.z);
 
         static GameObject Find(string name, System.Func<Transform, bool> extra)
         {

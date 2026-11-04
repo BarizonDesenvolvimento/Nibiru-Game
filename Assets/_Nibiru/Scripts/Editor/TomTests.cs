@@ -41,29 +41,35 @@ namespace Nibiru.EditorTools
             ("Acampamento: com os corpos deitados, \"Examinar\" um corpo e a bolsa do Tom ainda funcionam e começam a secundária", Camp),
         });
 
-        // O começo da secundária no Acampamento (passo 2 da principal), depois da troca das caixas pelos corpos deitados
-        // (TeamBodiesSetup): o colisor de cada corpo cresceu para cobrir a silhueta, e a área de "Examinar" continua à parte.
+        // O começo da secundária no Acampamento (passo 2 da principal), com o círculo de 4 lugares (CampCircle): 3 corpos
+        // deitados (TeamBodiesSetup) e o lugar vazio do Tom, onde fica a bolsa. A área de "Examinar" é à parte do corpo.
         static IEnumerator Camp()
         {
             RemedyShortcuts.Ready = false;
-            Vector3 circle = new Vector3(0f, 3f, -112f);
-            Transform zone = Obj("Examinar_Corpo_5").transform;
+            Vector3 circle = Content.CampCircle.Center;
+            Transform zone = Obj("Examinar_Corpo_1").transform;
             Vector3 outward = Vector3.ProjectOnPlane(zone.position - circle, Vector3.up).normalized;
-            Vector3 spot = new Vector3(zone.position.x, 3f, zone.position.z) + outward * 1.5f;
+            Vector3 spot = new Vector3(zone.position.x, circle.y, zone.position.z) + outward * 1.5f;
             float yaw = Quaternion.LookRotation(-outward).eulerAngles.y;
             StartFrom(new[] { "SaiuDaBarraca" }, new[] { ("Sobrevivente", 2) }, 0, spot, yaw, () => RemedyShortcuts.Ready = true);
             yield return new Until(() => RemedyShortcuts.Ready, 60f, "o Acampamento ficar pronto");
             yield return new Delay(1f);
             Check(MainStep() == 2, $"a principal deveria estar em \"procurar a equipe\" (índice 2), está em {MainStep()}");
+            Check(Loc.Get("dlg.Acampamento_Corpos.e5") == "Três. Falta um. Cadê o Tom?", $"a última fala dos corpos deveria contar três (é \"{Loc.Get("dlg.Acampamento_Corpos.e5")}\")");
 
             yield return Face(spot, yaw);
-            Check(Prompt() == "Examinar", $"diante do corpo 5 o aviso deveria ser \"Examinar\" (é \"{Prompt()}\")");
+            Check(Prompt() == "Examinar", $"diante do corpo 1 o aviso deveria ser \"Examinar\" (é \"{Prompt()}\")");
             yield return Interact("Examinar");
             yield return FinishDialogue("Acampamento_Corpos");
             Check(Raised("ExaminouOsCorpos"), "examinar deveria disparar ExaminouOsCorpos");
             Check(MainStep() == 3, $"a principal deveria ir para \"achar a bolsa\" (índice 3), está em {MainStep()}");
 
-            yield return Face(new Vector3(4.4f, 3f, -116.3f), 180f);
+            // A bolsa, no lugar vazio do Tom: chega por fora do círculo, olhando para ela.
+            Vector3 bag = Obj("Bolsa_Camera_Tom").transform.position;
+            Vector3 bagOut = Vector3.ProjectOnPlane(bag - circle, Vector3.up).normalized;
+            Check(Vector3.Distance(new Vector3(bag.x, 0f, bag.z), new Vector3(Content.CampCircle.TomPlace.x, 0f, Content.CampCircle.TomPlace.z)) < 0.6f,
+                "a bolsa deveria estar no lugar vazio do Tom no círculo");
+            yield return Face(new Vector3(bag.x, circle.y, bag.z) + bagOut * 1.0f, Quaternion.LookRotation(-bagOut).eulerAngles.y);
             yield return Interact("Examinar a bolsa");
             yield return FinishDialogue("Acampamento_BolsaDoTom");
             Check(Raised("AchouBolsaDoTom"), "a bolsa deveria disparar AchouBolsaDoTom");

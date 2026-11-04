@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using Nibiru.EditorTools.Content;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,10 +10,14 @@ using UnityEngine.AI;
 namespace Nibiru.EditorTools
 {
     /// <summary>
-    /// Os 7 corpos da equipe no círculo do Acampamento (passo 2): as caixas `Corpo_1` a `Corpo_7` do blockout viram
-    /// os modelos deitados e parados (decisão do dono em 3/nov/2026). 3 modelos para 7 corpos: a repetição some pela
-    /// pose (de costas, de bruços e de lado, do último quadro de mortes do Mixamo), pelo giro no círculo e por um tom
-    /// "empoeirado" nas segundas cópias.
+    /// Os corpos da equipe no círculo do Acampamento (passo 2): as caixas `Corpo_1` a `Corpo_3` do blockout viram os
+    /// modelos deitados e parados. Decisão do dono (3/nov/2026): 4 lugares em volta da fogueira (CampCircle), 3 corpos,
+    /// um de cada modelo, com 3 tipos de pose (de costas, de lado e de bruços, do último quadro de mortes do Mixamo), e o
+    /// 4º lugar vazio, o do Tom, só com a bolsa da câmera. (Antes eram 7 corpos com 3 modelos: a repetição aparecia de cima.)
+    ///
+    /// O menu também arruma a cena aberta para o desenho do CampCircle, sem refazer o Blockout nem o Acampamento: apaga
+    /// os `Corpo_N` e `Examinar_Corpo_N` que sobram, leva as caixas, as áreas de "Examinar" e a bolsa do Tom para os
+    /// lugares da tabela e refaz a malha de navegação da região.
     ///
     /// Cada combinação de modelo e pose é um prefab (`Prefabs/Personagens/EquipeMorta_<Modelo>_<Pose>`), variante do
     /// prefab do modelo: a pose fica gravada nos ossos e o Animator fica desligado e sem controlador (custo zero de
@@ -23,7 +28,7 @@ namespace Nibiru.EditorTools
     /// muda). Saem o MeshRenderer e o MeshFilter; a escala da caixa passa para o tamanho do BoxCollider (mesmo volume no
     /// mundo), para o corpo poder girar sem se deformar; o modelo entra como filho "Visual". Se a silhueta deitada passar
     /// mais de 10 cm para fora do colisor, ou o colisor sobrar mais de 25 cm, o colisor é ajustado à silhueta (vista de
-    /// cima) e a malha de navegação da região é refeita.
+    /// cima).
     ///
     /// Menu: Nibiru > Personagens > Corpos da equipe na cena aberta. Rode depois do Blockout, do Acampamento e do
     /// Montar personagens da Aldeia e da equipe (e de Nibiru > Animações > Importar clipes da biblioteca).
@@ -34,13 +39,13 @@ namespace Nibiru.EditorTools
         {
             public readonly int index;
             public readonly string model, shortName, pose;
-            public readonly bool headIn, dusty;
+            public readonly bool headIn;
             public readonly float yaw, along, across;
 
-            public Body(int index, string model, string shortName, string pose, bool headIn, float yaw, float along, float across, bool dusty)
+            public Body(int index, string model, string shortName, string pose, bool headIn, float yaw, float along, float across)
             {
                 this.index = index; this.model = model; this.shortName = shortName; this.pose = pose;
-                this.headIn = headIn; this.yaw = yaw; this.along = along; this.across = across; this.dusty = dusty;
+                this.headIn = headIn; this.yaw = yaw; this.along = along; this.across = across;
             }
 
             public string Placeholder => "Corpo_" + index;
@@ -53,28 +58,23 @@ namespace Nibiru.EditorTools
 
         const string Veterano = "ArqueologoVeterano", Jovem = "ArqueologaJovem", Trabalhador = "TrabalhadorEscavacao";
 
-        // Em volta da fogueira, na ordem do blockout (o corpo 1 a leste, sentido anti-horário visto de cima). A Elena chega
-        // da barraca, a oeste: os corpos 3 e 4 são os primeiros que ela vê. Vizinhos nunca repetem modelo nem tipo de pose;
-        // nenhuma combinação de modelo e pose se repete; o tom empoeirado vai nas segundas cópias (4, 5 e 7).
+        // Nos lugares do CampCircle: o corpo 1 de frente para quem sai da barraca da Elena (o "primeiro rosto": o trabalhador
+        // de costas, o único modelo que deita de costas sem a mochila ou o cabelo erguer o corpo), o 2 no fundo, atrás da
+        // fogueira, e o 3 à esquerda; o lugar vazio do Tom fica à direita.
         // along: deslocamento para fora do círculo (m); across: de lado (m); yaw: giro extra (graus).
         public static readonly Body[] Bodies =
         {
-            new(1, Veterano, "Veterano", "Lado2", headIn: true, yaw: 12f, along: 0.10f, across: 0f, dusty: false),
-            new(2, Trabalhador, "Trabalhador", "Brucos", headIn: false, yaw: -18f, along: -0.10f, across: 0.08f, dusty: false),
-            new(3, Jovem, "Jovem", "Lado2", headIn: true, yaw: 7f, along: 0f, across: -0.10f, dusty: false),
-            new(4, Trabalhador, "Trabalhador", "Costas", headIn: true, yaw: -10f, along: 0.05f, across: 0f, dusty: true),
-            new(5, Veterano, "Veterano", "Brucos2", headIn: false, yaw: 20f, along: 0f, across: 0.10f, dusty: true),
-            new(6, Trabalhador, "Trabalhador", "Lado3", headIn: true, yaw: -5f, along: -0.12f, across: 0f, dusty: false),
-            new(7, Jovem, "Jovem", "Brucos", headIn: false, yaw: 15f, along: 0.10f, across: -0.05f, dusty: true),
+            // +20° (o máximo combinado): alinhado com o olhar de quem sai da barraca, a barriga escondia o rosto; assim ele aparece de perfil.
+            new(1, Trabalhador, "Trabalhador", "Costas", headIn: true, yaw: 20f, along: 0.05f, across: 0f),
+            new(2, Veterano, "Veterano", "Lado2", headIn: false, yaw: 12f, along: 0.10f, across: 0f),
+            new(3, Jovem, "Jovem", "Brucos", headIn: true, yaw: 15f, along: 0f, across: -0.05f),
         };
 
         // Limites do colisor pedidos pelo dono (vista de cima).
         public const float MaxOutside = 0.10f, MaxSlack = 0.25f;
         const float MaxTilt = 12f, TiltStep = 0.5f, ContactRadius = 0.25f;
-        static readonly Color DustTint = new(0.88f, 0.85f, 0.80f, 1f);
 
         public static string ClipName(string pose) => "EquipeMorta_" + pose;
-        public static string DustyMaterialPath(string model) => $"{VillageTeamSetup.ArtRoot}{model}/Materiais/{model}_Poeira.mat";
 
         [MenuItem("Nibiru/Personagens/Corpos da equipe na cena aberta")]
         static void Build()
@@ -94,12 +94,10 @@ namespace Nibiru.EditorTools
                     return;
                 }
             }
-            foreach (string model in Bodies.Where(b => b.dusty).Select(b => b.model).Distinct())
-                DustyMaterial(model);
             AssetDatabase.SaveAssets();
 
             var report = new System.Text.StringBuilder();
-            bool collidersChanged = false;
+            report.AppendLine(ArrangeCircle());
             foreach (var b in Bodies)
             {
                 GameObject placeholder = FindInScene(b.Placeholder, needsBox: true);
@@ -108,12 +106,13 @@ namespace Nibiru.EditorTools
                     Debug.LogWarning($"Corpos da equipe: não achei {b.Placeholder} na cena (rode o menu do Blockout).");
                     return;
                 }
-                collidersChanged |= Place(placeholder, b, report);
+                Place(placeholder, b, report);
             }
 
-            if (collidersChanged) report.AppendLine(RebakeNavMesh());
+            // Caixas e colisores saíram ou mudaram de lugar: a malha da região é sempre refeita.
+            report.AppendLine(RebakeNavMesh());
             EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-            Debug.Log("Corpos da equipe: 7 corpos deitados no lugar das caixas. Salve a cena.\n" + report);
+            Debug.Log($"Corpos da equipe: {Bodies.Length} corpos deitados e o lugar vazio do Tom. Salve a cena.\n" + report);
         }
 
         // ---------- Prefab de cada combinação ----------
@@ -219,24 +218,50 @@ namespace Nibiru.EditorTools
             return verts;
         }
 
-        static void DustyMaterial(string model)
+        // ---------- Cena ----------
+
+        /// <summary>
+        /// Deixa a cena aberta no desenho do CampCircle: apaga os corpos e as áreas de "Examinar" que sobram (de quando
+        /// eram 7) e leva as caixas, as áreas e a bolsa do Tom para os lugares da tabela.
+        /// </summary>
+        static string ArrangeCircle()
         {
-            string path = DustyMaterialPath(model);
-            var smr = AssetDatabase.LoadAssetAtPath<GameObject>(VillageTeamSetup.PrefabPath(model)).GetComponentInChildren<SkinnedMeshRenderer>();
-            Material original = smr.sharedMaterial;
-            var dusty = AssetDatabase.LoadAssetAtPath<Material>(path);
-            if (dusty == null)
+            var removed = new List<string>();
+            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                dusty = new Material(original);
-                AssetDatabase.CreateAsset(dusty, path);
+                if (t == null || !t.gameObject.scene.IsValid()) continue;
+                if ((Extra(t.name, "Corpo_") && t.GetComponent<BoxCollider>() != null) || Extra(t.name, "Examinar_Corpo_"))
+                {
+                    removed.Add(t.name);
+                    Object.DestroyImmediate(t.gameObject);
+                }
             }
-            else dusty.CopyPropertiesFromMaterial(original);
-            Color baseColor = original.HasProperty("_BaseColor") ? original.GetColor("_BaseColor") : Color.white;
-            dusty.SetColor("_BaseColor", baseColor * DustTint);
-            EditorUtility.SetDirty(dusty);
+
+            for (int n = 1; n <= CampCircle.BodyCount; n++)
+            {
+                Quaternion yaw = Quaternion.Euler(0f, CampCircle.BodyYaw(n), 0f);
+                GameObject box = FindInScene($"Corpo_{n}", needsBox: true);
+                if (box != null)
+                    box.transform.SetPositionAndRotation(new Vector3(CampCircle.BodyPlace(n).x, box.transform.position.y, CampCircle.BodyPlace(n).z), yaw);
+                GameObject zone = FindInScene($"Examinar_Corpo_{n}", needsBox: false);
+                if (zone != null) zone.transform.SetPositionAndRotation(CampCircle.BodyPlace(n) + Vector3.up * 0.4f, yaw);
+            }
+
+            string bagNote = "AVISO: não achei a Bolsa_Camera_Tom (rode o menu do Acampamento).";
+            GameObject bag = FindInScene("Bolsa_Camera_Tom", needsBox: false);
+            if (bag != null)
+            {
+                bag.transform.SetPositionAndRotation(CampCircle.BagPosition + Vector3.up * (bag.transform.localScale.y * 0.5f),
+                    Quaternion.Euler(0f, CampCircle.BagYaw, 0f));
+                bagNote = $"bolsa do Tom no lugar vazio ({bag.transform.position.x:F2}; {bag.transform.position.z:F2})";
+            }
+            Physics.SyncTransforms();
+            return $"Círculo: {CampCircle.BodyCount} lugares com corpo e o do Tom vazio; {bagNote}; " +
+                (removed.Count == 0 ? "nada sobrando." : "apagados: " + string.Join(", ", removed.OrderBy(s => s)));
         }
 
-        // ---------- Cena ----------
+        static bool Extra(string name, string prefix) =>
+            name.StartsWith(prefix) && int.TryParse(name.Substring(prefix.Length), out int n) && n > CampCircle.BodyCount;
 
         static GameObject FindInScene(string name, bool needsBox)
         {
@@ -273,12 +298,6 @@ namespace Nibiru.EditorTools
             visual.transform.localPosition = new Vector3(b.across, ground - t.position.y, b.along);
             visual.transform.localRotation = Quaternion.Euler(0f, (b.headIn ? 180f : 0f) + b.yaw, 0f);
             visual.transform.localScale = Vector3.one;
-            if (b.dusty)
-            {
-                var smr = visual.GetComponentInChildren<SkinnedMeshRenderer>();
-                smr.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(DustyMaterialPath(b.model));
-                PrefabUtility.RecordPrefabInstancePropertyModifications(smr);
-            }
 
             // Colisor x silhueta (vista de cima).
             var (lo, hi) = Silhouette(visual, t);
@@ -290,7 +309,7 @@ namespace Nibiru.EditorTools
                 box.center = new Vector3((lo.x + hi.x) * 0.5f, box.center.y, (lo.y + hi.y) * 0.5f);
                 box.size = new Vector3(hi.x - lo.x, box.size.y, hi.y - lo.y);
             }
-            report.AppendLine($"{b.Placeholder}: {b.PrefabName}{(b.dusty ? " (empoeirado)" : "")}, chão y = {ground:F2}; colisor {before}" +
+            report.AppendLine($"{b.Placeholder}: {b.PrefabName}, chão y = {ground:F2}; colisor {before}" +
                 (changed ? $" -> ajustado a {box.size.x:F2} x {box.size.z:F2} m" : " (mantido)"));
             return changed;
         }
@@ -344,7 +363,7 @@ namespace Nibiru.EditorTools
             AssetDatabase.DeleteAsset(dataPath);
             AssetDatabase.CreateAsset(surface.navMeshData, dataPath);
             EditorUtility.SetDirty(surface);
-            return "Malha de navegação refeita (algum colisor mudou). " + MeetingPointsReport();
+            return "Malha de navegação refeita. " + MeetingPointsReport();
         }
 
         /// <summary>Os 4 pontos do encontro com o Samir (Aldeia) continuam sobre a malha?</summary>

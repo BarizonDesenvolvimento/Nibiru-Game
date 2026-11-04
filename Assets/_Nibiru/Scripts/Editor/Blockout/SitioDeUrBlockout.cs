@@ -86,13 +86,10 @@ namespace Nibiru.EditorTools.Blockout
             Cyl(g, "Antena", new Vector3(-18, top + 6, -98), 0.25f, 12, metal);
             Cyl(g, "Fogueira", new Vector3(0, top + 0.15f, -112), 0.6f, 0.3f, adoberDark);
 
-            // Os corpos da equipe em círculo, virados para a tenda da Elena (passo 2 da missão).
-            for (int i = 0; i < 7; i++)
-            {
-                float angle = i * Mathf.PI * 2f / 7f;
-                var pos = new Vector3(Mathf.Cos(angle) * 3.2f, top + 0.2f, -112 + Mathf.Sin(angle) * 3.2f);
-                BoxC(g, $"Corpo_{i + 1}", pos, new Vector3(0.5f, 0.35f, 1.8f), greenTarp, -angle * Mathf.Rad2Deg + 90f);
-            }
+            // Os corpos da equipe em volta da fogueira (passo 2 da missão): 3 lugares com corpo e o do Tom vazio (CampCircle).
+            for (int n = 1; n <= Content.CampCircle.BodyCount; n++)
+                BoxC(g, $"Corpo_{n}", Content.CampCircle.BodyPlace(n) + Vector3.up * 0.2f, new Vector3(0.5f, 0.35f, 1.8f), greenTarp,
+                    Content.CampCircle.BodyYaw(n));
 
             // Heliponto improvisado embaixo da elevação: de cima, a Elena vê o "resgate" (passo 4).
             Cyl(g, "Heliponto", new Vector3(30, 0.05f, -82), 6, 0.1f, white);
