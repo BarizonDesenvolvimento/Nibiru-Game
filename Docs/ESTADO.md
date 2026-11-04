@@ -668,9 +668,9 @@ Arte-fonte em `ArteFonte/Personagens/<Personagem>/` (desde 3/nov/2026; antes era
 | Líder de esquadra | `LiderDeEsquadra` | 1,80 m | **No jogo** (prefab `AI/Soldado_Lider`) |
 | Atirador de elite | `AtiradorDeElite` | 1,78 m | **No jogo** (prefab `AI/Soldado_Atirador`, com a IA trocada pela `SniperAI` no passo 10) |
 | Piloto | `Piloto` | 1,78 m | **No jogo** (prefab `Personagens/Piloto`, sentado nos helicópteros) |
-| Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | **No jogo** como 2 corpos do círculo (`Personagens/EquipeMorta_Veterano_Lado2` e `_Brucos2`; veja "Corpos da equipe no círculo"). Tem mochila: não deita de costas |
-| Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | **No jogo** como 2 corpos do círculo (`EquipeMorta_Jovem_Lado2` e `_Brucos`); 2 ossos de dedo sem peso. O cabelo preso não a deixa deitar de costas |
-| Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | **No jogo** como o corpo do trabalhador executado no heliponto (prefab `Personagens/TrabalhadorEscavacao_Morto`) e 3 corpos do círculo (`EquipeMorta_Trabalhador_Costas`, `_Brucos` e `_Lado3`); o trabalhador ferido que anda antes segue em cápsula |
+| Arqueólogo veterano (equipe morta) | `ArqueologoVeterano` | 1,76 m | **No jogo** como o corpo 2 do círculo (`Personagens/EquipeMorta_Veterano_Lado2`; veja "Corpos da equipe no círculo"). Tem mochila: não deita de costas |
+| Arqueóloga jovem (equipe morta) | `ArqueologaJovem` | 1,68 m | **No jogo** como o corpo 3 do círculo (`EquipeMorta_Jovem_Brucos`); 2 ossos de dedo sem peso. O cabelo preso não a deixa deitar de costas |
+| Trabalhador da escavação (também o Hassan) | `TrabalhadorEscavacao` | 1,72 m | **No jogo** como o corpo do trabalhador executado no heliponto (prefab `Personagens/TrabalhadorEscavacao_Morto`) e o corpo 1 do círculo (`EquipeMorta_Trabalhador_Costas`); o trabalhador ferido que anda antes segue em cápsula |
 | Lullu | `Lullu` | 2,10 m em pé | **No jogo** (prefab `AI/Lullu`); pose A (41°) e pernas longas de criatura. Curvado, a cabeça fica a uns 1,7 m |
 | Primeiro Servo | `PrimeiroServo` | 2,50 m | **No jogo** (prefab `AI/PrimeiroServo`); 4 ossos de dedo sem peso, corrigidos na importação |
 | Ninsar | `Ninsar` | 1,90 m | Prévia na Unity; manto pausado (Ato 2). Veja "Ninsar" abaixo |
@@ -1151,63 +1151,68 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | SitioDeUr | Já estava | A pasta só tem o kit da vitrine da Aldeia, já na cena |
 | Personagens (ArqueologaJovem, ArqueologoVeterano, DraWeiss, LiderDeEsquadra, Ninsar, Piloto, TrabalhadorEscavacao) | Já estavam | Todos importados antes; a Ninsar segue como prévia (manto pausado) |
 | Corpo do trabalhador executado | Na cena | `TrabalhadorEscavacao_Morto`: deitado e parado (o clipe deitado do Yusuf congelado), no lugar da cápsula do heliponto |
-| Corpos da equipe (7, no círculo) | **No jogo** | Deitados e parados (decisão do dono em 3/nov/2026): 3 trabalhadores, 2 veteranos e 2 arqueólogas, em 7 prefabs `Personagens/EquipeMorta_<Modelo>_<Pose>` (de costas, de bruços e de lado). Veja "Corpos da equipe no círculo" logo abaixo; fotos em `Docs/Arte/Capturas/CorposEquipe/` |
+| Corpos da equipe (círculo de 4 lugares) | **No jogo** | Decisão do dono (3/nov/2026): 3 corpos deitados, um de cada modelo (`EquipeMorta_Trabalhador_Costas`, `_Veterano_Lado2`, `_Jovem_Brucos`), e o lugar vazio do Tom com a bolsa. Veja "Corpos da equipe no círculo" logo abaixo; fotos em `Docs/Arte/Capturas/CorposEquipe/` |
 | Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
 | Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
 
 ### Corpos da equipe no círculo (3/nov/2026, testados pela ponte; falta o teste do dono no Play)
 
-Plano aprovado pelo dono em 3/nov/2026, com o ajuste do colisor e a checagem do "primeiro rosto". As 7 caixas `Corpo_1` a `Corpo_7` do blockout viraram os modelos deitados e parados. Menu **Nibiru > Personagens > Corpos da equipe na cena aberta** (`Scripts/Editor/Personagens/TeamBodiesSetup.cs`). Rode depois do Blockout, do Acampamento, do **Montar personagens da Aldeia e da equipe** e de **Nibiru > Animações > Importar clipes da biblioteca**.
+**Decisão do dono (3/nov/2026, segunda versão):** 7 corpos com 3 modelos repetiam demais vistos de cima. Agora o círculo tem **4 lugares** em volta da fogueira, a 3,2 m do centro e a 90° entre si: **3 corpos, um de cada modelo**, e o **lugar vazio do Tom**, só com a bolsa da câmera no chão. A tabela única fica em `Scripts/Editor/Content/CampCircle.cs` (centro, raio, ângulos e lugar vazio) e é lida pelo Blockout, pelo Acampamento, pelo menu dos corpos e pelos testes.
 
-| Corpo | Lugar (a Elena chega pelo oeste) | Prefab | Cabeça | Giro extra | Tom |
-| --- | --- | --- | --- | --- | --- |
-| 1 | leste | `EquipeMorta_Veterano_Lado2` | para o centro | +12° | normal |
-| 2 | nordeste | `EquipeMorta_Trabalhador_Brucos` | para fora | −18° | normal |
-| 3 | norte | `EquipeMorta_Jovem_Lado2` | para o centro | +7° | normal |
-| 4 | noroeste (um dos 2 mais perto da barraca; o "primeiro rosto") | `EquipeMorta_Trabalhador_Costas` | para o centro | −10° | empoeirado |
-| 5 | oés-sudoeste (o mais perto da barraca) | `EquipeMorta_Veterano_Brucos2` | para fora | +20° | empoeirado |
-| 6 | sul | `EquipeMorta_Trabalhador_Lado3` | para o centro | −5° | normal |
-| 7 | sudeste | `EquipeMorta_Jovem_Brucos` | para fora | +15° | empoeirado |
+| Lugar | Ângulo e posição | O que a Elena vê saindo da barraca | Conteúdo |
+| --- | --- | --- | --- |
+| `Corpo_1` | 190° (−3,15; −112,6) | o primeiro, de frente (o "primeiro rosto") | `EquipeMorta_Trabalhador_Costas`, cabeça para a fogueira, giro +20° |
+| lugar do Tom | 280° (0,56; −115,2), sul, do lado da barraca dele | à direita, logo em seguida | só a `Bolsa_Camera_Tom`, a 3 m do centro, girada 35° |
+| `Corpo_2` | 10° (3,15; −111,4) | no fundo, atrás da fogueira | `EquipeMorta_Veterano_Lado2`, cabeça para fora, giro +12° |
+| `Corpo_3` | 100° (−0,56; −108,9) | à esquerda | `EquipeMorta_Jovem_Brucos`, cabeça para a fogueira, giro +15° |
 
-- **Por que 3/2/2:** a Bíblia e a região só nomeiam o Tom, que não está no círculo. Numa escavação há mais trabalhadores locais (da Aldeia) que especialistas. Nenhum modelo aparece mais de 3 vezes.
-- **Poses:** último quadro de mortes do Mixamo, importadas pela `AnimationLibrary` (grupo `EquipeMorta`; só posam no editor, nenhum controlador as usa):
+- **Menu:** **Nibiru > Personagens > Corpos da equipe na cena aberta** (`Scripts/Editor/Personagens/TeamBodiesSetup.cs`). Rode depois do Blockout, do Acampamento, do **Montar personagens da Aldeia e da equipe** e de **Nibiru > Animações > Importar clipes da biblioteca**.
+- **O que o menu faz na cena aberta:**
+  - deixa a cena no desenho do `CampCircle` sem refazer o Blockout nem o Acampamento;
+  - apaga os `Corpo_N` e os `Examinar_Corpo_N` que sobram (nesta troca: do 4 ao 7);
+  - leva as caixas, as áreas de "Examinar" e a bolsa para os lugares;
+  - põe os modelos e refaz a malha de navegação da região.
+- **Blockout e Acampamento:** já criam 3 caixas, 3 áreas e a bolsa no lugar vazio.
+- **Giro do corpo 1:** começou em −10°. Alinhado com o olhar de quem sai da barraca, a barriga escondia o rosto. Com +20° (o máximo combinado), o rosto aparece de perfil (`3_rosto_do_corpo_1`).
+- **Falas trocadas** (mesmas chaves, a pedido do dono):
+  - `dlg.Acampamento_Corpos.e4`: "Caíram onde estavam sentados. Em volta do fogo.";
+  - `e5`: "Três. Falta um. Cadê o Tom?".
+  - A conversa da bolsa, o objetivo dos rolos, o `Rolo_De_Filme_1` atrás do caminhão e a Foto 6 do Tom não dependem da posição da bolsa. Nenhum desses objetos tem código no salvamento.
+- **Poses:** último quadro de mortes do Mixamo (grupo `EquipeMorta` da `AnimationLibrary`; só posam no editor):
   - de costas: Pro Magic "Standing React Death Backward";
-  - de bruços: "Standing React Death Forward" e, do Pro Rifle, "death crouching headshot front" (`Brucos2`);
-  - de lado: Pro Rifle "death from the front" (`Lado2`) e "death from the back" (`Lado3`).
+  - de bruços: "Standing React Death Forward";
+  - de lado: Pro Rifle "death from the front" (`Lado2`).
+  - `Brucos2` ("death crouching headshot front") e `Lado3` ("death from the back") ficaram na tabela, sem uso, para outros corpos.
 - **Poses descartadas:**
-  - As "Left" e "Right" do Pro Magic terminam de costas e de bruços (nenhuma de lado).
-  - O "de costas" só serve ao trabalhador: o veterano fica apoiado na **mochila**, e a arqueóloga, no **cabelo preso**, com cabeça e pés no ar.
-  - O Pro Rifle "death from right" deixa o peito 6,5 cm no ar (o braço fica embaixo).
-- **Regras da variação:** nenhuma combinação de modelo e pose se repete; vizinhos nunca repetem modelo nem tipo de pose; giro e deslocamento fixos (até ±20° e 15 cm), não sorteados.
-- **Tom empoeirado:** 1 material por modelo, `Art/Personagens/<Modelo>/Materiais/<Modelo>_Poeira.mat` (cor base × 0,88/0,85/0,80), nas segundas cópias. O modelo tem um material só para pele e roupa, então o tom muda o corpo inteiro, de leve.
-- **Parado, sem custo de animação:** a pose fica gravada nos ossos do prefab (variante do prefab do modelo), com o Animator **desligado e sem controlador**. Uma malha "assada" criaria 7 arquivos de malha no LFS e não daria para retocar a pose depois.
-- **Chão:** o prefab já sai com a cabeça para +z, o centro da silhueta na origem e o ponto mais baixo da **pele** no chão (o mesmo método do trabalhador). As mortes acabam com o pé mais baixo que o tronco, então o menu procura uma inclinação de até 12° que encoste quadril e peito no chão.
-- **O que saiu das caixas:** só o `MeshRenderer` e o `MeshFilter`. O `BoxCollider` ficou no `Corpo_N`, com a escala da caixa passada para o tamanho do colisor (mesmo volume no mundo, para o corpo girar sem se deformar); o modelo é o filho `Visual`. As áreas `Examinar_Corpo_N` e a `Bolsa_Camera_Tom` não mudaram.
-- **Colisor (ajuste do dono):** se a pele (vista de cima) passa mais de 10 cm para fora do colisor, ou o colisor sobra mais de 25 cm, ele é refeito para cobrir a silhueta deitada (continua uma caixa só). Os 7 precisaram (braços e pernas abertos passavam de 31 a 60 cm para fora da caixa de 0,5 m); agora medem de 0,96 × 1,49 m a 1,46 × 1,98 m. A **malha de navegação da região foi refeita** (`NavMesh-Blockout.asset`); os 4 pontos de encontro da Aldeia continuam sobre a malha.
-- **Teste novo:** **Nibiru > Testes > Personagens > Teste dos corpos da equipe** (sem Play, só lê a cena; `TeamBodiesTests.cs`), **47 OK**. Confere:
-  - os 7 prefabs no lugar, a distribuição 3/2/2, as combinações e os vizinhos;
-  - o Animator desligado;
-  - o chão (ponto mais baixo a até 1 cm, quadril e peito a até 5 cm);
-  - se o **colisor cobre a silhueta**;
-  - as 7 áreas de "Examinar" sobre os corpos, a bolsa do Tom e os pontos de encontro.
-- **Teste do Tom com um cenário a mais (4 OK):** no Acampamento, "Examinar" o corpo 5 dispara `ExaminouOsCorpos` e avança a principal, e a bolsa dispara `AchouBolsaDoTom` e começa "O que o Tom viu".
-- **"Primeiro rosto" (corpo 4):** da altura dos olhos da Elena vindo da barraca, o rosto aparece de perfil, de baixo para cima (nariz, boca aberta e barba). Não foi preciso girar.
-- **Fotos** em `Docs/Arte/Capturas/CorposEquipe/`, de câmeras provisórias no editor (não salvas na cena):
-  - `0_antes_cima` e `0_antes_olhos_da_elena` (as caixas);
-  - `1_cima_com_colisores` (contorno dos colisores em rosa);
-  - `2_olhos_da_elena`;
-  - `3_rosto_do_corpo_4`.
-- **Regressão (3/nov/2026), um teste por vez, cada um com "terminou; slots reais iguais" no log:** todos **0 FALHOU**.
-  - salvamento 19 OK;
-  - passos 10 (14 OK), 11 (9), 12 (10), 13 (9), 14 (10) e 15 (3);
-  - Remédio 8, Arquivo 6 e Tom 4 (eram 3; +1 do Acampamento);
-  - contagem de suprimentos 10;
-  - animações 377 verificações (eram 334; os 5 clipes novos);
-  - geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**.
+  - "Left" e "Right" do Pro Magic terminam de costas e de bruços;
+  - o veterano (mochila) e a arqueóloga (cabelo preso) não deitam de costas;
+  - "death from right" deixa o peito 6,5 cm no ar.
+- **Apagados nesta troca:**
+  - os prefabs `EquipeMorta_Trabalhador_Brucos`, `_Trabalhador_Lado3`, `_Jovem_Lado2` e `_Veterano_Brucos2`;
+  - os 3 materiais `_Poeira` (sem tom empoeirado agora).
+- **Parado, sem custo de animação:** a pose fica gravada nos ossos do prefab (variante do prefab do modelo), com o Animator desligado e sem controlador.
+- **Chão:** o prefab sai com a cabeça para +z, o centro da silhueta na origem e o ponto mais baixo da pele no chão. Uma inclinação de até 12° encosta quadril e peito no chão.
+- **O que saiu das caixas:** só o `MeshRenderer` e o `MeshFilter`. O `BoxCollider` fica no `Corpo_N`, com a escala passada para o tamanho, e o modelo é o filho `Visual`.
+- **Colisor (regra do dono):** se a pele vista de cima passa mais de 10 cm para fora, ou o colisor sobra mais de 25 cm, ele é refeito sobre a silhueta. Agora medem 1,35 × 2,09 m (corpo 1), 1,04 × 1,52 m (2) e 1,04 × 1,62 m (3). Malha refeita; os 4 pontos de encontro da Aldeia continuam válidos.
+- **Teste:** **Nibiru > Testes > Personagens > Teste dos corpos da equipe** (sem Play; `TeamBodiesTests.cs`), **27 OK**. Confere:
+  - 3 corpos, um de cada modelo, e 3 tipos de pose;
+  - nenhum tom empoeirado e nada sobrando de quando eram 7;
+  - cada corpo no seu lugar, e o lugar do Tom só com a bolsa (nenhum corpo a menos de 1,5 m);
+  - Animator desligado, chão e apoio;
+  - colisor cobre a silhueta, as áreas de "Examinar" e os pontos de encontro.
+- **Teste de "O que o Tom viu", cenário do Acampamento:** examina o corpo 1, confere a fala `e5` nova e acha a bolsa no lugar vazio, pela posição dela (4 OK).
+- **Fotos** em `Docs/Arte/Capturas/CorposEquipe/` (substituíram as dos 7 corpos), de câmeras provisórias no editor:
+  - `1_cima_com_colisores` (colisores em rosa);
+  - `2_olhos_da_elena` (vindo da barraca);
+  - `3_rosto_do_corpo_1`;
+  - `4_lugar_vazio_do_tom`.
+- **Testes desta troca (regra nova de níveis, veja "Testes: níveis e cobertura"):**
+  - corpos 27 OK, Tom 4 OK, suprimentos 10 OK, pontos de encontro OK e chaves da localização OK;
+  - antes da regra nova, também rodaram salvamento 19 OK e passos 10 a 14 (14, 9, 10, 9 e 10 OK);
+  - todos com "slots reais iguais".
 - **Pendente (fase C):**
-  - **queimaduras em formas geométricas**, como escrita, em alguns corpos (decal do URP no rosto e nas mãos);
-  - cor diferente só na roupa (pede máscara na textura);
-  - as 3 poses de lado deitam sobre o lado esquerdo (o Mixamo não tem espelho).
+  - queimaduras em formas geométricas em alguns corpos (decal do URP);
+  - a bolsa do Tom ainda é uma caixa (modelo pendente; Blender por script, veja a `LISTA_OBJETOS_3D`).
 
 **Ajustes pedidos pelo dono durante a tarefa:**
 - **Selo de Kur:** as folhas da porta ficavam atrás da face da parede norte (o modelo tem 1,55 m de fundo e a porta é recuada) e o lado leste entrava na `Plataforma_Leste` (x ≥ 47). Agora vai de x 41 a 47, com a frente em z 101,3 e a porta inteira à vista.
@@ -1221,7 +1226,7 @@ Plano aprovado pelo dono em 3/nov/2026, com o ajuste do colisor e a checagem do 
 
 **Para olhar no Play:**
 - **Acampamento (passo 1):** a faca na caixa da barraca; o rádio na caixa do lado de fora; o rolo de filme 1 atrás do caminhão.
-- **Círculo do Acampamento (passo 2):** os 7 corpos deitados em volta da fogueira, vindo da barraca; "Examinar" num corpo e na bolsa do Tom; andar em volta dos corpos sem atravessar braços e pernas.
+- **Círculo do Acampamento (passo 2):** saindo da barraca, o rosto do corpo 1 de frente e, à direita, o lugar vazio do Tom com a bolsa; "Examinar" num corpo (falas "Caíram onde estavam sentados..." e "Três. Falta um...") e na bolsa; andar em volta dos corpos sem atravessar braços e pernas.
 - **Resgate no Acampamento:** o helicóptero no heliponto (piloto na cabine, rotor girando) e, depois da execução, o corpo do trabalhador deitado.
 - **Trincheiras:** a Weiss sentada, encostada no monte de terra; a pistola no corpo do chefe de segurança; os 2 curativos e o rolo 2; o helicóptero que passa baixo.
 - **Qualquer combate:** a Elena mirando com a Makarov na mão; os soldados com o AKM.
@@ -1310,6 +1315,41 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 
 **Onde parou:** etapas 1 a 4 feitas; da etapa 5, o M1, o M9 e a lamparina (3/nov/2026), **aprovados pelo dono no Play** (a lamparina passou de 15 para 22 cm depois; o altar fica como está, sem gerar de novo). Gerados na conta **Pro** do Tripo (confirmado pelo dono em 3/nov/2026). Depois, o resto da etapa 5 (M6 e os outros objetos; o barco entalhado). Ordem dos menus se o blockout ou a Aldeia forem refeitos: Blockout → Aldeia (e os outros de conteúdo) → **Vitrine da Aldeia > 2** (o 1 e o 3 só se mudar material ou céu).
 
+## Testes: níveis e cobertura (regra do dono, 3/nov/2026)
+
+A regressão completa não roda mais a cada tarefa. Escolha o nível pelo que a tarefa toca (a regra também está no `CLAUDE.md`, junto com "tarefa leve x tarefa de sistema"):
+- **Nível 1 (sempre):** o teste da tarefa e os testes dos sistemas tocados diretamente.
+- **Nível 2 (se tocar um sistema compartilhado):** o nível 1 mais os testes desses sistemas, pela tabela abaixo. Sistemas compartilhados: salvamento, prefab da Elena, controles, localização, malha de navegação, tabela de animações e menus que remontam cenas.
+- **Nível 3 (regressão completa):** só nestes casos:
+  - ao fechar um sistema (cada ME, por exemplo);
+  - antes de trocar de fase;
+  - antes de uma build;
+  - quando um teste de nível 1 ou 2 falhar de um jeito inesperado.
+- **Sempre:** um teste por vez, conferindo no log novo o "terminou; slots reais iguais" de cada um.
+
+**Última regressão completa (referência para o próximo marco):** 3/nov/2026, teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Na mesma rodada: salvamento 19, passos 10 a 15 (14, 9, 10, 9, 10 e 3), Remédio 8, Arquivo 6, Tom 3 (hoje 4), suprimentos 10 e animações 377 verificações, todos OK.
+
+| Sistema tocado | Testes que o cobrem (menu em **Nibiru > Testes**) | Tempo aproximado |
+| --- | --- | --- |
+| Salvamento (slots, checkpoints, códigos) | Salvamento > Teste automático; Salvamento > Teste de códigos; Salvamento > Teste da proteção dos slots | ~3 min; segundos; segundos |
+| Prefab da Elena, controles, câmera | Teste geral dos atalhos; Mouse > Teste automático; Animações > 4. Teste automático | ~5 min; ~1 min; ~10 s |
+| Localização (textos, chaves, fonte) | Localização > Teste de chaves e códigos | segundos |
+| Malha de navegação | Teste geral dos atalhos (Elena na malha); Suprimentos > Teste de contagem (itens na malha); pontos de encontro (no Teste dos corpos da equipe e no menu dos corpos) | ~5 min; segundos; segundos |
+| Tabela de animações (`AnimationLibrary`) | Animações > 4. Teste automático | ~10 s |
+| Menus que remontam cenas (Blockout, conteúdo das áreas, vitrine, arte) | Teste geral dos atalhos + o teste de cada passo ou secundária da área remontada | ~5 min + o da área |
+| Acampamento (círculo, bolsa do Tom, passos 1 a 4) | Personagens > Teste dos corpos da equipe; Secundárias > O que o Tom viu > 6. Teste automático | segundos; ~30 s (medido: 25 s) |
+| Base do zigurate (passo 10) | Passo 10 > 9. Teste automático | ~2 a 3 min |
+| Boca do Poço (passo 11) | Passo 11 > 7. Teste automático | ~2 min |
+| Primeiro Servo (passo 12) | Passo 12 > 7. Teste automático | ~2 min |
+| Passagem dos Guardiões e fita (passo 13) | Passo 13 > 7. Teste automático | ~2 min |
+| Wadi, rádio e escolha (passo 14) | Passo 14 > 8. Teste automático | ~2 min |
+| Fuga, diário e fim da demo (passo 15) | Passo 15 > 9. Teste automático | ~2 min |
+| Remédio para Yusuf, Weiss, Trincheiras | Secundárias > Remédio para Yusuf > 15. Teste automático | ~3 min |
+| Arquivo de documentos e fitas | Arquivo (A3) > 7. Teste automático | ~1 min |
+| Munição, curativos e kits | Suprimentos > Teste de contagem | segundos |
+
+Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corrija na próxima regressão completa, medindo pelo relógio.
+
 ## Backlog
 
 **Início da fase B:**
@@ -1322,7 +1362,7 @@ Objetivo: levar a casa do altar e a frente do pátio (passos 7 e 8) ao visual fi
 ## Próximos passos
 
 Ordem da governança de 3/nov/2026, sem datas:
-1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os 7 corpos do círculo; falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
+1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
 2. **Zoom da câmera com a roda do mouse** (projeto no papel antes).
 3. **Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).
 4. **Projeto em papel do ME1.**

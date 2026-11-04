@@ -53,13 +53,13 @@ Tabela única: `Scripts/Editor/Animacoes/AnimationLibrary.cs`. Os FBX vão para 
 | Elena_Sentada | Avulsas/X Bot@Sitting Idle2 | loop | não | Elena sentada no chão da caçamba (estado `Sentada` do `Elena.controller`, ligado pelo `TruckRide`) |
 | Elena_Agachada_Parada | Avulsas/X Bot@Crouching Idle | loop | não | agachada parada da Elena (no lugar do quadro congelado do `Sneak Walk`) |
 | Samir_Dirigindo | Avulsas/X Bot@Driving | loop | não | Samir ao volante na caminhonete (estado `Dirigindo` do `Samir.controller`) |
-| EquipeMorta_Costas | Pro Magic Pack/Standing React Death Backward | uma vez | — | último quadro: corpo de costas (só o trabalhador; o veterano deita na mochila e a jovem no cabelo) |
-| EquipeMorta_Brucos | Pro Magic Pack/Standing React Death Forward | uma vez | — | último quadro: corpo de bruços |
-| EquipeMorta_Brucos2 | Pro Rifle Pack/death crouching headshot front | uma vez | — | último quadro: outro de bruços |
-| EquipeMorta_Lado2 | Pro Rifle Pack/death from the front | uma vez | — | último quadro: de lado (sobre o esquerdo) |
-| EquipeMorta_Lado3 | Pro Rifle Pack/death from the back | uma vez | — | último quadro: de lado (sobre o esquerdo) |
+| EquipeMorta_Costas | Pro Magic Pack/Standing React Death Backward | uma vez | — | último quadro: corpo de costas (corpo 1, o trabalhador; o veterano deita na mochila e a jovem no cabelo) |
+| EquipeMorta_Brucos | Pro Magic Pack/Standing React Death Forward | uma vez | — | último quadro: corpo de bruços (corpo 3, a arqueóloga) |
+| EquipeMorta_Brucos2 | Pro Rifle Pack/death crouching headshot front | uma vez | — | último quadro: outro de bruços (sem uso desde o círculo de 4 lugares) |
+| EquipeMorta_Lado2 | Pro Rifle Pack/death from the front | uma vez | — | último quadro: de lado, sobre o esquerdo (corpo 2, o veterano) |
+| EquipeMorta_Lado3 | Pro Rifle Pack/death from the back | uma vez | — | último quadro: de lado, sobre o esquerdo (sem uso desde o círculo de 4 lugares) |
 
-**Poses da equipe morta (3/nov/2026):** os clipes `EquipeMorta_*` só posam os 7 corpos do círculo no editor (`TeamBodiesSetup`); a pose fica gravada no prefab e nenhum controlador os usa. Conferido no último quadro: as "Standing React Death Left" e "Right" do Pro Magic terminam de costas e de bruços (nenhuma de lado), e a "death from right" do Pro Rifle deixa o peito no ar (braço embaixo).
+**Poses da equipe morta (3/nov/2026):** os clipes `EquipeMorta_*` só posam os corpos do círculo no editor (`TeamBodiesSetup`); a pose fica gravada no prefab e nenhum controlador os usa. Conferido no último quadro: as "Standing React Death Left" e "Right" do Pro Magic terminam de costas e de bruços (nenhuma de lado), e a "death from right" do Pro Rifle deixa o peito no ar (braço embaixo).
 
 **Importados e sem ligação, porque nenhum evento ou estado do jogo serve:** `Lullu_Saida_Rachaduras` (nada no jogo faz criatura surgir das rachaduras: o Servo acorda no lugar, urrando); `Elena_Pegar` e `Elena_Abrir` (o `PlayerInteractor` não tem evento de interação a que ligar); as viradas da Elena. Estão na vitrine **Nibiru > Testes > Animações**.
 

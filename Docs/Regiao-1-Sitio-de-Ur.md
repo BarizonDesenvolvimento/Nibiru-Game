@@ -44,7 +44,7 @@ Seis áreas ligadas, sem mundo aberto. O caminho principal é quase uma linha, m
 - **O que é:** o acampamento da equipe, numa elevação ao sul do sítio. Barracas, geradores, mesas de triagem de cerâmica, dois caminhões e uma antena de rádio.
 - **Papel:** prólogo e tutorial (andar, correr, esquivar, interagir). Primeiros mistérios.
 - **Visual:** amanhecer dourado, lonas laranja e verdes batendo ao vento, fumaça fina de uma fogueira apagada.
-- **Clima de terror:** silêncio quase total. Só o vento, as lonas e um rádio chiando. Os corpos da equipe estão deitados em círculo, mortos (decisão do dono em 3/nov/2026; antes este texto dizia "sentados, virados para a barraca da Elena").
+- **Clima de terror:** silêncio quase total. Só o vento, as lonas e um rádio chiando. Os corpos da equipe estão deitados em volta da fogueira, mortos: um círculo de **4 lugares**, com **3 corpos** (o trabalhador, o arqueólogo veterano e a arqueóloga jovem) e o **lugar vazio do Tom**, só com a bolsa da câmera no chão, como se alguém tivesse estado ali (decisões do dono em 3/nov/2026; antes este texto dizia "sentados, virados para a barraca da Elena", e depois houve uma versão com 7 corpos).
 - **Tempo:** 8 a 10 minutos.
 
 ### 2. Trincheiras da escavação
@@ -92,7 +92,7 @@ Seis áreas ligadas, sem mundo aberto. O caminho principal é quase uma linha, m
 A sequência do começo ao fim. Cada passo vira um objetivo na tela.
 
 1. **Acordar.** A Elena acorda na barraca ao amanhecer, segurando uma tabuleta de barro com borda de ouro e escrita cuneiforme que ela não lembra de ter pego. A tabuleta está morna. Uma voz sussurra uma palavra em sumério, e ela entende. *(Tutorial de movimento.)*
-2. **Procurar a equipe.** Ela encontra os corpos em círculo. Nenhum tem marca de tiro; alguns têm queimaduras em formas geométricas, como escrita. O corpo do Tom Becker não está lá; só a bolsa da câmera, vazia. *(Tutorial de interação. Começa a secundária "O que o Tom viu".)*
+2. **Procurar a equipe.** Ela encontra os corpos em círculo. Nenhum tem marca de tiro; alguns têm queimaduras em formas geométricas, como escrita. São três, em volta da fogueira, e um lugar vazio: o do Tom Becker. O corpo dele não está lá; só a bolsa da câmera, vazia, largada no lugar onde ele estava. *(Tutorial de interação. Começa a secundária "O que o Tom viu".)*
 3. **Responder ao rádio.** O Dr. Kast chama pelo rádio do acampamento, educado e aliviado: uma equipe de resgate chega em vinte minutos, e ela deve ficar onde está.
 4. **Ver o "resgate".** O helicóptero pousa. Do alto da elevação, a Elena vê os soldados executarem um trabalhador ferido que tinha voltado para o acampamento. Eles começam a procurar por ela.
 5. **Fugir para as trincheiras.** Primeira furtividade. Pelo rádio dos soldados ouve-se a ordem: "a doutora, viva; o resto, não". No corpo do chefe de segurança da expedição, a Elena pega a pistola e pouca munição. *(Tutorial de combate.)*

@@ -87,6 +87,32 @@ Docs/
 
 Fase 3 do plano: construir a base, agora na fatia vertical da região 1, o Sítio de Ur. O protótipo do personagem, os 14 sistemas essenciais, o blockout do mapa, o Acampamento (área 1), as Trincheiras (área 2), a Aldeia até o passo 7 (área 3: encontro com o Samir, sobreviventes e o nicho dos Guardiões como altar) e a Elena definitiva (AccuRig com dedos, animações do Mixamo) no lugar da cápsula estão prontos. O Samir definitivo, os 4 soldados da Fundação (Soldado, Líder de esquadra, Atirador de elite e Piloto), o Lullu, o Primeiro Servo, o Yusuf, a Umm Karim e a Dra. Weiss também já estão no jogo, junto com os objetos do Tripo e do Meshy que já foram gerados (armas, itens, rádio, Tabuleta do Junco, helicóptero e Selo de Kur). De onde vem cada peça de arte: `Docs/Arte/Fontes-da-Arte.md`. Os passos 8 (a primeira tabuleta, a memória de Ziusudra e o Eco do Abzu) e 9 (o plano de fuga) estão prontos e testados pelo dono. O passo 10 (atravessar a base do zigurate, com o atirador de elite, o golpe de faca pelas costas, os documentos do Kast e o portão para a Aldeia), o passo 11 (descer à Boca do Poço, passar pelo Lullu e o flash diante do Selo de Kur) e o passo 12 (a luta com o Primeiro Servo na antecâmara, em três fases, com os holofotes que caem, já com o modelo definitivo dele) estão prontos e testados pela ponte, esperando o teste do dono (o 12 já foi aprovado no Play, com o equilíbrio da luta pendente). O passo 13 (a passagem dos Guardiões atrás da parede do barco: inscrição, parede que afunda, lamparinas, a fita de Irena e a saída para o wadi) também está pronto e testado pela ponte. O passo 14 (o wadi: tempestade de areia provisória, um líder de esquadra, o rádio do Kast que espera a fita de Irena terminar e a primeira escolha de facção, com três opções) também está pronto, testado pela ponte e aprovado pelo dono no Play. O passo 15 (a fuga na caminhonete do Samir, com as três escolhas, o nicho dos Guardiões no túnel para quem devolve a tabuleta, o diário, a tela de fim da demo e um menu principal provisório) também está pronto, testado pela ponte e aprovado pelo dono no Play; faltam as animações de sentado e de dirigir. Depois, seguir área por área. A Ninsar tem uma prévia animada na Unity, e o manto dela está pausado. Detalhes em `Docs/ESTADO.md`.
 
+## Tamanho da tarefa e testes (regras do dono, 3/nov/2026)
+
+**Tarefa leve:** trocar, mover ou tirar arte; pôr na cena um objeto ou personagem já pronto; ajustar posição, giro, escala ou fala.
+- Sem plano no papel: execute direto. Se aparecer algo que mude código de sistema, pare e avise.
+- Só o teste da área e, no máximo, uma foto se a mudança for visual.
+- Uma linha no `Docs/ESTADO.md` e commit.
+- Vários itens leves podem ir numa conversa só, em lote.
+
+**Tarefa de sistema:** código novo ou mudança de comportamento (câmera, ME, salvamento, IA, controles).
+- Plano no papel antes.
+- Testes de nível 2.
+- Documentação completa.
+
+Na dúvida, trate como leve e avise no fim.
+
+**Níveis de teste** (a tabela "sistema → testes que o cobrem", com o tempo de cada teste, está em `Docs/ESTADO.md`, em "Testes: níveis e cobertura"):
+- **Nível 1 (sempre):** o teste da tarefa e os testes dos sistemas tocados diretamente.
+- **Nível 2 (se tocar um sistema compartilhado):** mais os testes desses sistemas. Compartilhados: salvamento, prefab da Elena, controles, localização, malha de navegação, tabela de animações e menus que remontam cenas.
+- **Nível 3, regressão completa:** só nestes casos:
+  - ao fechar um sistema (cada ME, por exemplo);
+  - antes de trocar de fase;
+  - antes de uma build;
+  - quando um teste de nível 1 ou 2 falhar de um jeito inesperado.
+- A referência da última regressão completa fica no `ESTADO.md`.
+- Testes automáticos rodam sempre um por vez.
+
 ## Eficiência (vale para toda tarefa)
 - Investigue só o que a tarefa toca; não audite o projeto. Não releia arquivos nem reconsulte o editor se nada mudou.
 - Unity MCP só quando o trabalho exigir o editor. Prefira filtros, consultas pontuais e logs só com erros. Para checagens repetidas, crie um item de menu que imprima um resumo curto.
