@@ -1,6 +1,6 @@
 # Plano: ME1, dados dos poderes, posse e mapa de controles final
 
-Projeto no papel (4/nov/2026), **aprovado pelo dono em 4/nov/2026 com ajustes** (veja a seção 6, "Decisões da aprovação", que vale acima do texto original quando os dois divergem). **Tarefa de sistema [Opus].**
+**ME1 FECHADO em 4/nov/2026** (seção 8). Projeto no papel (4/nov/2026), **aprovado pelo dono em 4/nov/2026 com ajustes** (veja a seção 6, "Decisões da aprovação", que vale acima do texto original quando os dois divergem). **Tarefa de sistema [Opus].**
 
 ## 1. O que existe hoje (levantamento, sem alterar nada)
 
@@ -405,3 +405,9 @@ Tudo como na seção 6, com estes ajustes:
 - **HUD:** o `PowerHUD` de texto passou a mostrar uma linha por poder possuído (os de teste não aparecem nele), com textos com chave.
 - **Atalhos do LB:** na etapa 2, junto com os controles (os testes usam a mesma montagem), e não na 3. Lugar: o nicho da Aldeia, logo depois da tabuleta (calmo), e não a antecâmara.
 - **Teste automático:** 18 cenários em vez de 16 (entraram a tabuleta dando o Eco e a recarga só em tempo de jogo); ~50 s.
+
+## 8. Fechamento (4/nov/2026)
+
+- **Teste do dono no controle de verdade:** o plano A funcionou (Eco ao soltar o LB; LB+RB e LB+Y saem as vagas 2 e 3; RB sozinho dá facada). **Plano A escolhido**; o campo `ecoScheme` do prefab da Elena está no plano A. O plano B continua no código, e o atalho "2. Teste do LB: plano B" continua como alternativa. Revalidar no controle contra o Primeiro Servo; se o atraso atrapalhar, trocar para o plano B só pelo campo.
+- **Regressão completa (nível 3):** sem falhas; teste geral dos atalhos 102 OK, 0 FALHOU, 49 pulados (resultados completos no `ESTADO.md`, "Testes: níveis e cobertura").
+- **Fica para os ME seguintes:** HUD com ícone e anel de recarga por ME (ME5); tirar a barra "Transformação %" e o "Transformação +X" do rodapé da tabuleta (ME7); o efeito exato da Égide (ME4); o Sopro e a Égide hoje existem só como dados (ME3 e ME4); a troca de arma no D-pad esquerda e direita e nas teclas 1 e 2 (B6).

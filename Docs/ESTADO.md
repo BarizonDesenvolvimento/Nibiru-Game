@@ -45,11 +45,11 @@ Este quadro vale acima de qualquer outro nome de etapa neste arquivo. **Sem meta
 
 Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, seção "Regras da demo" (sem XP nem nível; Sopro de Enlil; Égide de Enki; despertares; o que o save guarda).
 
-**Regra:** cada tarefa começa com um **projeto em papel aprovado na governança**, antes de qualquer código. **Só o ME1 pode ser aberto agora**; as outras esperam a anterior e o próprio projeto aprovado. Tarefas marcadas **[Opus]** rodam no Opus.
+**Regra:** cada tarefa começa com um **projeto em papel aprovado na governança**, antes de qualquer código. **O ME1 está fechado; o próximo da rota é o B6 (espingarda), depois o ME2**; as outras esperam a anterior e o próprio projeto aprovado. Tarefas marcadas **[Opus]** rodam no Opus.
 
 | # | Tarefa | Modelo | Depende de | Estado |
 | --- | --- | --- | --- | --- |
-| ME1 | **Dados e posse:** o que define um ME (dados em ScriptableObject) e como o jogador o possui, e o mapa de controles final | **[Opus]** | — | **Em andamento** (projeto aprovado em 4/nov; veja "ME1: dados, posse e controles") |
+| ME1 | **Dados e posse:** o que define um ME (dados em ScriptableObject) e como o jogador o possui, e o mapa de controles final | **[Opus]** | — | **FECHADO em 4/nov/2026** (regressão completa OK; veja "ME1: dados, posse e controles") |
 | ME2 | **Puzzle do selo:** anéis giratórios; o jogo **não pausa**; o puzzle fica em **lugar seguro**; falhar **não tem penalidade** | | ME1 | Fechada |
 | ME3 | **Sopro de Enlil:** selado na antecâmara do Poço, puzzle 1 (3 anéis) entre os passos 11 e 12, antes da luta do Servo; muito eficaz contra Anunnaki, médio contra híbridos, fraco contra humanos; recarga de 90 s | **[Opus]** | ME1, ME2 | Fechada |
 | ME4 | **Égide de Enki:** na Passagem dos Guardiões (passo 13), puzzle 2 (4 anéis; a pista vem das inscrições e da fita de Irena); dura 8 s, recarga de 60 s; dispara o primeiro despertar antes do wadi | **[Opus]** | ME1, ME2, ME3 | Fechada |
@@ -1169,7 +1169,15 @@ Projeto, decisões e riscos em `Docs/Plano-Zoom-da-Camera.md` (com a seção "O 
 - **Controle:** sem atalho (pendência do ME1, veja "Em aberto, decidir no ME1/ME7").
 - **Opções com uma linha a mais:** a página Opções ganhou uma linha, então **Voltar passou da linha 4 para a 5** e o Idioma para a 4 (o teste do Mouse e o `HitTestCheck` foram ajustados).
 
-## ME1: dados, posse e controles (4/nov/2026: etapas 1 a 3 feitas e testadas pela ponte; falta o teste do dono no Play e a regressão completa)
+## ME1: dados, posse e controles (FECHADO em 4/nov/2026: testado pela ponte, pelo dono no controle e pela regressão completa)
+
+**Fechamento (4/nov/2026):** o dono testou no controle de verdade e escolheu o **plano A**; a regressão completa (nível 3) passou sem falhas (veja "Testes: níveis e cobertura"). **Fica para os ME seguintes:**
+- **ME5:** o HUD com um ícone e um anel de recarga por ME (hoje o HUD é de texto, uma linha por poder) e a dica "RB Sopro · Y Égide" com o LB seguro.
+- **ME7:** tirar a barra "Transformação %" do HUD e o "Transformação +X" do rodapé da tabuleta; a marca no pulso que cresce e o estado em palavras no fim da demo (com a fase C); o sistema dos despertares (hoje só o lugar onde eles moram).
+- **ME4:** o efeito exato da Égide de Enki.
+- **ME3 e ME4:** o Sopro e a Égide hoje existem **só como dados** (vaga, recarga, duração e textos provisórios), sem efeito e sem fonte que os dê; o ME3 também cria o tipo de inimigo (humano, híbrido, Anunnaki).
+- **Revalidar o LB no controle contra o Primeiro Servo** (plano A); se o atraso atrapalhar, trocar para o plano B só pelo campo `ecoScheme`.
+- **B6:** a troca de arma no D-pad esquerda e direita e nas teclas 1 e 2 (reservados).
 
 Projeto, decisões da aprovação e riscos em `Docs/Plano-ME1-Dados-Posse-Controles.md` (a seção 6, "Decisões da aprovação", vale acima do resto). Três etapas, com commit e push a cada uma; depois, o teste do dono com a escolha do LB e só então a regressão completa.
 
@@ -1195,6 +1203,8 @@ Projeto, decisões da aprovação e riscos em `Docs/Plano-ME1-Dados-Posse-Contro
 - **Testes da etapa 2:** **Nibiru > Testes > Poderes > Teste automático** (`Scripts/Editor/Powers/PowerTests.cs`, controle, teclado e mouse virtuais, **~50 s**): **18 OK** (a tabuleta dá o Eco uma vez, com o rodapé com chave; checkpoint guarda o Eco e a recarga; recarga só em tempo de jogo; LB ao soltar, nunca ao apertar, com o atraso medido: **~20 ms** num toque de 6 quadros; LB+RB e LB+Y sem faca nem Eco; RB sozinho é faca; LB+B esquiva e cancela; LB seguro 0,7 s não dispara e 0,3 s dispara; mirando; teclado e Mouse 4 e 5; poder que ela não tem; recarga bloqueia; diálogo, pausa, inventário e leitura bloqueiam; zoom no D-pad; plano B; memória e viagem sem poder). Teste de dados agora **18 OK** (confere também o `PlayerPowers` no prefab e que não sobrou efeito de teste nele). Nível 2: Localização 14 OK; Animações 377 verificações OK; Mouse **10 OK** (na primeira rodada 1 falha, "pausa aberta pelo teclado: o cursor deveria ficar escondido até o mouse mexer", que não voltou na segunda: o mouse de verdade se mexeu durante o teste, como a roda no teste do zoom); Zoom 14 OK; Passo 11 9 OK; Passo 12 10 OK; teste geral dos atalhos **102 OK, 0 FALHOU, 49 pulados** (+2 OK: os dois atalhos do LB; +1 pulado: `poderes.teste`). "Slots reais iguais" em cada um. O atalho do plano B foi conferido pela ponte (esquema, os três poderes nas vagas e o HUD).
 
 **Etapa 3: atalhos do dono e documentação (feita).** Os dois atalhos do LB conferidos pela ponte (plano A e plano B: esquema certo, Eco e os poderes de teste nas vagas 2 e 3, pistola equipada, quadro na tela). Documentação: este arquivo, o plano (seção 7, "O que mudou na implementação"), a Bíblia e a Região 1 (botões aprovados), o GDD (transformação) e a tabela de chaves do `CLAUDE.md` (`power.*`). Sem código novo nesta etapa, então não houve teste novo.
+
+**Escolha do LB (teste do dono num controle de verdade, 4/nov/2026):** o plano A funcionou (Eco ao soltar o LB; LB+RB e LB+Y saem as vagas 2 e 3; RB sozinho dá facada). **Plano A escolhido em 4/nov; revalidar no controle contra o Primeiro Servo; se o atraso do LB atrapalhar, trocar para o plano B só pelo campo `ecoScheme`** (do `PlayerInputReader` no prefab da Elena, objeto "Jogador"). O plano B continua no código e o atalho **Poderes > 2. Teste do LB: plano B** continua como alternativa.
 
 **Como testar o ME1 no Play (roteiro do dono):**
 
@@ -1421,7 +1431,9 @@ A regressão completa não roda mais a cada tarefa. Escolha o nível pelo que a 
   - quando um teste de nível 1 ou 2 falhar de um jeito inesperado.
 - **Sempre:** um teste por vez, conferindo no log novo o "terminou; slots reais iguais" de cada um.
 
-**Última regressão completa (referência para o próximo marco):** 3/nov/2026, teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Em 4/nov/2026 o teste geral deu **100 OK, 0 FALHOU, 48 pulados**, e a diferença é esperada: +5 OK são os 5 atalhos do Modo livre (`livre.*`, novos) e +1 pulado é o `zoom.teste`, porque todo id com ".teste" é pulado por ser um teste automático e não um lugar (regra `SkipReason` do `ShortcutsCheck`). Esta é a nova referência do teste geral; a regressão completa em si não foi refeita. **Depois da etapa 2 do ME1 (4/nov/2026): 102 OK, 0 FALHOU, 49 pulados** (+2 OK: os atalhos `poderes.lb_soltar` e `poderes.lb_y`; +1 pulado: `poderes.teste`); é a referência atual. Na mesma rodada: salvamento 19, passos 10 a 15 (14, 9, 10, 9, 10 e 3), Remédio 8, Arquivo 6, Tom 3 (hoje 4), suprimentos 10 e animações 377 verificações, todos OK.
+**Última regressão completa (referência para o próximo marco): 4/nov/2026, fechamento do ME1**, um teste por vez, com "slots reais iguais" conferido no fim de cada um: teste geral dos atalhos **102 OK, 0 FALHOU, 49 pulados**; salvamento 19 OK; teste de códigos 8 OK; proteção dos slots tudo OK; passos 10 a 15: 14, 9, 10, 9, 10 e 3 OK; Remédio para Yusuf 8 OK; Arquivo 6 OK; O que o Tom viu 4 OK; suprimentos 10 OK; corpos da equipe 27 OK; animações 377 verificações OK; mouse 10 OK; zoom 14 OK; localização 14 OK; poderes 18 OK; dados dos poderes 18 OK. **Diferença para a regressão anterior (3/nov: 95 OK, 0 FALHOU, 47 pulados), toda esperada:** +7 OK no teste geral (os 5 atalhos do Modo livre `livre.*` e os 2 do LB `poderes.lb_soltar` e `poderes.lb_y`) e +2 pulados (`zoom.teste` e `poderes.teste`, testes automáticos, que a regra `SkipReason` do `ShortcutsCheck` pula); O que o Tom viu tem 4 cenários (eram 3). Nenhuma falha. (Na primeira rodada, o teste dos corpos da equipe deu 3 FALHOU porque eu o rodei com o Play ainda ligado depois do teste dos poderes; no Play os objetos da cena não contam como instâncias de prefab. Fora do Play: 27 OK. Não era defeito.)
+
+Referência anterior: 3/nov/2026, teste geral **95 OK, 0 FALHOU, 47 pulados**.
 
 | Sistema tocado | Testes que o cobrem (menu em **Nibiru > Testes**) | Tempo aproximado |
 | --- | --- | --- |
@@ -1460,7 +1472,7 @@ Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
 2. **Zoom da câmera: FECHADO (testado no Play em 4/nov).** A roda real falhou na primeira tentativa (o Input System entrega 1 por clique, o código esperava 120); corrigido, retestado pela ponte e confirmado pelo dono no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. ~~**Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).~~ **Feito em 4/nov/2026** (veja a etapa 6 da "Área-vitrine da Aldeia").
-4. **ME1:** projeto aprovado em 4/nov/2026 e as etapas 1 a 3 feitas e testadas pela ponte (veja "ME1: dados, posse e controles"). **Falta:** o teste do dono no Play, com a escolha do LB (os dois atalhos de **Nibiru > Testes > Poderes**), e depois a **regressão completa (nível 3)** para fechar o ME1.
+4. ~~**ME1.**~~ **FECHADO em 4/nov/2026** (plano A do LB escolhido pelo dono; regressão completa OK; veja "ME1: dados, posse e controles").
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
 
 ### Como testar o passo 15
