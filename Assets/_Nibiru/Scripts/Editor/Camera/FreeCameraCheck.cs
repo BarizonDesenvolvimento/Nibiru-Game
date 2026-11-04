@@ -35,6 +35,12 @@ namespace Nibiru.EditorTools.Cameras
         static PlayerInputReader reader;
         static bool savedGameplayEnabled;
 
+        /// <summary>
+        /// Para conferir poses: ligada ANTES de <see cref="Enable"/>, deixa os controles do jogador ligados (o jogo continua parado), para a
+        /// Elena ficar mirando enquanto a câmera voa. Volta a falso ao desligar. Cuidado: com os controles ligados, clicar atira.
+        /// </summary>
+        public static bool KeepControls;
+
         /// <summary>A câmera livre está ligada.</summary>
         public static bool IsOn => cameraObject != null;
 
@@ -91,7 +97,7 @@ namespace Nibiru.EditorTools.Cameras
             pitch = angles.x > 180f ? angles.x - 360f : angles.x;
 
             // Sem os controles do jogador, o mouse e as teclas não mexem na Elena nem no CameraRig.
-            if (reader != null) reader.SetGameplayEnabled(false);
+            if (reader != null && !KeepControls) reader.SetGameplayEnabled(false);
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -119,6 +125,7 @@ namespace Nibiru.EditorTools.Cameras
             Cursor.visible = savedCursorVisible;
             if (reader != null) reader.SetGameplayEnabled(savedGameplayEnabled);
             reader = null;
+            KeepControls = false;
         }
 
         static readonly System.Collections.Generic.HashSet<Key> held = new System.Collections.Generic.HashSet<Key>();
@@ -154,7 +161,7 @@ namespace Nibiru.EditorTools.Cameras
             // Se a cena recarregar com a câmera ligada (um atalho de teste, morrer e voltar), a Elena nova nasce com os controles ligados e
             // o tempo pode voltar a andar: a ferramenta segura os dois enquanto estiver ligada.
             if (reader == null) reader = UnityEngine.Object.FindFirstObjectByType<PlayerInputReader>();
-            if (reader != null && reader.GameplayEnabled) reader.SetGameplayEnabled(false);
+            if (reader != null && !KeepControls && reader.GameplayEnabled) reader.SetGameplayEnabled(false);
             if (Time.timeScale != 0f) Time.timeScale = 0f;
             if (Cursor.lockState != CursorLockMode.Locked) Cursor.lockState = CursorLockMode.Locked;
 
