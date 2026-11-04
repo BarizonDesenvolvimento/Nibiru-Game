@@ -1489,6 +1489,10 @@ Plano aprovado em `Docs/Plano-B6-Espingarda.md` (decisões do dono de 4/nov/2026
   5. **Luta do Primeiro Servo:** ele leva o dano e não cambaleia.
   Para ver a chave sendo dada: jogue a secundária do Remédio para Yusuf até entregar os antibióticos.
 
+**Câmera livre de conferência (4/nov/2026; só para teste, não é mecânica do jogo; plano em `Docs/Plano-Camera-Livre-Conferencia.md`):** com o Play ligado, **Nibiru > Testes > Câmera livre (conferência)** liga e desliga (marca de ligado). Ligada, o jogo para (`timeScale` 0) e uma câmera própria voa: **WASD** anda, **E** sobe, **Q** desce, **Shift** acelera, **mouse** gira; a Elena, o CameraRig e as preferências não são tocados, e ao desligar tudo volta como estava. Vive só no editor (`Scripts/Editor/Camera/FreeCameraCheck.cs`), fora da build. Teste: **Nibiru > Testes > Câmera livre (teste automático)** (6 cenários OK; as teclas são simuladas pela ferramenta porque o teclado virtual do Input System perde a tecla entre os quadros, então a leitura do teclado de verdade fica para o teste do dono); nível 2: Zoom 14 OK e Poderes 18 OK, com os slots reais iguais. O Unity pediu atualização de API (`Keyboard.all` obsoleto): usa `InputSystem.devices`, sem avisos na compilação.
+
+**Último item para fechar o B6: empunhadura das armas.** IK das duas armas (mão esquerda no guarda-mão da espingarda, pontos de encaixe por arma), que hoje entram no braço da Elena. **Bloqueada até o dono baixar o Rifle 8-Way Locomotion Pack do Mixamo.** Os problemas dos veículos (abaixo) ficam para um lote leve depois do B6.
+
 **Pendências de arte vistas pelo dono (4/nov/2026, ainda não feitas):**
 - **Caminhonete:** a Elena sentada atravessa a malha da caminhonete (faltam as animações de sentado e de dirigir); conferir se o Samir está ao volante na viagem (pode ser só o atalho de teste da viagem, que não monta a escolha do wadi).
 - **Helicópteros:** sem vidro nas laterais e a frente é uma malha escura que não deixa ver o piloto; a **cabeça do piloto sai do helicóptero** (a escala está errada: se o piloto estiver certo, o helicóptero precisa crescer).
