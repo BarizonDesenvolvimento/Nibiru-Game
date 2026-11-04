@@ -96,6 +96,11 @@ namespace Nibiru.EditorTools.PowerTools
                 tablets.Where(t => t.grantsPower != null).Select(t => t.grantsPower).Distinct()
                     .Where(p => !HasBehaviour(elena, p)).Select(p => p.name));
 
+            Result("O prefab da Elena tem o PlayerPowers (no mesmo objeto do Eco) e nenhum efeito de teste",
+                elena == null ? new[] { "o prefab da Elena não existe" } :
+                (elena.GetComponentInChildren<PlayerPowers>(true) == null ? new[] { "sem PlayerPowers: rode Nibiru > Poderes > Montar poderes na Elena" } : new string[0])
+                    .Concat(elena.GetComponentsInChildren<Nibiru.Testes.TestPowerBehaviour>(true).Select(b => "efeito de teste no prefab: " + b.gameObject.name)));
+
             // ---------- Posse e save (só na memória; o mundo volta como estava no fim) ----------
             WorldState.Snapshot before = WorldState.Capture();
             try
@@ -135,9 +140,12 @@ namespace Nibiru.EditorTools.PowerTools
             if (!Mathf.Approximately(p.duration, duration)) yield return $"{name}: duração {p.duration}";
         }
 
-        /// <summary>O efeito de um poder é um componente na Elena que sabe qual arquivo executa (o Eco hoje; a base comum entra na etapa 2).</summary>
-        static bool HasBehaviour(GameObject elena, PowerDefinition power) =>
-            elena.GetComponentsInChildren<MonoBehaviour>(true).Any(b => b is EchoOfAbzu echo && echo.Power == power);
+        /// <summary>O efeito de um poder é um PowerBehaviour no mesmo objeto do PlayerPowers, que sabe qual arquivo executa.</summary>
+        static bool HasBehaviour(GameObject elena, PowerDefinition power)
+        {
+            PlayerPowers powers = elena.GetComponentInChildren<PlayerPowers>(true);
+            return powers != null && powers.GetComponents<PowerBehaviour>().Any(b => b.Definition == power);
+        }
 
         static IEnumerable<string> Ownership(PowerDefinition eco)
         {

@@ -1071,6 +1071,7 @@ GameObject:
   - component: {fileID: 6123757211755059049}
   - component: {fileID: 7002094342301298224}
   - component: {fileID: 7750119671527892710}
+  - component: {fileID: 8349789337131703070}
   m_Layer: 0
   m_Name: Jogador
   m_TagString: Player
@@ -1136,6 +1137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Player.PlayerInputReader
   actions: {fileID: -944628639613478452, guid: 2638ce25685f8074db7deb27ae315834, type: 3}
+  ecoScheme: 0
+  ecoTapMaxHold: 0.5
 --- !u!114 &3110832709876994596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,8 +1360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.EchoOfAbzu
   power: {fileID: 11400000, guid: 50d290a206b590140be9d96fdb04733b, type: 2}
-  input: {fileID: 8282052060555257985}
-  ownHealth: {fileID: 6428204035040108469}
 --- !u!114 &7002094342301298224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1404,6 +1405,23 @@ MonoBehaviour:
   diameter: 0.075
   width: 0.018
   distanceFromHand: 0.035
+--- !u!114 &8349789337131703070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3746609460572144184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f701f126d53628c42b038e84e37012e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Nibiru.Powers.PlayerPowers
+  input: {fileID: 0}
+  health: {fileID: 0}
+  motor: {fileID: 0}
+  melee: {fileID: 0}
+  weapons: {fileID: 0}
 --- !u!1 &4188914637936034084
 GameObject:
   m_ObjectHideFlags: 0
@@ -4133,7 +4151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nibiru.UI.PowerHUD
   echo: {fileID: 6123757211755059049}
-  input: {fileID: 8282052060555257985}
   label: {fileID: 305369706322620079}
 --- !u!114 &7605446955675331071
 MonoBehaviour:

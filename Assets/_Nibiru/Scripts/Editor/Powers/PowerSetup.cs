@@ -17,6 +17,32 @@ namespace Nibiru.EditorTools.PowerTools
     {
         public const string Folder = "Assets/_Nibiru/Data/Powers";
 
+        public const string ElenaPrefab = "Assets/_Nibiru/Prefabs/Player/Elena.prefab";
+
+        /// <summary>Põe o PlayerPowers no objeto do Eco no prefab da Elena (o "Jogador"). Pode rodar de novo.</summary>
+        [MenuItem("Nibiru/Poderes/Montar poderes na Elena")]
+        public static void MountOnElena()
+        {
+            GameObject root = PrefabUtility.LoadPrefabContents(ElenaPrefab);
+            try
+            {
+                var echo = root.GetComponentInChildren<EchoOfAbzu>(true);
+                if (echo == null)
+                {
+                    Debug.LogError("Poderes: o prefab da Elena não tem o EchoOfAbzu.");
+                    return;
+                }
+                bool added = echo.GetComponent<PlayerPowers>() == null;
+                if (added) echo.gameObject.AddComponent<PlayerPowers>();
+                PrefabUtility.SaveAsPrefabAsset(root, ElenaPrefab);
+                Debug.Log(added ? $"Poderes: PlayerPowers posto em {echo.gameObject.name} no prefab da Elena." : "Poderes: o prefab da Elena já tinha o PlayerPowers.");
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+
         [MenuItem("Nibiru/Poderes/Criar e atualizar os dados dos poderes")]
         public static void CreateOrUpdate()
         {

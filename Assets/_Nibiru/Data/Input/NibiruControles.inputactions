@@ -96,10 +96,55 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Poder",
+                    "name": "Poder1",
                     "type": "Button",
                     "id": "902611e9-5a2a-47c7-b262-1b9947b765e9",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Poder2",
+                    "type": "Button",
+                    "id": "73e86143-6acb-4c6f-9aa5-a126fd54d5a9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Poder3",
+                    "type": "Button",
+                    "id": "69760022-8ec0-447c-ace4-d2db621fc957",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ModificadorPoderes",
+                    "type": "Button",
+                    "id": "10a422ea-cffb-4337-9ed3-ff67ae44a95d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Poder3Combo",
+                    "type": "Button",
+                    "id": "a31256d1-ece9-4c99-9710-c50036c9df47",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ZoomCamera",
+                    "type": "Value",
+                    "id": "cc1a3abc-91fa-4b7a-af06-4a3ecc3dc54b",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -443,7 +488,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "TecladoMouse",
-                    "action": "Poder",
+                    "action": "Poder1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -454,9 +499,97 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Controle",
-                    "action": "Poder",
+                    "action": "ModificadorPoderes",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37b4679b-1650-4c91-a7a3-05780682ff7a",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Poder2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e833a3eb-3d1e-41cf-8d5a-66e140e0360a",
+                    "path": "<Mouse>/backButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Poder2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60e9961e-29b1-4702-a534-4cc4e25b8258",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Poder3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0fc48a2-8158-4f3f-a22e-afd0b4eaccf9",
+                    "path": "<Mouse>/forwardButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TecladoMouse",
+                    "action": "Poder3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "105149ed-b8da-4d5d-966e-174ab7fefc88",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "Poder3Combo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "DPad",
+                    "id": "a37e574a-ea22-44a2-8d6a-f06ade8c393b",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomCamera",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "97f7758e-6c2e-4c61-bbe5-9005042055e1",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "ZoomCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "dc39c511-c1f2-4790-af4d-9c297d878da0",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controle",
+                    "action": "ZoomCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

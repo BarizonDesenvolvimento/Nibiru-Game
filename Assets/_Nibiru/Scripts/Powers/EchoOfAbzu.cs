@@ -1,55 +1,43 @@
 using System.Collections.Generic;
-using Nibiru.Combat;
-using Nibiru.Player;
 using UnityEngine;
 
 namespace Nibiru.Powers
 {
     /// <summary>
-    /// O primeiro poder da Elena. Apertando Poder, ela solta um pulso silencioso que, por alguns
-    /// segundos, mostra inimigos através das paredes e acende marcas cuneiformes escondidas.
-    /// Coisas que reagem ao Eco (o Lullu) recebem o aviso. Só funciona depois de decifrar a
-    /// tabuleta que dá o poder.
+    /// O primeiro poder da Elena (o efeito). Ela solta um pulso silencioso que, por alguns segundos,
+    /// mostra inimigos através das paredes e acende marcas cuneiformes escondidas. Coisas que reagem
+    /// ao Eco (o Lullu, o Primeiro Servo) recebem o aviso e ficam atordoadas. Quem lê o botão, confere
+    /// a posse (tabuleta decifrada) e conta a recarga é o <see cref="PlayerPowers"/>.
     /// </summary>
-    public class EchoOfAbzu : MonoBehaviour
+    public class EchoOfAbzu : PowerBehaviour
     {
         [SerializeField] EchoPowerDefinition power;
-        [SerializeField] PlayerInputReader input;
-        [SerializeField] Health ownHealth;
 
         const int RingSegments = 48;
         const float RingHoldTime = 0.25f;
 
         readonly Collider[] overlaps = new Collider[64];
         readonly List<EchoTarget> targets = new List<EchoTarget>();
-        float readyAt;
         LineRenderer ring;
         Vector3 ringCenter;
         float ringStart = -1f;
 
         public EchoPowerDefinition Power => power;
+        public override PowerDefinition Definition => power;
         public bool IsUnlocked => power != null && power.IsUnlocked;
-        public float CooldownLeft => Mathf.Max(0f, readyAt - Time.time);
+        public float CooldownLeft => PowerBook.CooldownLeft(power);
 
-        void Awake()
-        {
-            if (input == null) input = GetComponent<PlayerInputReader>();
-            if (ownHealth == null) ownHealth = GetComponent<Health>();
-            CreateRing();
-        }
+        void Awake() => CreateRing();
 
         void Update()
         {
             if (ringStart >= 0f) UpdateRing();
-
-            if (!IsUnlocked || !input.PowerPressed || CooldownLeft > 0f) return;
-            if (ownHealth != null && ownHealth.IsDead) return;
-            Pulse();
         }
+
+        public override void Activate() => Pulse();
 
         void Pulse()
         {
-            readyAt = Time.time + power.cooldown;
             Vector3 origin = transform.position;
 
             // Copia a lista: revelar pode criar objetos e mexer nela.

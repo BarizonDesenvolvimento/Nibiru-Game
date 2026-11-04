@@ -158,10 +158,15 @@ namespace Nibiru.Cameras
             if (saveAt >= 0f && Time.unscaledTime >= saveAt) FlushZoom();
         }
 
-        // Roda do mouse: lida direto do mouse (o mapa de controles é do ME1). Rolar para a frente aproxima.
+        // Roda do mouse: lida direto do mouse. Rolar para a frente aproxima. O D-pad do controle (ação ZoomCamera) faz o mesmo.
         void ReadZoomWheel()
         {
-            if (!ZoomAllowed || Mouse.current == null) return;
+            // D-pad do controle (ME1): cima aproxima, baixo afasta, no passo de um clique da roda. Lido todo quadro, para o
+            // "segurar repete" não guardar um toque de quando o zoom estava bloqueado.
+            int padStep = input.ZoomPadStep;
+            if (!ZoomAllowed) return;
+            if (padStep != 0) SetZoomTarget(zoomTarget - padStep * settings.zoomMetersPerNotch);
+            if (Mouse.current == null) return;
             float notches = Mouse.current.scroll.ReadValue().y / WheelUnitsPerNotch;
             if (notches == 0f) return;
             float direction = settings.zoomInvertWheel ? 1f : -1f;

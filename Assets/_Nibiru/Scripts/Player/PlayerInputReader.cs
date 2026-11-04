@@ -9,8 +9,32 @@ namespace Nibiru.Player
     /// </summary>
     public class PlayerInputReader : MonoBehaviour
     {
+        /// <summary>Como o Eco sai no controle (configuração no código, não no menu; veja Docs/Plano-ME1-Dados-Posse-Controles.md).</summary>
+        public enum EcoScheme
+        {
+            /// <summary>Plano A (padrão): LB tocado e solto, se nada mais foi apertado com ele seguro e o toque durou até o limite.</summary>
+            SoltarLB,
+            /// <summary>Plano B: Y sozinho dispara o Eco na hora; o LB só serve de modificador (sozinho não faz nada).</summary>
+            YSozinho,
+        }
+
         [Tooltip("Arquivo de controles (.inputactions) com os mapas \"Jogador\" e \"Interface\".")]
         [SerializeField] InputActionAsset actions;
+
+        [Tooltip("Como o Eco sai no controle. Plano A: ao soltar o LB. Plano B: no Y sozinho (o LB fica só como modificador).")]
+        [SerializeField] EcoScheme ecoScheme = EcoScheme.SoltarLB;
+
+        [Tooltip("Plano A: segurar o LB mais que isto (segundos) e soltar sem combinação não dispara o Eco (desistir).")]
+        [SerializeField, Min(0.05f)] float ecoTapMaxHold = 0.5f;
+
+        /// <summary>Só para os testes e os atalhos do LB: troca o esquema do Eco neste Play (null = o do prefab). Some ao sair do Play.</summary>
+        public static EcoScheme? SchemeOverride;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetOnPlay() => SchemeOverride = null;
+
+        /// <summary>O esquema do Eco em uso agora.</summary>
+        public EcoScheme CurrentEcoScheme => SchemeOverride ?? ecoScheme;
 
         // "Jogador" controla a Elena e desliga quando um menu abre; "Interface" fica sempre ligado.
         InputActionMap map;
@@ -25,7 +49,12 @@ namespace Nibiru.Player
         InputAction fire;
         InputAction reload;
         InputAction crouch;
-        InputAction power;
+        InputAction power1;
+        InputAction power2;
+        InputAction power3;
+        InputAction powerModifier;
+        InputAction power3Combo;
+        InputAction zoomPad;
         InputAction toggleInventory;
         InputAction navigate;
         InputAction confirm;
@@ -50,6 +79,15 @@ namespace Nibiru.Player
             int frame = -1;
             int step;
 
+            readonly float firstRepeatDelay;
+            readonly float repeatInterval;
+
+            public NavRepeater(float firstRepeatDelay = FirstRepeatDelay, float repeatInterval = RepeatInterval)
+            {
+                this.firstRepeatDelay = firstRepeatDelay;
+                this.repeatInterval = repeatInterval;
+            }
+
             public int Step(float axis)
             {
                 if (frame == Time.frameCount) return step;
@@ -65,12 +103,12 @@ namespace Nibiru.Player
                 if (direction != heldDirection)
                 {
                     heldDirection = direction;
-                    nextRepeatTime = now + FirstRepeatDelay;
+                    nextRepeatTime = now + firstRepeatDelay;
                     return direction;
                 }
                 if (direction != 0 && now >= nextRepeatTime)
                 {
-                    nextRepeatTime = now + RepeatInterval;
+                    nextRepeatTime = now + repeatInterval;
                     return direction;
                 }
                 return 0;
@@ -79,6 +117,8 @@ namespace Nibiru.Player
 
         readonly NavRepeater verticalNav = new NavRepeater();
         readonly NavRepeater horizontalNav = new NavRepeater();
+        // Zoom no D-pad: um passo por toque; segurando, repete a cada 0,15 s.
+        readonly NavRepeater zoomRepeater = new NavRepeater(0.15f, 0.15f);
 
         const string KeyboardMouseGroup = "TecladoMouse";
         const string GamepadGroup = "Controle";
@@ -95,12 +135,44 @@ namespace Nibiru.Player
         public bool RunActive => run.IsPressed() || runLatched;
         public bool DodgePressed => combatEnabled && dodge.WasPressedThisFrame();
         public bool InteractPressed => interact.WasPressedThisFrame();
-        public bool AttackPressed => combatEnabled && attack.WasPressedThisFrame();
+        public bool AttackPressed => combatEnabled && attack.WasPressedThisFrame() && !AttackSwallowedByModifier;
         public bool AimHeld => combatEnabled && aim.IsPressed();
         public bool FirePressed => combatEnabled && fire.WasPressedThisFrame();
         public bool ReloadPressed => combatEnabled && reload.WasPressedThisFrame();
         public bool CrouchPressed => crouch.WasPressedThisFrame();
-        public bool PowerPressed => combatEnabled && power.WasPressedThisFrame();
+
+        /// <summary>
+        /// A vaga de poder foi pedida neste quadro: teclado e mouse (Q; Z ou Mouse 4; X ou Mouse 5) na hora; no controle,
+        /// pela regra do LB (veja EvaluatePowerButtons). Pode ser lido várias vezes no mesmo quadro.
+        /// </summary>
+        public bool PowerSlotPressed(Nibiru.Powers.PowerSlot slot)
+        {
+            if (!combatEnabled || !gameplayEnabled) return false;
+            EvaluatePowerButtons();
+            switch (slot)
+            {
+                case Nibiru.Powers.PowerSlot.Poder1: return power1.WasPressedThisFrame() || padSlot1;
+                case Nibiru.Powers.PowerSlot.Poder2: return power2.WasPressedThisFrame() || padSlot2;
+                case Nibiru.Powers.PowerSlot.Poder3: return power3.WasPressedThisFrame() || padSlot3;
+                default: return false;
+            }
+        }
+
+        /// <summary>Há quanto tempo o LB está seguro (0 se solto). Para a dica "RB Sopro · Y Égide" do ME5.</summary>
+        public float PowerModifierHeldSeconds
+        {
+            get
+            {
+                EvaluatePowerButtons();
+                return modifierHeld ? Time.unscaledTime - modifierDownAt : 0f;
+            }
+        }
+
+        /// <summary>Segundos entre apertar o botão do controle e o poder sair, no último poder pedido pelo controle (o atraso do Eco ao soltar).</summary>
+        public float LastPadPowerLatency { get; private set; }
+
+        /// <summary>Passo de zoom do D-pad neste quadro: +1 aproxima (cima), -1 afasta (baixo), 0 nada.</summary>
+        public int ZoomPadStep => gameplayEnabled ? zoomRepeater.Step(zoomPad.ReadValue<float>()) : 0;
         public bool InventoryTogglePressed => combatEnabled && toggleInventory.WasPressedThisFrame();
         public bool ConfirmPressed => confirm.WasPressedThisFrame();
         public bool BackPressed => back.WasPressedThisFrame();
@@ -128,7 +200,34 @@ namespace Nibiru.Player
         public string InventoryButtonLabel => ButtonLabel(toggleInventory);
         public string AttackButtonLabel => ButtonLabel(attack);
         public string ConfirmButtonLabel => ButtonLabel(confirm);
-        public string PowerButtonLabel => ButtonLabel(power);
+        /// <summary>O nome do botão da vaga de poder no aparelho em uso ("Q", "LB", "LB + RB", "Y"...).</summary>
+        public string PowerSlotLabel(Nibiru.Powers.PowerSlot slot)
+        {
+            if (!UsingGamepad)
+            {
+                InputAction action = slot == Nibiru.Powers.PowerSlot.Poder1 ? power1 : slot == Nibiru.Powers.PowerSlot.Poder2 ? power2 : power3;
+                return FirstLabel(action, KeyboardMouseGroup);
+            }
+            string modifier = FirstLabel(powerModifier, GamepadGroup);
+            switch (slot)
+            {
+                case Nibiru.Powers.PowerSlot.Poder1: return CurrentEcoScheme == EcoScheme.SoltarLB ? modifier : FirstLabel(power3Combo, GamepadGroup);
+                case Nibiru.Powers.PowerSlot.Poder2: return modifier + " + " + FirstLabel(attack, GamepadGroup);
+                default: return modifier + " + " + FirstLabel(power3Combo, GamepadGroup);
+            }
+        }
+
+        // O nome do primeiro botão da ação no grupo (Z, e não "Z | Mouse 4").
+        static string FirstLabel(InputAction action, string group)
+        {
+            for (int i = 0; i < action.bindings.Count; i++)
+            {
+                InputBinding binding = action.bindings[i];
+                if (binding.isComposite || binding.isPartOfComposite) continue;
+                if (binding.groups != null && binding.groups.Contains(group)) return action.GetBindingDisplayString(i);
+            }
+            return "";
+        }
         public string BackButtonLabel => ButtonLabel(back);
 
         string ButtonLabel(InputAction action) =>
@@ -150,7 +249,12 @@ namespace Nibiru.Player
             fire = map.FindAction("Atirar", throwIfNotFound: true);
             reload = map.FindAction("Recarregar", throwIfNotFound: true);
             crouch = map.FindAction("Agachar", throwIfNotFound: true);
-            power = map.FindAction("Poder", throwIfNotFound: true);
+            power1 = map.FindAction("Poder1", throwIfNotFound: true);
+            power2 = map.FindAction("Poder2", throwIfNotFound: true);
+            power3 = map.FindAction("Poder3", throwIfNotFound: true);
+            powerModifier = map.FindAction("ModificadorPoderes", throwIfNotFound: true);
+            power3Combo = map.FindAction("Poder3Combo", throwIfNotFound: true);
+            zoomPad = map.FindAction("ZoomCamera", throwIfNotFound: true);
 
             uiMap = actions.FindActionMap("Interface", throwIfNotFound: true);
             toggleInventory = uiMap.FindAction("Inventario", throwIfNotFound: true);
@@ -191,6 +295,7 @@ namespace Nibiru.Player
             if (enabled != gameplayEnabled) GameplayToggledFrame = Time.frameCount;
             gameplayEnabled = enabled;
             runLatched = false;
+            modifierHeld = false; // um menu abriu ou fechou: o LB que estava seguro não vale mais
             if (!isActiveAndEnabled) return;
             if (enabled) map.Enable();
             else
@@ -229,8 +334,91 @@ namespace Nibiru.Player
                 UsingGamepad = context.control.device is Gamepad;
         }
 
+        // ---------- Regra do LB (controle) ----------
+
+        bool modifierHeld;
+        bool modifierCancelled;
+        float modifierDownAt;
+        int powerEvalFrame = -1;
+        bool padSlot1, padSlot2, padSlot3;
+        bool attackSwallowed;
+
+        bool AttackSwallowedByModifier
+        {
+            get
+            {
+                EvaluatePowerButtons();
+                return attackSwallowed;
+            }
+        }
+
+        /// <summary>
+        /// Resolve, uma vez por quadro, o que o controle pediu (a regra aprovada no ME1):
+        /// - Plano A: LB tocado e solto dispara o Eco (vaga 1) ao soltar, se nenhum outro botão foi apertado com ele seguro e
+        ///   se ele ficou seguro até ecoTapMaxHold (0,5 s); segurar mais e soltar é desistir.
+        /// - Com o LB seguro: RB = vaga 2 e Y = vaga 3, na hora; o RB nunca vira faca. Outro botão faz a ação dele e cancela o Eco.
+        /// - Plano B: Y sozinho é o Eco, na hora; o LB sozinho não faz nada; as combinações são as mesmas.
+        /// Usa tempo sem escala (é tempo de botão, não de jogo).
+        /// </summary>
+        void EvaluatePowerButtons()
+        {
+            if (powerEvalFrame == Time.frameCount) return;
+            powerEvalFrame = Time.frameCount;
+            padSlot1 = padSlot2 = padSlot3 = false;
+            attackSwallowed = false;
+            if (!gameplayEnabled || powerModifier == null) return;
+
+            float now = Time.unscaledTime;
+            bool attackFromPad = attack.activeControl?.device is Gamepad;
+            if (powerModifier.WasPressedThisFrame())
+            {
+                modifierHeld = true;
+                modifierCancelled = false;
+                modifierDownAt = now;
+            }
+
+            if (modifierHeld)
+            {
+                bool rb = attackFromPad && attack.WasPressedThisFrame();
+                bool y = power3Combo.WasPressedThisFrame();
+                if (rb) padSlot2 = true;
+                if (y) padSlot3 = true;
+                if (rb || y || OtherPadButtonPressed(powerModifier.activeControl?.device as Gamepad)) modifierCancelled = true;
+                if (rb || y) LastPadPowerLatency = 0f;
+                if (attackFromPad && attack.IsPressed()) attackSwallowed = true;
+
+                if (!powerModifier.IsPressed())
+                {
+                    if (CurrentEcoScheme == EcoScheme.SoltarLB && !modifierCancelled && now - modifierDownAt <= ecoTapMaxHold)
+                    {
+                        padSlot1 = true;
+                        LastPadPowerLatency = now - modifierDownAt;
+                    }
+                    modifierHeld = false;
+                }
+            }
+            else if (CurrentEcoScheme == EcoScheme.YSozinho && power3Combo.WasPressedThisFrame())
+            {
+                padSlot1 = true;
+                LastPadPowerLatency = 0f;
+            }
+        }
+
+        // Outro botão do controle apertado neste quadro (fora o LB, o RB e o Y, que a regra trata à parte).
+        static bool OtherPadButtonPressed(Gamepad pad)
+        {
+            if (pad == null) return false;
+            return pad.buttonSouth.wasPressedThisFrame || pad.buttonEast.wasPressedThisFrame || pad.buttonWest.wasPressedThisFrame
+                || pad.leftTrigger.wasPressedThisFrame || pad.rightTrigger.wasPressedThisFrame
+                || pad.startButton.wasPressedThisFrame || pad.selectButton.wasPressedThisFrame
+                || pad.leftStickButton.wasPressedThisFrame || pad.rightStickButton.wasPressedThisFrame
+                || pad.dpad.up.wasPressedThisFrame || pad.dpad.down.wasPressedThisFrame
+                || pad.dpad.left.wasPressedThisFrame || pad.dpad.right.wasPressedThisFrame;
+        }
+
         void Update()
         {
+            EvaluatePowerButtons();
             if (run.WasPressedThisFrame() && run.activeControl?.device is Gamepad)
                 runLatched = true;
             if (Move.magnitude < RunReleaseThreshold)

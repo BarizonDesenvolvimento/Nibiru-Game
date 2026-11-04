@@ -121,6 +121,8 @@ namespace Nibiru.EditorTools
 
             // Um atalho nunca grava num slot de verdade (o "gravar no slot" do Salvamento escolhe o slot depois).
             SaveSlots.Detach();
+            // Todo atalho começa com o esquema do Eco do prefab; só os atalhos do LB trocam (no fim deles).
+            PlayerInputReader.SchemeOverride = null;
             WorldState.Clear();
             foreach (string id in events) WorldState.MarkStoryEvent(id);
             // Listas antigas com "Poder:<arquivo>" viram posse de verdade (ME1).
