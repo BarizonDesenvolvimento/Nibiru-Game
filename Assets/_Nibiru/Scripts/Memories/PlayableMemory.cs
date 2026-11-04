@@ -72,6 +72,8 @@ namespace Nibiru.Memories
             state = State.Entering;
             FindPlayer();
             CreateOverlay();
+            // O enquadramento da memória é autoral: sem zoom da roda até a Elena voltar.
+            if (cameraController != null) cameraController.SetZoomBlocked(this, true);
             input.SetGameplayEnabled(false);
             yield return Fade(0f, 1f);
 
@@ -80,6 +82,7 @@ namespace Nibiru.Memories
             {
                 Debug.LogError($"Memória {memory.name}: a cena \"{memory.sceneName}\" não está na lista de cenas do Build.", this);
                 yield return Fade(1f, 0f);
+                if (cameraController != null) cameraController.SetZoomBlocked(this, false);
                 input.SetGameplayEnabled(true);
                 state = State.Present;
                 yield break;
@@ -131,6 +134,7 @@ namespace Nibiru.Memories
             while (unload != null && !unload.isDone) yield return null;
 
             yield return Fade(1f, 0f);
+            if (cameraController != null) cameraController.SetZoomBlocked(this, false);
             input.SetGameplayEnabled(true);
             state = State.Present;
             onReturned.Invoke();

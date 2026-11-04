@@ -19,6 +19,9 @@ namespace Nibiru.Cameras
         /// <summary>Liga ou desliga a mira (cada modo decide como aproxima a visão).</summary>
         void SetAiming(bool aiming);
 
+        /// <summary>Distância escolhida pelo jogador (já suavizada), em metros. A mira ignora este valor. Modos sem distância ignoram.</summary>
+        void SetZoom(float distance);
+
         /// <summary>Posiciona e gira a câmera. yaw e pitch em graus.</summary>
         void UpdateCamera(Transform camera, float yaw, float pitch, float deltaTime);
     }

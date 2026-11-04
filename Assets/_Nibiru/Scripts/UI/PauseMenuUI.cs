@@ -298,6 +298,7 @@ namespace Nibiru.UI
         void Open()
         {
             enableGameplayFrame = -1;
+            GameOptions.Save(); // ao pausar, grava a distância da câmera escolhida na roda
             CursorPolicy.RequestFree(this, false);
             panel.SetActive(true);
             openedFrame = Time.frameCount;

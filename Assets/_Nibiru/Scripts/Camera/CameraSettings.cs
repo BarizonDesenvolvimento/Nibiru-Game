@@ -29,11 +29,30 @@ namespace Nibiru.Cameras
         [Tooltip("Deslocamento para o lado do ombro, em metros. Positivo = ombro direito.")]
         public float shoulderOffset = 0.6f;
 
-        [Tooltip("Distância atrás do ombro, em metros.")]
+        [Tooltip("Distância atrás do ombro, em metros. É o padrão do zoom: vale até o jogador escolher outra.")]
         [Min(0f)] public float distance = 2.5f;
 
         [Tooltip("Limite de olhar para cima (negativo) e para baixo (positivo), em graus.")]
         public Vector2 thirdPersonPitchLimits = new Vector2(-35f, 60f);
+
+        [Header("Zoom (roda do mouse e Opções)")]
+        [Tooltip("Distância mínima escolhida pelo jogador, em metros. Deve ficar acima da distância da mira, senão mirar afastaria a câmera.")]
+        [Min(0.5f)] public float zoomMinDistance = 1.8f;
+
+        [Tooltip("Distância máxima escolhida pelo jogador, em metros. Nos lugares apertados a colisão encurta a câmera do mesmo jeito.")]
+        [Min(0.5f)] public float zoomMaxDistance = 4f;
+
+        [Tooltip("Metros por clique da roda do mouse (uma roda de alta resolução dá frações de clique).")]
+        [Min(0.01f)] public float zoomMetersPerNotch = 0.25f;
+
+        [Tooltip("Desligado: rolar a roda para a frente aproxima a câmera. Ligado: inverte.")]
+        public bool zoomInvertWheel;
+
+        [Tooltip("Tempo do amortecimento do zoom, em segundos. Menor = mais seco.")]
+        [Min(0.01f)] public float zoomSmoothTime = 0.15f;
+
+        [Tooltip("Velocidade máxima do zoom, em m/s. Deixe abaixo do 'Return Speed' para as duas suavizações não brigarem.")]
+        [Min(0.1f)] public float zoomMaxSpeed = 3.5f;
 
         [Header("Mira")]
         [Tooltip("Distância atrás do ombro enquanto mira, em metros.")]

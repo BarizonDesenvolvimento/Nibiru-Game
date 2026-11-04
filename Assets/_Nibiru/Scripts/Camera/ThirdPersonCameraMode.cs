@@ -27,15 +27,25 @@ namespace Nibiru.Cameras
 
         public Vector2 PitchLimits => settings.thirdPersonPitchLimits;
 
-        public void Enter() => currentDistance = settings.distance;
+        // Distância escolhida pelo jogador (zoom). Antes de receber a primeira, vale o padrão do asset.
+        float zoomDistance = -1f;
+
+        /// <summary>Distância normal (fora da mira) em uso: a do zoom, ou o padrão do asset se ninguém deu zoom.</summary>
+        public float ZoomDistance => zoomDistance > 0f ? zoomDistance : settings.distance;
+
+        public void Enter() => currentDistance = ZoomDistance;
 
         public void SetAiming(bool value) => aiming = value;
+
+        public void SetZoom(float distance) => zoomDistance = distance;
 
         public void UpdateCamera(Transform camera, float yaw, float pitch, float deltaTime)
         {
             aimBlend = Mathf.MoveTowards(aimBlend, aiming ? 1f : 0f, settings.aimBlendSpeed * deltaTime);
             float shoulderOffset = Mathf.Lerp(settings.shoulderOffset, settings.aimShoulderOffset, aimBlend);
-            float distance = Mathf.Lerp(settings.distance, settings.aimDistance, aimBlend);
+            // A distância desejada vem do zoom; a mira a troca pela dela (o zoom é ignorado mirando). As checagens de parede
+            // abaixo não sabem do zoom: continuam mandando.
+            float distance = Mathf.Lerp(ZoomDistance, settings.aimDistance, aimBlend);
 
             Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
             Vector3 pivot = target.position + Vector3.up * settings.pivotHeight;

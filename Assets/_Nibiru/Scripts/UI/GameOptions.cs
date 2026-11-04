@@ -33,6 +33,27 @@ namespace Nibiru.UI
             set => PlayerPrefs.SetInt(InvertKey, value ? 1 : 0);
         }
 
+        /// <summary>Chave da distância da câmera (zoom), em metros. Preferência do jogador: não entra no save de slot.</summary>
+        public const string CameraDistanceKey = "Nibiru.Opcoes.DistanciaCamera";
+
+        /// <summary>
+        /// Distância da câmera escolhida, em metros, como está guardada. Quem usa limita à faixa do CameraSettings
+        /// (<see cref="CameraDistanceClamped"/>); valor ausente ou inválido (NaN, infinito) volta ao padrão.
+        /// </summary>
+        public static float CameraDistance
+        {
+            get => PlayerPrefs.GetFloat(CameraDistanceKey, float.NaN);
+            set => PlayerPrefs.SetFloat(CameraDistanceKey, value);
+        }
+
+        /// <summary>A distância guardada limitada a [min, max]; sem valor válido guardado, o padrão (também limitado).</summary>
+        public static float CameraDistanceClamped(float min, float max, float fallback)
+        {
+            float stored = CameraDistance;
+            if (float.IsNaN(stored) || float.IsInfinity(stored)) stored = fallback;
+            return Mathf.Clamp(stored, min, max);
+        }
+
         public static void Save() => PlayerPrefs.Save();
     }
 }
