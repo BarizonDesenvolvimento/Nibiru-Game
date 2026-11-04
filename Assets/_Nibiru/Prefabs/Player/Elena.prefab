@@ -110,37 +110,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
---- !u!1 &610476250637667078
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8154236697660712624}
-  m_Layer: 0
-  m_Name: Cano
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8154236697660712624
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 610476250637667078}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.07, z: 0.73}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1290279406940296267}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &753526430053514593
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,39 +299,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &1291089517960597260
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1290279406940296267}
-  m_Layer: 0
-  m_Name: Modelo_Espingarda
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1290279406940296267
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291089517960597260}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5030839467354018690}
-  - {fileID: 8154236697660712624}
-  m_Father: {fileID: 3401335159130718717}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1320481016733809719
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,6 +333,39 @@ Transform:
   - {fileID: 6732532270632640314}
   - {fileID: 696975689663317670}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1425928708140943068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5016315278451835552}
+  m_Layer: 0
+  m_Name: Modelo_Espingarda
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5016315278451835552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425928708140943068}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4615327235231103465}
+  - {fileID: 4431230907327584645}
+  m_Father: {fileID: 3401335159130718717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1762824972252637955
 GameObject:
@@ -1395,8 +1364,8 @@ MonoBehaviour:
     model: {fileID: 918284770709951070}
     muzzle: {fileID: 740701557741797590}
   - firearm: {fileID: 11400000, guid: dadc544dd397d9b4e9ad244de041b61c, type: 2}
-    model: {fileID: 1291089517960597260}
-    muzzle: {fileID: 8154236697660712624}
+    model: {fileID: 1425928708140943068}
+    muzzle: {fileID: 4431230907327584645}
   melee: {fileID: 0}
   tracer: {fileID: 7246886305363863940}
   impactMaterial: {fileID: 2100000, guid: f52fc70cb11b71d41a54911d88f97086, type: 2}
@@ -2374,7 +2343,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 197769980352635479}
-  - {fileID: 1290279406940296267}
+  - {fileID: 5016315278451835552}
   m_Father: {fileID: 483439156831119717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5705431746271004229
@@ -2456,6 +2425,37 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1.15
   m_Text: 
+--- !u!1 &5853875425025715058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4431230907327584645}
+  m_Layer: 0
+  m_Name: Cano
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4431230907327584645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853875425025715058}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.07, z: 0.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5016315278451835552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5998753152985771401
 GameObject:
   m_ObjectHideFlags: 0
@@ -4351,13 +4351,13 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
---- !u!1001 &2298667728485041059
+--- !u!1001 &1890188458081987016
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1290279406940296267}
+    m_TransformParent: {fileID: 5016315278451835552}
     m_Modifications:
     - target: {fileID: 4986637863356203645, guid: 71c38e49d9bafcd48ae4037138e65958, type: 3}
       propertyPath: m_Name
@@ -4408,10 +4408,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71c38e49d9bafcd48ae4037138e65958, type: 3}
---- !u!4 &5030839467354018690 stripped
+--- !u!4 &4615327235231103465 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6500844673109037089, guid: 71c38e49d9bafcd48ae4037138e65958, type: 3}
-  m_PrefabInstance: {fileID: 2298667728485041059}
+  m_PrefabInstance: {fileID: 1890188458081987016}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3873223485139123776
 PrefabInstance:

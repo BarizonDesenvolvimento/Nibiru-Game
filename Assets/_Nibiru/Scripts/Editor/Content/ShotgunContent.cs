@@ -226,13 +226,14 @@ namespace Nibiru.EditorTools.Content
             Prim(PrimitiveType.Cube, house, "Parede_Oeste", c + new Vector3(-2.85f, h / 2f, 0f), new Vector3(0.3f, h, 6f), wall);
             Prim(PrimitiveType.Cube, house, "Parede_Norte", c + new Vector3(0f, h / 2f, 2.85f), new Vector3(6f, h, 0.3f), wall);
             Prim(PrimitiveType.Cube, house, "Parede_Sul", c + new Vector3(0f, h / 2f, -2.85f), new Vector3(6f, h, 0.3f), wall);
-            Prim(PrimitiveType.Cube, house, "Parede_Leste_Norte", c + new Vector3(2.85f, h / 2f, 1.85f), new Vector3(0.3f, h, 2.3f), wall);
-            Prim(PrimitiveType.Cube, house, "Parede_Leste_Sul", c + new Vector3(2.85f, h / 2f, -1.85f), new Vector3(0.3f, h, 2.3f), wall);
-            Prim(PrimitiveType.Cube, house, "Verga", c + new Vector3(2.85f, 2.9f, 0f), new Vector3(0.3f, 1.8f, 1.4f), wall);
+            Prim(PrimitiveType.Cube, house, "Parede_Leste_Norte", c + new Vector3(2.85f, h / 2f, 2.0f), new Vector3(0.3f, h, 2.0f), wall);
+            Prim(PrimitiveType.Cube, house, "Parede_Leste_Sul", c + new Vector3(2.85f, h / 2f, -2.0f), new Vector3(0.3f, h, 2.0f), wall);
+            // Vão de 2 m de largura por 2,3 m de altura: a cápsula da Elena tem 1 m de largura e 2 m de altura (o pé fica 5 cm acima do chão) e precisa de folga.
+            Prim(PrimitiveType.Cube, house, "Verga", c + new Vector3(2.85f, 3.05f, 0f), new Vector3(0.3f, 1.5f, 2.0f), wall);
             Prim(PrimitiveType.Cube, house, "Teto", c + new Vector3(0f, 3.65f, 0f), new Vector3(6f, 0.3f, 6f), "BO_TijoloBarroEscuro");
 
             // A porta trancada: um colisor sólido que some quando a chave é usada.
-            GameObject door = Prim(PrimitiveType.Cube, house, "Porta_Trancada", c + new Vector3(2.85f, 1f, 0f), new Vector3(0.15f, 2f, 1.4f), "BO_Madeira");
+            GameObject door = Prim(PrimitiveType.Cube, house, "Porta_Trancada", c + new Vector3(2.85f, 1.15f, 0f), new Vector3(0.15f, 2.3f, 2.0f), "BO_Madeira");
             var locked = door.AddComponent<LockedDoor>();
             SetField(locked, "key", key);
             SetField(locked, "raiseOnOpen", opened);
