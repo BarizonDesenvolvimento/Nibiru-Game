@@ -32,6 +32,9 @@ namespace Nibiru.EditorTools
             ("Antibioticos", "Objetos", 0f, 0.4f), ("CaixaMunicao", "Objetos", 0f, 0.3f), ("Curativo", "Objetos", 0f, 0.3f),
             ("RoloFilme", "Objetos", 0f, 0.4f), ("Gravador", "Objetos", 0.1f, 0.35f),
             ("Helicoptero", "Ambientes", 0.2f, 0.45f), ("SeloDeKur", "Ambientes", 0f, 0.25f),
+            ("Caminhao", "Ambientes", 0.1f, 0.25f), ("Caminhonete", "Ambientes", 0.1f, 0.3f), ("Guincho", "Ambientes", 0.2f, 0.3f), ("Holofote", "Ambientes", 0.1f, 0.4f),
+            ("PainelDeusAnunnaki", "Ambientes", 0f, 0.15f), ("PainelBarcoDeJunco", "Ambientes", 0f, 0.15f),
+            ("PainelCriaturasAladas", "Ambientes", 0f, 0.15f),
         };
 
         enum Depth { Center, Front }
@@ -62,6 +65,7 @@ namespace Nibiru.EditorTools
             ("Radio_Caido/Aparelho", "Radio", Vector3.zero, Depth.Center),
             ("Tabuleta_Enterrada", "TabuletaDeJunco", new Vector3(-90f, 0f, 0f), Depth.Center),
             ("Porta_Selo_de_Kur", "SeloDeKur", new Vector3(0f, 180f, 0f), Depth.Front),
+            ("Holofote_Fundacao_Superficie", "Holofote", new Vector3(0f, 270f, 0f), Depth.Center),
         };
 
         // Deslocamento em metros do mundo depois de encostar no placeholder. O Selo tem 1,55 m de fundo e as folhas da
@@ -162,6 +166,15 @@ namespace Nibiru.EditorTools
                 m.SetFloat("_SmoothnessTextureChannel", 0f);
                 m.SetFloat("_Smoothness", 1f);
                 m.EnableKeyword("_METALLICSPECGLOSSMAP");
+            }
+            // Relevos da antecâmara e da passagem ficam em pedra escura: um brilho próprio quente (a própria cor do relevo)
+            // faz o desenho aparecer, como o mundo dos Anunnaki, que tem luz própria.
+            if (name.StartsWith("Painel"))
+            {
+                m.EnableKeyword("_EMISSION");
+                m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                m.SetTexture("_EmissionMap", m.GetTexture("_BaseMap"));
+                m.SetColor("_EmissionColor", new Color(0.55f, 0.45f, 0.34f));
             }
             EditorUtility.SetDirty(m);
             return m;
@@ -320,6 +333,8 @@ namespace Nibiru.EditorTools
                 count++;
             }
 
+            count += BuildBatch3(all);
+
             if (missing.Count > 0)
                 Debug.LogWarning($"Objetos e ambientes: não achei na cena: {string.Join(", ", missing)}.");
             EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
@@ -349,6 +364,150 @@ namespace Nibiru.EditorTools
             HideBlockout(heli);
         }
 
+        // ---------- lote 3: caminhonete, guincho, holofotes e painéis de relevo ----------
+
+        const float ReliefProtrude = 0.25f; // quanto o relevo sai da parede (sem colisor)
+
+        static int BuildBatch3(Transform[] all)
+        {
+            int count = 0;
+
+            // Caminhonete do Samir (a que anda): os cubos do blockout ficam só com o colisor; a arte anda junto.
+            foreach (var truck in all.Where(t => t != null && t.name == "Caminhonete_Do_Samir"))
+            {
+                var art = Attach(truck, "Caminhonete");
+                if (art == null) continue;
+                HideBlockout(truck);
+                count++;
+            }
+
+            // Caminhões do acampamento (caixas com colisor): o colisor cresce para o tamanho do modelo (3,26 x 3,56 x 6,5 m),
+            // com o chão no mesmo lugar, e a arte entra de filho.
+            foreach (var box in all.Where(t => t != null && (t.name == "Caminhao_1" || t.name == "Caminhao_2") && t.GetComponent<MeshFilter>() != null))
+            {
+                float bottom = box.position.y - box.localScale.y / 2f;
+                box.localScale = new Vector3(3.26f, 3.56f, 6.5f);
+                box.position = new Vector3(box.position.x, bottom + 1.78f, box.position.z);
+                var art = Attach(box, "Caminhao");
+                if (art == null) continue;
+                Align(box, art, box.GetComponent<MeshFilter>().sharedMesh.bounds, Depth.Center);
+                box.GetComponent<MeshRenderer>().enabled = false;
+                count++;
+            }
+
+            // Caminhão da Fundação (o que anda pela estrada do norte): cabine e carroceria viram colisores do tamanho do modelo.
+            foreach (var truck in all.Where(t => t != null && t.name == "Caminhao_Fundacao"))
+            {
+                var cab = truck.Find("Cabine");
+                var body = truck.Find("Carroceria");
+                if (cab != null) { cab.localPosition = new Vector3(0f, 1.35f, 2.15f); cab.localScale = new Vector3(3.26f, 2.7f, 2.2f); }
+                if (body != null) { body.localPosition = new Vector3(0f, 1.75f, -1.1f); body.localScale = new Vector3(3.26f, 3.5f, 4.2f); }
+                var art = Attach(truck, "Caminhao");
+                if (art == null) continue;
+                HideBlockout(truck);
+                count++;
+            }
+
+            // Guincho: a viga de 11 m do blockout continua à vista; o guincho com cabine senta em cima, no meio.
+            foreach (var beam in all.Where(t => t != null && t.name == "Guincho" && t.GetComponent<MeshFilter>() != null))
+            {
+                var art = Attach(beam, "Guincho");
+                if (art == null) continue;
+                art.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+                art.transform.localScale = Unscaled(beam, art.transform.localRotation);
+                var b = beam.GetComponent<MeshFilter>().sharedMesh.bounds;
+                Align(beam, art, new Bounds(new Vector3(b.center.x, b.max.y, b.center.z), Vector3.zero), Depth.Center);
+                count++;
+            }
+
+            // Holofotes que caem: a arte vai no Pivo (cai junto) e olha para o centro da arena como a cabeça do blockout.
+            foreach (var lightRoot in all.Where(t => t != null && t.name.StartsWith("Holofote_") && t.Find("Pivo") != null))
+            {
+                var pivot = lightRoot.Find("Pivo");
+                var head = pivot.Find("Holofote");
+                var art = Attach(pivot, "Holofote");
+                if (art == null) continue;
+                art.transform.rotation = Quaternion.Euler(0f, head != null ? head.eulerAngles.y : 0f, 0f);
+                HideBlockout(pivot);
+                count++;
+            }
+
+            // Painéis de relevo. O do barco desce junto com a parede móvel; os outros ficam na parede norte da antecâmara.
+            var wall = all.FirstOrDefault(t => t != null && t.name == "Parede_Movel");
+            if (wall != null)
+            {
+                foreach (var piece in wall.Cast<Transform>().Where(c => c.name.StartsWith("Barco_")))
+                    piece.GetComponent<MeshRenderer>().enabled = false;
+                var art = NewRelief(wall, "Relevo_Barco_De_Junco", "PainelBarcoDeJunco");
+                if (art != null)
+                {
+                    PlaceRelief(art, 90f, new Vector3(36f, -12f, 96f));
+                    foreach (var tr in art.GetComponentsInChildren<Transform>()) GameObjectUtility.SetStaticEditorFlags(tr.gameObject, 0);
+                    count++;
+                }
+            }
+            var seal = all.FirstOrDefault(t => t != null && t.name == "Porta_Selo_de_Kur");
+            if (seal != null)
+            {
+                var deus = NewRelief(seal.parent, "Relevo_Deus_Anunnaki", "PainelDeusAnunnaki");
+                if (deus != null) { PlaceRelief(deus, 180f, new Vector3(39.6f, -11.2f, 102f)); count++; }
+                var wings = NewRelief(seal.parent, "Relevo_Criaturas_Aladas", "PainelCriaturasAladas");
+                if (wings != null) { PlaceRelief(wings, 180f, new Vector3(49.6f, -8.1f, 102f)); count++; }
+            }
+            return count;
+        }
+
+        static GameObject NewRelief(Transform parent, string name, string model)
+        {
+            var old = parent.Find(name);
+            if (old != null) Object.DestroyImmediate(old.gameObject);
+            var prefab = Prefab(model);
+            if (prefab == null) return null;
+            var art = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent.gameObject.scene);
+            art.name = name;
+            art.transform.SetParent(parent, true);
+            return art;
+        }
+
+        /// <summary>Gira o painel (yaw 90 = face para +x; 180 = face para -z), põe as costas dentro da parede (a face sai
+        /// ReliefProtrude da parede) e centra o painel em `wall` (x ou z da parede; y é o centro vertical).</summary>
+        static void PlaceRelief(GameObject art, float yaw, Vector3 wall)
+        {
+            art.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+            art.transform.position = Vector3.zero;
+            var b = new Bounds();
+            bool first = true;
+            foreach (var r in art.GetComponentsInChildren<MeshRenderer>())
+            {
+                if (first) { b = r.bounds; first = false; }
+                else b.Encapsulate(r.bounds);
+            }
+            var offset = new Vector3(0f, wall.y - b.center.y, 0f);
+            if (Mathf.Abs(Mathf.Sin(yaw * Mathf.Deg2Rad)) > 0.5f)
+            {
+                offset.x = wall.x + ReliefProtrude - b.max.x;
+                offset.z = wall.z - b.center.z;
+            }
+            else
+            {
+                offset.z = wall.z - ReliefProtrude - b.min.z;
+                offset.x = wall.x - b.center.x;
+            }
+            art.transform.position = offset;
+
+            // Luz quente à frente do painel (a face do relevo olha para `facing`).
+            var facing = art.transform.rotation * Vector3.forward;
+            var lightGo = new GameObject("Luz_Relevo");
+            lightGo.transform.SetParent(art.transform, true);
+            lightGo.transform.position = b.center + offset + facing * 1.8f;
+            var lamp = lightGo.AddComponent<Light>();
+            lamp.type = LightType.Point;
+            lamp.color = new Color(1f, 0.78f, 0.5f);
+            lamp.intensity = 3f;
+            lamp.range = 7f;
+            lamp.shadows = LightShadows.None;
+        }
+
         [MenuItem("Nibiru/Arte/Objetos e ambientes/Desfazer na cena aberta (volta o blockout)")]
         static void Restore()
         {
@@ -374,6 +533,10 @@ namespace Nibiru.EditorTools
                 }
                 count++;
             }
+            foreach (var t in all.Where(t => t != null && t.name.StartsWith("Relevo_")).ToArray())
+                Object.DestroyImmediate(t.gameObject);
+            foreach (var t in all.Where(t => t != null && t.name.StartsWith("Barco_") && t.GetComponent<MeshRenderer>() != null))
+                t.GetComponent<MeshRenderer>().enabled = true;
             EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
             Debug.Log($"Objetos e ambientes: {count} placeholders de volta ao blockout. Salve a cena.");
         }

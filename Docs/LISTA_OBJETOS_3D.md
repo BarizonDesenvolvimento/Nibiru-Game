@@ -76,7 +76,7 @@ Todos são gerados pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cen
 | Casas de tijolo de barro, portas turquesa, muros | Caixas (adobe) | Toda a Aldeia | Sim (kit de casas) | Blender por script: kit das casas | no jogo (só a vitrine) |
 | `CasaAltar_Fundo`, `_Oeste`, `_Leste`, `_Teto` | Caixas | Casa do altar (passos 7 a 9) | Sim | Blender por script: kit das casas | no jogo |
 | `Nicho_Guardioes` | Caixa dourada | Fundo da casa do altar; altar de salvamento e leitura da tabuleta | Sim (herói) | Tripo (dono), lote 1 (M1 altar) | no jogo |
-| Entalhe do barco de junco sobre ondas (`Casco`, `Proa`, `Popa`, `Feixe_Junco`, `Onda_*`) | Cubos finos | Parede do nicho | Sim (símbolo dos Guardiões; decal ou relevo) | Tripo (dono), lote 3 (painel do barco) | pendente |
+| Entalhe do barco de junco sobre ondas (`Casco`, `Proa`, `Popa`, `Feixe_Junco`, `Onda_*`) | Cubos finos | Parede do nicho | Sim (símbolo dos Guardiões; decal ou relevo) | Tripo (dono), lote 3 (painel do barco) | no jogo (painel do Meshy, 3/nov/2026, `Relevo_Barco_De_Junco`) |
 | Lamparina de barro (`Pires`, `Bico`, `Fogo`) | Esfera e cilindro | Nicho, com luz quente | Sim | Tripo (dono), lote 1 | no jogo |
 | `Inscricao_Escondida` (`Cunha_*`) | Cubos pequenos | Parede do fundo, só aparece com o Eco | Sim (mecânica do Eco) | Claude Code: decalque ou relevo | pendente |
 | `Poco_Agua` | Cilindro | Pátio central | Não essencial (herói do pátio) | Tripo (dono), lote 1 (M9 poço) | no jogo |
@@ -86,7 +86,7 @@ Todos são gerados pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cen
 | `Umm_Karim`, Yusuf | Cápsula (Yusuf já em esteira) | Casa do altar | Sim (modelos prontos na ArteFonte) | Meshy (dono) | no jogo |
 | `Casa_Trancada_Espingarda` | Marcador | Oeste (item opcional) | Opcional | Blender por script: kit das casas | pendente |
 | Palmeiras, jarros, tapetes, varais, bicicletas | Previstos no guia de arte, sem blockout | Aldeia | Não essencial | Blender por script (jarros, tapetes, varais, bicicleta); palmeiras por script ou Tripo (dono) | a avaliar |
-| Caminhão branco do cerco (`Cabine`, `Carroceria`, `Faixa`, `Roda`) | Cubos e cilindros | Estrada norte, passo 9 | Sim | Tripo (dono), lote 3 | pendente |
+| Caminhão branco do cerco (`Cabine`, `Carroceria`, `Faixa`, `Roda`) | Cubos e cilindros | Estrada norte, passo 9 | Sim | Tripo (dono), lote 3 | no jogo (Meshy, 3/nov/2026; também `Caminhao_1` e `Caminhao_2` do acampamento) |
 | Barreira de cavaletes (`Perna_E`, `Perna_D`, `Barra_Alta`, `Barra_Baixa`) | Cubos | Z = 41,5, passo 9 | Sim | Blender por script | pendente |
 | Helicóptero que pousa na base | Mesmo kit | Passo 9 | Sim | Tripo (dono), lote 3 | no jogo |
 | Soldado do encontro, corpo caído | Já com modelo de soldado | Entradas da Aldeia | Sim | Meshy (dono) | no jogo |
@@ -120,16 +120,16 @@ Todos são gerados pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cen
 | Nome | Forma hoje | Onde aparece | Demo | Fonte | Situação |
 | --- | --- | --- | --- | --- | --- |
 | `Poco_Parede_Sul/Oeste/Leste/Norte_Alta`, `Poco_Fundo`, `Poco_Canto_*` | Caixas de rocha | Poço de 14 m | Sim (parede em camadas) | Blender por script | pendente |
-| `Andaime_Viga_Sul`, `Andaime_Viga_Norte`, `Guincho` | Caixas metálicas | Boca do Poço, superfície | Sim (guincho com cabine é herói da superfície) | Blender por script (vigas); guincho com cabine: Tripo (dono), lote 3 | pendente |
+| `Andaime_Viga_Sul`, `Andaime_Viga_Norte`, `Guincho` | Caixas metálicas | Boca do Poço, superfície | Sim (guincho com cabine é herói da superfície) | Blender por script (vigas); guincho com cabine: Tripo (dono), lote 3 | guincho com cabine no jogo (Meshy, 3/nov/2026, sobre a viga); vigas ainda do blockout |
 | `Lance_1` a `Lance_4`, `Lance_4_Guarda`, `Patamar_3_Base` | Rampas de madeira | Descida de andaimes | Sim (kit de andaime) | Blender por script (andaime) | pendente |
-| `Holofote_Fundacao_Superficie` | Caixa branca | Superfície do Poço | Não essencial | Blender por script (holofote com tripé) | pendente |
+| `Holofote_Fundacao_Superficie` | Caixa branca | Superfície do Poço | Não essencial | Blender por script (holofote com tripé) | no jogo (Meshy, 3/nov/2026) |
 | `Ante_Chao`, `Ante_Teto`, `Ante_Parede_*`, `Ante_Canto_*` | Caixas de rocha | Antecâmara (arena do Primeiro Servo) | Sim (pedra lisa antiga com frisos) | Blender por script | pendente |
 | `Plataforma_Oeste`, `Plataforma_Leste` e rampas (4) | Caixas e rampas de madeira | Arena do chefe (passo 12) | Sim (andaime) | Blender por script (andaime) | pendente |
 | `Porta_Selo_de_Kur`, `Selo_Ouro` | Caixas lápis-lazúli e ouro | Fundo da antecâmara | Sim (herói máximo da região) | Tripo (dono), lote 3; brilho azul: efeito da Unity | no jogo (o brilho pendente) |
 | `Parede_Barco_Junco`, `Barco_Casco`, `Barco_Mastro` | Caixas de rocha e ouro | Parede oeste da antecâmara (passo 13 abre) | Sim | Blender por script (parede); barco: Tripo (dono), lote 3 | pendente |
-| Holofotes que caem (`Poste`, `Pe`, `Holofote`) | Cilindro e cubos | 4 na arena do chefe | Sim (mecânica do chefe) | Blender por script (holofote com tripé) | pendente |
+| Holofotes que caem (`Poste`, `Pe`, `Holofote`) | Cilindro e cubos | 4 na arena do chefe | Sim (mecânica do chefe) | Blender por script (holofote com tripé) | no jogo (Meshy, 3/nov/2026; cai junto com o pivô) |
 | Caixas, mochila e equipamento abandonado da Fundação | Previstos, sem blockout | Descida e antecâmara | Não essencial | Blender por script e CC0 | pendente |
-| Relevos da antecâmara (deuses e criaturas aladas, 3 a 4 painéis) | Previstos, sem blockout | Antecâmara | Não essencial | Tripo (dono), lote 3 (deus); criaturas aladas: opcional | pendente |
+| Relevos da antecâmara (deuses e criaturas aladas, 3 a 4 painéis) | Previstos, sem blockout | Antecâmara | Não essencial | Tripo (dono), lote 3 (deus); criaturas aladas: opcional | no jogo: deus e criaturas aladas (Meshy, 3/nov/2026); faltam 1 ou 2 painéis |
 
 ### 2.7 Área 6: Passagem dos Guardiões e Wadi (passos 13 a 15)
 
@@ -138,7 +138,7 @@ Todos são gerados pelo menu **Nibiru > Blockout > Construir Sítio de Ur na cen
 | `Tunel_Chao_Entrada`, `Tunel_Chao`, `Tunel_Teto`, `Tunel_Parede_*` | Caixas de rocha | Passagem dos Guardiões (passo 13) | Sim | Blender por script | pendente |
 | `Tunel_Rampa_Saida`, `Rampa_Parede_Oeste/Leste` | Rampa e caixas de terra | Saída para o wadi | Sim | Blender por script | pendente |
 | `Wadi_Margem_Oeste`, `Wadi_Margem_Leste` | Caixas de terra | Wadi (passo 14) | Sim | Unity: Terrain | pendente |
-| `Caminhonete_Samir` | Caixa de areia (2,2 x 2 x 5 m) | Fim do wadi (passo 15) | Sim (herói final) | Tripo (dono), lote 3 | pendente |
+| `Caminhonete_Samir` | Caixa de areia (2,2 x 2 x 5 m) | Fim do wadi (passo 15) | Sim (herói final) | Tripo (dono), lote 3 | no jogo (Meshy, 3/nov/2026; parada, a que anda é a `Caminhonete_Do_Samir`, que leva a arte de filho) |
 | `Marcador Escolha_de_Faccao` | Marcador | Wadi | Sim (ponto lógico) | Lógico, sem modelo | — |
 | Pedras, arbustos, carcaça de carro, tocha/lamparinas, entalhes | Previstos, sem blockout | Passagem e wadi | Não essencial | CC0 (pedras) e cartões de vegetação; carcaça e lamparinas: Blender por script e Tripo (dono) (reuso) | pendente |
 
@@ -181,7 +181,7 @@ Tudo em formas simples (`ShuruppakMemoryContent.cs`). A memória dura 2 a 3 minu
 | **Altar/nicho dos Guardiões** | Casa do altar | 7, 8 | Sim | Tripo (dono), lote 1 (M1) | no jogo |
 | **Pontos de retorno (checkpoints)** | Vários | todos | Sim (lógicos, sem modelo) | Lógico, sem modelo | — |
 | **Lamparina de barro** | Nicho | 7, 8 | Sim | Tripo (dono), lote 1 | no jogo |
-| **Holofotes que caem** | Arena do Primeiro Servo | 12 | Sim | Blender por script | pendente |
+| **Holofotes que caem** | Arena do Primeiro Servo | 12 | Sim | Blender por script | no jogo (Meshy, 3/nov/2026) |
 | **Escrita escondida (Eco do Abzu)** | Parede do fundo da casa do altar | 8 | Sim | Claude Code: decalque ou relevo | pendente |
 | **Selo de Kur** | Fundo da antecâmara | 11, 12 | Sim | Tripo (dono), lote 3 | no jogo |
 | **Fuzil dos soldados** | Mão dos 4 soldados | todos | Sim (hoje formas simples, a pendência mais visível dos inimigos) | Tripo (dono), lote 1 | no jogo |
@@ -203,7 +203,7 @@ Tudo em formas simples (`ShuruppakMemoryContent.cs`). A memória dura 2 a 3 minu
 | **Pólvora, cápsulas, gaze, álcool** (crafting) | Região | — | Não (crafting fora da fatia) | — | — |
 | **Rádio do soldado ferido no wadi** | Wadi | 14 | Sim (dispara a escolha de facção) | Tripo (dono) (o mesmo modelo do rádio) | no jogo |
 | **Tabuleta no chão do wadi** (entregar/enterrar/ficar) | Wadi | 14 | Sim | Tripo (dono), lote 1 | no jogo |
-| **Caminhonete do Samir (interativa)** | Wadi | 15 | Sim | Tripo (dono), lote 3 | pendente |
+| **Caminhonete do Samir (interativa)** | Wadi | 15 | Sim | Tripo (dono), lote 3 | no jogo (Meshy, 3/nov/2026) |
 | **Entrada do diário** | Fim da fatia | 15 | Opcional (diário fica de fora) | Interface | — |
 | **Lamparinas apagadas e entalhes dos Guardiões na passagem** | Passagem | 13 | Não essencial | Tripo (dono), lote 1 (reuso da lamparina); entalhes: decalque | pendente |
 | **Cartazes e murais rasgados de 2003** | Aldeia | — | Opcional (pergunta aberta ao dono) | Claude Code: planos com textura | pendente |

@@ -1155,6 +1155,33 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
 | Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
 
+### Lote 3 da arte: veículos, guincho, holofotes e relevos (3/nov/2026, testado pela ponte; falta o teste do dono no Play)
+
+Mesmo método (menus **Objetos e ambientes > 1** e **3**, `PropArtSetup.BuildBatch3`; modelos no `objetos_jogo.py`). Fotos em `Docs/Arte/Capturas/Lote3/`.
+
+| Item | Onde | Tamanho e notas |
+| --- | --- | --- |
+| Caminhonete | `Caminhonete_Do_Samir` (a que anda, passo 15), arte de filho "Arte" | 5,0 m de comprimento (2,5 x 2,4 m). Samir e lugar da Elena baixados (`DriverY` 0,3; lugar da Elena y 0,65) para caber na cabine e na caçamba do modelo; os vidros do modelo são escuros e o Samir não aparece por eles |
+| Caminhão | `Caminhao_1` e `Caminhao_2` (acampamento) e `Caminhao_Fundacao` (o do cerco, que anda) | 6,5 x 3,26 x 3,56 m. As caixas do acampamento e os colisores do caminhão do cerco cresceram para o tamanho do modelo |
+| Guincho com cabine | sobre a viga `Guincho` do Poço (a viga de 11 m continua à vista) | 2,4 x 1,8 x 2,4 m, a 5,7 m do chão, sem colisor |
+| Holofote com tripé | os 4 que caem na antecâmara (arte no `Pivo`, cai junto) e o da superfície | 2,6 m; arte nova de filho "Arte"; colisores do blockout ficam |
+| Relevo do barco de junco | filho da `Parede_Movel` (desce com a parede no passo 13); cubos `Barco_*` desligados, glifos de ouro ficam | 3,6 x 1,76 m |
+| Relevo do deus Anunnaki | parede norte da antecâmara, a oeste do Selo (x 39,6) | 2,4 x 3,9 m |
+| Relevo das criaturas aladas | parede norte, a leste do Selo, sobre a plataforma (x 49,6) | 3,8 x 1,9 m |
+
+- **Relevos (pedido do dono no Play: "pouco visíveis"):** ficaram maiores, saem 25 cm da parede (sem colisor), têm brilho próprio quente (emissão = a própria textura) e uma luz quente (`Luz_Relevo`) à frente de cada um.
+- **Malha de navegação** refeita uma vez; os 4 pontos de encontro OK.
+- **Só prefab (sem lugar definido):** Espingarda e Gravador, como antes.
+- **Pendências:** a vista do Samir ao volante pela janela traseira (vidro escuro do modelo); caminhões e caminhonete não andam além do que já andavam; a vitrine de um caminhão parado no cerco não foi vista no Play.
+- **Testes (nível 2, todos com "slots reais iguais"):** suprimentos 10 OK, passo 12 10 OK (holofotes), passo 13 9 OK (parede e relevo do barco), passo 15 3 OK (caminhonete), Tom 4 OK (acampamento com os caminhões). Sem regressão completa.
+- **Mexi também em** `EscapeContent.cs` (`DriverY` 0,9 → 0,3 e o lugar da Elena 0,9 → 0,65), para a Fuga refeita pelo menu sair igual à cena.
+- **Como testar no Play:**
+  1. Acampamento: os 2 caminhões ao lado da elevação.
+  2. Poço: o guincho amarelo sobre a viga e o holofote da superfície.
+  3. Antecâmara: o deus e as criaturas aladas na parede norte, e o holofote caindo na luta.
+  4. Passo 13: o barco de junco com a luz quente, e a parede afundando com o relevo junto.
+  5. Passo 15: a caminhonete; confira o Samir na cabine e a Elena na caçamba (altura dos pés).
+
 ### Corpos da equipe no círculo (3/nov/2026, testados pela ponte; falta o teste do dono no Play)
 
 **Decisão do dono (3/nov/2026, segunda versão):** 7 corpos com 3 modelos repetiam demais vistos de cima. Agora o círculo tem **4 lugares** em volta da fogueira, a 3,2 m do centro e a 90° entre si: **3 corpos, um de cada modelo**, e o **lugar vazio do Tom**, só com a bolsa da câmera no chão. A tabela única fica em `Scripts/Editor/Content/CampCircle.cs` (centro, raio, ângulos e lugar vazio) e é lida pelo Blockout, pelo Acampamento, pelo menu dos corpos e pelos testes.

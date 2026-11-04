@@ -52,7 +52,7 @@ O que precisa de IA de geração é feito pelo dono, no **Tripo** (objetos) e no
 | Heliponto (pintura no chão) | pendente |
 | Antena alta do rádio | pendente |
 | Gerador simples | pendente |
-| **Holofote com tripé**, inclusive os que caem na arena | pendente |
+| **Holofote com tripé**, inclusive os que caem na arena | no jogo (Meshy; ver Feito pelo dono) |
 | Mesas, catre, cadeiras dobráveis e caixotes de madeira | pendente |
 | Bolsa vazia da câmera do Tom | pendente |
 | Kits médicos (3), com **cruz branca em fundo verde** (nada de cruz vermelha: é emblema protegido) | pendente |
@@ -110,13 +110,13 @@ O que precisa de IA de geração é feito pelo dono, no **Tripo** (objetos) e no
 | 2 | Antibióticos | `Objetos/Antibioticos` | no jogo (gerados no **Meshy**) |
 | 3 | Selo de Kur | `Ambientes/SeloDeKur` | no jogo |
 | 3 | Helicóptero da Fundação | `Ambientes/Helicoptero` | no jogo |
-| 3 | Painel de relevo do deus Anunnaki | — | pendente |
-| 3 | Painel do barco de junco | — | pendente |
-| 3 | Caminhonete do Samir | — | pendente |
-| 3 | Caminhão (cerco e acampamento) | — | pendente |
-| 3 | Guincho do Poço com cabine | — | pendente |
+| 3 | Painel de relevo do deus Anunnaki | `Ambientes/PainelDeRelevoDeusAnnunaki` | no jogo (parede norte da antecâmara) |
+| 3 | Painel do barco de junco | `Ambientes/PainelDeRelevoBarcoDeJunco` | no jogo (na parede móvel da passagem) |
+| 3 | Caminhonete do Samir | `Ambientes/Caminhonete` | no jogo (a que anda no passo 15) |
+| 3 | Caminhão (cerco e acampamento) | `Ambientes/Caminhao` | no jogo (2 no acampamento e o do cerco) |
+| 3 | Guincho do Poço com cabine | `Ambientes/Guincho` | no jogo (sobre a viga do Poço) |
 
-**Do Tripo faltam só:** o painel de relevo do deus, o painel do barco de junco, a caminhonete do Samir, o caminhão e o guincho. O painel das criaturas aladas é opcional (só se sobrar crédito). O holofote é feito no Blender, por script.
+**Lote 3 inteiro no jogo** (3/nov/2026): deus, barco de junco, criaturas aladas (`Ambientes/PainelDasCriaturasAladas`, no jogo), caminhonete, caminhão, guincho e o holofote com tripé (`Ambientes/Holofote`, feito no Meshy, no jogo).
 
 Os créditos do Tripo e do Meshy vencem em 30/11 (data externa do serviço, não é meta do projeto).
 

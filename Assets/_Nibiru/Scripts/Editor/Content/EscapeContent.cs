@@ -190,7 +190,7 @@ namespace Nibiru.EditorTools.Content
         // ---------- A caminhonete ----------
 
         // Onde o Samir senta na cabine (local da caminhonete): os pés no chão da cabine, o quadril sobre o banco.
-        const float DriverX = -0.5f, DriverY = 0.9f, DriverZ = 0.45f;
+        const float DriverX = -0.5f, DriverY = 0.3f, DriverZ = 0.45f;
 
         static TruckRide BuildTruck(Transform g, out GameObject samir)
         {
@@ -224,7 +224,7 @@ namespace Nibiru.EditorTools.Content
 
             Transform seatPoint = new GameObject("Lugar_Da_Elena").transform;
             seatPoint.SetParent(truckRoot, false);
-            seatPoint.localPosition = new Vector3(0.35f, 0.9f, -1.35f);
+            seatPoint.localPosition = new Vector3(0.35f, 0.65f, -1.35f);
             Transform seat = seatPoint;
 
             // O Samir na cabine, sentado ao volante (animação Dirigindo): só aparece depois da escolha.
