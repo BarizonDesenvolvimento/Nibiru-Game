@@ -1,6 +1,6 @@
 # Plano: ME1, dados dos poderes, posse e mapa de controles final
 
-Projeto no papel (4/nov/2026), **aguardando aprovação na governança**. **Tarefa de sistema [Opus].** Nada foi implementado; nenhum código, Play ou teste foi rodado para escrever este plano.
+Projeto no papel (4/nov/2026), **aprovado pelo dono em 4/nov/2026 com ajustes** (veja a seção 6, "Decisões da aprovação", que vale acima do texto original quando os dois divergem). **Tarefa de sistema [Opus].**
 
 ## 1. O que existe hoje (levantamento, sem alterar nada)
 
@@ -327,7 +327,7 @@ Total do nível 2: **~20 min**, mais ~2 min do nível 1. Um por vez, conferindo 
 5. **A posse do poder sai dos eventos** (`Poder:*`) para um campo próprio, com conversão automática dos saves de hoje.
 6. **Barra de transformação: oculta** (opção 3), contra o texto atual do GDD ("barra de humano a divino").
 
-## 4. Perguntas abertas
+## 4. Perguntas abertas (respondidas na aprovação; veja a seção 6)
 
 1. **Custo por uso** dos poderes: existe (transformação, vida, outro) ou o custo é só ao decifrar? O repositório não diz.
 2. **Eco ao soltar:** aceita o limite de 0,5 s (segurar mais e soltar = desistir)?
@@ -346,3 +346,48 @@ Total do nível 2: **~20 min**, mais ~2 min do nível 1. Um por vez, conferindo 
 - **B6:** troca de arma no D-pad esquerda e direita e nas teclas 1 e 2.
 - **Fase D:** tela de remapear; opção "Eco ao apertar".
 - **Observação, fora do ME1:** não dá para pausar durante uma conversa.
+
+## 6. Decisões da aprovação (4/nov/2026)
+
+Respostas do dono, trazidas do documento de design. Valem acima das seções 2 a 5.
+
+**Respostas às perguntas abertas:**
+
+| # | Pergunta | Resposta |
+| --- | --- | --- |
+| 1 | Custo por uso | **Não existe.** O único limite é a recarga, contada **só em tempo de jogo**: não anda com o jogo pausado, em menus nem no inventário (tempo do jogo, `Time.deltaTime`, que para quando a pausa, o inventário, a leitura e os diálogos param o tempo) |
+| 2 | Eco ao soltar, limite de 0,5 s | **Aprovado**: LB seguro por mais de 0,5 s cancela o Eco; com o LB seguro, o RB nunca vira faca |
+| 3 | O que o Sopro e a Égide fazem | **Sopro de Enlil:** ataque; muito eficaz contra Anunnaki, dano médio contra híbridos, fraco contra humanos; recarga 90 s. **Égide de Enki:** buff/defesa; dura 8 s; recarga 60 s; o efeito exato fica para o ME da Égide (ME4). **No ME1 os dois entram só como dados** (vaga, duração, recarga e textos com chave), sem efeito e sem fonte que os dê |
+| 3b | Eco do Abzu | Recebido no altar da Aldeia (passo 8), sem puzzle; atordoa (usado contra o Primeiro Servo) |
+| 4 | Despertares | A demo tem **um**, disparado ao ler a Égide (passo 13), antes do wadi. O total do jogo completo está em aberto. A árvore tem **três ramos** (combate, furtividade, poderes) e na demo aparece **inteira, com os nós bloqueados** (ME7) |
+| 5 | Zoom no D-pad e D-pad esquerda/direita para o B6 | **Aprovado**: D-pad cima e baixo fazem zoom; D-pad esquerda/direita e as teclas 1 e 2 ficam reservados para a troca de arma do B6 |
+| 6 | Poderes mirando | Padrão "valem mirando" mantido (campo `usableWhileAiming`) |
+| 7 | Barra de transformação | **O valor continua por dentro e a barra sai do HUD.** A marca no pulso que cresce e o estado em palavras no fim da demo ficam para o **ME7** e a **fase C**. A barra sai do HUD no ME7, junto com a troca pela marca (no ME1 nada muda na tela) |
+| 8 | Remapear | Sem tela de remapear no ME1 (fase D, Opções maiores) |
+
+**Na demo a Elena não perde nem descarta ME.** O `PowerBook.Revoke` continua existindo, sem uso no jogo (só nos testes).
+
+**HUD com um ícone e um anel de recarga por ME: entra no ME5** ("Recarga e HUD", que depende do ME3 e do ME4 na tabela da governança), não no ME1 nem no ME3. Motivos: o HUD precisa dos três ícones (arte que ainda não existe) e do estado "ativo" da Égide (ME4). O ME1 deixa pronto o que o HUD vai ler (`PlayerPowers.StateOf`, `PowerBook.CooldownLeft`) e mantém o HUD de texto de hoje, que passa a mostrar cada poder possuído com a recarga. Se o dono quiser o anel antes, a alternativa é o ME3 (Sopro).
+
+**Ajuste no save (muda a seção 2c):** a Bíblia diz que o save guarda os ME obtidos, a recarga restante em segundos de jogo e os despertares, e que esses campos entram **antes** da regra de versão. Então o **ME1 grava os três já agora**, todos dentro de `mundo` (fazem parte do estado do mundo, que o checkpoint congela e a morte restaura):
+
+| Campo | Formato | Exemplo | Falta no arquivo (save antigo) = |
+| --- | --- | --- | --- |
+| `poderes` | lista de códigos | `["poder.eco_do_abzu"]` | convertido dos eventos `Poder:<nome do arquivo>`; sem eles, nenhum poder |
+| `recargaDosPoderes` | código → segundos de jogo restantes | `{"poder.eco_do_abzu": 4.5}` | todas zeradas (prontos) |
+| `despertares` | lista de códigos | `[]` (vazia até o ME7) | vazia |
+
+- Continua na **versão 1**. **Não** cria a regra de versão do save.
+- Os três são sempre gravados (mesmo vazios).
+- Código de poder desconhecido em `poderes` ou em `recargaDosPoderes` deixa o slot ilegível (a regra de sempre). Recarga negativa ou inválida vira 0; maior que a recarga do poder é limitada a ela. Os despertares ainda não têm registro (o ME7 cria); até lá, a lista é lida como está.
+- **Efeito no jogo:** antes, o Eco voltava sempre pronto depois de morrer ou carregar. Agora ele volta com a recarga que tinha **no momento do checkpoint** (quase sempre zero, porque os checkpoints ficam fora das lutas).
+- O campo de recarga ficou em `mundo`, e não em `checkpoint` como a seção 2c previa: assim a posse, a recarga e os despertares ficam juntos no `WorldState`, a única fonte de verdade.
+
+**Atraso do LB:** a proposta (Eco ao soltar o LB) é a padrão. O **plano B (Eco no Y sozinho; LB só modificador)** fica como **opção de configuração no código** (campo `ecoScheme` no `PlayerInputReader` do prefab da Elena), não no menu. **Último passo antes de fechar o ME1:** o dono testa os **dois atalhos do LB** (Nibiru > Testes > Poderes) num controle de verdade e escolhe; depois vem a regressão completa (nível 3).
+
+**Ordem de trabalho (substitui a da seção 2g):**
+1. Etapa 1: dados e posse (`PowerDefinition`, `PowerBook`, Sopro e Égide como dados, save com os três campos, registro e códigos, textos com chave, teste de dados). Testes de nível 1 e 2, commit e push.
+2. Etapa 2: controles (vagas, regra do LB com o plano B na configuração, `PlayerPowers` com a recarga em tempo de jogo, Eco como `PowerBehaviour`, zoom no D-pad, teste automático). Testes de nível 1 e 2, commit e push.
+3. Etapa 3: os dois atalhos do LB para o dono, documentação completa. Testes, commit e push.
+4. Teste do dono no Play, com a escolha do LB.
+5. Regressão completa (nível 3) para fechar o ME1. **Não roda antes do passo 4.**
