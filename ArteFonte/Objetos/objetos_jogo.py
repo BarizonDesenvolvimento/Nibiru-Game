@@ -44,6 +44,14 @@ OBJETOS = {
     "Gravador": ("Objetos/Gravador", "*.fbx", "frente", ("x", 0.24), 10000, 1024, "pe"),
     "Helicoptero": ("Ambientes/Helicoptero", "helicopter_3d_model.fbx", "frente", ("y", 10.0), 50000, 2048, "rotor"),
     "SeloDeKur": ("Ambientes/SeloDeKur", "SeloDeKur.fbx", "frente", ("x", 6.0), 48000, 2048, "pe"),
+    # Lote 3 (Meshy). Veículos e guincho no tamanho real; painéis de relevo com a face para +z e as costas no -z.
+    "Caminhonete": ("Ambientes/Caminhonete", "*.fbx", "frente", ("y", 5.0), 50000, 2048, "pe"),
+    "Caminhao": ("Ambientes/Caminhao", "*.fbx", "frente", ("y", 6.5), 50000, 2048, "pe"),
+    "Guincho": ("Ambientes/Guincho", "*.fbx", "frente", ("x", 2.4), 50000, 2048, "pe"),
+    "Holofote": ("Ambientes/Holofote", "*.fbx", "frente", ("z", 2.6), 20000, 2048, "pe"),
+    "PainelDeusAnunnaki": ("Ambientes/PainelDeRelevoDeusAnnunaki", "*.fbx", "frente", ("x", 2.4), 50000, 2048, "pe"),
+    "PainelBarcoDeJunco": ("Ambientes/PainelDeRelevoBarcoDeJunco", "*.fbx", "frente", ("x", 3.6), 50000, 2048, "pe"),
+    "PainelCriaturasAladas": ("Ambientes/PainelDasCriaturasAladas", "*.fbx", "frente", ("x", 3.8), 20000, 2048, "pe"),
 }
 
 AXIS = {"x": 0, "y": 1, "z": 2}
