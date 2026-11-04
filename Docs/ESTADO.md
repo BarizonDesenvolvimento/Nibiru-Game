@@ -1148,7 +1148,7 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | Espingarda | Só prefab | Sem placeholder na cena (entra no B6) |
 | Gravador | Só prefab | Sem placeholder na cena (a fita de Irena é a fita, não o gravador) |
 | Helicóptero | Na cena | Os 4 helicópteros (10 m; o rotor principal gira pelo Spinner do blockout; o rotor de cauda fica parado, preso ao corpo); o piloto foi para o banco da cabine do modelo (z 1,68 → 2,68) |
-| Selo de Kur | Na cena | Na porta da antecâmara (6 m de largura), 1 m a oeste e 0,35 m à frente da porta do blockout (veja os conflitos) |
+| Selo de Kur | Na cena | Na porta da antecâmara (6 m de largura), 1 m a oeste e 0,35 m à frente da porta do blockout (veja os conflitos). Decisão do dono em 4/nov: a arte fica 0,86 m dentro da parede, como está (não deixar rente) |
 | SitioDeUr | Já estava | A pasta só tem o kit da vitrine da Aldeia, já na cena |
 | Personagens (ArqueologaJovem, ArqueologoVeterano, DraWeiss, LiderDeEsquadra, Ninsar, Piloto, TrabalhadorEscavacao) | Já estavam | Todos importados antes; a Ninsar segue como prévia (manto pausado) |
 | Corpo do trabalhador executado | Na cena | `TrabalhadorEscavacao_Morto`: deitado e parado (o clipe deitado do Yusuf congelado), no lugar da cápsula do heliponto |
