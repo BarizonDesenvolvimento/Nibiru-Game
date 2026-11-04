@@ -54,6 +54,7 @@ namespace Nibiru.EditorTools.Cameras
                 ("Ligar duas vezes não duplica; desligar duas vezes não estraga", Twice),
                 ("Voo: W, S, A, D, E e Q andam para o lado certo e Shift acelera", Flight),
                 ("Mouse gira a câmera e a inclinação é limitada; Elena e câmera do jogo não se mexem; o jogo continua parado", Look),
+                ("Cena recarregada com a câmera ligada (atalho de teste, morrer e voltar): continua parado, a Elena nova sem controles, e desligar devolve tudo", Reload),
                 ("Fora da build: a ferramenta mora na montagem do editor", NotInBuild),
                 ("Limpeza: tira os aparelhos de teste e apaga a pasta do teste", Cleanup),
             });
@@ -261,6 +262,24 @@ namespace Nibiru.EditorTools.Cameras
             FreeCameraCheck.Disable();
             yield return Frames(3);
             Check(Mathf.Approximately(PlayerPrefs.GetFloat(GameOptions.CameraDistanceKey, -1f), start.zoomPref), "as preferências não deveriam mudar");
+        }
+
+        static IEnumerator Reload()
+        {
+            yield return ToMoment();
+            Check(FreeCameraCheck.Enable(), "ligar deveria funcionar");
+            yield return Frames(3);
+            int old = Motor().GetInstanceID();
+            Checkpoints.Restart(RegionSceneName);
+            yield return new Until(() => Motor() != null && Motor().GetInstanceID() != old, 40f, "a cena recarregar");
+            yield return new Delay(2f);
+            Check(FreeCameraCheck.IsOn && FreeCameraCheck.FreeCamera != null, "a câmera livre deveria continuar ligada depois da recarga");
+            Check(Time.timeScale == 0f, $"depois da recarga o jogo deveria continuar parado: {Time.timeScale}");
+            Check(!Motor().GetComponent<PlayerInputReader>().GameplayEnabled, "a Elena nova não deveria ter os controles ligados");
+            FreeCameraCheck.Disable();
+            yield return Frames(3);
+            Check(Time.timeScale == 1f, "desligada, o jogo deveria voltar a andar");
+            Check(Motor().GetComponent<PlayerInputReader>().GameplayEnabled, "desligada, a Elena nova deveria ter os controles de volta");
         }
 
         static IEnumerator NotInBuild()

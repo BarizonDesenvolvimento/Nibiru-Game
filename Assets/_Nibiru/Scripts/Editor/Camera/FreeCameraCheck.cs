@@ -146,6 +146,13 @@ namespace Nibiru.EditorTools.Cameras
                 return;
             }
 
+            // Se a cena recarregar com a câmera ligada (um atalho de teste, morrer e voltar), a Elena nova nasce com os controles ligados e
+            // o tempo pode voltar a andar: a ferramenta segura os dois enquanto estiver ligada.
+            if (reader == null) reader = UnityEngine.Object.FindFirstObjectByType<PlayerInputReader>();
+            if (reader != null && reader.GameplayEnabled) reader.SetGameplayEnabled(false);
+            if (Time.timeScale != 0f) Time.timeScale = 0f;
+            if (Cursor.lockState != CursorLockMode.Locked) Cursor.lockState = CursorLockMode.Locked;
+
             double now = EditorApplication.timeSinceStartup;
             float dt = (float)Math.Min(now - lastTime, 0.1);
             lastTime = now;
