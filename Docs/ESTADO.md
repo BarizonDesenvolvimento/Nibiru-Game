@@ -2,7 +2,7 @@
 
 Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem precisar reler o histórico. Atualize este arquivo ao fim de cada etapa grande.
 
-Última atualização: 3 de novembro de 2026.
+Última atualização: 4 de novembro de 2026.
 
 ## Plano oficial (fases)
 
@@ -91,6 +91,7 @@ Registrado em 3/nov/2026. As regras de design já aprovadas estão na Bíblia, s
   | Pausa | Esc | Start |
 
   Livres hoje no jogo: G, Z e X no teclado; Y e o D-pad no controle.
+- **Atalho de zoom no controle (pendência do ME1):** hoje o zoom da câmera só tem a roda do mouse e a opção "Distância da câmera" nas Opções (que serve ao controle). Decidir no mapa final se o controle ganha um botão (a roda não está no mapa de controles de propósito).
 - **A barra "Transformação %" do HUD (ME7):** o que ela vira com os despertares (some, vira contagem de despertares ou continua como barra).
 
 ## Onde estamos
@@ -614,7 +615,7 @@ Tudo em `Assets/_Nibiru/Scripts`, por pasta. Valores e conteúdo ficam em arquiv
 | --- | --- | --- |
 | Movimento: andar, correr, esquivar, agachar | `Player/PlayerMotor` | `Data/Player/MovimentoJogador` |
 | Controles (novo Input System) | `Player/PlayerInputReader` | `Data/Input/NibiruControles` (mapas Jogador e Interface) |
-| Câmera sobre o ombro, mira | `Camera/` (`ICameraMode` + `ThirdPersonCameraMode`) | `Data/Camera/CameraJogador` |
+| Câmera sobre o ombro, mira, zoom da roda | `Camera/` (`ICameraMode` + `ThirdPersonCameraMode`) | `Data/Camera/CameraJogador` |
 | Interação | `Interaction/` | — |
 | Itens e inventário | `Inventory/` | `Data/Items` |
 | Vida, dano, morte | `Combat/Health`, `Player/PlayerDeathHandler` | — |
@@ -1155,6 +1156,14 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
 | Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
 
+## Zoom da câmera (4/nov/2026, testado pela ponte e pelo nível 2; falta o teste do dono no Play)
+
+Projeto, decisões e riscos em `Docs/Plano-Zoom-da-Camera.md` (com a seção "O que mudou na implementação"). Resumo: a roda do mouse aproxima (para a frente) ou afasta a câmera de ombro, de **1,8 m a 4,0 m** (padrão 2,5 m), **0,25 m por clique**, com amortecimento. Valores no Inspector, em `Data/Camera/CameraJogador` (grupo "Zoom"). A mira ignora o zoom (1,6 m) e volta à distância escolhida; a colisão com paredes continua mandando (o zoom só muda a distância desejada). A roda não faz zoom em diálogo, leitura, pausa, Arquivo, inventário, morte, memória jogável nem na viagem de caminhonete. A distância é preferência do jogador (`GameOptions`, chave `Nibiru.Opcoes.DistanciaCamera`, em metros, limitada à faixa na leitura; grava 1 s depois de parar a roda e ao pausar), **não** entra no save de slot. Nas **Opções** há a linha "Distância da câmera" (‹ valor ›, 0,25 m por seta; teclado, mouse e controle), ligada ao mesmo valor da roda.
+- **Teste novo:** **Nibiru > Testes > Câmera > Zoom: teste automático** (`Scripts/Editor/Camera/ZoomTests.cs`), 14 cenários, ~2,5 min, **14 OK**. Varredura de câmera com o zoom em 1,8 e 4,0: 5184 posições (antecâmara, Poço, quarto escuro, túnel e rampa), nenhuma dentro de parede; rolagem junto de paredes (20 rolagens): nenhum pulo nem tremor.
+- **Nível 2 (4/nov/2026):** teste geral dos atalhos 100 OK, 0 FALHOU, 48 pulados; Mouse 10 OK; Animações 377 verificações OK; Passo 12 (10), Passo 13 (9) e Passo 15 (3) OK; Localização (chaves e códigos) OK. Salvamento não tocado; "slots reais iguais" conferido em cada execução.
+- **Controle:** sem atalho (pendência do ME1, veja "Em aberto, decidir no ME1/ME7").
+- **Opções com uma linha a mais:** a página Opções ganhou uma linha, então **Voltar passou da linha 4 para a 5** e o Idioma para a 4 (o teste do Mouse e o `HitTestCheck` foram ajustados).
+
 ## Modo livre (4/nov/2026, testado pela ponte; falta o teste do dono no Play)
 
 Menu **Nibiru > Testes > Modo livre** (`Scripts/Editor/FreeRoamShortcuts.cs`), 5 pontos de partida: **1. Aldeia, 2. Acampamento, 3. entrada da base, 4. boca do Poço, 5. wadi**. Cada clique liga o Play (ou recomeça, se já estiver ligado) e põe a Elena ali:
@@ -1369,7 +1378,7 @@ A regressão completa não roda mais a cada tarefa. Escolha o nível pelo que a 
 | Sistema tocado | Testes que o cobrem (menu em **Nibiru > Testes**) | Tempo aproximado |
 | --- | --- | --- |
 | Salvamento (slots, checkpoints, códigos) | Salvamento > Teste automático; Salvamento > Teste de códigos; Salvamento > Teste da proteção dos slots | ~3 min; segundos; segundos |
-| Prefab da Elena, controles, câmera | Teste geral dos atalhos; Mouse > Teste automático; Animações > 4. Teste automático | ~5 min; ~1 min; ~10 s |
+| Prefab da Elena, controles, câmera | Teste geral dos atalhos; Mouse > Teste automático; Animações > 4. Teste automático; **Câmera > Zoom: teste automático** (14 cenários, novo) | ~8,5 min (medido em 4/nov; 100 OK, 0 FALHOU, 48 pulados); ~1 min; ~10 s; ~2,5 min (medido) |
 | Localização (textos, chaves, fonte) | Localização > Teste de chaves e códigos | segundos |
 | Malha de navegação | Teste geral dos atalhos (Elena na malha); Suprimentos > Teste de contagem (itens na malha); pontos de encontro (no Teste dos corpos da equipe e no menu dos corpos) | ~5 min; segundos; segundos |
 | Tabela de animações (`AnimationLibrary`) | Animações > 4. Teste automático | ~10 s |
@@ -1400,7 +1409,7 @@ Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corr
 
 Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
-2. **Zoom da câmera com a roda do mouse:** projeto no papel pronto, aguardando aprovação (`Docs/Plano-Zoom-da-Camera.md`).
+2. **Zoom da câmera:** implementado e testado (nível 2), aguardando teste no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. **Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).
 4. **Projeto em papel do ME1.**
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**

@@ -114,6 +114,9 @@ namespace Nibiru.Sequences
             BuildRoute();
 
             LockPlayer(player, input);
+            // O enquadramento da viagem é autoral: sem zoom da roda (os controles seguem ligados só para olhar em volta).
+            var zoomCamera = FindFirstObjectByType<PlayerCameraController>();
+            if (zoomCamera != null) zoomCamera.SetZoomBlocked(this, true);
             StoryEvents.Raise(raiseOnBoard);
 
             yield return Fade(1f, 0.7f);
@@ -164,6 +167,7 @@ namespace Nibiru.Sequences
             }
 
             state = State.Done;
+            if (zoomCamera != null) zoomCamera.SetZoomBlocked(this, false);
             StoryEvents.Raise(raiseOnEnd);
         }
 

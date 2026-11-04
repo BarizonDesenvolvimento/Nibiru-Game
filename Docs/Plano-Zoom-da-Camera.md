@@ -1,6 +1,6 @@
 # Plano: zoom da câmera com a roda do mouse
 
-Projeto no papel (4/nov/2026). **Tarefa de sistema.** Nenhum código foi escrito. Aguarda aprovação do dono.
+Projeto no papel (4/nov/2026), **aprovado e implementado em 4/nov/2026** (veja "O que mudou na implementação" no fim). **Tarefa de sistema.**
 
 ## 1. O que existe hoje (levantamento, sem alterar nada)
 
@@ -182,3 +182,17 @@ Total estimado: ~12 min, um por vez. O salvamento não é tocado (nenhum teste d
 ## 5. Pendência registrada
 
 - **ME1 (mapa de controles):** decidir se o zoom terá botão no controle; até lá, o equivalente é a opção "Distância da câmera" nas Opções.
+
+## 6. O que mudou na implementação (4/nov/2026)
+
+Tudo como no plano, com estes ajustes:
+
+- **Faixa:** 1,8 / 2,5 (padrão, o `distance` do asset) / 4,0 m, confirmada pelo dono. Campos novos no grupo "Zoom" do `CameraSettings`: `zoomMinDistance`, `zoomMaxDistance`, `zoomMetersPerNotch` (0,25), `zoomInvertWheel`, `zoomSmoothTime` (0,15 s) e `zoomMaxSpeed` (3,5 m/s). O asset existente recebeu os padrões sozinho.
+- **Roda lida direto do mouse** (`Mouse.current.scroll`, 120 por clique, fração para rodas de alta resolução), sem ação no mapa de controles.
+- **Onde fica a lógica:** `PlayerCameraController` guarda o zoom escolhido (alvo), suaviza (`SmoothDamp`) e entrega ao modo por `ICameraMode.SetZoom` (método novo; a primeira pessoa futura implementa vazio). `ThirdPersonCameraMode` usa essa distância no lugar de `settings.distance`; a mira continua trocando pela dela (`aimDistance`). As checagens de parede não mudaram.
+- **Quando a roda vale (`ZoomAllowed`):** controles da Elena ligados, sem menu aberto (`CursorPolicy`), cursor preso, sem mirar e sem bloqueio. **Bloqueio explícito** (`SetZoomBlocked`) em `PlayableMemory` (memórias) e `TruckRide` (viagem), porque nos dois os controles de olhar continuam ligados e só por isso o zoom valeria.
+- **Persistência:** `GameOptions.CameraDistance` (chave `Nibiru.Opcoes.DistanciaCamera`, metros) e `CameraDistanceClamped`. O valor vai para as preferências na hora; a gravação em disco é 1 s depois da última rolagem, e `PauseMenuUI.Open` grava ao pausar. Valor ausente, NaN ou fora da faixa vira o padrão ou o limite.
+- **Etapa 2, opção nas Opções:** o menu de pausa é um texto com linhas "‹ valor ›" (não há controle deslizante gráfico), então a opção segue o mesmo desenho das outras: "Distância da câmera ‹ 2,50 m ›", 0,25 m por seta, no teclado, no mouse (metade esquerda e direita) e no controle. Linha 3 das Opções; **Idioma passou a 4 e Voltar a 5.** Textos novos com chave: `ui.opcoes.distancia_camera` e `ui.opcoes.distancia_camera.valor` (`{0} m`), em pt-BR e en.
+- **Teste:** 14 cenários (os 9 do plano, mais a Opção igual à roda depois de recarregar, o Modo livre no Poço e no wadi, a memória e a viagem, a mira e a limpeza); mouse virtual do Input System; ~2,5 min. As varreduras de colisão usam o zoom em 1,8 e 4,0.
+- **Resultado da varredura das áreas apertadas:** nenhuma posição de câmera dentro de parede ou atravessando (5184 posições: antecâmara, Poço, quarto escuro, túnel e rampa dos Guardiões). Rolando a roda junto de paredes (20 rolagens: antecâmara, andaime do Poço e quarto escuro, 4 direções cada) a câmera nunca passou de 3,6 m/s (o zoom é limitado a 3,5 m/s): **nenhum pulo nem tremor**. Nenhum limite por área foi criado.
+- **Observação dos testes:** em duas rodadas, um micro-movimento da roda do computador real (frações de clique, ~0,01 m) entrou durante o teste e derrubou uma conferência exata; as conferências de "valor padrão" agora têm folga de 0,05 m. Não é defeito do jogo.
