@@ -30,13 +30,19 @@ namespace Nibiru.Cameras
         bool aiming;
 
         // Zoom: a distância que o jogador escolheu (alvo), a suavizada que vai para o modo e a pendência de gravar no disco.
-        const float WheelUnitsPerNotch = 120f;
         const float SaveDelay = 1f;
         float zoomTarget;
         float zoomCurrent;
         float zoomVelocity;
         float saveAt = -1f;
         readonly HashSet<object> zoomBlockers = new HashSet<object>();
+
+        /// <summary>
+        /// Quanto vale um clique da roda no Input System. Por padrão (o projeto não muda isso) o valor é normalizado: 1 por clique
+        /// em qualquer sistema; com "manter a faixa da plataforma" é 120 no Windows.
+        /// </summary>
+        public static float WheelUnitsPerNotch =>
+            InputSystem.settings.scrollDeltaBehavior == InputSettings.ScrollDeltaBehavior.KeepPlatformSpecificInputRange ? 120f : 1f;
 
         public bool IsAiming => aiming;
 

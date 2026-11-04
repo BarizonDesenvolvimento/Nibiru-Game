@@ -123,7 +123,7 @@ namespace Nibiru.EditorTools.Cameras
 
         static void SendMouse(float notches)
         {
-            var state = new MouseState { scroll = new Vector2(0f, notches * 120f) };
+            var state = new MouseState { scroll = new Vector2(0f, notches * PlayerCameraController.WheelUnitsPerNotch) };
             if (rightHeld) state = state.WithButton(MouseButton.Right);
             InputSystem.QueueStateEvent(virtualMouse, state);
         }
@@ -216,8 +216,20 @@ namespace Nibiru.EditorTools.Cameras
             Check(Approx(c.Settings.zoomMinDistance, 1.8f) && Approx(c.Settings.zoomMaxDistance, 4f) && Approx(c.Settings.distance, 2.5f),
                 $"faixa do asset deveria ser 1,8 / 2,5 / 4,0: {c.Settings.zoomMinDistance} / {c.Settings.distance} / {c.Settings.zoomMaxDistance}");
             Check(c.ZoomAllowed, "com a Elena livre a roda deveria valer");
+            // O valor real da roda: o padrão do projeto normaliza para 1 por clique (o teste antigo mandava 120 e não via isso).
+            Check(InputSystem.settings.scrollDeltaBehavior == InputSettings.ScrollDeltaBehavior.UniformAcrossAllPlatforms,
+                "o projeto deveria usar o padrão do Input System (roda normalizada, 1 por clique)");
+            Check(Approx(PlayerCameraController.WheelUnitsPerNotch, 1f), $"com a roda normalizada, 1 clique deveria valer 1: {PlayerCameraController.WheelUnitsPerNotch}");
             try
             {
+                c.Settings.zoomInvertWheel = false;
+                c.SetZoomTarget(2.5f);
+                yield return Frames(2);
+                InputSystem.QueueStateEvent(virtualMouse, new MouseState { scroll = new Vector2(0f, 1f) }); // um clique de roda de verdade
+                yield return Frames(2);
+                InputSystem.QueueStateEvent(virtualMouse, new MouseState());
+                yield return Frames(2);
+                Check(Approx(c.ZoomTarget, 2.25f), $"um clique de roda real (valor 1) deveria aproximar 0,25 m, de 2,5 para 2,25: {c.ZoomTarget}");
                 c.Settings.zoomInvertWheel = false;
                 c.SetZoomTarget(2.5f);
                 yield return Frames(2);

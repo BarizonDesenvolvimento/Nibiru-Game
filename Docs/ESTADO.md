@@ -1159,6 +1159,7 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 ## Zoom da câmera (4/nov/2026, testado pela ponte e pelo nível 2; falta o teste do dono no Play)
 
 Projeto, decisões e riscos em `Docs/Plano-Zoom-da-Camera.md` (com a seção "O que mudou na implementação"). Resumo: a roda do mouse aproxima (para a frente) ou afasta a câmera de ombro, de **1,8 m a 4,0 m** (padrão 2,5 m), **0,25 m por clique**, com amortecimento. Valores no Inspector, em `Data/Camera/CameraJogador` (grupo "Zoom"). A mira ignora o zoom (1,6 m) e volta à distância escolhida; a colisão com paredes continua mandando (o zoom só muda a distância desejada). A roda não faz zoom em diálogo, leitura, pausa, Arquivo, inventário, morte, memória jogável nem na viagem de caminhonete. A distância é preferência do jogador (`GameOptions`, chave `Nibiru.Opcoes.DistanciaCamera`, em metros, limitada à faixa na leitura; grava 1 s depois de parar a roda e ao pausar), **não** entra no save de slot. Nas **Opções** há a linha "Distância da câmera" (‹ valor ›, 0,25 m por seta; teclado, mouse e controle), ligada ao mesmo valor da roda.
+- **Roda real (4/nov):** o primeiro teste do dono no Play mostrou que o zoom não respondia. Causa: o Input System normaliza a roda para ±1 por clique (padrão do projeto) e o código dividia por 120; o teste mandava 120 e não via. Agora `PlayerCameraController.WheelUnitsPerNotch` lê a configuração (1, ou 120 se a faixa da plataforma estiver mantida) e o teste manda um clique de valor 1, como a roda de verdade.
 - **Teste novo:** **Nibiru > Testes > Câmera > Zoom: teste automático** (`Scripts/Editor/Camera/ZoomTests.cs`), 14 cenários, ~2,5 min, **14 OK**. Varredura de câmera com o zoom em 1,8 e 4,0: 5184 posições (antecâmara, Poço, quarto escuro, túnel e rampa), nenhuma dentro de parede; rolagem junto de paredes (20 rolagens): nenhum pulo nem tremor.
 - **Nível 2 (4/nov/2026):** teste geral dos atalhos 100 OK, 0 FALHOU, 48 pulados; Mouse 10 OK; Animações 377 verificações OK; Passo 12 (10), Passo 13 (9) e Passo 15 (3) OK; Localização (chaves e códigos) OK. Salvamento não tocado; "slots reais iguais" conferido em cada execução.
 - **Controle:** sem atalho (pendência do ME1, veja "Em aberto, decidir no ME1/ME7").
@@ -1373,7 +1374,7 @@ A regressão completa não roda mais a cada tarefa. Escolha o nível pelo que a 
   - quando um teste de nível 1 ou 2 falhar de um jeito inesperado.
 - **Sempre:** um teste por vez, conferindo no log novo o "terminou; slots reais iguais" de cada um.
 
-**Última regressão completa (referência para o próximo marco):** 3/nov/2026, teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Na mesma rodada: salvamento 19, passos 10 a 15 (14, 9, 10, 9, 10 e 3), Remédio 8, Arquivo 6, Tom 3 (hoje 4), suprimentos 10 e animações 377 verificações, todos OK.
+**Última regressão completa (referência para o próximo marco):** 3/nov/2026, teste geral dos atalhos **95 OK, 0 FALHOU, 47 pulados**. Em 4/nov/2026 o teste geral deu **100 OK, 0 FALHOU, 48 pulados**, e a diferença é esperada: +5 OK são os 5 atalhos do Modo livre (`livre.*`, novos) e +1 pulado é o `zoom.teste`, porque todo id com ".teste" é pulado por ser um teste automático e não um lugar (regra `SkipReason` do `ShortcutsCheck`). Esta é a nova referência do teste geral; a regressão completa em si não foi refeita. Na mesma rodada: salvamento 19, passos 10 a 15 (14, 9, 10, 9, 10 e 3), Remédio 8, Arquivo 6, Tom 3 (hoje 4), suprimentos 10 e animações 377 verificações, todos OK.
 
 | Sistema tocado | Testes que o cobrem (menu em **Nibiru > Testes**) | Tempo aproximado |
 | --- | --- | --- |
@@ -1409,7 +1410,7 @@ Os tempos, menos o do Tom, são estimativas feitas na rodada de 3/nov/2026. Corr
 
 Ordem da governança de 3/nov/2026, sem datas:
 1. ~~**Inventário da arte pronta e entrada no jogo em lotes:** A (itens), B (personagens), C (cenário e veículos).~~ **Feito em 3/nov/2026** (veja "Arte da ArteFonte no jogo"), com os corpos do círculo (3 corpos e o lugar vazio do Tom); falta só o teste do dono no Play. O que ainda não foi gerado segue na `LISTA_OBJETOS_3D`.
-2. **Zoom da câmera:** implementado e testado (nível 2), aguardando teste no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
+2. **Zoom da câmera:** implementado e testado (nível 2); a roda real não funcionou no Play do dono em 4/nov (o Input System entrega 1 por clique, o código esperava 120): corrigido e retestado pela ponte, aguardando novo teste no Play (`Docs/Plano-Zoom-da-Camera.md`; veja "Zoom da câmera" abaixo).
 3. **Vitrine da Aldeia, etapa 6** (teste de 0,15 m e capturas finais).
 4. **Projeto em papel do ME1.**
 5. Depois, a rota: **ME1 → B6 (espingarda) → ME2/ME3 → ME4 a ME8 → B4 (rádio de campanha) → localização parte 2 → fim da fase A.**
