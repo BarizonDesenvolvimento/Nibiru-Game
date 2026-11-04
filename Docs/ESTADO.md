@@ -1155,6 +1155,16 @@ Tudo o que estava pronto na `ArteFonte` e ainda não estava na Unity entrou como
 | Kits médicos (3) | Pendente | Não há modelo de kit (o Curativo é o pacote pequeno) |
 | Trabalhador ferido (anda antes da execução) | Pendente | Anda por `MoveAlongPath`, sem agente: o `NpcAnimator` não o animaria; segue em cápsula |
 
+## Modo livre (4/nov/2026, testado pela ponte; falta o teste do dono no Play)
+
+Menu **Nibiru > Testes > Modo livre** (`Scripts/Editor/FreeRoamShortcuts.cs`), 5 pontos de partida: **1. Aldeia, 2. Acampamento, 3. entrada da base, 4. boca do Poço, 5. wadi**. Cada clique liga o Play (ou recomeça, se já estiver ligado) e põe a Elena ali:
+- **invencível** (a opção "Elena invencível nos atalhos" fica ligada) e com pistola, balas e faca;
+- no mundo de quem já saiu da base, com **tudo vivo**: soldados, helicópteros da base, caminhão, Lullu, Poço e wadi ligados (`Base_Ativa`, `Poco_Ativo`, `Wadi_Ativo`);
+- **sem barreiras**: `Barreira_Norte`, `Parede_Invisivel` e `Limites_Acampamento` desligadas;
+- nada é gravado em slot de verdade. Para recomeçar, é só clicar de novo no ponto.
+- **Fora do modo:** o Primeiro Servo continua dormindo (só acorda no flash do Selo; para lutar use **Passo 12**), a passagem do barco continua fechada e os helicópteros de sobrevoo e da passagem só aparecem nas cenas deles.
+- Os pontos são ajustados para a malha de navegação, então a Elena pode nascer alguns metros do ponto pedido.
+
 ### Lote 3 da arte: veículos, guincho, holofotes e relevos (3/nov/2026, testado pela ponte; falta o teste do dono no Play)
 
 Mesmo método (menus **Objetos e ambientes > 1** e **3**, `PropArtSetup.BuildBatch3`; modelos no `objetos_jogo.py`). Fotos em `Docs/Arte/Capturas/Lote3/`.
