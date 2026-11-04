@@ -44,6 +44,8 @@ namespace Nibiru.EditorTools
         const string Zombie = "Not So Scary Zombie Pack/";
         const string Creature = "Creature Pack/";
         const string Female = "Female Basic Locomotion Pack/";
+        const string Magic = "Pro Magic Pack/";
+        const string Rifle = "Pro Rifle Pack/";
 
         public static readonly Entry[] Entries =
         {
@@ -81,6 +83,16 @@ namespace Nibiru.EditorTools
 
             // Yusuf ferido, deitado (Remédio para Yusuf). A Dra. Weiss sentada usa a Elena_Sentada.
             new("Yusuf_Deitado", "Yusuf", "Avulsas/Laying Idle", true),
+
+            // Equipe morta no círculo do Acampamento: só o último quadro de cada morte, para posar os corpos no editor
+            // (TeamBodiesSetup); nenhum controlador usa esses clipes no jogo. As mortes "Left" e "Right" do Pro Magic
+            // terminam de costas e de bruços (nenhuma de lado); as de lado vêm do Pro Rifle (o corpo acaba sobre o lado
+            // esquerdo, sem fuzil na mão). O "de costas" só serve ao trabalhador: o veterano deita na mochila e a jovem no cabelo.
+            new("EquipeMorta_Costas", "EquipeMorta", Magic + "Standing React Death Backward", false),
+            new("EquipeMorta_Brucos", "EquipeMorta", Magic + "Standing React Death Forward", false),
+            new("EquipeMorta_Brucos2", "EquipeMorta", Rifle + "death crouching headshot front", false),
+            new("EquipeMorta_Lado2", "EquipeMorta", Rifle + "death from the front", false),
+            new("EquipeMorta_Lado3", "EquipeMorta", Rifle + "death from the back", false),
         };
 
         public static bool TryGet(string assetPath, out Entry entry)

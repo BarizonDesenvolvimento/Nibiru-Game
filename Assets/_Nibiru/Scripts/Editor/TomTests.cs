@@ -19,6 +19,7 @@ namespace Nibiru.EditorTools
     /// Teste automático do final de "O que o Tom viu": com os três rolos a Umm Karim leva a Elena a Abu Faris; ele revela
     /// os filmes, os rolos saem da bolsa e as Fotos do Tom entram (uma vez só); as fotos abrem na tela de leitura; a Umm
     /// Karim volta para casa; tudo volta do checkpoint. Sem os três rolos nada acontece. A missão principal fica livre.
+    /// E o começo, no Acampamento: "Examinar" um corpo do círculo e a bolsa do Tom (que começa a secundária).
     /// Resumo no Console. Menu: Nibiru > Testes > Secundárias > O que o Tom viu > 6. Teste automático.
     /// </summary>
     [InitializeOnLoad]
@@ -37,7 +38,37 @@ namespace Nibiru.EditorTools
             ("Fluxo completo: a Umm Karim leva, Abu Faris revela, as fotos entram uma vez, abrem na leitura e tudo volta do checkpoint", FullFlow),
             ("Sem os três rolos nada acontece: a Umm Karim não leva e Abu Faris só espera", NotEnoughRolls),
             ("Código estável do item, textos das fotos e conversas curtas", Data),
+            ("Acampamento: com os corpos deitados, \"Examinar\" um corpo e a bolsa do Tom ainda funcionam e começam a secundária", Camp),
         });
+
+        // O começo da secundária no Acampamento (passo 2 da principal), depois da troca das caixas pelos corpos deitados
+        // (TeamBodiesSetup): o colisor de cada corpo cresceu para cobrir a silhueta, e a área de "Examinar" continua à parte.
+        static IEnumerator Camp()
+        {
+            RemedyShortcuts.Ready = false;
+            Vector3 circle = new Vector3(0f, 3f, -112f);
+            Transform zone = Obj("Examinar_Corpo_5").transform;
+            Vector3 outward = Vector3.ProjectOnPlane(zone.position - circle, Vector3.up).normalized;
+            Vector3 spot = new Vector3(zone.position.x, 3f, zone.position.z) + outward * 1.5f;
+            float yaw = Quaternion.LookRotation(-outward).eulerAngles.y;
+            StartFrom(new[] { "SaiuDaBarraca" }, new[] { ("Sobrevivente", 2) }, 0, spot, yaw, () => RemedyShortcuts.Ready = true);
+            yield return new Until(() => RemedyShortcuts.Ready, 60f, "o Acampamento ficar pronto");
+            yield return new Delay(1f);
+            Check(MainStep() == 2, $"a principal deveria estar em \"procurar a equipe\" (índice 2), está em {MainStep()}");
+
+            yield return Face(spot, yaw);
+            Check(Prompt() == "Examinar", $"diante do corpo 5 o aviso deveria ser \"Examinar\" (é \"{Prompt()}\")");
+            yield return Interact("Examinar");
+            yield return FinishDialogue("Acampamento_Corpos");
+            Check(Raised("ExaminouOsCorpos"), "examinar deveria disparar ExaminouOsCorpos");
+            Check(MainStep() == 3, $"a principal deveria ir para \"achar a bolsa\" (índice 3), está em {MainStep()}");
+
+            yield return Face(new Vector3(4.4f, 3f, -116.3f), 180f);
+            yield return Interact("Examinar a bolsa");
+            yield return FinishDialogue("Acampamento_BolsaDoTom");
+            Check(Raised("AchouBolsaDoTom"), "a bolsa deveria disparar AchouBolsaDoTom");
+            Check(QuestStep("OQueOTomViu") == 0, $"\"O que o Tom viu\" deveria começar no primeiro passo (está em {QuestStep("OQueOTomViu")})");
+        }
 
         static IEnumerator FullFlow()
         {
