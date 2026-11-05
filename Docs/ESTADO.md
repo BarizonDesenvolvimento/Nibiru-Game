@@ -1,3 +1,5 @@
+> **PROJETO CONGELADO em 5/nov/2026.** Nada mais será construído aqui. As lições para o próximo jogo estão em [`Docs/LICOES-PARA-O-PROXIMO-JOGO.md`](LICOES-PARA-O-PROXIMO-JOGO.md); este arquivo fica como registro histórico.
+
 # Estado do projeto
 
 Retrato de onde o projeto está, para retomar o trabalho numa conversa nova sem precisar reler o histórico. Atualize este arquivo ao fim de cada etapa grande.
